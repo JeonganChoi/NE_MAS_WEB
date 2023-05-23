@@ -1,0 +1,149 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} accountBalance {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="px-5 py-4 container-fluid">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="mx-2 mb-3 d-md-flex align-items-center">
+                    <div class="mb-3 mb-md-0">
+                        <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>은행 계좌 잔액 관리</h3>
+                    </div>
+                    <button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
+                      <span class="btn-inner--icon">
+                          <i class="fas fa-search me-2 fs-5"></i>
+                      </span>
+                      <span class="btn-inner--text text-lg">조회</span>
+                    </button>
+                    <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
+                      <span class="btn-inner--icon">
+                          <i class="fas fa-plus me-2 fs-5"></i>
+                      </span>
+                      <span class="btn-inner--text text-lg">저장</span>
+                    </button>
+                    <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
+                      <span class="btn-inner--icon">
+                          <i class="fas fa-minus me-2 fs-5"></i>
+                      </span>
+                      <span class="btn-inner--text text-lg">삭제</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0">
+        <div class="my-4 row">
+            <div class="col-lg-8 col-md-6">
+                <div class="border shadow-xs card">
+                    <div class="pb-0 pt-0 card-header border-bottom">
+                      <div class="p-3 col-lg-3 mt-lg-0">
+                        <div class="input-group">
+                            <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
+                            </span>
+                            <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
+
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="px-0 py-0 card-body height-600">
+                      <div class="p-3 table-responsive">
+                        <table class="table mb-0 align-items-center justify-content-center">
+                            <colgroup>
+                                <col width="2%">
+                                <col width="10%">
+                                <col width="15%">
+                                <col width="10%">
+                                <col width="8%">
+                                <col width="8%">
+                                <col width="6%">
+                                <col width="20%">
+                            </colgroup>
+                          <thead class="bg-gray-100">
+                            <tr>
+                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">통장명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">가입 일자</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">월 납입액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
+                            </tr>
+                          </thead>
+                          <tbody id="custMainTb">
+                            <tr id="custMainTr" class="custMainTr_tr">
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 col-lg-4 col-md-6 mb-md-0">
+                <div class="card shadow-xs border h-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
+                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType"></select>
+                            </div>
+                            <div class="col-6">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
+                                <input class="form-control" type="text" value="000-0000-0000" id="txtActNum" name="txtActNum"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>가입 일자</label>
+                                <input class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
+                            </div>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>만기 일자</label>
+                                <input class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>통장명</label>
+                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
+                            </div>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>월 납입액</label>
+                                <input class="form-control" type="number" value="0" id="txtAmount" name="txtAmount"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
+                                <input class="form-control" type="text" id="txtBigo" name="txtBigo"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+    </script>
+{% endblock %}
