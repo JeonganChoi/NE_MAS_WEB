@@ -83,7 +83,7 @@ DATABASES = {
     	# django db를 mysql로 사용하겠음
         'ENGINE': 'django.db.backends.mysql',
         # DB 이름 지어주기
-        'NAME': 'ne_mes_web',
+        'NAME': 'ne_mas_web',
         # 사용자 유저 계정 생성 후 입력
         'USER': 'Nadmin',
         # 사용자 비밀번호 생성 후 입력

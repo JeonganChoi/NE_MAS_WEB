@@ -80,15 +80,17 @@ def accountViews_search(request):
 
 def accountViews_save(request):
     if 'btnSave' in request.POST:
-        accNum = request.POST.get('accNum')
-        accName = request.POST.get('accName')
-        bankCode = request.POST.get('bankCode')
-        strDate = request.POST.get('strDate').replace('-', '')
-        endDate = request.POST.get('endDate').replace('-', '')
-        accPrc = request.POST.get('accPrc')
-        remark = request.POST.get('remark')
-        inepno = request.session['userid']
-        utepno = request.session['userid']
+        accNum = request.POST.get('txtActNum')
+        accName = request.POST.get('txtActName')
+        bankCode = request.POST.get('inputbankType')
+        strDate = request.POST.get('txtRegDate').replace('-', '')
+        endDate = request.POST.get('txtExpireDate').replace('-', '')
+        accPrc = request.POST.get('txtAmount')
+        remark = request.POST.get('txtRemark')
+        inepno = '101'
+        utepno = '101'
+        # inepno = request.session['userid']
+        # utepno = request.session['userid']
 
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO ACNUMBER "
@@ -129,8 +131,25 @@ def accountViews_save(request):
             connection.commit()
 
             messages.success(request, '저장 되었습니다.')
-            return render(request, 'home/base-account.html')
+            return render(request, 'base/base-account.html')
 
     else:
         messages.warning(request, '입력 하신 정보를 확인 해주세요.')
         return redirect('/base_account')
+
+
+def accountViews_dlt(request):
+    if request.method == "POST":
+        dataList = json.loads(request.POST.get('arrList'))
+        print(dataList)
+        for act in dataList:
+            acc_split_list = act.split(',')
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM ACNUMBER WHERE ACBKCD = '" + acc_split_list[0] + "' "
+                               "                        AND ACNUMBER = '" + acc_split_list[1] + "' ")
+                connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    else:
+        return render(request, 'base/base-account.html')
