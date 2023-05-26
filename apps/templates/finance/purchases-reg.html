@@ -7,67 +7,43 @@
 
 {% block content %}
 
-    <div class="px-5 py-4 container-fluid">
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <div class="card">
-                    <img src="/static/assets/img/header-blue-purple.jpg" alt="pattern-lines"
-                         class="top-0 rounded-2 position-absolute start-0 w-100 h-100">
-                    <div class="p-3 card-body z-index-2 border-radius-lg">
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <h3 class="mb-0 text-white font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>매입 등록</h3>
-                            </div>
-                            <div class="col-lg-7">
-                            </div>
-                        </div>
+    <div class="pt-6 pb-6 bg-cover height-100"
+         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
+    <div class="container-xxl py-3 my-3">
+        <div class="row mt-n7">
+            <div class="col-lg-12">
+                <div class="card blur border border-white rounded-2 shadow-xs">
+                    <div class="card-body">
+                        <h3 class="mb-0 text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>매입 등록</h3>
                     </div>
                 </div>
-                <!--<div class="mx-2 mb-3 d-md-flex align-items-center">
-                    <div class="mb-3 mb-md-0">
-                    </div>
-                    <button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-search me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">조회</span>
-                    </button>
-                    <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">저장</span>
-                    </button>
-                    <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">삭제</span>
-                    </button>
-                </div>-->
             </div>
         </div>
-        <hr class="my-0">
+    </div>
+    <div class="px-5 py-4 container-fluid">
         <div class="my-4 row">
-            <div class="col-lg-10 col-md-8">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
                     <div class="pb-0 pt-0 card-header border-bottom">
                       <div class="row">
-                          <div class="p-3 col-lg-5 mt-lg-0">
+                          <div class="p-3 col-lg-4 mt-lg-0">
                             <div class="input-group">
                                 <span class="input-group-text text-body bg-transparent border-0 shadow-none me-2">
                                     <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>일 자</label>
                                 </span>
-                                <input class="form-control border border-light rounded-1" type="date" id="inputStrDate" name="inputStrDate"/>
+                                <input class="form-control border border-light rounded-1 text-center" type="date" id="inputStrDate" name="inputStrDate"/>
                                 <span class="input-group-text text-body bg-transparent border-0 shadow-none">
                                     <label style="font-size: 1rem">-</label>
                                 </span>
-                                <input class="form-control border border-light rounded-1" type="date" id="inputEndDate" name="inputEndDate"/>
+                                <input class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
                             </div>
                           </div>
-                          <div class="p-3 col-lg-7 mt-lg-0 text-end">
-                              <button type="button" class="btn btn-dark" data-bs-toggle="modal"
-                                      data-bs-target="#exampleModal">추 가</button>
+                          <div class="p-3 col-lg-8 mt-lg-0 text-end">
+                              <button type="button" class="btn bg-gradient-info" data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"><i class="fas fa-search me-2"></i>조회</button>
+                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"><i class="fas fa-plus me-2"></i>추가</button>
                           </div>
                       </div>
                     </div>
@@ -78,8 +54,8 @@
                                 <col width="2%">
                                 <col width="8%">
                                 <col width="15%">
-                                <col width="6%">
-                                <col width="6%">
+                                <col width="8%">
+                                <col width="8%">
                                 <col width="6%">
                                 <col width="6%">
                                 <col width="6%">
@@ -100,8 +76,8 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">매입처</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
+                          <tbody id="buyMainTb">
+                            <tr id="buyMainTr" class="buyMainTr_tr">
 
                             </tr>
                           </tbody>
@@ -110,120 +86,83 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-4 col-lg-2 mb-md-0">
+            <div class="mb-4 col-lg-2">
             </div>
         </div>
     </div>
 
-        <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 30vw">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 50vw">
         <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel">매입 등록</h4>
+          <div class="modal-header bg-gradient-info">
+            <h4 class="modal-title text-white font-weight-bolder" id="exampleModalLabel"><i class="fas fa-credit-card me-3"></i>매입 등록</h4>
             <button type="button" class="btn-close text-lg text-dark" data-bs-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body p-5">
               <form method="post">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>입고 일자
-                            </span>
-                            <input class="form-control" type="date" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>구 분
-                            </span>
-                            <select class="form-control border border-light rounded-1 text-center" name="cboCom" id="cboCom"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>결 제
-                            </span>
-                            <select class="form-control border border-light rounded-1 text-center" name="cboCom" id="cboCom"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>매입처
-                            </span>
-                            <input class="form-control" type="number" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>제품명
-                            </span>
-                            <input class="form-control" type="number" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>수 량
-                            </span>
-                            <input class="form-control text-end" type="number" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>단 가
-                            </span>
-                            <input class="form-control text-end" type="number" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>금 액
-                            </span>
-                            <input class="form-control text-end" type="number" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-4 input-group">
-                            <span class="input-group-text" style="font-size: 1rem">
-                                <i class="far fa-edit me-2"></i>부가세 포함
-                            </span>
-                            <input class="form-control text-end" type="number" id="txtQuitDate" name="txtQuitDate"/>
-                        </div>
-                    </div>
-                </div>
-                <!--<div class="row">
-                    <div class="col-8">
-                        <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                        <select class="form-control border border-light rounded-1 text-center" name="cboBom" id="cboBom"></select>
-                    </div>
-                    <div class="col-4"></div>
-                </div>-->
+                  <div class="row">
+                      <div class="col-6">
+                          <label class="h6"><i class="far fa-calendar me-2"></i>입고 일자</label>
+                          <input class="form-control text-center" type="date" id="txtInDate" name="txtInDate"/>
+                      </div>
+                      <div class="col-6"></div>
+                  </div>
+                  <div class="row">
+                      <div class="col-6">
+                          <label class="mt-4 h6"><i class="far fa-edit me-2"></i>매입처</label>
+                          <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
+                      </div>
+                      <div class="col-6"></div>
+                  </div>
+                  <div class="row">
+                      <div class="col-6">
+                          <label class="mt-4 h6"><i class="fas fa-box me-2"></i>제품명</label>
+                          <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-2">
+                        <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>수 량</label>
+                        <input class="form-control text-end" type="number" id="txtQty" name="txtQty"/>
+                      </div>
+                      <div class="col-2">
+                          <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>단 가</label>
+                          <input class="form-control text-end" type="number" id="txtCost" name="txtCost"/>
+                      </div>
+                      <div class="col-2">
+                        <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>공급 가액</label>
+                        <input class="form-control text-end" type="number" id="txtPrice" name="txtPrice"/>
+                      </div>
+                      <div class="col-2">
+                          <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>부가세</label>
+                          <input class="form-control text-end" type="number" id="txtTax" name="txtTax"/>
+                      </div>
+                      <div class="col-2">
+                          <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>합 계</label>
+                          <input class="form-control text-end" type="number" id="txtTax" name="txtTax"/>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-3">
+                          <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구 분</label>
+                          <select class="form-control border border-light rounded-1 text-center" name="cboBuyGbn" id="cboBuyGbn"></select>
+                      </div>
+                      <div class="col-3">
+                        <label class="mt-4 h6"><i class="far fa-edit me-2"></i>결 제</label>
+                        <select class="form-control border border-light rounded-1 text-center" name="cboPayGbn" id="cboPayGbn"></select>
+                      </div>
+                      <div class="col-6"></div>
+                  </div>
+                  <div class="row">
+                      <div class="col-10">
+                          <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
+                          <select class="form-control border border-light rounded-1 text-center" name="cboBom" id="cboBom"></select>
+                      </div>
+                      <div class="col-2"></div>
+                  </div>
               </form>
           </div>
           <div class="modal-footer">
@@ -240,5 +179,47 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 
+        $(document).ready(function () {
+            document.getElementById('inputStrDate').valueAsDate = new Date
+            document.getElementById('inputEndDate').valueAsDate = new Date
+
+            var sDate = $("#inputStrDate").val();
+            var eDate = $("#inputEndDate").val();
+            var strDate = sDate.replace(/\-/g, '')
+            var endDate = eDate.replace(/\-/g, '')
+
+
+            let data = {"strDate": strDate, "endDate": endDate}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "purchase_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.buyList;
+
+                    $("#buyMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#buyMainTb").append(
+                            "<tr id='#buyMainTr' class='buyMainTr_tr' main_code='" + list[i][1] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][1] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
     </script>
 {% endblock %}
