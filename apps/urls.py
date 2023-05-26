@@ -2,6 +2,7 @@ from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
 from apps.views.finance import purchaseViews, depositViews
+from apps.views.currentstate import receivepayViews
 
 urlpatterns = [
     path('', redirectToMain, name="redirectToMain"),
@@ -34,5 +35,8 @@ urlpatterns = [
 
 #     입금/출금 관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),
+
+#     자금관리 현황
+    path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
 
 ]

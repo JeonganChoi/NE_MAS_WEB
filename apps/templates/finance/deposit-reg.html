@@ -28,16 +28,19 @@
                       <div class="row">
                           <div class="p-3 col-lg-6 mt-lg-0">
                             <div class="input-group">
-                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
-                                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>일자</label>
-                                </span>
-                                <input class="form-control border text-center" type="date"/>
+                                <select class="form-control border border-light rounded-1 text-center me-2" name="inputYear" id="inputYear"></select>
+                                <label class="mt-2 me-4" style="font-size: 1rem">년</label>
+                                <select class="form-control border border-light rounded-1 text-center me-2" name="inputMonth" id="inputMonth"></select>
+                                <label class="mt-2" style="font-size: 1rem">월</label>
                             </div>
+                          </div>
+                          <div class="p-3 col-lg-6 mt-lg-0 text-end">
+                               <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
                           </div>
                       </div>
                     </div>
-                    <div class="px-0 py-0 card-body">
-                      <div class="p-3 table-responsive-sm" style="height: 52vh">
+                    <div class="px-0 py-0 card-body height-600">
+                      <div class="p-3 table-responsive-sm">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
                                 <col width="8%">
@@ -49,8 +52,8 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">금액</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
+                          <tbody id="depositMainTb">
+                            <tr id="depositMainTr" class="depositMainTr_tr">
 
                             </tr>
                             <tr class="bg-light">
@@ -65,10 +68,17 @@
             </div>
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
-                    <div class="pb-0 pt-0 card-header" style="height: 8vh">
+                    <div class="pb-0 pt-0 card-header border-bottom" style="height: 8vh">
+                        <div class="row">
+                          <div class="p-3 col-lg-4 mt-lg-0"></div>
+                          <div class="p-3 col-lg-8 mt-lg-0 text-end">
+                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"><i class="fas fa-plus me-2"></i>추가</button>
+                          </div>
+                      </div>
                     </div>
-                    <div class="px-0 py-0 card-body">
-                      <div class="p-3 table-responsive-sm" style="height: 52vh">
+                    <div class="px-0 py-0 card-body height-600">
+                      <div class="p-3 table-responsive-sm">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
                                 <col width="2%">
@@ -92,8 +102,8 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
+                          <tbody id="depositSubTb">
+                            <tr id="depositSubTr" class="depositSubTr_tr">
 
                             </tr>
                           <tr class="bg-light">
@@ -160,42 +170,42 @@
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="far fa-calendar me-2"></i>등록 일자</label>
-                                      <input class="form-control text-center" type="date" id="txtInDate" name="txtInDate"/>
+                                      <input class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate"/>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
                               <div class="row">
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구분</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboBuyGbn" id="cboBuyGbn"></select>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="far fa-edit me-2"></i>계정과목</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboCode" id="cboCode"></select>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
                               <div class="row">
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
-                                      <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                                      <input class="form-control text-end" type="text" id="txtPrice" name="txtPrice"/>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboActNum" id="cboActNum"></select>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
                               <div class="row">
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-edit me-2"></i>결제방법</label>
-                                      <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboMethod" id="cboMethod"></select>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6 font-weight-bolder me-4"><i class="fas fa-edit me-2"></i>처리</label>
-                                      <input type="radio" id="inputEmpCount" name="inputEmpCount" checked value="0"/>
+                                      <input type="radio" id="txtDeal" name="inputEmpCount" checked value="0"/>
                                       <label class="mt-4 h6 text-info me-4">현금</label>
-                                      <input type="radio" id="inputEmpCount" name="inputEmpCount" value="1"/>
+                                      <input type="radio" id="txtDeal" name="inputEmpCount" value="1"/>
                                       <label class="mt-4 h6 text-danger">계산서</label>
                                   </div>
                                   <div class="col-4"></div>
@@ -203,21 +213,21 @@
                               <div class="row">
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-box me-2"></i>발행처</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboIssueCust" id="cboIssueCust"></select>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>어음번호</label>
-                                      <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                                      <input class="form-control text-end" type="text" id="txtCashNum" name="txtCashNum"/>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
-                                      <input class="form-control text-end" type="date" id="txtItem" name="txtItem"/>
+                                      <input class="form-control text-end" type="date" id="txtDeadline" name="txtDeadline"/>
                                   </div>
                               </div>
                               <div class="row">
                                   <div class="col-8">
                                       <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
-                                      <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                                      <input class="form-control text-end" type="text" id="txtRemark" name="txtRemark"/>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
