@@ -20,6 +20,8 @@ urlpatterns = [
     path('base_emp_dlt/', empViews.empViews_dlt, name='base_emp_dlt'),
     # 거래처정보관리
     path('base_cust/', custViews.custViews, name='base_cust'),
+    path('base_cust_search/', custViews.custViews_search, name='base_cust_search'),
+    path('base_cust_dlt/', custViews.custViews_dlt, name='base_cust_dlt'),
     # 게좌관리
     path('base_account/', accountViews.accountViews, name='base_account'),
     path('base_account_search/', accountViews.accountViews_search, name='base_account_search'),
