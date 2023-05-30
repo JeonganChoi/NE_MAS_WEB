@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
-from apps.views.finance import purchaseViews, depositViews
+from apps.views.finance import purchaseViews, depositViews, custBalanceViews, actBalanceViews, cashBalanceViews
 from apps.views.currentstate import receivepayViews
 
 urlpatterns = [
@@ -27,6 +27,12 @@ urlpatterns = [
     path('base_account_dlt/', accountViews.accountViews_dlt, name='base_account_dlt'),
     # 지수관리
     path('base_targetIndex/', targetIndexViews.targetIndexViews, name='base_targetIndex'),
+    # 계좌잔액등록
+    path('actBalance_reg/', actBalanceViews.actBalRegViews, name='actBalance_reg'),
+    # 거래처시산잔액등록
+    path('custBalance_reg/', custBalanceViews.custBalRegViews, name='custBalance_reg'),
+    # 현금시재등록
+    path('cashBalance_reg/', cashBalanceViews.cashBalRegViews, name='cashBalance_reg'),
 
 #     매입/매출 관리
     path('purchase_reg/', purchaseViews.purchaseRegViews, name='purchase_reg'),

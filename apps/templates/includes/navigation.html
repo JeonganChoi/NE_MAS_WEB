@@ -156,32 +156,32 @@
                       <a href="{% url 'base_accountCode' %}" class="dropdown-item border-radius-md">계정 과목 관리</a>
                   </li>
                   <li class="mb-2">
+                      <a href="{% url 'base_code' %}" class="dropdown-item border-radius-md">참조 코드 관리</a>
+                  </li>
+                  <li class="mb-2">
                       <a href="{% url 'base_emp' %}" class="dropdown-item border-radius-md">직원 등록</a>
                   </li>
                   <li class="mb-2">
                       <a href="{% url 'base_cust' %}" class="dropdown-item border-radius-md">업체 관리</a>
                   </li>
                   <li class="mb-2">
-                      <a href="{% url 'base_code' %}" class="dropdown-item border-radius-md">은행 코드 관리?? 참조코드에서</a>
-                  </li>
-                  <li class="mb-2">
                       <a href="{% url 'base_account' %}" class="dropdown-item border-radius-md">게좌 번호 관리</a>
                   </li>
                   <li class="mb-2">
-                      <a href="#" class="dropdown-item border-radius-md">계좌 잔액 등록</a>
+                      <a href="{% url 'actBalance_reg' %}" class="dropdown-item border-radius-md">계좌 잔액 등록</a>
                   </li>
                   <li class="mb-2">
                       <a href="{% url 'base_targetIndex' %}" class="dropdown-item border-radius-md">지표 등록</a>
                   </li>
                   <li class="mb-2">
-                      <a href="#" class="dropdown-item border-radius-md">거래처 시산잔액 등록</a>
+                      <a href="{% url 'custBalance_reg' %}" class="dropdown-item border-radius-md">거래처 시산 잔액 등록</a>
                   </li>
                   <li class="mb-2">
-                      <a href="#" class="dropdown-item border-radius-md">현금 시재 등록</a>
+                      <a href="{% url 'cashBalance_reg' %}" class="dropdown-item border-radius-md">현금 시재 등록</a>
                   </li>
-                  <li class="mb-2">
+                  <!--<li class="mb-2">
                       <a href="#" class="dropdown-item border-radius-md">대출 상환 일정 등록</a>
-                  </li>
+                  </li>-->
               </ul>
           </li>
           <li class="nav-item dropdown px-3 py-3 border-radius-sm d-flex align-items-center">
