@@ -37,6 +37,7 @@ urlpatterns = [
     path('actBalance_reg_dlt/', actBalanceViews.actBalRegViews_dlt, name='actBalance_reg_dlt'),
     # 거래처시산잔액등록
     path('custBalance_reg/', custBalanceViews.custBalRegViews, name='custBalance_reg'),
+    path('custBalance_reg_search/', custBalanceViews.custBalRegViews_search, name='custBalance_reg_search'),
     # 현금시재등록
     path('cashBalance_reg/', cashBalanceViews.cashBalRegViews, name='cashBalance_reg'),
 

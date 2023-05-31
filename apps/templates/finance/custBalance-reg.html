@@ -42,15 +42,30 @@
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
                     <div class="pb-0 pt-0 card-header border-bottom">
-                      <div class="p-3 col-lg-3 mt-lg-0">
-                        <div class="input-group">
-                            <span class="input-group-text text-body bg-transparent border-0 shadow-none">
-                                <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
-                            </span>
-                            <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
+                      <div class="row">
+                          <div class="p-3 col-lg-3 mt-lg-0">
+                            <div class="input-group">
+                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>거래처</label>
+                                </span>
+                                <select class="form-control border border-light rounded-1 text-center" name="inputCustCode" id="inputCustCode" style="font-size: 0.85rem">
 
-                            </select>
-                        </div>
+                                </select>
+                            </div>
+                          </div>
+                          <div class="p-3 col-lg-5 mt-lg-0">
+                              <div class="input-group">
+                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>등록 일자</label>
+                                </span>
+                                <input class="form-control border border-light rounded-1 text-center" type="date" id="inputStrDate" name="inputStrDate"/>
+                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                    <label style="font-size: 1rem">-</label>
+                                </span>
+                                <input class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
+                              </div>
+                          </div>
+                          <div class="p-3 col-lg-4 mt-lg-0"></div>
                       </div>
                     </div>
                     <div class="px-0 py-0 card-body height-600">
@@ -60,26 +75,22 @@
                                 <col width="2%">
                                 <col width="10%">
                                 <col width="15%">
-                                <col width="10%">
                                 <col width="8%">
                                 <col width="8%">
-                                <col width="6%">
                                 <col width="20%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
                               <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">통장명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">가입 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">월 납입액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">거래처 코드</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">거래처명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">미수 잔액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">미지급 잔액</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
+                          <tbody id="custBalMainTb">
+                            <tr id="custBalMainTr" class="custBalMainTr_tr">
 
                             </tr>
                           </tbody>
@@ -93,43 +104,34 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType"></select>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>거래처</label>
+                                <select class="form-control border border-light rounded-1 text-center" name="cboCustCode" id="cboCustCode"></select>
                             </div>
                             <div class="col-6">
 
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
-                                <input class="form-control" type="text" value="000-0000-0000" id="txtActNum" name="txtActNum"/>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>가입 일자</label>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>등록 일자</label>
                                 <input class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
                             </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>만기 일자</label>
-                                <input class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
-                            </div>
+                            <div class="col-6"></div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>통장명</label>
-                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>미수 잔액</label>
+                                <input class="form-control text-end" type="number" placeholder="0" id="txtNonGet" name="txtNonGet"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>월 납입액</label>
-                                <input class="form-control" type="number" value="0" id="txtAmount" name="txtAmount"/>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>미지급 잔액</label>
+                                <input class="form-control text-end" type="number" placeholder="0" id="txtNonPay" name="txtNonPay"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                                <input class="form-control" type="text" id="txtBigo" name="txtBigo"/>
+                                <input class="form-control text-start" type="text" id="txtRemark" name="txtRemark"/>
                             </div>
                         </div>
                     </div>
@@ -144,6 +146,116 @@
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function () {
+            var inputCustCode = "";
+            var cboCustCode = "";
+            var inputCustCodeTxt = "<option value=''>:: 전체 ::</option>";
+            var cboCustCodeTxt = "<option value=''>:: 전체 ::</option>";
+
+            document.getElementById('inputStrDate').valueAsDate = new Date
+            document.getElementById('inputEndDate').valueAsDate = new Date
+            document.getElementById('txtRegDate').valueAsDate = new Date
+
+            {#var empType = $('input[name=inputEmpCount]:checked').val();#}
+            var strDate = document.getElementById('inputStrDate').value;
+            var eDate = document.getElementById('inputEndDate').value;
+
+            var startDate = strDate.replace(/\-/g, '')
+            var endDate = eDate.replace(/\-/g, '')
+            var custCode = '';
+
+            let data = {'custCode': custCode, 'startDate': startDate, "endDate": endDate}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "custBalance_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.custBalList;
+
+                    $("#custBalMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#custBalMainTb").append(
+                            "<tr id='#custBalMainTr' class='custBalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBalance[]' name='chkBalance[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    var combolist = data.inputCustType;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputCustCode) {
+                            inputCustCodeTxt = inputCustCodeTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputCustCodeTxt = inputCustCodeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.inputCustType;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboCustCode) {
+                            cboCustCodeTxt = cboCustCodeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboCustCodeTxt = cboCustCodeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#inputCustCode").append(inputCustCodeTxt);
+                    $("#cboCustCode").append(cboCustCodeTxt);
+                }
+            })
+        });
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+
+            var custCode = $('input[name=inputCustCode]:checked').val();
+            var strDate = document.getElementById('inputStrDate').value;
+            var eDate = document.getElementById('inputEndDate').value;
+
+            var startDate = strDate.replace(/\-/g, '')
+            var endDate = eDate.replace(/\-/g, '')
+
+            let data = {'custCode': custCode, 'startDate': startDate, "endDate": endDate}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "custBalance_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.custBalList;
+
+                    $("#custBalMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#custBalMainTb").append(
+                            "<tr id='#custBalMainTr' class='custBalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBalance[]' name='chkBalance[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+
+        });
 
     </script>
 {% endblock %}
