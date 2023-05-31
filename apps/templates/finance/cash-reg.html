@@ -8,7 +8,8 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post">
+    <form method="post" action="{% url 'cashBalacne_save' %}" name="frm">
+{#    <form method="post">#}
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -48,7 +49,6 @@
                                 <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
                             </span>
                             <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
-
                             </select>
                         </div>
                       </div>
@@ -57,30 +57,34 @@
                       <div class="p-3 table-responsive">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
-                                <col width="2%">
+                                <col width="3%">
+                                <col width="10%">
+                                <col width="12%">
+                                <col width="10%">
+                                <col width="8%">
                                 <col width="10%">
                                 <col width="15%">
-                                <col width="10%">
-                                <col width="8%">
-                                <col width="8%">
-                                <col width="6%">
-                                <col width="20%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
+                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">통장명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">가입 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">월 납입액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌번호</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">기준일자</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">금액</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
-
+                          <tbody id="acTable">
+                            <tr id="acTr" class="acTr_tr">
+{#                                <td style="text-align: center"><input type="checkbox"></td>#}
+{#                                <td style="text-align: center">대구은행</td>#}
+{#                                <td style="text-align: center">나은정보시스템</td>#}
+{#                                <td style="text-align: center">111-2222-3333-03</td>#}
+{#                                <td style="text-align: center">2023-05-05</td>#}
+{#                                <td style="text-align: right">1000000</td>#}
+{#                                <td style="text-align: center">TESTE</td>#}
                             </tr>
                           </tbody>
                         </table>
@@ -94,35 +98,31 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType"></select>
+                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType2" id="cbobankType2"></select>
                             </div>
                             <div class="col-6">
 
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
-                                <input class="form-control" type="text" value="000-0000-0000" id="txtActNum" name="txtActNum"/>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌번호</label>
+                                <select class="form-control border border-light rounded-1 text-center" name="cboActNum" id="cboActNum"></select>
+
+                            </div>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌명</label>
+                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
+{#                                <input class="form-control" type="text" id="txtActNum" name="txtActNum"/>#}
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>가입 일자</label>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>기준 일자</label>
                                 <input class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>만기 일자</label>
-                                <input class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>통장명</label>
-                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>월 납입액</label>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>금 액</label>
                                 <input class="form-control" type="number" value="0" id="txtAmount" name="txtAmount"/>
                             </div>
                         </div>
@@ -142,8 +142,189 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function () {
+            var bankType = "";
+            var bankTypeTxt = "<option value=''>:: 전체 ::</option>";
+            $("#cbobankType").html("");
+            $("#cbobankType2").html("");
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cashBalacne_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.acList;
+                    $("#acTable").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#acTable").append(
+                            "<tr id='#acTr'>" +
+                            "<td class='text-center p-0'><input type='checkbox' id='AcSelect[]' name='AcSelect[]' value='" + list[i][0] + ", " + list[i][3] + ", " + list[i][4] + "'></td>" +
+                            "<td hidden class='text-center p-0' id='bankCode_" + i + "' name='bankCode'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-0' style='color: black' id='bankName_" + i + "' name='bankName'>" + list[i][1] + "</td> " +
+                            "<td class='text-center p-0' id='acName_" + i + "' name='acName'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-0' id='acNum_" + i + "' name='acNum'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-0' id='acDate_" + i + "' name='acDate'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-0' id='acAmts" + i + "' name='acAmts'>" + list[i][5] + "</td> " +
+                            "<td class='text-center p-0' id='acDesc_" + i + "' name='acDesc'>" + list[i][6] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    var combolist = data.bankCombo;
+
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == bankType) {
+                            bankTypeTxt = bankTypeTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            bankTypeTxt = bankTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+                    $("#cbobankType").append(bankTypeTxt);
+                    $("#cbobankType2").append(bankTypeTxt);
+
+                }
+            })
+        });
+
+
+        $("#btnSearch").on('click', function () {
+            var bankCode = document.getElementById('cbobankType').value
+            var data = {'bankCode': bankCode}
+
+
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cashBalance_search_scnd" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.acListScnd;
+                    $("#acTable").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#acTable").append(
+                            "<tr id='#acTr'>" +
+                            "<td class='text-center p-0'><input type='checkbox' id='AcSelect[]' name='AcSelect[]' value='" + list[i][0] + ", " + list[i][3] + ", " + list[i][4] + "'></td>" +
+                            "<td hidden class='text-center p-0' id='bankCode_" + i + "' name='bankCode'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-0' style='color: black' id='bankName_" + i + "' name='bankName'>" + list[i][1] + "</td> " +
+                            "<td class='text-center p-0' id='acName_" + i + "' name='acName'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-0' id='acNum_" + i + "' name='acNum'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-0' id='acDate_" + i + "' name='acDate'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-0' id='acAmts" + i + "' name='acAmts'>" + list[i][5] + "</td> " +
+                            "<td class='text-center p-0' id='acDesc_" + i + "' name='acDesc'>" + list[i][6] + "</td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+        {#콤보박스 선택 시 이벤트#}
+        $(document).on('change', "#cbobankType2", function () {
+
+            var bankCode = $("#cbobankType2").val()
+            var AcNumberTxt = "<option value=''>:: 전체 ::</option>";
+
+            var data = {"bankCode":bankCode}
+            $("#cboActNum").html("");
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cashBalance_acnum_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var acnumlist = data.acnumlist;
+                    for (var i = 0; i < acnumlist.length; i++) {
+                        AcNumberTxt = AcNumberTxt + "<option value='" + acnumlist[i][0] + "," + acnumlist[i][2] + "'>" + acnumlist[i][2] + "</option>";
+                        {#AcNumberTxt = AcNumberTxt + "<option value='" + acnumlist[i][0] + "' selected>" + acnumlist[i][3] + "</option>";#}
+                    }
+                    $("#cboActNum").append(AcNumberTxt);
+
+                }
+            })
+        });
+
+
+        {#계좌번호 선택시 계좌명에 바인딩#}
+        $(document).on('change', "#cboActNum", function (e) {
+            $("#txtActName").html("");
+            var acnumcodeval = document.getElementById('cboActNum')
+            var acnumcode = acnumcodeval.options[acnumcodeval.selectedIndex].text
+
+            var data = {"acnumcode":acnumcode}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cashBalance_acname_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var acnamelist = data.acnamelist;
+                    var acname =  acnamelist[0][0]
+
+
+                    $("#txtActName").val(acname);
+                }
+            })
+
+        });
+
+
+
+        $(document).on('click', '#acTable tr', function () {
+
+            var bankcode = $(this).children().eq(1).text()
+            var acnum = $(this).children().eq(4).text()
+            var acname = $(this).children().eq(3).text()
+            var regdate = $(this).children().eq(5).text()
+            var amount = $(this).children().eq(6).text()
+            var remark = $(this).children().eq(7).text()
+
+            var YYYY = regdate.substring(0, 4)
+            var MM = regdate.substr(4, 2)
+            var DD = regdate.substr(6, 2)
+            var Rregdate = YYYY + '-' + MM + '-' + DD
+
+            $("#txtActName").html(acname)
+            $("#cbobankType2").val(bankcode)
+            $("#cboActNum").html("")
+            $("#cboActNum").append("<option value='" + acnum + "'>" + acnum + "</option>");
+            $("#txtActName").val(acname)
+            $("#txtRegDate").val(Rregdate)
+            $("#txtAmount").val(amount)
+            $("#txtBigo").val(remark)
+
+
+        });
+
+        $("#btnSave").on('click', function () {
+
+            var bankcode = $("#cbobankType2").val()
+            var acname = $("#txtActName").val()
+
+            if(bankcode == '' || acname == '')
+            {
+                alert("은행명을 선택 해 주세요.")
+                return false
+            }
+            else
+            {
+                $('form').submit();
+            }
+
+        });
+
 
     </script>
 {% endblock %}

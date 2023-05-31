@@ -27,12 +27,23 @@ urlpatterns = [
     path('base_account_dlt/', accountViews.accountViews_dlt, name='base_account_dlt'),
     # 지수관리
     path('base_targetIndex/', targetIndexViews.targetIndexViews, name='base_targetIndex'),
+    path('base_target_search/', targetIndexViews.targetIndexSearchViews, name='base_target_search'),
+    path('base_target_save/', targetIndexViews.targetIndexSaveViews, name='base_target_save'),
+
     # 계좌잔액등록
     path('actBalance_reg/', actBalanceViews.actBalRegViews, name='actBalance_reg'),
     # 거래처시산잔액등록
     path('custBalance_reg/', custBalanceViews.custBalRegViews, name='custBalance_reg'),
+
+
     # 현금시재등록
     path('cashBalance_reg/', cashBalanceViews.cashBalRegViews, name='cashBalance_reg'),
+    path('cashBalance_bank/', cashBalanceViews.cashBalRegBankViews, name='cashBalance_bank'),
+    path('cashBalance_search', cashBalanceViews.cashBalRegSearchViews, name='cashBalacne_search'),
+    path('cashBalance_search_scnd', cashBalanceViews.cashBalRegSearchScndViews, name='cashBalance_search_scnd'),
+    path('cashBalance_acnum_search', cashBalanceViews.cashBalRegCboSearchViews, name='cashBalance_acnum_search'),
+    path('cashBalance_acname_search', cashBalanceViews.cashBalRegAcNmSearchViews, name='cashBalance_acname_search'),
+    path('cashBalacne_save', cashBalanceViews.cashBalRegSaveViews, name='cashBalacne_save'),
 
 #     매입/매출 관리
     path('purchase_reg/', purchaseViews.purchaseRegViews, name='purchase_reg'),
