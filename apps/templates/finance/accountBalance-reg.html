@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post">
+    <form method="post" action="{% url 'actBalance_reg_save' %}">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -22,13 +22,19 @@
                       </span>
                       <span class="btn-inner--text text-lg">조회</span>
                     </button>
-                    <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
+                    <!--<button type="button" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnClear" name="btnClear">
+                      <span class="btn-inner--icon">
+                          <i class="fas fa-minus me-2 fs-5"></i>
+                      </span>
+                      <span class="btn-inner--text text-lg">초기화</span>
+                    </button>-->
+                    <button type="submit" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
                       <span class="btn-inner--icon">
                           <i class="fas fa-plus me-2 fs-5"></i>
                       </span>
                       <span class="btn-inner--text text-lg">저장</span>
                     </button>
-                    <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
+                    <button type="button" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
                       <span class="btn-inner--icon">
                           <i class="fas fa-minus me-2 fs-5"></i>
                       </span>
@@ -42,15 +48,20 @@
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
                     <div class="pb-0 pt-0 card-header border-bottom">
-                      <div class="p-3 col-lg-3 mt-lg-0">
-                        <div class="input-group">
-                            <span class="input-group-text text-body bg-transparent border-0 shadow-none">
-                                <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
-                            </span>
-                            <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
+                      <div class="row">
+                          <div class="p-3 col-lg-3 mt-lg-0">
+                            <div class="input-group">
+                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
+                                </span>
+                                <select class="form-control border border-light rounded-1 text-center" name="inputBankType" id="inputBankType" style="font-size: 0.85rem">
 
-                            </select>
-                        </div>
+                                </select>
+                            </div>
+                          </div>
+                          <div class="p-3 col-lg-9 mt-lg-0">
+
+                          </div>
                       </div>
                     </div>
                     <div class="px-0 py-0 card-body height-600">
@@ -59,27 +70,25 @@
                             <colgroup>
                                 <col width="2%">
                                 <col width="10%">
-                                <col width="15%">
+                                <col width="10%">
                                 <col width="10%">
                                 <col width="8%">
                                 <col width="8%">
-                                <col width="6%">
                                 <col width="20%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
                               <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">통장명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">가입 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">월 납입액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">기준 일자</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">잔 액</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
+                          <tbody id="acBalMainTb">
+                            <tr id="acBalMainTr" class="acBalMainTr_tr">
 
                             </tr>
                           </tbody>
@@ -94,42 +103,36 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType"></select>
+                                <select class="form-control border border-light rounded-1 text-center" name="cboBankName" id="cboBankName"></select>
                             </div>
                             <div class="col-6">
 
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-6">
                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
-                                <input class="form-control" type="text" value="000-0000-0000" id="txtActNum" name="txtActNum"/>
+                                <select class="form-control border border-light rounded-1 text-center" name="cboActNum" id="cboActNum"></select>
+                            </div>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌명</label>
+                                <input class="form-control text-center" type="text" id="txtActName" name="txtActName"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>가입 일자</label>
-                                <input class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>기준 일자</label>
+                                <input class="form-control text-center" type="date" id="txtDate" name="txtDate"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>만기 일자</label>
-                                <input class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>통장명</label>
-                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>월 납입액</label>
-                                <input class="form-control" type="number" value="0" id="txtAmount" name="txtAmount"/>
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>잔 액</label>
+                                <input class="form-control text-end" type="number" id="txtBalance" name="txtBalance"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                                <input class="form-control" type="text" id="txtBigo" name="txtBigo"/>
+                                <input class="form-control text-start" type="text" id="txtRemark" name="txtRemark"/>
                             </div>
                         </div>
                     </div>
@@ -144,6 +147,294 @@
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function () {
+            var inputBankType = "";
+            var cboBankName = "";
+            var inputBankTypeTxt = "<option value=''>:: 전체 ::</option>";
+            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 전체 ::</option>";
 
+            $("#inputBankType").html("");
+            $("#cboBankName").html("");
+            $("#cboActNum").html("");
+
+            document.getElementById('txtDate').valueAsDate = new Date
+
+            $.ajax({
+                type: "post",
+                url: '{% url "actBalance_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.actBalList;
+
+                    $("#acBalMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#acBalMainTb").append(
+                            "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][4] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    var combolist = data.inputBankType;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputBankType) {
+                            inputBankTypeTxt = inputBankTypeTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputBankTypeTxt = inputBankTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboBankName;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboBankName) {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#inputBankType").append(inputBankTypeTxt);
+                    $("#cboBankName").append(cboBankNameTxt);
+                    $("#cboActNum").append(cboActNumTxt);
+
+                }
+            })
+        });
+
+        {# 조회 콤보박스 클릭시 #}
+        $('#inputBankType').change(function () {
+
+            $("#btnSearch").trigger('click');
+        });
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+
+            var bankCode = document.getElementById('inputBankType').value
+            var actNum = ''
+
+            var data = {'bankCode': bankCode, actNum: actNum}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "actBalance_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.actBalList;
+
+                    $("#acBalMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#acBalMainTb").append(
+                            "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][4] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+        });
+
+        {# 입력란 은행명 선택시 계좌번호 바인딩 #}
+        $('#cboBankName').change(function () {
+
+            var cboActNum = "";
+            var cboActNumTxt = "<option value=''>:: 전체 ::</option>";
+            $("#cboActNum").html("");
+            $("#txtActName").html("");
+            document.getElementById('txtDate').valueAsDate = new Date
+            $("#txtBalance").html("");
+            $("#txtRemark").html("");
+
+            var bankCode = document.getElementById('cboBankName').value
+            var actCode = '';
+
+            var data = {'bankCode': bankCode, "actCode": actCode}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "actBalance_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist4 = data.actList;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboActNum) {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][0] + "</option>";
+                        } else {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboActNum").append(cboActNumTxt);
+                }
+            })
+        });
+
+        {# 입력란 계좌번호 선택시 계좌명 바인딩 #}
+        $('#cboActNum').change(function () {
+
+            var actCode = document.getElementById('cboActNum').value
+            var bankCode = '';
+
+            var data = {'bankCode': bankCode, "actCode": actCode}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "actBalance_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.actList;
+
+                    for (var i = 0; i < list.length; i++) {
+                        for (var j = 0; j < 21; j++) {
+                            console.log("===================" + j + ":::" + list[i][j]);
+                        }
+                        $("#txtActName").val(list[i][1])
+                    }
+                }
+            })
+        });
+
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#acBalMainTb .acBalMainTr_tr', function () {
+
+            var cboBankName = "";
+            var cboActNum = "";
+            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 전체 ::</option>";
+
+            $("#cboBankName").html("");
+            $("#cboActNum").html("");
+
+            let actNum = $(this).attr('main_code');
+            var bankCode = $(this).children().eq(3).text()
+
+            let data = {'actNum': actNum, 'bankCode': bankCode}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "actBalance_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.actBalList;
+
+                    for (var i = 0; i < list.length; i++) {
+                        for (var j = 0; j < 21; j++) {
+                            console.log("===================" + j + ":::" + list[i][j]);
+                        }
+                        $("#txtActName").val(list[i][1])
+                        $("#txtDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtBalance").val(list[i][5])
+                        $("#txtRemark").val(list[i][6])
+                        cboActNum = list[i][0];
+                        cboBankName = list[i][2];
+                    }
+
+                    var combolist3 = data.cboBankName;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboBankName) {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboActNum;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboActNum) {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][0] + "</option>";
+                        } else {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboBankName").append(cboBankNameTxt);
+                    $("#cboActNum").append(cboActNumTxt);
+
+                }
+            })
+        });
+
+        {# 저장 버튼 #}
+        $(document).on('click', "#btnSave", function () {
+
+            $('form').submit();
+
+        });
+
+        {#체크한 내용 삭제#}
+        $(document).on('click', "#btnDlt", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="chkAct[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='chkAct[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('삭제하실 직원을 체크 해주세요.');
+                return false;
+            }
+
+            //체크 한 거래처 삭제
+            var result = confirm("삭제하시겠습니까?")
+
+            if (result) {
+                if (chk_cust_id_arr.length > 0)
+
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        data: {
+                            'arrList': JSON.stringify(chk_cust_id_arr),
+                        },
+                        dataType: "json",
+                        url: '{% url "actBalance_reg_dlt" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            location.href = "{% url 'actBalance_reg' %}";
+                        }
+
+                    });
+            } else {
+
+            }
+        });
     </script>
 {% endblock %}

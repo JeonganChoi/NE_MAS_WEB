@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post">
+    <form method="post" action="{% url 'base_cust_save' %}">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -58,7 +58,7 @@
                                 <span class="input-group-text text-body bg-transparent border-0 shadow-none">
                                     <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>업체 코드/명</label>
                                 </span>
-                                <input class="form-control" type="text" id="inputCustCode" name="inputCustCode"/>
+                                <input class="form-control border border-light rounded-1 text-center" type="text" id="inputCustCode" name="inputCustCode"/>
                             </div>
                           </div>
                           <div class="p-3 col-lg-3 mt-lg-0">
@@ -298,14 +298,14 @@
         });
 
         {# 업체 구분 #}
-        $(document).on('click', "#inputCustType", function () {
-            $("#btnSearch").trigger('click');
-        });
-
+{#        $(document).on('click', "#inputCustType", function () {#}
+{#            $("#btnSearch").trigger('click');#}
+{#        });#}
+{##}
         {# 거래여부 #}
-        $(document).on('click', "#inputYn", function () {
-            $("#btnSearch").trigger('click');
-        });
+{#        $(document).on('click', "#inputYn", function () {#}
+{#            $("#btnSearch").trigger('click');#}
+{#        });#}
 
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
