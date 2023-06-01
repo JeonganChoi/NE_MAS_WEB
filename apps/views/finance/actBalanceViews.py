@@ -96,7 +96,7 @@ def actBalRegViews_search(request):
 def actBalRegViews_save(request):
     if 'btnSave' in request.POST:
         actNum = request.POST.get('cboActNum')
-        actDate = request.POST.get('txtDate')
+        actDate = request.POST.get('txtDate').replace('-', '')
         actAmts = request.POST.get('txtBalance')
         actDesc = request.POST.get('txtRemark')
 
