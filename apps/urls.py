@@ -20,6 +20,9 @@ urlpatterns = [
     path('base_emp_dlt/', empViews.empViews_dlt, name='base_emp_dlt'),
     # 거래처정보관리
     path('base_cust/', custViews.custViews, name='base_cust'),
+    path('base_cust_search/', custViews.custViews_search, name='base_cust_search'),
+    path('base_cust_save/', custViews.custViews_save, name='base_cust_save'),
+    path('base_cust_dlt/', custViews.custViews_dlt, name='base_cust_dlt'),
     # 게좌관리
     path('base_account/', accountViews.accountViews, name='base_account'),
     path('base_account_search/', accountViews.accountViews_search, name='base_account_search'),
@@ -32,8 +35,12 @@ urlpatterns = [
 
     # 계좌잔액등록
     path('actBalance_reg/', actBalanceViews.actBalRegViews, name='actBalance_reg'),
+    path('actBalance_reg_search/', actBalanceViews.actBalRegViews_search, name='actBalance_reg_search'),
+    path('actBalance_reg_save/', actBalanceViews.actBalRegViews_save, name='actBalance_reg_save'),
+    path('actBalance_reg_dlt/', actBalanceViews.actBalRegViews_dlt, name='actBalance_reg_dlt'),
     # 거래처시산잔액등록
     path('custBalance_reg/', custBalanceViews.custBalRegViews, name='custBalance_reg'),
+    path('custBalance_reg_search/', custBalanceViews.custBalRegViews_search, name='custBalance_reg_search'),
 
 
     # 현금시재등록
