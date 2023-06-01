@@ -14,6 +14,8 @@ urlpatterns = [
     # 참조코드관리
     path('base_code/', baseCodeViews.baseCodeViews, name='base_code'),
     path('base_code_search/', baseCodeViews.baseCodeViews_search, name='base_code_search'),
+    path('base_code_save/', baseCodeViews.baseCodeViews_save, name='base_code_save'),
+    path('base_code_dlt/', baseCodeViews.baseCodeViews_dlt, name='base_code_dlt'),
     # 직원정보관리
     path('base_emp/', empViews.empViews, name='base_emp'),
     path('base_emp_search/', empViews.empViews_search, name='base_emp_search'),

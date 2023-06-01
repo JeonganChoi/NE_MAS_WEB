@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post">
+    <form method="post" action="{% url 'base_code_save' %}">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -16,19 +16,25 @@
                     <div class="mb-3 mb-md-0">
                         <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>참조 코드 관리</h3>
                     </div>
-                    <button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnAdd" name="btnAdd">
+                    <!--<button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                       <span class="btn-inner--icon">
                           <i class="fas fa-search me-2 fs-5"></i>
                       </span>
+                      <span class="btn-inner--text text-lg">조회</span>
+                    </button>-->
+                    <button type="button" class="mb-0 mb-2 btn btn-warning btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnAdd" name="btnAdd">
+                      <span class="btn-inner--icon">
+                          <i class="fas fa-plus me-2 fs-5"></i>
+                      </span>
                       <span class="btn-inner--text text-lg">추가</span>
                     </button>
-                    <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
+                    <button type="submit" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
                       <span class="btn-inner--icon">
                           <i class="fas fa-plus me-2 fs-5"></i>
                       </span>
                       <span class="btn-inner--text text-lg">저장</span>
                     </button>
-                    <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
+                    <button type="button" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
                       <span class="btn-inner--icon">
                           <i class="fas fa-minus me-2 fs-5"></i>
                       </span>
@@ -74,14 +80,12 @@
                             <col width="2%">
                             <col width="10%">
                             <col width="15%">
-                            <col width="10%">
-                            <col width="15%">
                         </colgroup>
                       <thead class="bg-gray-100">
                         <tr>
                           <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                          <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">참조 코드</th>
-                          <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">코드명</th>
+                          <th hidden style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">참조 코드</th>
+                          <th hidden style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">코드명</th>
                           <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">보조 코드</th>
                           <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">보조명</th>
                         </tr>
@@ -147,18 +151,87 @@
                 success: function (data) {
                     var list = data.subList;
 
-                    $("#SubTb").html("");
+                    $("#subTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        $("#SubTb").append(
-                            "<tr id='#SubTr' class='SubTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]' value='" + list[i][0] + "," + list[i][1] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                        $("#subTb").append(
+                            "<tr id='#subTr' class='subTr_tr'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + list[i][0] + "'/></td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control' id='mainName' name='mainName' value='" + list[i][1] + "'/></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control border-0 text-xs text-center' id='subCode' name='subCode' value='" + list[i][2] + "'/></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control border-0 text-xs text-center' id='subName' name='subName' value='" + list[i][3] + "'/></td> " +
                             "</tr> ");
                     }
                 }
             })
         });
+
+    {# 추가 버튼 클릭 #}
+    $(document).on('click', "#btnAdd", function () {
+        var firstVal = "";
+        var secVal = "";
+
+        firstVal = document.getElementById('mainCode').value;
+        secVal = document.getElementById('mainName').value;
+
+
+        $("#subTb").append(
+            "<tr id='#subTr' class='subTr_tr'>" +
+            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]'/></div></td>" +
+            "<td hidden class='text-center'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + firstVal + "'/></td>" +
+            "<td hidden class='text-center'><input type='text' class='form-control' id='mainName' name='mainName' value='" + secVal + "'/></td> " +
+            "<td class='text-center p-1'><input class='form-control border-0 text-xs text-center' type='text' name='subCode' id='subCode'></td> " +
+            "<td class='text-center p-1'><input class='form-control border-0 text-xs text-center' type='text' name='subName' id='subName'></td>" +
+            "</tr> "
+        );
+    });
+
+    {# 저장 클릭 시 #}
+    $(document).on('click', "btnSave", function () {
+        $('form').submit();
+    });
+
+    {#체크한 내용 삭제#}
+    $(document).on('click', "#btnDlt", function () {
+
+        var chk_cust_id_arr = [];
+        $('input[name="chkSub[]"]:checked').each(function (i) {
+            chk_cust_id_arr.push($(this).val());
+        })
+
+        //체크가 1개라도 안되있을때
+        let chk_count = $("input[name='chkSub[]']").filter(":checked").length;
+        if (chk_count < 1) {
+            alert('삭제하실 직원을 체크 해주세요.');
+            return false;
+        }
+
+        //체크 한 거래처 삭제
+        var result = confirm("삭제하시겠습니까?")
+
+        if (result) {
+            if (chk_cust_id_arr.length > 0)
+
+                $.ajax({
+                    type: "post",
+                    async: false,
+                    data: {
+                        'arrList': JSON.stringify(chk_cust_id_arr),
+                    },
+                    dataType: "json",
+                    url: '{% url "base_code_dlt" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        location.href = "{% url 'base_code' %}";
+                    }
+
+                });
+        } else {
+
+        }
+    });
 
     </script>
 {% endblock %}
