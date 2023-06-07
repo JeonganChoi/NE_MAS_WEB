@@ -63,6 +63,7 @@ urlpatterns = [
 #     매출관리
     path('sales_reg/', salesViews.salesRegViews, name='sales_reg'),
     path('sales_reg_search/', salesViews.salesRegViews_search, name='sales_reg_search'),
+    path('sales_reg_save/', salesViews.salesRegViews_save, name='sales_reg_save'),
     path('sales_reg_dlt/', salesViews.salesRegViews_search, name='sales_reg_dlt'),
 
 #     입금/출금 관리

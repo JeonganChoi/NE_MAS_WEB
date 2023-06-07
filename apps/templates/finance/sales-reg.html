@@ -106,7 +106,7 @@
             </button>
           </div>
           <div class="modal-body m-5">
-              <form method="post">
+              <form method="post" action="{% url 'sales_reg_save' %}">
                   <div class="row">
                       <div class="col-4">
                           <label class="h6"><i class="far fa-calendar me-2"></i>출고 일자</label>
@@ -116,7 +116,10 @@
                           <label class="h6"><i class="far fa-edit me-2"></i>출고처</label>
                           <select class="form-control border border-light rounded-1 text-center" name="cboOutCust" id="cboOutCust"></select>
                       </div>
-                      <div class="col-4"></div>
+                      <div class="col-4">
+                          <input hidden class="form-control text-center" type="number" id="txtSaSeq" name="txtSaSeq"/>
+                          <input hidden class="form-control text-center" type="number" id="txtSaRecn" name="txtSaRecn"/>
+                      </div>
                   </div>
                   <!--<div class="row">
                       <div class="col-4"></div>
@@ -125,36 +128,36 @@
                   <div class="row">
                       <div class="col-4">
                           <label class="mt-4 h6"><i class="fas fa-box me-2"></i>제품명</label>
-                          <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                          <input class="form-control text-end" type="text" id="txtSaItem" name="txtSaItem"/>
                       </div>
                       <div class="col-8"></div>
                   </div>
                   <div class="row">
                       <div class="col-2">
                         <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>수 량</label>
-                        <input class="form-control text-end" type="number" id="txtQty" name="txtQty"/>
+                        <input class="form-control text-end" type="number" id="txtSaQty" name="txtSaQty"/>
                       </div>
                       <div class="col-2">
                           <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>단 가</label>
-                          <input class="form-control text-end" type="number" id="txtCost" name="txtCost"/>
+                          <input class="form-control text-end" type="number" id="txtSaCost" name="txtSaCost"/>
                       </div>
                       <div class="col-2">
                         <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>공급 가액</label>
-                        <input class="form-control text-end" type="number" id="txtPrice" name="txtPrice"/>
+                        <input class="form-control text-end" type="number" id="txtSaPrice" name="txtSaPrice"/>
                       </div>
                       <div class="col-2">
                           <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>부가세</label>
-                          <input class="form-control text-end" type="number" id="txtTax" name="txtTax"/>
+                          <input class="form-control text-end" type="number" id="txtSaTax" name="txtSaTax"/>
                       </div>
                       <div class="col-2">
                           <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>합 계</label>
-                          <input class="form-control text-end" type="number" id="txtTax" name="txtTax"/>
+                          <input class="form-control text-end" type="number" id="txtSaTotal" name="txtSaTotal"/>
                       </div>
                   </div>
                   <div class="row">
                       <div class="col-4">
                           <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구 분</label>
-                          <select class="form-control border border-light rounded-1 text-center" name="cboBuyGbn" id="cboBuyGbn"></select>
+                          <select class="form-control border border-light rounded-1 text-center" name="cboSaGbn" id="cboBuyGbn"></select>
                       </div>
                       <div class="col-4">
                         <label class="mt-4 h6"><i class="far fa-edit me-2"></i>결 제</label>
@@ -165,14 +168,14 @@
                   <div class="row">
                       <div class="col-10">
                           <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                          <select class="form-control border border-light rounded-1 text-center" name="cboBom" id="cboBom"></select>
+                          <select class="form-control border border-light rounded-1 text-center" name="cboSaRemark" id="cboBom"></select>
                       </div>
                       <div class="col-2"></div>
                   </div>
               </form>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="m-1 btn btn-primary text-lg">저 장</button>
+            <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave">저 장</button>
             <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
           </div>
         </div>

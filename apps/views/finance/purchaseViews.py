@@ -119,7 +119,7 @@ def purchaseRegViews_save(request):
             connection.commit()
 
             messages.success(request, '저장 되었습니다.')
-            return render(request, 'finance/purchases_reg.html')
+            return render(request, 'finance/purchases-reg.html')
 
     else:
         messages.warning(request, '입력 하신 정보를 확인 해주세요.')
