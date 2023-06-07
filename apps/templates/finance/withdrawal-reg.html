@@ -7,54 +7,83 @@
 
 {% block content %}
 
-    <div class="px-5 py-4 container-fluid">
-    <form method="post">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <div class="mx-2 mb-3 d-md-flex align-items-center">
-                    <div class="mb-3 mb-md-0">
-                        <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>업체 정보 등록</h3>
+    <div class="pt-6 pb-6 bg-cover height-100"
+         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
+    <div class="container-xxl py-3 my-3">
+        <div class="row mt-n7">
+            <div class="col-lg-12">
+                <div class="card blur border border-white rounded-2 shadow-xs">
+                    <div class="card-body">
+                        <h3 class="mb-0 text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>출금 등록</h3>
                     </div>
-                    <button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-search me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">조회</span>
-                    </button>
-                    <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">저장</span>
-                    </button>
-                    <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">삭제</span>
-                    </button>
                 </div>
             </div>
         </div>
-        <hr class="my-0">
+    </div>
+    <div class="px-5 py-4 container-fluid">
         <div class="my-4 row">
-            <div class="col-lg-8 col-md-6">
+            <div class="mb-4 col-lg-1 col-1 mb-md-0"></div>
+            <div class="mb-4 col-lg-3 col-md-5 mb-md-0">
                 <div class="border shadow-xs card">
-                    <div class="pb-0 pt-0 card-header border-bottom">
-                      <div class="p-3 col-lg-3 mt-lg-0">
-                        <div class="input-group">
-                            <span class="input-group-text text-body bg-transparent border-0 shadow-none">
-                                <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
-                            </span>
-                            <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
-
-                            </select>
-                        </div>
+                    <div class="pb-0 pt-0 card-header border-bottom" style="height: 8vh">
+                      <div class="row">
+                          <div class="p-3 col-lg-6 mt-lg-0">
+                            <div class="input-group">
+                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" maxlength="4" name="inputYear" id="inputYear">
+                                <label class="mt-2 me-4" style="font-size: 1rem">년</label>
+                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" maxlength="2" name="inputMonth" id="inputMonth">
+                                <label class="mt-2" style="font-size: 1rem">월</label>
+                            </div>
+                          </div>
+                          <div class="p-3 col-lg-6 mt-lg-0 text-end">
+                               <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                          </div>
                       </div>
                     </div>
                     <div class="px-0 py-0 card-body height-600">
-                      <div class="p-3 table-responsive">
+                      <div class="p-3 table-responsive-sm">
+                        <table class="table mb-0 align-items-center justify-content-center">
+                            <colgroup>
+                                <col width="8%">
+                                <col width="10%">
+                            </colgroup>
+                          <thead class="bg-success-soft">
+                            <tr>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">일자</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">금액</th>
+                            </tr>
+                          </thead>
+                          <tbody id="withMainTb">
+                            <tr id="withMainTr" class="withMainTr_tr">
+
+                            </tr>
+                            <tr class="bg-light">
+                                <td class="text-end p-1" style="font-size: 0.85rem">합계</td>
+                                <td class="text-end p-1" style="font-size: 0.85rem">0</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-6">
+                <div class="border shadow-xs card">
+                    <div class="pb-0 pt-0 card-header border-bottom" style="height: 8vh">
+                        <div class="row">
+                          <div class="p-3 col-lg-4 mt-lg-0"></div>
+                          <div class="p-3 col-lg-8 mt-lg-0 text-end">
+                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                      data-bs-target="#withModal"><i class="fas fa-plus me-2"></i>추가</button>
+                              <button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
+                                      data-bs-target="#withModal"><i class="fas fa-diamond me-2"></i>수정</button>
+                              <button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
+                                  <i class="fas fa-minus me-2"></i>삭제</button>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="px-0 py-0 card-body height-600">
+                      <div class="p-3 table-responsive-sm">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
                                 <col width="2%">
@@ -66,84 +95,381 @@
                                 <col width="6%">
                                 <col width="20%">
                             </colgroup>
-                          <thead class="bg-gray-100">
+                          <thead class="bg-danger-soft">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">통장명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">가입 일자</th>
+                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">거래처명</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계정 과목</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">결재 방법</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">금 액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">발행 은행</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">어음 번호</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">월 납입액</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
                             </tr>
                           </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
+                          <tbody id="withSubTb">
+                            <tr id="withSubTr" class="withSubTr_tr">
 
                             </tr>
+                          <tr class="bg-light">
+                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="2">합계</td>
+                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="6">0</td>
+                          </tr>
                           </tbody>
                         </table>
                       </div>
                     </div>
                 </div>
             </div>
-            <div class="mb-4 col-lg-4 col-md-6 mb-md-0">
-                <div class="card shadow-xs border h-100">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType"></select>
-                            </div>
-                            <div class="col-6">
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
-                                <input class="form-control" type="text" value="000-0000-0000" id="txtActNum" name="txtActNum"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>가입 일자</label>
-                                <input class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>만기 일자</label>
-                                <input class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>통장명</label>
-                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>월 납입액</label>
-                                <input class="form-control" type="number" value="0" id="txtAmount" name="txtAmount"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                                <input class="form-control" type="text" id="txtBigo" name="txtBigo"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="mb-4 col-lg-1 col-1 mb-md-0"></div>
         </div>
-    </form>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="withModal" tabindex="-1" role="dialog" aria-labelledby="withModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 80vw">
+        <div class="modal-content">
+          <div class="modal-header bg-gradient-info">
+            <h4 class="modal-title text-white font-weight-bolder" id="withModalLabel"><i class="fas fa-credit-card me-3"></i>출금 등록</h4>
+            <button type="button" class="btn-close text-lg text-dark" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'with_reg_save' %}">
+                  <div class="row">
+                      <div class="col-4">
+                          <div class="card card-plain p-3">
+                              <h5><i class="fas fa-list me-3"></i>매출 리스트</h5>
+                             <div class="table-responsive-sm border border-light height-600 mt-2">
+                                <table class="table mb-0 align-items-center justify-content-center">
+                                    <colgroup>
+                                        <col width="8%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                    </colgroup>
+                                  <thead class="bg-success-soft">
+                                    <tr>
+                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">일자</th>
+                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">매입처</th>
+                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">품목</th>
+                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">합계</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="modalWithTb">
+                                    <tr id="modalWithTr" class="modalWithTr_tr">
+
+                                    </tr>
+                                  </tbody>
+                                </table>
+                             </div>
+                          </div>
+                      </div>
+                      <div class="col-8">
+                          <div class="card card-plain p-5">
+                              <div class="row">
+                                  <div class="col-4">
+                                      <label class="mt-4 h6 text-danger"><i class="far fa-edit me-2"></i>거래처</label>
+                                      <select class="form-control border border-light rounded-1 text-center bg-danger-soft" name="cboWitCust" id="cboWitCust"></select>
+                                  </div>
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="far fa-calendar me-2"></i>등록 일자</label>
+                                      <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate"/>
+                                  </div>
+                                  <div class="col-4">
+                                      <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
+                                      <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구분</label>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboWitGbn" id="cboWitGbn"></select>
+                                  </div>
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>계정과목</label>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboWitCode" id="cboWitCode"></select>
+                                  </div>
+                                  <div class="col-4"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
+                                      <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice"/>
+                                  </div>
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboWitActNum" id="cboWitActNum"></select>
+                                  </div>
+                                  <div class="col-4"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="fas fa-edit me-2"></i>결제방법</label>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboWitMethod" id="cboWitMethod"></select>
+                                  </div>
+                                  <div class="col-4">
+                                      <label class="mt-4 h6 font-weight-bolder me-4"><i class="fas fa-edit me-2"></i>처리</label>
+                                      <input type="radio" id="WitEmpCount" name="WitEmpCount" checked value="0"/>
+                                      <label class="mt-4 h6 text-info me-4">현금</label>
+                                      <input type="radio" id="WitEmpCount" name="WitEmpCount" value="1"/>
+                                      <label class="mt-4 h6 text-danger">계산서</label>
+                                  </div>
+                                  <div class="col-4"></div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="fas fa-box me-2"></i>발행처</label>
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboWitIssueCust" id="cboWitIssueCust"></select>
+                                  </div>
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>어음번호</label>
+                                      <input class="form-control text-end" type="text" id="txtWitCashNum" name="txtWitCashNum"/>
+                                  </div>
+                                  <div class="col-4">
+                                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
+                                      <input class="form-control text-end" type="date" id="txtWitDeadline" name="txtWitDeadline"/>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-8">
+                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
+                                      <input class="form-control text-end" type="text" id="txtWitRemark" name="txtWitRemark"/>
+                                  </div>
+                                  <div class="col-4"></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave">저 장</button>
+            <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
+          </div>
+        </div>
+      </div>
     </div>
 
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
+
+        $(document).ready(function () {
+            date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth();
+
+            document.getElementById("inputYear").value = year;
+            document.getElementById("inputMonth").value = month;
+
+            let data = {"inputYear": year, "inputyear": year}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "with_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    $("#withMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#withMainTb").append(
+                            "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+        });
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+
+            var year = document.getElementById("inputYear").value;
+            var month = document.getElementById("inputMonth").value;
+
+            if (year <= 0 || year == '') {
+                alert('년을 입력 해 주세요.')
+                return false
+            }
+            if (month > 12 || month <= 0 || month == '') {
+                alert('월을 다시 확인 해 주세요.')
+                return false
+            }
+
+            if (month < 10) {
+                month = 0 + month
+            }
+
+            let data = {"inputYear": year, "inputMonth": month}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "with_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    $("#withMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#withMainTb").append(
+                            "<tr id='#withMainTb' class='withMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+        });
+
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#withMainTb .withMainTr_tr', function () {
+
+            let date = $(this).attr('main_code');
+
+            let data = {'date': date}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "with_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.subList;
+                    $("#withSubTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#withSubTb").append(
+                            "<tr id='#withSubTr' class='withSubTr_tr'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][11] + "," + list[i][0] + "," + list[i][3] + "," + list[i][6] + "," + list[i][1] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+
+        });
+
+        {# 저장 버튼 #}
+        $(document).on('click', "#btnSave", function () {
+
+            $('form').submit();
+
+        });
+
+        {#체크한 내용 삭제#}
+        $(document).on('click', "#btnDlt", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="chkWith[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='chkWith[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('삭제하실 직원을 체크 해주세요.');
+                return false;
+            }
+
+            //체크 한 거래처 삭제
+            var result = confirm("삭제하시겠습니까?")
+
+            if (result) {
+                if (chk_cust_id_arr.length > 0)
+
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        data: {
+                            'arrList': JSON.stringify(chk_cust_id_arr),
+                        },
+                        dataType: "json",
+                        url: '{% url "with_reg_dlt" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            location.href = "{% url 'with_reg' %}";
+                        }
+
+                    });
+            } else {
+
+            }
+        });
+
+        {# 모달이 뜰 때 #}
+        $('#withModal').on('show.bs.modal', function (e) {
+
+            var year = document.getElementById("inputYear").value;
+            var month = document.getElementById("inputMonth").value;
+
+            if (month < 10) {
+                month = 0 + month
+            }
+
+            let data = {"inputYear": year, "inputMonth": month}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "with_reg_out" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.modalList;
+                    $("#modalWithTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#modalWithTb").append(
+                            "<tr id='#modalWithTr' class='modalWithTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+            {#//체크가 1개라도 안되있을때#}
+            {#let chk_count = $("input[name='chkWith[]']").filter(":checked").length;#}
+            {#if (chk_count > 0) {#}
+            {##}
+            {##}
+
+
+        });
 
     </script>
 {% endblock %}

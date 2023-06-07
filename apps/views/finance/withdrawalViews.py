@@ -10,11 +10,11 @@ from django.http import JsonResponse
 from django.db import connection
 
 
-def depositRegViews(request):
+def withRegViews(request):
 
-    return render(request, "finance/deposit-reg.html")
+    return render(request, "finance/withdrawal-reg.html")
 
-def depositRegViews_search(request):
+def withRegViews_search(request):
     date = request.POST.get('date')
     year = request.POST.get('inputYear')
     month = request.POST.get('inputMonth')
@@ -39,7 +39,7 @@ def depositRegViews_search(request):
                            "    ON A.ACIOGB = E.RESKEY "
                            "    AND E.RECODE = 'OUA' "
                            "    WHERE A.ACDATE = '" + str(date) + "'"
-                           "    AND A.ACIOGB = '1' "
+                           "    AND A.ACIOGB = '2' "
                            "    ORDER BY A.ACSEQN ")
             subresult = cursor.fetchall()
         return JsonResponse({"subList": subresult})
@@ -49,7 +49,7 @@ def depositRegViews_search(request):
             cursor.execute(" SELECT IFNULL(ACDATE, ''), IFNULL(DAY(ACDATE), '') "
                            "    , IFNULL(SUM(ACAMTS), 0), IFNULL(ACIOGB, '') "
                            "    FROM SISACCTT  "
-                           "    WHERE ACIOGB = '1' "
+                           "    WHERE ACIOGB = '2' "
                            "    AND YEAR(ACDATE) = '" + str(year) + "' "
                            "    AND MONTH(ACDATE) = '" + str(month) + "' "
                            "    GROUP BY DAY(ACDATE) ")
@@ -57,19 +57,43 @@ def depositRegViews_search(request):
 
         return JsonResponse({"mainList": mainresult})
 
+def withRegOutList_search(request):
+    year = request.POST.get('inputYear')
+    month = request.POST.get('inputMonth')
 
-def depositRegViews_save(request):
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(TRDATE, ''), IFNULL(TRCUST, ''), IFNULL(B.CUST_NME, '') "
+                       "    , IFNULL(TRITEM, ''), IFNULL(C.ITNAME, '') "
+                       "    , IFNULL((TRAMTS * TRQTYS), 0 ) AS TRTOTAL, IFNULL(TRIOCD, ''), IFNULL(TRRCID, '') "
+                       "    , IFNULL(TRSEQN, ''), IFNULL(TRRECN, '') "
+                       "    FROM OSTRNSP A "
+                       "    LEFT OUTER JOIN MIS1TB003 B "
+                       "    ON A.TRCUST = B.CUST_NBR "
+                       "    LEFT OUTER JOIN OSITEMP C "
+                       "    ON A.TRITEM = C.ITITEM "
+                       "    WHERE TRIOCD = 'I' "
+                       "    AND YEAR(TRDATE ) = '" + str(year) + "' "
+                       "    AND MONTH(TRDATE) = '" + str(month) + "'"
+                       )
+        modalresult = cursor.fetchall()
+
+    return JsonResponse({"modalList": modalresult})
+
+
+
+
+def withRegViews_save(request):
     if 'btnSave' in request.POST:
-        acDate = request.POST.get("txtDepRegDate")      # 등록일자
-        acSeqn = request.POST.get("txtDepSeq")           # 순번
+        acDate = request.POST.get("txtWitRegDate")      # 등록일자
+        acSeqn = request.POST.get("txtWitSeq")               # 순번
         acRecn = '1' # 행
-        acCust = request.POST.get("cboDepCust")     # 거래처
-        acIogb = request.POST.get("cboDepGbn")    # 구분(입금)
-        acCode = request.POST.get("cboDepCode")  # 계정과목
-        acAmts = request.POST.get("txtDepPrice")      # 금액
-        acAcnumber = request.POST.get("cboDepActNum")     # 계좌번호
-        acGubn = request.POST.get("cboDepMethod")     # 결제방법
-        acDesc = request.POST.get("txtDepRemark")     # 비고
+        acCust = request.POST.get("cboWitCust")     # 거래처
+        acIogb = request.POST.get("cboWitGbn")     # 구분(출금)
+        acCode = request.POST.get("cboWitCode")  # 계정과목
+        acAmts = request.POST.get("txtWitPrice")      # 금액
+        acAcnumber = request.POST.get("cboWitActNum")     # 계좌번호
+        acGubn = request.POST.get("cboWitMethod")     # 결제방법
+        acDesc = request.POST.get("txtWitRemark")     # 비고
         acIuser = request.session['userid']
         acIdate = acDate.replace('-', '')
         acUuser = request.session['userid']
@@ -118,20 +142,20 @@ def depositRegViews_save(request):
             connection.commit()
 
             messages.success(request, '저장 되었습니다.')
-            return render(request, 'finance/deposit-reg.html')
+            return render(request, 'finance/withdrawal-reg.html')
 
     else:
         messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/deposit_reg')
+        return redirect('/with_reg')
 
 
 
-def depositRegViews_dlt(request):
+def withRegViews_dlt(request):
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
-        for dep in dataList:
-            acc_split_list = dep.split(',')
+        for wit in dataList:
+            acc_split_list = wit.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM SISACCTT WHERE ACDATE = '" + acc_split_list[0] + "' "
                                "                        AND ACSEQN = '" + acc_split_list[1] + "' "
@@ -143,4 +167,4 @@ def depositRegViews_dlt(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-        return render(request, 'finance/deposit-reg.html')
+        return render(request, 'finance/withdrawal-reg.html')

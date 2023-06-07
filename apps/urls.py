@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
-from apps.views.finance import purchaseViews, salesViews, depositViews, custBalanceViews, actBalanceViews, cashBalanceViews
+from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews
 from apps.views.currentstate import receivepayViews
 
 urlpatterns = [
@@ -66,8 +66,18 @@ urlpatterns = [
     path('sales_reg_save/', salesViews.salesRegViews_save, name='sales_reg_save'),
     path('sales_reg_dlt/', salesViews.salesRegViews_search, name='sales_reg_dlt'),
 
-#     입금/출금 관리
+#     입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),
+    path('deposit_reg_search/', depositViews.depositRegViews_search, name='deposit_reg_search'),
+    path('deposit_reg_save/', depositViews.depositRegViews_save, name='deposit_reg_save'),
+    path('deposit_reg_dlt/', depositViews.depositRegViews_dlt, name='deposit_reg_dlt'),
+
+    # 출금관리
+    path('with_reg/', withdrawalViews.withRegViews, name='with_reg'),
+    path('with_reg_search/', withdrawalViews.withRegViews_search, name='with_reg_search'),
+    path('with_reg_save/', withdrawalViews.withRegViews_save, name='with_reg_save'),
+    path('with_reg_dlt/', withdrawalViews.withRegViews_dlt, name='with_reg_dlt'),
+    path('with_reg_out/', withdrawalViews.withRegOutList_search, name='with_reg_out'),
 
 #     자금관리 현황
     path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
