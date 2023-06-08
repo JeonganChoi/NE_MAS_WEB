@@ -36,7 +36,7 @@ def salesRegViews_search(request):
             modalresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ORDER BY CUST_NBR ")
             cboCust = cursor.fetchall()
 
         return JsonResponse({"modalList": modalresult, 'cboCust': cboCust})
@@ -56,7 +56,7 @@ def salesRegViews_search(request):
             saleresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ORDER BY CUST_NBR ")
             cboCust = cursor.fetchall()
 
         return JsonResponse({"saleList": saleresult, 'cboCust': cboCust})

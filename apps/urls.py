@@ -8,6 +8,7 @@ urlpatterns = [
     path('', redirectToMain, name="redirectToMain"),
     path('main/', index, name='home'),
 
+
 #     기초정보
     # 계정코드관리
     path('base_accountCode/', accountCodeViews.accountCodeViews, name='base_accountCode'),
@@ -71,6 +72,7 @@ urlpatterns = [
     path('deposit_reg_search/', depositViews.depositRegViews_search, name='deposit_reg_search'),
     path('deposit_reg_save/', depositViews.depositRegViews_save, name='deposit_reg_save'),
     path('deposit_reg_dlt/', depositViews.depositRegViews_dlt, name='deposit_reg_dlt'),
+    path('deposit_reg_out/', depositViews.depositRegOutList_search, name='deposit_reg_out'),
 
     # 출금관리
     path('with_reg/', withdrawalViews.withRegViews, name='with_reg'),

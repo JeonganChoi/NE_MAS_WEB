@@ -161,8 +161,8 @@ def depositRegOutList_search(request):
                        "    ON A.UP_CODE = B.CUST_NBR "
                        "    WHERE A.AMTS >= A.PASS_AMT "
                        "    AND A.GUBUN = '2' "
-                       "    AND YEAR(TRDATE ) = '" + str(year) + "' "
-                       "    AND MONTH(TRDATE) = '" + str(month) + "' ")
+                       "    AND YEAR(A.BAL_DD ) = '" + str(year) + "' "
+                       "    AND MONTH(A.BAL_DD) = '" + str(month) + "' ")
         modalresult = cursor.fetchall()
 
     return JsonResponse({"modalList": modalresult})

@@ -96,11 +96,11 @@
     </div>
 
     <!-- Modal -->
+    <form method="post" action="{% url 'purchase_reg_save' %}" role="form">
+        {% csrf_token %}
     <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 50vw">
         <div class="modal-content">
-        <form method="post" action="{% url 'purchase_reg_save' %}">
-        {% csrf_token %}
           <div class="modal-header bg-gradient-info">
             <h4 class="modal-title text-white font-weight-bolder" id="exampleModalLabel"><i class="fas fa-credit-card me-3"></i>매입 등록</h4>
             <button type="button" class="btn-close text-lg text-dark" data-bs-dismiss="modal" aria-label="Close">
@@ -163,10 +163,10 @@
             <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave">저 장</button>
             <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
           </div>
-        </form>
         </div>
       </div>
     </div>
+    </form>
 
 {% endblock %}
 
@@ -330,7 +330,7 @@
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
-
+            alert("넘어옴")
             $('form').submit();
 
         });
@@ -375,6 +375,16 @@
                     });
             } else {
 
+            }
+        });
+
+        {# 앤터시 단가 input으로 이동 #}
+        $('input[type="number"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtQty') {
+                    document.getElementById("txtDanga").focus();
+                }
             }
         });
 

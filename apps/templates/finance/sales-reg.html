@@ -99,6 +99,8 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 45vw">
         <div class="modal-content">
+          <form method="post" action="{% url 'sales_reg_save' %}">
+              {% csrf_token %}
           <div class="modal-header bg-gradient-info">
             <h4 class="modal-title text-white font-weight-bolder" id="exampleModalLabel"><i class="fas fa-credit-card me-3"></i>매출 등록</h4>
             <button type="button" class="btn-close text-lg text-dark" data-bs-dismiss="modal" aria-label="Close">
@@ -106,64 +108,62 @@
             </button>
           </div>
           <div class="modal-body m-5">
-              <form method="post" action="{% url 'sales_reg_save' %}">
-                  {% csrf_token %}
-                  <div class="row">
-                      <div class="col-4">
-                          <label class="h6"><i class="far fa-calendar me-2"></i>일 자</label>
-                          <input class="form-control text-center" type="date" id="txtDate" name="txtDate"/>
-                      </div>
-                      <div class="col-4">
-                          <label class="h6"><i class="far fa-edit me-2"></i>거래처</label>
-                          <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
-                      </div>
-                      <div class="col-4"></div>
+              <div class="row">
+                  <div class="col-4">
+                      <label class="h6"><i class="far fa-calendar me-2"></i>일 자</label>
+                      <input class="form-control text-center" type="date" id="txtDate" name="txtDate"/>
                   </div>
-                  <div class="row">
-                      <div class="col-4">
-                          <label class="mt-4 h6"><i class="fas fa-box me-2"></i>품 명</label>
-                          <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
-                      </div>
-                      <div class="col-8">
-                          <input hidden class="form-control text-center" type="number" id="txtGubun" name="txtGubun"/>
-                          <input hidden class="form-control text-center" type="number" id="txtSerial" name="txtSerial"/>
-                      </div>
+                  <div class="col-4">
+                      <label class="h6"><i class="far fa-edit me-2"></i>거래처</label>
+                      <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
                   </div>
-                  <div class="row">
-                      <div class="col-2">
-                        <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>수 량</label>
-                        <input class="form-control text-end" type="number" id="txtQty" name="txtQty"/>
-                      </div>
-                      <div class="col-2">
-                          <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>단 가</label>
-                          <input class="form-control text-end" type="number" id="txtDanga" name="txtDanga"/>
-                      </div>
-                      <div class="col-2">
-                        <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>공급 가액</label>
-                        <input class="form-control text-end" type="number" id="txtSupply" name="txtSupply"/>
-                      </div>
-                      <div class="col-2">
-                          <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>부가세</label>
-                          <input class="form-control text-end" type="number" id="txtVat" name="txtVat"/>
-                      </div>
-                      <div class="col-2">
-                          <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>합 계</label>
-                          <input class="form-control text-end" type="number" id="txtAmts" name="txtAmts"/>
-                      </div>
+                  <div class="col-4"></div>
+              </div>
+              <div class="row">
+                  <div class="col-4">
+                      <label class="mt-4 h6"><i class="fas fa-box me-2"></i>품 명</label>
+                      <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
                   </div>
-                  <div class="row">
-                      <div class="col-10">
-                          <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                          <input class="form-control border border-light rounded-1 text-center" type="text" name="txtRemark" id="txtRemark">
-                      </div>
-                      <div class="col-2"></div>
+                  <div class="col-8">
+                      <input hidden class="form-control text-center" type="number" id="txtGubun" name="txtGubun"/>
+                      <input hidden class="form-control text-center" type="number" id="txtSerial" name="txtSerial"/>
                   </div>
-              </form>
+              </div>
+              <div class="row">
+                  <div class="col-2">
+                    <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>수 량</label>
+                    <input class="form-control text-end" type="number" id="txtQty" name="txtQty"/>
+                  </div>
+                  <div class="col-2">
+                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>단 가</label>
+                      <input class="form-control text-end" type="number" id="txtDanga" name="txtDanga"/>
+                  </div>
+                  <div class="col-2">
+                    <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>공급 가액</label>
+                    <input class="form-control text-end" type="number" id="txtSupply" name="txtSupply"/>
+                  </div>
+                  <div class="col-2">
+                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>부가세</label>
+                      <input class="form-control text-end" type="number" id="txtVat" name="txtVat"/>
+                  </div>
+                  <div class="col-2">
+                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>합 계</label>
+                      <input class="form-control text-end" type="number" id="txtAmts" name="txtAmts"/>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-10">
+                      <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
+                      <input class="form-control border border-light rounded-1 text-center" type="text" name="txtRemark" id="txtRemark">
+                  </div>
+                  <div class="col-2"></div>
+              </div>
           </div>
           <div class="modal-footer">
             <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave">저 장</button>
             <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
           </div>
+          </form>
         </div>
       </div>
     </div>
@@ -377,7 +377,34 @@
             }
         });
 
+        {# 앤터시 단가 input으로 이동 #}
+        $('input[type="number"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtQty') {
+                    document.getElementById("txtDanga").focus();
+                }
+            }
+        });
 
+
+        {# 앤터시 자동 계산 #}
+        $('input[type="number"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtDanga') {
+                    let qty = $("#txtQty").val();
+                    let danga = $("#txtDanga").val();
+                    let supply = qty * danga
+                    let vat =  (qty * danga) / 10
+                    let total = supply + vat
+
+                    document.getElementById("txtSupply").value = supply;
+                    document.getElementById("txtVat").value = vat;
+                    document.getElementById("txtAmts").value = total;
+                }
+            }
+        });
 
     </script>
 {% endblock %}
