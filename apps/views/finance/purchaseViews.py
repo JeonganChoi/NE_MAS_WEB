@@ -17,104 +17,115 @@ def purchaseRegViews(request):
 def purchaseRegViews_search(request):
     strDate = request.POST.get('strDate')
     endDate = request.POST.get('endDate')
+    serial = request.POST.get('serial')
+    regDate = request.POST.get('regDate')
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(A.TRDATE, ''), IFNULL(A.TRSEQN, ''), IFNULL(A.TRRECN, ''), IFNULL(A.TRITEM, '')"
-                       "    , IFNULL(C.ITNAME, ''), IFNULL(A.TRRCID, ''), IFNULL(D.RESNAM, '')"
-                       "    , IFNULL(A.TROTP, ''), IFNULL(E.RESNAM, ''), IFNULL(A.TRPRCE, 0), IFNULL(A.TRQTYS, 0)"
-                       "    , IFNULL(A.TRAMTS, 0), IFNULL(A.TRVATS, 0)"
-                       "    , IFNULL(A.TRDESC, ''), IFNULL(A.TRCUST, ''), IFNULL(B.CUST_NME, '') "
-                       "    FROM OSTRNSP A "
-                       "    LEFT OUTER JOIN MIS1TB003 B "
-                       "    ON A.TRCUST = B.CUST_NBR "
-                       "    LEFT OUTER JOIN OSITEMP C "
-                       "    ON A.TRITEM = C.ITITEM "
-                       "    LEFT OUTER JOIN OSREFCP D "
-                       "    ON A.TRRCID = D.RESKEY "
-                       "    AND D.RECODE = 'IPG' "
-                       "    LEFT OUTER JOIN OSREFCP E "
-                       "    ON A.TROTP = E.RESKEY "
-                       "    AND E.RECODE = 'OUB' "
-                       "    WHERE TRDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                       "    ORDER BY TRDATE "
-                       )
+    if serial != '' and serial is not None:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
+                           "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
+                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.DESC, '')"
+                           "    , IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    FROM OSBILL A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.UP_CODE = B.CUST_NBR "
+                           "    WHERE A.BAL_DD = '" + regDate + "' "
+                           "    AND A.GUBUN = '1' "
+                           "    AND A.SERIAL_NUM = '" + serial + "' ")
+            modalresult = cursor.fetchall()
 
-        buyresult = cursor.fetchall()
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cboCust = cursor.fetchall()
+
+        return JsonResponse({"modalList": modalresult, 'cboCust': cboCust})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
+                           "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
+                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    FROM OSBILL A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.UP_CODE = B.CUST_NBR "
+                           "    WHERE A.BAL_DD BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "    AND A.GUBUN = '1' "
+                           "    ORDER BY BAL_DD ")
+            buyresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cboCust = cursor.fetchall()
 
         # 구분
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'IPG' ORDER BY RESNAM ")
-            comboGbn = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'IPG' ORDER BY RESNAM ")
+        #     comboGbn = cursor.fetchall()
 
         # 결제방법
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
-            comboPay = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
+        #     comboPay = cursor.fetchall()
 
-    return JsonResponse({"buyList": buyresult, "comboGbn": comboGbn, "comboPay": comboPay})
+        return JsonResponse({"buyList": buyresult, 'cboCust': cboCust})
 
 
 
 def purchaseRegViews_save(request):
     if 'btnSave' in request.POST:
-        # 입고일자, 입고순번, 입고행번, 입고거래처, 입고품목, 갯수, 단가, 공급가액, 부가세, 합계, 구분, 결제방법, 비고
-        trDate = request.POST.get('txtInDate').replace('-', '')
-        trSeqn = request.POST.get('txtSeq')
-        trRecn = request.POST.get('txtRecn')
-        trCust = request.POST.get('cboInCust')
-        trItem = request.POST.get('txtItem')
-        trPrce = request.POST.get('txtBaseCost')
-        trQtys = request.POST.get('txtQty')
-        ttAmts = request.POST.get('txtPrice')
-        trVats = request.POST.get('txtTax')
-        # buyTotal = request.POST.get('txtTotal')
-        trRcid = request.POST.get('cboBuyGbn')
-        trOtp = request.POST.get('cboPayGbn')
-        trDesc = request.POST.get('txtRemark')
-        trIocd = 'I'
+        gubun = '1'
+        serial_num = request.POST.get('txtSerial')
+        bal_dd = request.POST.get('txtDate').replace('-', '')
+        up_code = request.POST.get('cboCust')
+        item = request.POST.get('txtItem')
+        qty = request.POST.get('txtQty')
+        danga = request.POST.get('txtDanga')
+        supply = request.POST.get('txtSupply')
+        tax = request.POST.get('txtVat')
+        amts = request.POST.get('txtAmts')
+        remark = request.POST.get('txtRemark')
 
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO OSTRNSP "
+            cursor.execute("INSERT INTO OSBILL "
                            "   (    "
-                           "     TRDATE "
-                           ",    TRSEQN "
-                           ",    TRRECN "
-                           ",    TRITEM "
-                           ",    TRRCID "
-                           ",    TROTP "
-                           ",    TRPRCE "
-                           ",    TRQTYS "
-                           ",    TRAMTS "
-                           ",    TRVATS "
-                           ",    TRDESC "
-                           ",    TRCUST "
-                           ",    TRIOCD "
+                           "     GUBUN "
+                           ",    SERIAL_NUM "
+                           ",    BAL_DD "
+                           ",    UP_CODE "
+                           ",    ITEM "
+                           ",    QTY "
+                           ",    DANGA "
+                           ",    SUPPLY "
+                           ",    TAX "
+                           ",    AMTS "
+                           ",    REMARK "
                            "    ) "
                            "    VALUES "
                            "    (   "
-                           "    '" + str(trDate) + "'"
-                           ",   (SELECT IFNULL(MAX(TRSEQN) + 1, 1) AS TRSEQN FROM OSTRNSP A WHERE TRDATE = '" + str(trDate) + "' )"
-                           ",   (SELECT IFNULL (MAX(TRRECN) + 1, 1) AS TRRECN FROM OSTRNSP A WHERE TRDATE = '" + str(trDate) + "' AND TRSEQN = '" + str(trSeqn) + "')"
-                           ",   '" + str(trItem) + "'"
-                           ",   '" + str(trRcid) + "'"
-                           ",   '" + str(trOtp) + "'"
-                           ",   '" + str(trPrce) + "'"
-                           ",   '" + str(trQtys) + "'"
-                           ",   '" + str(ttAmts) + "'"
-                           ",   '" + str(trVats) + "'"
-                           ",   '" + str(trDesc) + "'"
-                           ",   '" + str(trCust) + "'"
-                           ",   '" + str(trIocd) + "'"
+                           "    '" + str(gubun) + "'"
+                           ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = '" + str(serial_num) + "' )"
+                           ",   '" + str(bal_dd) + "'"
+                           ",   '" + str(up_code) + "'"
+                           ",   '" + str(item) + "'"
+                           ",   '" + str(qty) + "'"
+                           ",   '" + str(danga) + "'"
+                           ",   '" + str(supply) + "'"
+                           ",   '" + str(tax) + "'"
+                           ",   '" + str(amts) + "'"
+                           ",   '" + str(remark) + "'"
                            "    )   "
                            "    ON DUPLICATE  KEY "
                            "    UPDATE "
-                           "     TROTP = '" + str(trOtp) + "' "
-                           ",    TRPRCE = '" + str(trPrce) + "' "
-                           ",    TRQTYS = '" + str(trQtys) + "' "
-                           ",    TRAMTS = '" + str(ttAmts) + "' "
-                           ",    TRVATS = '" + str(trVats) + "' "
-                           ",    TRDESC = '" + str(trDesc) + "' "
-                           ",    TRCUST = '" + str(trCust) + "' "
+                           "     GUBUN = '" + str(gubun) + "' "
+                           ",    BAL_DD = '" + str(bal_dd) + "' "
+                           ",    UP_CODE = '" + str(up_code) + "' "
+                           ",    ITEM = '" + str(item) + "' "
+                           ",    QTY = '" + str(qty) + "' "
+                           ",    DANGA = '" + str(danga) + "' "
+                           ",    SUPPLY = '" + str(supply) + "' "
+                           ",    TAX = '" + str(tax) + "' "
+                           ",    AMTS = '" + str(amts) + "' "
+                           ",    REMARK = '" + str(remark) + "' "
                            )
             connection.commit()
 
@@ -133,11 +144,9 @@ def purchaseRegViews_dlt(request):
         for buy in dataList:
             acc_split_list = buy.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSTRNSP WHERE TRDATE = '" + acc_split_list[0] + "' "
-                               "                        AND TRSEQN = '" + acc_split_list[1] + "' "
-                               "                        AND TRRECN = '" + acc_split_list[2] + "' "
-                               "                        AND TRITEM = '" + acc_split_list[3] + "' "
-                               "                        AND TRRCID = '" + acc_split_list[4] + "'")
+                cursor.execute(" DELETE FROM OSBILL WHERE SERIAL_NUM = '" + acc_split_list[0] + "' "
+                               "                    AND GUBUN = '" + acc_split_list[1] + "' "
+                               "                    AND BAL_DD = '" + acc_split_list[2] + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

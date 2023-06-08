@@ -42,10 +42,10 @@
                           <div class="p-3 col-lg-8 mt-lg-0 text-end">
                               <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch">
                                   <i class="fas fa-search me-2"></i>조회</button>
-                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" id="btnAdd"
                                       data-bs-target="#exampleModal"><i class="fas fa-plus me-2"></i>추가</button>
-                              <button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
-                                      data-bs-target="#buyModal"><i class="fas fa-diamond me-2"></i>수정</button>
+                              <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
+                                      data-bs-target="#buyModal"><i class="fas fa-diamond me-2" id="btnEdit"></i>수정</button>-->
                               <button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
                                   <i class="fas fa-minus me-2"></i>삭제</button>
                           </div>
@@ -58,26 +58,26 @@
                                 <col width="2%">
                                 <col width="8%">
                                 <col width="15%">
-                                <col width="8%">
-                                <col width="8%">
+                                <col width="6%">
                                 <col width="6%">
                                 <col width="6%">
                                 <col width="6%">
                                 <col width="6%">
                                 <col width="10%">
+                                <col width="4%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
                               <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">출고 일자</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">품 목</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">구 분</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">결 제</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">단 가</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">수 량</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">단 가</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">공급 가액</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">부가세</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">합 계</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">매입처</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
                             </tr>
                           </thead>
                           <tbody id="saleMainTb">
@@ -107,68 +107,54 @@
           </div>
           <div class="modal-body m-5">
               <form method="post" action="{% url 'sales_reg_save' %}">
+                  {% csrf_token %}
                   <div class="row">
                       <div class="col-4">
-                          <label class="h6"><i class="far fa-calendar me-2"></i>출고 일자</label>
-                          <input class="form-control text-center" type="date" id="txtOutDate" name="txtOutDate"/>
+                          <label class="h6"><i class="far fa-calendar me-2"></i>일 자</label>
+                          <input class="form-control text-center" type="date" id="txtDate" name="txtDate"/>
                       </div>
                       <div class="col-4">
-                          <label class="h6"><i class="far fa-edit me-2"></i>출고처</label>
-                          <select class="form-control border border-light rounded-1 text-center" name="cboOutCust" id="cboOutCust"></select>
+                          <label class="h6"><i class="far fa-edit me-2"></i>거래처</label>
+                          <select class="form-control border border-light rounded-1 text-center" name="cboCust" id="cboCust"></select>
                       </div>
-                      <div class="col-4">
-                          <input hidden class="form-control text-center" type="number" id="txtSaSeq" name="txtSaSeq"/>
-                          <input hidden class="form-control text-center" type="number" id="txtSaRecn" name="txtSaRecn"/>
-                      </div>
-                  </div>
-                  <!--<div class="row">
                       <div class="col-4"></div>
-                      <div class="col-8"></div>
-                  </div>-->
+                  </div>
                   <div class="row">
                       <div class="col-4">
-                          <label class="mt-4 h6"><i class="fas fa-box me-2"></i>제품명</label>
-                          <input class="form-control text-end" type="text" id="txtSaItem" name="txtSaItem"/>
+                          <label class="mt-4 h6"><i class="fas fa-box me-2"></i>품 명</label>
+                          <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
                       </div>
-                      <div class="col-8"></div>
+                      <div class="col-8">
+                          <input hidden class="form-control text-center" type="number" id="txtGubun" name="txtGubun"/>
+                          <input hidden class="form-control text-center" type="number" id="txtSerial" name="txtSerial"/>
+                      </div>
                   </div>
                   <div class="row">
                       <div class="col-2">
                         <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>수 량</label>
-                        <input class="form-control text-end" type="number" id="txtSaQty" name="txtSaQty"/>
+                        <input class="form-control text-end" type="number" id="txtQty" name="txtQty"/>
                       </div>
                       <div class="col-2">
                           <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>단 가</label>
-                          <input class="form-control text-end" type="number" id="txtSaCost" name="txtSaCost"/>
+                          <input class="form-control text-end" type="number" id="txtDanga" name="txtDanga"/>
                       </div>
                       <div class="col-2">
                         <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>공급 가액</label>
-                        <input class="form-control text-end" type="number" id="txtSaPrice" name="txtSaPrice"/>
+                        <input class="form-control text-end" type="number" id="txtSupply" name="txtSupply"/>
                       </div>
                       <div class="col-2">
                           <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>부가세</label>
-                          <input class="form-control text-end" type="number" id="txtSaTax" name="txtSaTax"/>
+                          <input class="form-control text-end" type="number" id="txtVat" name="txtVat"/>
                       </div>
                       <div class="col-2">
                           <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>합 계</label>
-                          <input class="form-control text-end" type="number" id="txtSaTotal" name="txtSaTotal"/>
+                          <input class="form-control text-end" type="number" id="txtAmts" name="txtAmts"/>
                       </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-4">
-                          <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구 분</label>
-                          <select class="form-control border border-light rounded-1 text-center" name="cboSaGbn" id="cboBuyGbn"></select>
-                      </div>
-                      <div class="col-4">
-                        <label class="mt-4 h6"><i class="far fa-edit me-2"></i>결 제</label>
-                        <select class="form-control border border-light rounded-1 text-center" name="cboPayGbn" id="cboPayGbn"></select>
-                      </div>
-                      <div class="col-4"></div>
                   </div>
                   <div class="row">
                       <div class="col-10">
                           <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                          <select class="form-control border border-light rounded-1 text-center" name="cboSaRemark" id="cboBom"></select>
+                          <input class="form-control border border-light rounded-1 text-center" type="text" name="txtRemark" id="txtRemark">
                       </div>
                       <div class="col-2"></div>
                   </div>
@@ -212,19 +198,19 @@
                     $("#saleMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#saleMainTb").append(
-                            "<tr id='#saleMainTr' class='saleMainTr_tr' main_code='" + list[i][1] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSale[]' name='chkSale[]' value='" + list[i][0] + "," + list[i][1] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<tr id='#saleMainTr' class='saleMainTr_tr'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#buyModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -255,24 +241,92 @@
                     $("#saleMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#saleMainTb").append(
-                            "<tr id='#saleMainTr' class='saleMainTr_tr' main_code='" + list[i][1] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSale[]' name='chkSale[]' value='" + list[i][0] + "," + list[i][1] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<tr id='#saleMainTr' class='saleMainTr_tr'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#buyModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
                             "</tr> ");
                     }
                 }
             })
         });
+
+        {# 추가 버튼 #}
+        $(document).on('click', "#btnAdd", function () {
+
+            $('#buyModal').show();
+
+        });
+
+        {# 수정 버튼 #}
+        $(document).on('click', "#btnEdit", function () {
+
+            var cboCust = "";
+            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
+
+            $("#cboCust").html("");
+
+            let serials = $(this).attr('main_code');
+            var split = serials.split(',');
+            var serial = split[0]
+            var regDate = split[1]
+
+            let data = {'serial': serial, 'regDate': regDate}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "sales_reg_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.modalList;
+
+                    for (var i = 0; i < list.length; i++) {
+                        for (var j = 0; j < 21; j++) {
+                            console.log("===================" + j + ":::" + list[i][j]);
+                        }
+                        $("#txtSerial").val(list[i][0])
+                        $("#txtGubun").val(list[i][1])
+                        $("#txtDate").val(list[i][2].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtItem").val(list[i][3])
+                        $("#txtQty").val(list[i][4])
+                        $("#txtDanga").val(list[i][5])
+                        $("#txtSupply").val(list[i][6])
+                        $("#txtVat").val(list[i][7])
+                        $("#txtAmts").val(list[i][8])
+                        $("#txtRemark").val(list[i][9])
+                        cboCust = list[i][10];
+                    }
+
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboCust) {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboCust").append(cboCustTxt);
+                }
+            })
+
+            $('#buyModal').show();
+
+        });
+
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
@@ -322,6 +376,8 @@
 
             }
         });
+
+
 
     </script>
 {% endblock %}

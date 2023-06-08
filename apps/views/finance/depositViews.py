@@ -144,3 +144,25 @@ def depositRegViews_dlt(request):
 
     else:
         return render(request, 'finance/deposit-reg.html')
+
+
+
+
+# 모달 조회
+def depositRegOutList_search(request):
+    year = request.POST.get('inputYear')
+    month = request.POST.get('inputMonth')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                       "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+                       "    FROM OSBILL A "
+                       "    LEFT OUTER JOIN MIS1TB003 B "
+                       "    ON A.UP_CODE = B.CUST_NBR "
+                       "    WHERE A.AMTS >= A.PASS_AMT "
+                       "    AND A.GUBUN = '2' "
+                       "    AND YEAR(TRDATE ) = '" + str(year) + "' "
+                       "    AND MONTH(TRDATE) = '" + str(month) + "' ")
+        modalresult = cursor.fetchall()
+
+    return JsonResponse({"modalList": modalresult})

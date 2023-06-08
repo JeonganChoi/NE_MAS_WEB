@@ -141,14 +141,15 @@
                   <div class="row">
                       <div class="col-4">
                           <div class="card card-plain p-3">
-                              <h5><i class="fas fa-list me-3"></i>매입 리스트</h5>
+                              <h5><i class="fas fa-list me-3"></i>매출 리스트</h5>
                              <div class="table-responsive-sm border border-light height-600 mt-2">
                                 <table class="table mb-0 align-items-center justify-content-center">
                                     <colgroup>
                                         <col width="8%">
                                         <col width="10%">
                                         <col width="10%">
-                                        <col width="10%">
+                                        <col width="8%">
+                                        <col width="8%">
                                     </colgroup>
                                   <thead class="bg-success-soft">
                                     <tr>
@@ -156,6 +157,7 @@
                                       <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">매입처</th>
                                       <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">품목</th>
                                       <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">합계</th>
+                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">잔액</th>
                                     </tr>
                                   </thead>
                                   <tbody id="modalBuyTb">
@@ -426,6 +428,52 @@
             } else {
 
             }
+        });
+
+        {# 모달이 뜰 때 #}
+        $('#withModal').on('show.bs.modal', function (e) {
+
+            var year = document.getElementById("inputYear").value;
+            var month = document.getElementById("inputMonth").value;
+
+            if (month < 10) {
+                month = 0 + month
+            }
+
+            let data = {"inputYear": year, "inputMonth": month}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "with_reg_out" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.modalList;
+                    $("#modalWithTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#modalWithTb").append(
+                            "<tr id='#modalWithTr' class='modalWithTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+            {#//체크가 1개라도 안되있을때#}
+            {#let chk_count = $("input[name='chkWith[]']").filter(":checked").length;#}
+            {#if (chk_count > 0) {#}
+            {##}
+            {##}
+
+
         });
 
     </script>

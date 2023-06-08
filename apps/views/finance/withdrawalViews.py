@@ -57,30 +57,6 @@ def withRegViews_search(request):
 
         return JsonResponse({"mainList": mainresult})
 
-def withRegOutList_search(request):
-    year = request.POST.get('inputYear')
-    month = request.POST.get('inputMonth')
-
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(TRDATE, ''), IFNULL(TRCUST, ''), IFNULL(B.CUST_NME, '') "
-                       "    , IFNULL(TRITEM, ''), IFNULL(C.ITNAME, '') "
-                       "    , IFNULL((TRAMTS * TRQTYS), 0 ) AS TRTOTAL, IFNULL(TRIOCD, ''), IFNULL(TRRCID, '') "
-                       "    , IFNULL(TRSEQN, ''), IFNULL(TRRECN, '') "
-                       "    FROM OSTRNSP A "
-                       "    LEFT OUTER JOIN MIS1TB003 B "
-                       "    ON A.TRCUST = B.CUST_NBR "
-                       "    LEFT OUTER JOIN OSITEMP C "
-                       "    ON A.TRITEM = C.ITITEM "
-                       "    WHERE TRIOCD = 'I' "
-                       "    AND YEAR(TRDATE ) = '" + str(year) + "' "
-                       "    AND MONTH(TRDATE) = '" + str(month) + "'"
-                       )
-        modalresult = cursor.fetchall()
-
-    return JsonResponse({"modalList": modalresult})
-
-
-
 
 def withRegViews_save(request):
     if 'btnSave' in request.POST:
@@ -168,3 +144,24 @@ def withRegViews_dlt(request):
 
     else:
         return render(request, 'finance/withdrawal-reg.html')
+
+
+# 모달 조회
+def withRegOutList_search(request):
+    year = request.POST.get('inputYear')
+    month = request.POST.get('inputMonth')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '')"
+                       "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+                       "    FROM OSBILL A "
+                       "    LEFT OUTER JOIN MIS1TB003 B "
+                       "    ON A.UP_CODE = B.CUST_NBR "
+                       "    WHERE A.AMTS >= A.PASS_AMT "
+                       "    AND A.GUBUN = '1' "
+                       "    AND YEAR(TRDATE ) = '" + str(year) + "' "
+                       "    AND MONTH(TRDATE) = '" + str(month) + "'"
+                       )
+        modalresult = cursor.fetchall()
+
+    return JsonResponse({"modalList": modalresult})

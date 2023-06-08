@@ -18,98 +18,105 @@ def salesRegViews(request):
 def salesRegViews_search(request):
     strDate = request.POST.get('strDate')
     endDate = request.POST.get('endDate')
+    serial = request.POST.get('serial')
+    regDate = request.POST.get('regDate')
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(A.SADATE, ''), IFNULL(A.SASEQN, ''), IFNULL(A.SARECN, ''), IFNULL(A.SAITEM, '')"
-                       "        , IFNULL(C.ITNAME, ''), IFNULL(A.SARCID, ''), IFNULL(D.RESNAM, '')"
-                       "        , IFNULL(A.SAOTP, ''), IFNULL(E.RESNAM, '') "
-                       "        , IFNULL(A.SAPRCE, 0), IFNULL(A.SAQTYS, 0), IFNULL(A.SAAMTS, 0), IFNULL(A.SAVATS, 0)"
-                       "        , IFNULL(A.SADESC, ''), IFNULL(A.SACUST, ''), IFNULL(B.CUST_NME, '') "
-                       "    FROM OSSALEP A "
-                       "    LEFT OUTER JOIN MIS1TB003 B "
-                       "    ON A.SACUST = B.CUST_NBR "
-                       "    LEFT OUTER JOIN OSITEMP C "
-                       "    ON A.SAITEM = C.ITITEM "
-                       "    LEFT OUTER JOIN OSREFCP D "
-                       "    ON A.SARCID = D.RESKEY "
-                       "    AND D.RECODE = 'OTG' "
-                       "    LEFT OUTER JOIN OSREFCP E "
-                       "    ON A.SAOTP = E.RESKEY "
-                       "    AND E.RECODE = 'OUB' "
-                       "    WHERE SADATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                       "    ORDER BY SADATE ")
-
-        saleresult = cursor.fetchall()
+    if serial != '' and serial is not None:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
+                           "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
+                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.DESC, '')"
+                           "    , IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    FROM OSBILL A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.UP_CODE = B.CUST_NBR "
+                           "    WHERE A.BAL_DD = '" + regDate + "' "
+                           "    AND A.GUBUN = '2' "
+                           "    AND A.SERIAL_NUM = '" + serial + "' ")
+            modalresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTG' ORDER BY RESNAM ")
-            comboGbn = cursor.fetchall()
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cboCust = cursor.fetchall()
 
-        # 결제방법
+        return JsonResponse({"modalList": modalresult, 'cboCust': cboCust})
+
+    else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
-            comboPay = cursor.fetchall()
+            cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
+                           "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
+                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    FROM OSBILL A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.UP_CODE = B.CUST_NBR "
+                           "    WHERE A.BAL_DD BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "    AND A.GUBUN = '2' "
+                           "    ORDER BY BAL_DD ")
 
-    return JsonResponse({"saleList": saleresult, "comboGbn": comboGbn, "comboPay": comboPay})
+            saleresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cboCust = cursor.fetchall()
+
+        return JsonResponse({"saleList": saleresult, 'cboCust': cboCust})
 
 
 def salesRegViews_save(request):
     if 'btnSave' in request.POST:
-        # 출고일자, 출고순번, 출고행번, 출고거래처, 출고품목, 갯수, 단가, 공급가액, 부가세, 합계, 구분, 결제방법, 비고
-        saDate = request.POST.get('txtOutDate').replace('-', '')
-        saSeqn = request.POST.get('txtSaSeq')
-        saRecn = request.POST.get('txtSaRecn')
-        saCust = request.POST.get('cboOutCust')
-        saItem = request.POST.get('txtSaItem')
-        saPrce = request.POST.get('txtSaCost')
-        saQtys = request.POST.get('txtSaQty')
-        saAmts = request.POST.get('txtSaPrice')
-        saVats = request.POST.get('txtSaTax')
-        # saTotal = request.POST.get('txtSaTotal')
-        saRcid = request.POST.get('cboSaGbn')
-        saOtp = request.POST.get('cboPayGbn')
-        saDesc = request.POST.get('cboSaRemark')
+        gubun = '2'
+        serial_num = request.POST.get('txtSerial')
+        bal_dd = request.POST.get('txtDate').replace('-', '')
+        up_code = request.POST.get('cboCust')
+        item = request.POST.get('txtItem')
+        qty = request.POST.get('txtQty')
+        danga = request.POST.get('txtDanga')
+        supply = request.POST.get('txtSupply')
+        tax = request.POST.get('txtVat')
+        amts = request.POST.get('txtAmts')
+        remark = request.POST.get('txtRemark')
 
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO OSSALEP "
+            cursor.execute("INSERT INTO OSBILL "
                            "   (    "
-                           "     SADATE "
-                           ",    SASEQN "
-                           ",    SARECN "
-                           ",    SAITEM "
-                           ",    SARCID "
-                           ",    SAOTP "
-                           ",    SAPRCE "
-                           ",    SAQTYS "
-                           ",    SAAMTS "
-                           ",    SAVATS "
-                           ",    SADESC "
-                           ",    SACUST "
+                           "     GUBUN "
+                           ",    SERIAL_NUM "
+                           ",    BAL_DD "
+                           ",    UP_CODE "
+                           ",    ITEM "
+                           ",    QTY "
+                           ",    DANGA "
+                           ",    SUPPLY "
+                           ",    TAX "
+                           ",    AMTS "
+                           ",    REMARK "
                            "    ) "
                            "    VALUES "
                            "    (   "
-                           "    '" + str(saDate) + "'"
-                           ",   (SELECT IFNULL(MAX(SASEQN) + 1, 1) AS SASEQN FROM OSSALEP A WHERE SADATE = '" + str(saDate) + "' )"
-                           ",   (SELECT IFNULL (MAX(SASEQN) + 1, 1) AS SASEQN FROM OSSALEP A WHERE SADATE = '" + str(saDate) + "' AND SASEQN = '" + str(saSeqn) + "')"
-                           ",   '" + str(saItem) + "'"
-                           ",   '" + str(saRcid) + "'"
-                           ",   '" + str(saOtp) + "'"
-                           ",   '" + str(saPrce) + "'"
-                           ",   '" + str(saQtys) + "'"
-                           ",   '" + str(saAmts) + "'"
-                           ",   '" + str(saVats) + "'"
-                           ",   '" + str(saDesc) + "'"
-                           ",   '" + str(saCust) + "'"
+                           "    '" + str(gubun) + "'"
+                           ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = '" + str(serial_num) + "' )"
+                           ",   '" + str(bal_dd) + "'"
+                           ",   '" + str(up_code) + "'"
+                           ",   '" + str(item) + "'"
+                           ",   '" + str(qty) + "'"
+                           ",   '" + str(danga) + "'"
+                           ",   '" + str(supply) + "'"
+                           ",   '" + str(tax) + "'"
+                           ",   '" + str(amts) + "'"
+                           ",   '" + str(remark) + "'"
                            "    )   "
                            "    ON DUPLICATE  KEY "
                            "    UPDATE "
-                           "     SAOTP = '" + str(saOtp) + "' "
-                           ",    SAPRCE = '" + str(saPrce) + "' "
-                           ",    SAQTYS = '" + str(saQtys) + "' "
-                           ",    SAAMTS = '" + str(saAmts) + "' "
-                           ",    SAVATS = '" + str(saVats) + "' "
-                           ",    SADESC = '" + str(saDesc) + "' "
-                           ",    SACUST = '" + str(saCust) + "' "
+                           "     GUBUN = '" + str(gubun) + "' "
+                           ",    BAL_DD = '" + str(bal_dd) + "' "
+                           ",    UP_CODE = '" + str(up_code) + "' "
+                           ",    ITEM = '" + str(item) + "' "
+                           ",    QTY = '" + str(qty) + "' "
+                           ",    DANGA = '" + str(danga) + "' "
+                           ",    SUPPLY = '" + str(supply) + "' "
+                           ",    TAX = '" + str(tax) + "' "
+                           ",    AMTS = '" + str(amts) + "' "
+                           ",    REMARK = '" + str(remark) + "' "
                            )
             connection.commit()
 
@@ -128,11 +135,9 @@ def salesRegViews_dlt(request):
         for sale in dataList:
             acc_split_list = sale.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSSALEP WHERE SADATE = '" + acc_split_list[0] + "' "
-                               "                        AND SASEQN = '" + acc_split_list[1] + "' "
-                               "                        AND SARECN = '" + acc_split_list[2] + "' "
-                               "                        AND SAITEM = '" + acc_split_list[3] + "' "
-                               "                        AND SARCID = '" + acc_split_list[4] + "'")
+                cursor.execute(" DELETE FROM OSBILL WHERE SERIAL_NUM = '" + acc_split_list[0] + "' "
+                               "                    AND GUBUN = '" + acc_split_list[1] + "' "
+                               "                    AND BAL_DD = '" + acc_split_list[2] + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
