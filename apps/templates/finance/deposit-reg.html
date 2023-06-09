@@ -75,10 +75,10 @@
                           <div class="p-3 col-lg-8 mt-lg-0 text-end">
                               <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
                                       data-bs-target="#exampleModal"><i class="fas fa-plus me-2"></i>추가</button>
-                              <button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
-                                      data-bs-target="#buyModal"><i class="fas fa-diamond me-2"></i>수정</button>
-                              <button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
-                                  <i class="fas fa-minus me-2"></i>삭제</button>
+                              <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
+                                      data-bs-target="#buyModal"><i class="fas fa-diamond me-2"></i>수정</button>-->
+                              <!--<button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
+                                  <i class="fas fa-minus me-2"></i>삭제</button>-->
                           </div>
                       </div>
                     </div>
@@ -375,6 +375,8 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#withModal' id='btnAdd'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
 
