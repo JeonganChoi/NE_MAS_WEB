@@ -160,7 +160,7 @@
               </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave">저 장</button>
+            <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave" name="btnSave">저 장</button>
             <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
           </div>
         </div>
@@ -330,7 +330,7 @@
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
-            alert("넘어옴")
+
             $('form').submit();
 
         });

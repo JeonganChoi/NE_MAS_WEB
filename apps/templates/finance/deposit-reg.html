@@ -73,7 +73,7 @@
                         <div class="row">
                           <div class="p-3 col-lg-4 mt-lg-0"></div>
                           <div class="p-3 col-lg-8 mt-lg-0 text-end">
-                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" id="btnAdd" name="btnAdd"
                                       data-bs-target="#exampleModal"><i class="fas fa-plus me-2"></i>추가</button>
                               <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
                                       data-bs-target="#buyModal"><i class="fas fa-diamond me-2"></i>수정</button>-->
@@ -94,6 +94,8 @@
                                 <col width="8%">
                                 <col width="6%">
                                 <col width="20%">
+                                <col width="6%">
+                                <col width="6%">
                             </colgroup>
                           <thead class="bg-danger-soft">
                             <tr>
@@ -105,6 +107,8 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">발행 은행</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">어음 번호</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
                             </tr>
                           </thead>
                           <tbody id="depositSubTb">
@@ -113,7 +117,7 @@
                             </tr>
                           <tr class="bg-light">
                               <td class="text-end p-1" style="font-size: 0.85rem" colspan="2">합계</td>
-                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="6">0</td>
+                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="8">0</td>
                           </tr>
                           </tbody>
                         </table>
@@ -169,11 +173,11 @@
                               <div class="row">
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
-                                      <input class="form-control text-end" type="text" id="txtDepPrice" name="txtDepPrice"/>
+                                      <input class="form-control text-end" type="number" id="txtDepPrice" name="txtDepPrice"/>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum"></select>
+                                      <input class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum">
                                   </div>
                                   <div class="col-4"></div>
                               </div>
@@ -202,13 +206,13 @@
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
-                                      <input class="form-control text-end" type="date" id="txtDepDeadline" name="txtDepDeadline"/>
+                                      <input class="form-control text-center" type="date" id="txtDepDeadline" name="txtDepDeadline"/>
                                   </div>
                               </div>
                               <div class="row">
                                   <div class="col-8">
                                       <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
-                                      <input class="form-control text-end" type="text" id="txtDepRemark" name="txtDepRemark"/>
+                                      <input class="form-control text-start" type="text" id="txtDepRemark" name="txtDepRemark"/>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
@@ -250,7 +254,7 @@
               </form>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave">저 장</button>
+            <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave" name="btnSave">저 장</button>
             <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
           </div>
         </div>
@@ -375,7 +379,7 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#withModal' id='btnAdd'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal' id='btnEdit' name='btnEdit'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
@@ -434,8 +438,13 @@
             }
         });
 
-        {# 모달이 뜰 때 #}
-        $('#exampleModal').on('show.bs.modal', function (e) {
+        {# 추가 버튼 #}
+        $(document).on('click', "#btnAdd", function () {
+
+            var cboCust2 = "";
+            var cboCustTxt = "";
+
+            $("#cboDepCust").html("");
 
             var year = document.getElementById("inputYear").value;
             var month = document.getElementById("inputMonth").value;
@@ -460,6 +469,84 @@
                     $("#modalBuyTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#modalBuyTb").append(
+                            "<tr id='#modalBuyTr' class='modalBuyTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][5] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    var combolist = data.cboCust;
+                    console.log(combolist)
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboCust2) {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboDepCust").append(cboCustTxt);
+                }
+            })
+
+            $('#exampleModal').show();
+
+        });
+
+        {# 수정 버튼 #}
+        $(document).on('click', "#btnEdit", function () {
+            var cboCust2 = "";
+            var cboCustTxt = "";
+
+            $("#cboDepCust").html("");
+
+            let serials = $(this).attr('main_code');
+            var split = serials.split(',');
+            var custCode = split[0]
+            var seq = split[1]
+            var date = split[1]
+
+            let data = {"custCode": custCode, "seq": seq, "date": date}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "deposit_reg_out" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list2 = data.modalform;
+
+                    for (var i = 0; i < list2.length; i++) {
+                        for (var j = 0; j < 21; j++) {
+                            console.log("===================" + j + ":::" + list2[i][j]);
+                        }
+                        $("#txtDepSeq").val(list2[i][0])
+                        $("#txtDepRecn").val(list2[i][1])
+                        $("#txtDepRegDate").val(list2[i][2].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtItem").val(list2[i][3])
+                        $("#txtQty").val(list2[i][4])
+                        $("#txtDanga").val(list2[i][5])
+                        $("#txtSupply").val(list2[i][6])
+                        $("#txtVat").val(list2[i][7])
+                        $("#txtAmts").val(list2[i][8])
+                        $("#txtRemark").val(list2[i][9])
+                        cboCust2 = list2[i][10];
+                    }
+
+
+                    var list = data.modalList;
+
+                    $("#modalBuyTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#modalBuyTb").append(
                             "<tr id='#modalBuyTr' class='modalBuyTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
@@ -471,9 +558,21 @@
                             "</tr> ");
                     }
 
+                    var combolist = data.cboCust;
+                    console.log(combolist)
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboCust2) {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboDepCust").append(cboCustTxt);
                 }
             })
 
+            $('#exampleModal').show();
         });
 
     </script>

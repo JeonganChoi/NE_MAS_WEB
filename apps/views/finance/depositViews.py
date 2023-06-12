@@ -74,51 +74,63 @@ def depositRegViews_save(request):
         acIdate = acDate.replace('-', '')
         acUuser = request.session['userid']
 
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO SISACCTT "
-                           "   (    "
-                           "     ACDATE "
-                           ",    ACSEQN "
-                           ",    ACCUST "
-                           ",    ACGUBN "
-                           ",    ACCODE "
-                           ",    ACAMTS "
-                           ",    ACACNUMBER "
-                           ",    ACRECN "
-                           ",    ACDESC "
-                           ",    IUSER "
-                           ",    IDATE "
-                           "    ) "
-                           "    VALUES "
-                           "    (   "
-                           "    '" + str(acDate).replace('-', '') + "'"
-                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "')"
-                           ",   '" + str(acCust) + "'"
-                           ",   '" + str(acGubn) + "'"
-                           ",   '" + str(acCode) + "'"
-                           ",   '" + str(acAmts) + "'"
-                           ",   '" + str(acAcnumber) + "'"
-                           ",   '" + str(acRecn) + "'"
-                           ",   '" + str(acDesc) + "'"
-                           ",   '" + str(acIuser) + "'"
-                           ",   '" + str(acIdate) + "'"
-                           "    )   "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
-                           "     ACCUST = '" + str(acCust) + "' "
-                           ",    ACGUBN = '" + str(acGubn) + "' "
-                           ",    ACCODE = '" + str(acCode) + "' "
-                           ",    ACAMTS = '" + str(acAmts) + "' "
-                           ",    ACACNUMBER = '" + str(acAcnumber) + "' "
-                           ",    ACRECN = '" + str(acRecn) + "' "
-                           ",    ACDESC = '" + str(acDesc) + "' "
-                           ",    UUSER = '" + str(acUuser) + "' "
-                           ",    UDATE = date_format(now(), '%Y%m%d') "
-                           )
-            connection.commit()
+        if acSeqn == '' and acSeqn is None:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO SISACCTT "
+                               "   (    "
+                               "     ACDATE "
+                               ",    ACSEQN "
+                               ",    ACCUST "
+                               ",    ACGUBN "
+                               ",    ACCODE "
+                               ",    ACAMTS "
+                               ",    ACACNUMBER "
+                               ",    ACRECN "
+                               ",    ACDESC "
+                               ",    IUSER "
+                               ",    IDATE "
+                               "    ) "
+                               "    VALUES "
+                               "    (   "
+                               "    '" + str(acDate).replace('-', '') + "'"
+                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "')"
+                               ",   '" + str(acCust) + "'"
+                               ",   '" + str(acGubn) + "'"
+                               ",   '" + str(acCode) + "'"
+                               ",   '" + str(acAmts) + "'"
+                               ",   '" + str(acAcnumber) + "'"
+                               ",   '" + str(acRecn) + "'"
+                               ",   '" + str(acDesc) + "'"
+                               ",   '" + str(acIuser) + "'"
+                               ",   '" + str(acIdate) + "'"
+                               "    )   "
+                               )
+                connection.commit()
 
             messages.success(request, '저장 되었습니다.')
             return render(request, 'finance/deposit-reg.html')
+
+        elif acSeqn:
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE SISACCTT SET "
+                               "     ACCUST = '" + str(acCust) + "' "
+                               ",    ACGUBN = '" + str(acGubn) + "' "
+                               ",    ACCODE = '" + str(acCode) + "' "
+                               ",    ACAMTS = '" + str(acAmts) + "' "
+                               ",    ACACNUMBER = '" + str(acAcnumber) + "' "
+                               ",    ACRECN = '" + str(acRecn) + "' "
+                               ",    ACDESC = '" + str(acDesc) + "' "
+                               ",    UUSER = '" + str(acUuser) + "' "
+                               ",    UDATE = date_format(now(), '%Y%m%d') "
+                               "     WHERE ACDATE = '" + str(acDate) + "' "
+                               "     AND ACSEQN = '" + str(acSeqn) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               )
+                connection.commit()
+
+            messages.success(request, '수정 되었습니다.')
+            return render(request, 'finance/deposit-reg.html')
+
 
     else:
         messages.warning(request, '입력 하신 정보를 확인 해주세요.')
@@ -152,17 +164,57 @@ def depositRegViews_dlt(request):
 def depositRegOutList_search(request):
     year = request.POST.get('inputYear')
     month = request.POST.get('inputMonth')
+    upCode = request.POST.get('custCode')
+    seq = request.POST.get('seq')
+    date = request.POST.get('date')
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
-                       "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
-                       "    FROM OSBILL A "
-                       "    LEFT OUTER JOIN MIS1TB003 B "
-                       "    ON A.UP_CODE = B.CUST_NBR "
-                       "    WHERE A.AMTS >= A.PASS_AMT "
-                       "    AND A.GUBUN = '2' "
-                       "    AND YEAR(A.BAL_DD ) = '" + str(year) + "' "
-                       "    AND MONTH(A.BAL_DD) = '" + str(month) + "' ")
-        modalresult = cursor.fetchall()
+    if seq != '' and seq is not None:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+                           "    FROM OSBILL A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.UP_CODE = B.CUST_NBR "
+                           "    WHERE A.AMTS >= A.PASS_AMT "
+                           "    AND A.GUBUN = '2' "
+                           "    AND A.BAL_DD = '" + date + "' "
+                           "    AND A.UPCODE = '" + str(upCode) + "'")
+            modalresult = cursor.fetchall()
 
-    return JsonResponse({"modalList": modalresult})
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                               "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+                               "    FROM OSBILL A "
+                               "    LEFT OUTER JOIN MIS1TB003 B "
+                               "    ON A.UP_CODE = B.CUST_NBR "
+                               "    WHERE A.AMTS >= A.PASS_AMT "
+                               "    AND A.GUBUN = '2' "
+                               "    AND A.UPCODE = '" + str(upCode) + "'"
+                               "    AND A.ACDATE = '" + str(date) + "'"
+                               "    AND A.ACSEQN = '" + str(seq) + "'")
+                modalform = cursor.fetchall()
+
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ")
+            cboCust = cursor.fetchall()
+        return JsonResponse({'modalList': modalresult, 'modalform': modalform, 'cboCust': cboCust})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+                           "    FROM OSBILL A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.UP_CODE = B.CUST_NBR "
+                           "    WHERE A.AMTS >= A.PASS_AMT "
+                           "    AND A.GUBUN = '2' "
+                           "    AND YEAR(A.BAL_DD ) = '" + str(year) + "' "
+                           "    AND MONTH(A.BAL_DD) = '" + str(month) + "' "
+                           "    AND A.UP_CODE LIKE '%" + str(upCode) + "%' ")
+            modalresult = cursor.fetchall()
+
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ")
+            cboCust = cursor.fetchall()
+
+            print(cboCust)
+
+        return JsonResponse({'modalList': modalresult, 'cboCust': cboCust})

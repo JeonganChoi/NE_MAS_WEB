@@ -76,56 +76,64 @@ def salesRegViews_save(request):
         amts = request.POST.get('txtAmts')
         remark = request.POST.get('txtRemark')
 
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO OSBILL "
-                           "   (    "
-                           "     GUBUN "
-                           ",    SERIAL_NUM "
-                           ",    BAL_DD "
-                           ",    UP_CODE "
-                           ",    ITEM "
-                           ",    QTY "
-                           ",    DANGA "
-                           ",    SUPPLY "
-                           ",    TAX "
-                           ",    AMTS "
-                           ",    REMARK "
-                           "    ) "
-                           "    VALUES "
-                           "    (   "
-                           "    '" + str(gubun) + "'"
-                           ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = '" + str(serial_num) + "' )"
-                           ",   '" + str(bal_dd) + "'"
-                           ",   '" + str(up_code) + "'"
-                           ",   '" + str(item) + "'"
-                           ",   '" + str(qty) + "'"
-                           ",   '" + str(danga) + "'"
-                           ",   '" + str(supply) + "'"
-                           ",   '" + str(tax) + "'"
-                           ",   '" + str(amts) + "'"
-                           ",   '" + str(remark) + "'"
-                           "    )   "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
-                           "     GUBUN = '" + str(gubun) + "' "
-                           ",    BAL_DD = '" + str(bal_dd) + "' "
-                           ",    UP_CODE = '" + str(up_code) + "' "
-                           ",    ITEM = '" + str(item) + "' "
-                           ",    QTY = '" + str(qty) + "' "
-                           ",    DANGA = '" + str(danga) + "' "
-                           ",    SUPPLY = '" + str(supply) + "' "
-                           ",    TAX = '" + str(tax) + "' "
-                           ",    AMTS = '" + str(amts) + "' "
-                           ",    REMARK = '" + str(remark) + "' "
-                           )
-            connection.commit()
+        if serial_num == '' and serial_num is None:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO OSBILL "
+                               "   (    "
+                               "     GUBUN "
+                               ",    SERIAL_NUM "
+                               ",    BAL_DD "
+                               ",    UP_CODE "
+                               ",    ITEM "
+                               ",    QTY "
+                               ",    DANGA "
+                               ",    SUPPLY "
+                               ",    TAX "
+                               ",    AMTS "
+                               ",    REMARK "
+                               "    ) "
+                               "    VALUES "
+                               "    (   "
+                               "    '" + str(gubun) + "'"
+                               ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = '" + str(serial_num) + "' )"
+                               ",   '" + str(bal_dd) + "'"
+                               ",   '" + str(up_code) + "'"
+                               ",   '" + str(item) + "'"
+                               ",   '" + str(qty) + "'"
+                               ",   '" + str(danga) + "'"
+                               ",   '" + str(supply) + "'"
+                               ",   '" + str(tax) + "'"
+                               ",   '" + str(amts) + "'"
+                               ",   '" + str(remark) + "'"
+                               "    )   "
+                               )
+                connection.commit()
 
+                messages.success(request, '저장 되었습니다.')
+                return render(request, 'finance/sales-reg.html')
+
+        elif serial_num:
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE OSBILL SET "
+                               "     GUBUN = '" + str(gubun) + "' "
+                               ",    BAL_DD = '" + str(bal_dd) + "' "
+                               ",    UP_CODE = '" + str(up_code) + "' "
+                               ",    ITEM = '" + str(item) + "' "
+                               ",    QTY = '" + str(qty) + "' "
+                               ",    DANGA = '" + str(danga) + "' "
+                               ",    SUPPLY = '" + str(supply) + "' "
+                               ",    TAX = '" + str(tax) + "' "
+                               ",    AMTS = '" + str(amts) + "' "
+                               ",    REMARK = '" + str(remark) + "' "
+                               "     WHERE SERIAL_NUM = '" + str(serial_num) + "' "
+                               )
+                connection.commit()
             messages.success(request, '저장 되었습니다.')
             return render(request, 'finance/sales-reg.html')
 
-    else:
-        messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/sales_reg')
+        else:
+            messages.warning(request, '입력 하신 정보를 확인 해주세요.')
+            return redirect('/sales_reg')
 
 
 def salesRegViews_dlt(request):
