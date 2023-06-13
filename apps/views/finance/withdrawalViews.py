@@ -39,7 +39,7 @@ def withRegViews_search(request):
                            "    ON A.ACIOGB = E.RESKEY "
                            "    AND E.RECODE = 'OUA' "
                            "    WHERE A.ACDATE = '" + str(date) + "'"
-                           "    AND A.ACIOGB = '2' "
+                           "    AND A.ACIOGB = '1' "
                            "    ORDER BY A.ACSEQN ")
             subresult = cursor.fetchall()
         return JsonResponse({"subList": subresult})
@@ -49,7 +49,7 @@ def withRegViews_search(request):
             cursor.execute(" SELECT IFNULL(ACDATE, ''), IFNULL(DAY(ACDATE), '') "
                            "    , IFNULL(SUM(ACAMTS), 0), IFNULL(ACIOGB, '') "
                            "    FROM SISACCTT  "
-                           "    WHERE ACIOGB = '2' "
+                           "    WHERE ACIOGB = '1' "
                            "    AND YEAR(ACDATE) = '" + str(year) + "' "
                            "    AND MONTH(ACDATE) = '" + str(month) + "' "
                            "    GROUP BY DAY(ACDATE) ")

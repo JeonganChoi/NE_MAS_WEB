@@ -25,7 +25,7 @@ def salesRegViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
                            "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
-                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.DESC, '')"
+                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.REMARK, '')"
                            "    , IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
                            "    FROM OSBILL A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
@@ -41,7 +41,7 @@ def salesRegViews_search(request):
 
         return JsonResponse({"modalList": modalresult, 'cboCust': cboCust})
 
-    else:
+    elif strDate and endDate:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
                            "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
@@ -61,6 +61,12 @@ def salesRegViews_search(request):
 
         return JsonResponse({"saleList": saleresult, 'cboCust': cboCust})
 
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ORDER BY CUST_NBR ")
+            cboCust = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust})
 
 def salesRegViews_save(request):
     if 'btnSave' in request.POST:
@@ -76,7 +82,7 @@ def salesRegViews_save(request):
         amts = request.POST.get('txtAmts')
         remark = request.POST.get('txtRemark')
 
-        if serial_num == '' and serial_num is None:
+        if serial_num == '':
             with connection.cursor() as cursor:
                 cursor.execute("INSERT INTO OSBILL "
                                "   (    "
@@ -95,7 +101,7 @@ def salesRegViews_save(request):
                                "    VALUES "
                                "    (   "
                                "    '" + str(gubun) + "'"
-                               ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = '" + str(serial_num) + "' )"
+                               ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = (SELECT A.SERIAL_NUM FROM OSBILL A ORDER BY A.SERIAL_NUM DESC LIMIT 1))"
                                ",   '" + str(bal_dd) + "'"
                                ",   '" + str(up_code) + "'"
                                ",   '" + str(item) + "'"
@@ -109,8 +115,8 @@ def salesRegViews_save(request):
                                )
                 connection.commit()
 
-                messages.success(request, '저장 되었습니다.')
-                return render(request, 'finance/sales-reg.html')
+            messages.success(request, '저장 되었습니다.')
+            return redirect('/sales_reg')
 
         elif serial_num:
             with connection.cursor() as cursor:
@@ -129,7 +135,7 @@ def salesRegViews_save(request):
                                )
                 connection.commit()
             messages.success(request, '저장 되었습니다.')
-            return render(request, 'finance/sales-reg.html')
+            return redirect('/sales_reg')
 
         else:
             messages.warning(request, '입력 하신 정보를 확인 해주세요.')

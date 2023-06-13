@@ -46,8 +46,8 @@
                                       data-bs-target="#buyModal"><i class="fas fa-plus me-2"></i>추가</button>
                               <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
                                       data-bs-target="#buyModal"><i class="fas fa-diamond me-2"></i>수정</button>-->
-                              <button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
-                                  <i class="fas fa-minus me-2"></i>삭제</button>
+                              <!--<button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
+                                  <i class="fas fa-minus me-2"></i>삭제</button>-->
                           </div>
                       </div>
                     </div>
@@ -55,7 +55,6 @@
                       <div class="p-3 table-responsive height-600 overflow-scroll">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
-                                <col width="2%">
                                 <col width="8%">
                                 <col width="15%">
                                 <col width="6%">
@@ -65,10 +64,10 @@
                                 <col width="6%">
                                 <col width="10%">
                                 <col width="4%">
+                                <col width="4%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">입고 일자</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">품 목</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">수 량</th>
@@ -77,7 +76,7 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">부가세</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">합 계</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">매입처</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2" colspan="2"></th>
                             </tr>
                           </thead>
                           <tbody id="buyMainTb">
@@ -199,7 +198,6 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#buyMainTb").append(
                             "<tr id='#buyMainTr' class='buyMainTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -210,7 +208,8 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1'><button type='button' id='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#buyModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnEdit' name='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#buyModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -242,7 +241,6 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#buyMainTb").append(
                             "<tr id='#buyMainTr' class='buyMainTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -253,7 +251,8 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1'><button type='button' id='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "'  class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#buyModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnEdit' name='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#buyModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -262,6 +261,35 @@
 
         {# 추가 버튼 #}
         $(document).on('click', "#btnAdd", function () {
+
+            var cboCust = "";
+            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
+
+            $("#cboCust").html("");
+
+            document.getElementById('txtDate').valueAsDate = new Date
+
+            $.ajax({
+                type: "post",
+                url: '{% url "purchase_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboCust) {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboCust").append(cboCustTxt);
+                }
+            })
 
             $('#buyModal').show();
 
@@ -347,7 +375,7 @@
             //체크가 1개라도 안되있을때
             let chk_count = $("input[name='chkBuy[]']").filter(":checked").length;
             if (chk_count < 1) {
-                alert('삭제하실 직원을 체크 해주세요.');
+                alert('삭제 하실 매입 전표를 체크 해 주세요.');
                 return false;
             }
 

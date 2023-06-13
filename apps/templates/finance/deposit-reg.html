@@ -86,7 +86,6 @@
                       <div class="p-3 table-responsive-sm">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
-                                <col width="2%">
                                 <col width="10%">
                                 <col width="15%">
                                 <col width="10%">
@@ -99,7 +98,6 @@
                             </colgroup>
                           <thead class="bg-danger-soft">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">거래처명</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계정 과목</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">결재 방법</th>
@@ -369,7 +367,6 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#depositSubTb").append(
                             "<tr id='#depositSubTr' class='depositSubTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkDep[]' name='chkDep[]' value='" + list[i][11] + "," + list[i][0] + "," + list[i][3] + "," + list[i][6] + "," + list[i][1] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
@@ -379,8 +376,8 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal' id='btnEdit' name='btnEdit'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal' id='btnEdit' name='btnEdit' main_code='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "' ><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt' name='btnDlt' value='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
 
@@ -442,18 +439,31 @@
         $(document).on('click', "#btnAdd", function () {
 
             var cboCust2 = "";
+            var cboDepGbn = "";
+            var cboDepCode = "";
+            var cboDepMethod = "";
+            var cboDepIssueCust = "";
             var cboCustTxt = "";
+            var cboDepGbnTxt = "";
+            var cboDepCodeTxt = "";
+            var cboDepMethodTxt = "<option value=''>:: 전체 ::</option>";
+            var cboDepIssueCustTxt = "";
 
             $("#cboDepCust").html("");
+            $("#cboDepGbn").html("");
+            $("#cboDepCode").html("");
+            $("#cboDepMethod").html("");
+            $("#cboDepIssueCust").html("");
 
             var year = document.getElementById("inputYear").value;
             var month = document.getElementById("inputMonth").value;
+            var custCode = document.getElementById("cboDepCust").value;
 
             if (month < 10) {
                 month = 0 + month
             }
 
-            let data = {"inputYear": year, "inputMonth": month}
+            let data = {"inputYear": year, "inputMonth": month, 'custCode': custCode}
 
             $.ajax({
                 type: "post",
@@ -490,7 +500,28 @@
                         }
                     }
 
+                    var combolist2 = data.cboGgn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboDepGbn) {
+                            cboDepGbnTxt = cboDepGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboDepGbnTxt = cboDepGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    console.log(combolist3)
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboDepMethod) {
+                            cboDepMethodTxt = cboDepMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboDepMethodTxt = cboDepMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboDepCust").append(cboCustTxt);
+                    $("#cboDepGbn").append(cboDepGbnTxt);
+                    $("#cboDepMethod").append(cboDepMethodTxt);
                 }
             })
 
@@ -501,15 +532,27 @@
         {# 수정 버튼 #}
         $(document).on('click', "#btnEdit", function () {
             var cboCust2 = "";
+            var cboDepGbn = "";
+            var cboDepCode = "";
+            var cboDepMethod = "";
+            var cboDepIssueCust = "";
             var cboCustTxt = "";
+            var cboDepGbnTxt = "";
+            var cboDepCodeTxt = "";
+            var cboDepMethodTxt = "<option value=''>:: 전체 ::</option>";
+            var cboDepIssueCustTxt = "";
 
             $("#cboDepCust").html("");
+            $("#cboDepGbn").html("");
+            $("#cboDepCode").html("");
+            $("#cboDepMethod").html("");
+            $("#cboDepIssueCust").html("");
 
             let serials = $(this).attr('main_code');
             var split = serials.split(',');
-            var custCode = split[0]
+            var custCode = split[2]
             var seq = split[1]
-            var date = split[1]
+            var date = split[0]
 
             let data = {"custCode": custCode, "seq": seq, "date": date}
 
@@ -528,38 +571,37 @@
                         for (var j = 0; j < 21; j++) {
                             console.log("===================" + j + ":::" + list2[i][j]);
                         }
-                        $("#txtDepSeq").val(list2[i][0])
-                        $("#txtDepRecn").val(list2[i][1])
-                        $("#txtDepRegDate").val(list2[i][2].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtItem").val(list2[i][3])
-                        $("#txtQty").val(list2[i][4])
-                        $("#txtDanga").val(list2[i][5])
-                        $("#txtSupply").val(list2[i][6])
-                        $("#txtVat").val(list2[i][7])
-                        $("#txtAmts").val(list2[i][8])
-                        $("#txtRemark").val(list2[i][9])
-                        cboCust2 = list2[i][10];
+                        $("#txtDepSeq").val(list2[i][1])
+                        $("#txtDepRecn").val(list2[i][2])
+                        $("#txtDepRegDate").val(list2[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtDepPrice").val(list2[i][7])
+                        {#$("#depEmpCount").val(list2[i][4])#}
+                        {#$("#txtDepCashNum").val(list2[i][5])#}
+                        {#$("#txtDepDeadline").val(list2[i][6].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))#}
+                        $("#txtDepRemark").val(list2[i][12])
+                        cboCust2 = list2[i][4];
+                        cboDepGbn = list2[i][3];
+                        cboDepCode = list2[i][11];
+                        cboDepMethod = list2[i][9];
+                        {#cboDepIssueCust = list2[i][10];#}
                     }
 
-
-                    var list = data.modalList;
-
-                    $("#modalBuyTb").html("");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#modalBuyTb").append(
-                            "<tr id='#modalBuyTr' class='modalBuyTr_tr' main_code='" + list[i][0] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "</tr> ");
-                    }
+                    {##}
+                    {#$("#modalBuyTb").html("");#}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    $("#modalBuyTb").append(#}
+                    {#        "<tr id='#modalBuyTr' class='modalBuyTr_tr'>" +#}
+                    {#        "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +#}
+                    {#        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +#}
+                    {#        "</tr> ");#}
+                    {#}#}
 
                     var combolist = data.cboCust;
-                    console.log(combolist)
                     for (var i = 0; i < combolist.length; i++) {
                         if (combolist[i][0] == cboCust2) {
                             cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
@@ -568,7 +610,28 @@
                         }
                     }
 
+                    var combolist2 = data.cboGgn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboDepGbn) {
+                            cboDepGbnTxt = cboDepGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboDepGbnTxt = cboDepGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    console.log(combolist3)
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboDepMethod) {
+                            cboDepMethodTxt = cboDepMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboDepMethodTxt = cboDepMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboDepCust").append(cboCustTxt);
+                    $("#cboDepGbn").append(cboDepGbnTxt);
+                    $("#cboDepMethod").append(cboDepMethodTxt);
                 }
             })
 

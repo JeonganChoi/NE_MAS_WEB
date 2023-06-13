@@ -39,7 +39,7 @@ def depositRegViews_search(request):
                            "    ON A.ACIOGB = E.RESKEY "
                            "    AND E.RECODE = 'OUA' "
                            "    WHERE A.ACDATE = '" + str(date) + "'"
-                           "    AND A.ACIOGB = '1' "
+                           "    AND A.ACIOGB = '2' "
                            "    ORDER BY A.ACSEQN ")
             subresult = cursor.fetchall()
         return JsonResponse({"subList": subresult})
@@ -49,7 +49,7 @@ def depositRegViews_search(request):
             cursor.execute(" SELECT IFNULL(ACDATE, ''), IFNULL(DAY(ACDATE), '') "
                            "    , IFNULL(SUM(ACAMTS), 0), IFNULL(ACIOGB, '') "
                            "    FROM SISACCTT  "
-                           "    WHERE ACIOGB = '1' "
+                           "    WHERE ACIOGB = '2' "
                            "    AND YEAR(ACDATE) = '" + str(year) + "' "
                            "    AND MONTH(ACDATE) = '" + str(month) + "' "
                            "    GROUP BY DAY(ACDATE) ")
@@ -169,34 +169,56 @@ def depositRegOutList_search(request):
     date = request.POST.get('date')
 
     if seq != '' and seq is not None:
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+        #                    "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+        #                    "    FROM OSBILL A "
+        #                    "    LEFT OUTER JOIN MIS1TB003 B "
+        #                    "    ON A.UP_CODE = B.CUST_NBR "
+        #                    "    WHERE A.AMTS >= A.PASS_AMT "
+        #                    "    AND A.GUBUN = '2' "
+        #                    "    AND A.BAL_DD = '" + date + "' "
+        #                    "    AND A.UP_CODE LIKE '%" + str(upCode) + "%' "
+        #                    "    AND A.SERIAL_NUM = '" + str(seq) + "' ")
+        #     modalresult = cursor.fetchall()
+
+        # 날짜, 순번, 입출금구분, 거래처, 금액, 계좌번호, 결제구분, 계정구분, 비고
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
-                           "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
-                           "    FROM OSBILL A "
-                           "    LEFT OUTER JOIN MIS1TB003 B "
-                           "    ON A.UP_CODE = B.CUST_NBR "
-                           "    WHERE A.AMTS >= A.PASS_AMT "
-                           "    AND A.GUBUN = '2' "
-                           "    AND A.BAL_DD = '" + date + "' "
-                           "    AND A.UPCODE = '" + str(upCode) + "'")
-            modalresult = cursor.fetchall()
+            cursor.execute(" SELECT IFNULL(A.ACDATE, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACRECN, ''), IFNULL(A.ACIOGB, '')"
+                           "    , IFNULL(B.RESNAM, ''), IFNULL(A.ACCUST, ''), IFNULL(D.CUST_NME, '')"
+                           "    , IFNULL(A.ACAMTS, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACGUBN, '')"
+                           "    , IFNULL(C.RESNAM, ''), IFNULL(A.ACCODE, ''), IFNULL(A.ACDESC, '') "
+                           "    FROM SISACCTT A"
+                           "    LEFT OUTER JOIN OSREFCP B "
+                           "    ON A.ACIOGB = B.RESKEY "
+                           "    AND B.RECODE = 'OUA' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.ACIOGB = C.RESKEY "
+                           "    LEFT OUTER JOIN MIS1TB003 D "
+                           "    ON A.ACCUST = D.CUST_NBR "
+                           "    WHERE A.ACIOGB = '2' "
+                           "    AND A.ACCUST = '" + str(upCode) + "'"
+                           "    AND A.ACDATE = '" + str(date) + "'"
+                           "    AND A.ACSEQN = '" + str(seq) + "'")
+            modalform = cursor.fetchall()
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
-                               "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
-                               "    FROM OSBILL A "
-                               "    LEFT OUTER JOIN MIS1TB003 B "
-                               "    ON A.UP_CODE = B.CUST_NBR "
-                               "    WHERE A.AMTS >= A.PASS_AMT "
-                               "    AND A.GUBUN = '2' "
-                               "    AND A.UPCODE = '" + str(upCode) + "'"
-                               "    AND A.ACDATE = '" + str(date) + "'"
-                               "    AND A.ACSEQN = '" + str(seq) + "'")
-                modalform = cursor.fetchall()
-
+        # 거래처
+        with connection.cursor() as cursor:
             cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ")
             cboCust = cursor.fetchall()
-        return JsonResponse({'modalList': modalresult, 'modalform': modalform, 'cboCust': cboCust})
+
+        # 입출금구분
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '2' ORDER BY RESNAM ")
+            cboGgn = cursor.fetchall()
+
+        # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
+            cboPay = cursor.fetchall()
+
+        return JsonResponse({'modalform': modalform
+                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboPay': cboPay})
 
     else:
         with connection.cursor() as cursor:
@@ -212,9 +234,19 @@ def depositRegOutList_search(request):
                            "    AND A.UP_CODE LIKE '%" + str(upCode) + "%' ")
             modalresult = cursor.fetchall()
 
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ")
-            cboCust = cursor.fetchall()
+            # 거래처
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '2' ")
+                cboCust = cursor.fetchall()
 
-            print(cboCust)
+            # 입출금구분
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '2' ORDER BY RESNAM ")
+                cboGgn = cursor.fetchall()
 
-        return JsonResponse({'modalList': modalresult, 'cboCust': cboCust})
+            # 결제방법
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
+                cboPay = cursor.fetchall()
+
+        return JsonResponse({'modalList': modalresult, 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboPay': cboPay})

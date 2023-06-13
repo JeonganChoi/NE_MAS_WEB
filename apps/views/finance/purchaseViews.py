@@ -40,7 +40,7 @@ def purchaseRegViews_search(request):
 
         return JsonResponse({"modalList": modalresult, 'cboCust': cboCust})
 
-    else:
+    elif strDate and endDate:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
                            "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
@@ -69,6 +69,12 @@ def purchaseRegViews_search(request):
 
         return JsonResponse({"buyList": buyresult, 'cboCust': cboCust})
 
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
+            cboCust = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust})
 
 
 def purchaseRegViews_save(request):
@@ -85,7 +91,7 @@ def purchaseRegViews_save(request):
         amts = request.POST.get('txtAmts')
         remark = request.POST.get('txtRemark')
 
-        if serial_num == '' and serial_num is None:
+        if serial_num == '':
             with connection.cursor() as cursor:
                 cursor.execute(" INSERT INTO OSBILL "
                                "   (    "
@@ -118,8 +124,8 @@ def purchaseRegViews_save(request):
                                )
                 connection.commit()
 
-                messages.success(request, '저장 되었습니다.')
-                return render(request, 'finance/purchases-reg.html')
+            messages.success(request, '저장 되었습니다.')
+            return redirect('/purchase_reg')
 
         elif serial_num:
             with connection.cursor() as cursor:
@@ -138,7 +144,7 @@ def purchaseRegViews_save(request):
                                )
 
             messages.success(request, '수정 되었습니다.')
-            return render(request, 'finance/purchases-reg.html')
+            return redirect('/purchase_reg')
 
         else:
             messages.warning(request, '입력 하신 정보를 확인 해주세요.')
@@ -161,3 +167,6 @@ def purchaseRegViews_dlt(request):
 
     else:
         return render(request, 'finance/purchase-reg.html')
+
+
+
