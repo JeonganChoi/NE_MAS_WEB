@@ -64,7 +64,7 @@ def depositRegViews_search(request):
 
 def depositRegViews_save(request):
     if 'btnSave' in request.POST:
-        acDate = request.POST.get("txtDepRegDate")      # 등록일자
+        acDate = request.POST.get("txtDepRegDate").replace('-', '')     # 등록일자
         acSeqn = request.POST.get("txtDepSeq")           # 순번
         acRecn = '1' # 행
         acCust = request.POST.get("cboDepCust")     # 거래처
@@ -74,16 +74,25 @@ def depositRegViews_save(request):
         acAcnumber = request.POST.get("cboDepActNum")     # 계좌번호
         acGubn = request.POST.get("cboDepMethod")     # 결제방법
         acDesc = request.POST.get("txtDepRemark")     # 비고
-        acIuser = request.session['userid']
+        acbunho = request.POST.get("txtWitCashNum")     # 어음번호
+        acguno_dt = request.POST.get("txtWitCashNum")     # 만기일자
+        acIuser = '101'
         acIdate = acDate.replace('-', '')
-        acUuser = request.session['userid']
+        acUuser = '101'
 
-        if acSeqn == '' and acSeqn is None:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
+            result = cursor.fetchall()  # 계좌 은행
+
+            bnk = result[0][0]
+
+        if acSeqn == '' or acSeqn is None:
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO SISACCTT "
+                cursor.execute(" INSERT INTO SISACCTT "
                                "   (    "
                                "     ACDATE "
                                ",    ACSEQN "
+                               ",    ACIOGB "
                                ",    ACCUST "
                                ",    ACGUBN "
                                ",    ACCODE "
@@ -93,11 +102,15 @@ def depositRegViews_save(request):
                                ",    ACDESC "
                                ",    IUSER "
                                ",    IDATE "
+                               ",    ACBUNHO "
+                               ",    ACGUNO_DT "
+                               ",    ACGUNO_BK "
                                "    ) "
                                "    VALUES "
                                "    (   "
                                "    '" + str(acDate).replace('-', '') + "'"
                                ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "')"
+                               ",   '2'"
                                ",   '" + str(acCust) + "'"
                                ",   '" + str(acGubn) + "'"
                                ",   '" + str(acCode) + "'"
@@ -107,6 +120,9 @@ def depositRegViews_save(request):
                                ",   '" + str(acDesc) + "'"
                                ",   '" + str(acIuser) + "'"
                                ",   '" + str(acIdate) + "'"
+                               ",   '" + str(acbunho) + "'"
+                               ",   '" + str(acguno_dt) + "'"
+                               ",   '" + str(bnk) + "'"
                                "    )   "
                                )
                 connection.commit()
@@ -124,6 +140,9 @@ def depositRegViews_save(request):
                                ",    ACACNUMBER = '" + str(acAcnumber) + "' "
                                ",    ACRECN = '" + str(acRecn) + "' "
                                ",    ACDESC = '" + str(acDesc) + "' "
+                               ",    ACBUNHO = '" + str(acbunho) + "' "
+                               ",    ACGUNO_DT = '" + str(acguno_dt) + "' "
+                               ",    ACGUNO_BK = '" + str(bnk) + "' "
                                ",    UUSER = '" + str(acUuser) + "' "
                                ",    UDATE = date_format(now(), '%Y%m%d') "
                                "     WHERE ACDATE = '" + str(acDate) + "' "
@@ -146,24 +165,34 @@ def depositRegViews_save(request):
 
 def depositRegViews_dlt(request):
     if request.method == "POST":
-        dataList = json.loads(request.POST.get('arrList'))
-        print(dataList)
-        for dep in dataList:
-            acc_split_list = dep.split(',')
-            with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM SISACCTT WHERE ACDATE = '" + acc_split_list[0] + "' "
-                               "                        AND ACSEQN = '" + acc_split_list[1] + "' "
-                               "                        AND ACRECN = '" + acc_split_list[2] + "' "
-                               "                        AND ACIOGB = '" + acc_split_list[3] + "' "
-                               "                        AND ACCUST = '" + acc_split_list[4] + "' ")
-                connection.commit()
+        date = request.POST.get("date")
+        seq = request.POST.get("seq")
+        custCode = request.POST.get("custCode")
+        iogb = request.POST.get("iogb")
+
+        with connection.cursor() as cursor:
+            cursor.execute(" DELETE FROM SISACCTT WHERE ACDATE = '" + date+ "' "
+                           "                        AND ACSEQN = '" + seq + "' "
+                           "                        AND ACIOGB = '" + iogb + "' "
+                           "                        AND ACCUST = '" + custCode + "' ")
+            connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 
     else:
         return render(request, 'finance/deposit-reg.html')
 
-
+        # dataList = json.loads(request.POST.get('arrList'))
+        # print(dataList)
+        # for dep in dataList:
+        #     acc_split_list = dep.split(',')
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" DELETE FROM SISACCTT WHERE ACDATE = '" + acc_split_list[0] + "' "
+        #                        "                        AND ACSEQN = '" + acc_split_list[1] + "' "
+        #                        "                        AND ACRECN = '" + acc_split_list[2] + "' "
+        #                        "                        AND ACIOGB = '" + acc_split_list[3] + "' "
+        #                        "                        AND ACCUST = '" + acc_split_list[4] + "' ")
+        #         connection.commit()
 
 
 # 모달 조회
@@ -237,8 +266,13 @@ def depositRegOutList_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
             cboPay = cursor.fetchall()
 
+        # 계좌번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cboAcnumber = cursor.fetchall()
+
         return JsonResponse({'modalform': modalform
-                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay})
+                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
 
     else:
         # with connection.cursor() as cursor:
@@ -274,4 +308,9 @@ def depositRegOutList_search(request):
                 cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
                 cboPay = cursor.fetchall()
 
-            return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay})
+            # 계좌번호
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+                cboAcnumber = cursor.fetchall()
+
+            return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})

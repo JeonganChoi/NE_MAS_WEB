@@ -57,10 +57,6 @@
                             <tr id="depositMainTr" class="depositMainTr_tr">
 
                             </tr>
-                            <tr class="bg-light depositTotalMainTr_tr" id="depositTotalMainTr">
-                                <td class="text-end p-1" style="font-size: 0.85rem">합계</td>
-                                <td class="text-end p-1" style="font-size: 0.85rem">0</td>
-                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -112,10 +108,6 @@
                             <tr id="depositSubTr" class="depositSubTr_tr">
 
                             </tr>
-                          <tr class="bg-light depositTotalSubTr_tr" id="depositTotalSubTr">
-                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="2">합계</td>
-                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="7">0</td>
-                          </tr>
                           </tbody>
                         </table>
                       </div>
@@ -131,6 +123,8 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 50vw">
         <div class="modal-content">
+          <form method="post" action="{% url 'deposit_reg_save' %}">
+              {% csrf_token %}
           <div class="modal-header bg-gradient-info">
             <h4 class="modal-title text-white font-weight-bolder" id="exampleModalLabel"><i class="fas fa-credit-card me-3"></i>입금 등록</h4>
             <button type="button" class="btn-close text-lg text-dark" data-bs-dismiss="modal" aria-label="Close">
@@ -138,7 +132,6 @@
             </button>
           </div>
           <div class="modal-body">
-              <form method="post" action="{% url 'deposit_reg_save' %}">
                   <div class="row">
                       <div class="col-1"></div>
                       <div class="col-10">
@@ -171,11 +164,11 @@
                               <div class="row">
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
-                                      <input class="form-control text-end" type="number" id="txtDepPrice" name="txtDepPrice"/>
+                                      <input class="form-control text-end" type="text" id="txtDepPrice" name="txtDepPrice"/>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
-                                      <input class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum">
+                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum"></select>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
@@ -206,7 +199,7 @@
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
                                       <input class="form-control text-center" type="date" id="txtDepDeadline" name="txtDepDeadline"/>
                                   </div>
-                              </div>자
+                              </div>
                               <div class="row">
                                   <div class="col-8">
                                       <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
@@ -250,12 +243,12 @@
                           </div>
                       </div>-->
                   </div>
-              </form>
           </div>
           <div class="modal-footer">
             <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave" name="btnSave">저 장</button>
             <button type="button" class="m-1 btn btn-secondary text-lg" data-bs-dismiss="modal">닫 기</button>
           </div>
+          </form>
         </div>
       </div>
     </div>
@@ -269,12 +262,12 @@
         $(document).ready(function () {
             date = new Date();
             var year = date.getFullYear();
-            var month = date.getMonth();
+            var month = (date.getMonth()+1);
 
             document.getElementById("inputYear").value = year;
             document.getElementById("inputMonth").value = month;
 
-            let data = {"inputYear": year, "inputyear": year}
+            let data = {"inputYear": year, "inputMonth": month}
 
             $.ajax({
                 type: "post",
@@ -286,6 +279,7 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
+
                     $("#depositMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#depositMainTb").append(
@@ -294,13 +288,16 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "</tr> ");
+
+                        var mainTotalPrc =+ list[i][2];
                     }
-                    $("#depositMainTb").append(
-                        "<tr id='#depositTotalMainTr' class='depositTotalMainTr_tr' main_code='" + list[i][0] + "'>" +
-                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                        "</tr> ");
+                    if(mainTotalPrc) {
+                        $("#depositMainTb").append(
+                            "<tr id='#depositTotalMainTr' class='depositTotalMainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; background-color: lightpink'>합 계</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>" + mainTotalPrc + "</td> " +
+                            "</tr> ");
+                    }
                 }
             })
         });
@@ -337,6 +334,7 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
+
                     $("#depositMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#depositMainTb").append(
@@ -345,14 +343,15 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "</tr> ");
+                        var mainTotalPrc =+ list[i][2]
                     }
-                    $("#depositMainTb").append(
-                        "<tr id='#depositTotalMainTr' class='depositTotalMainTr_tr' main_code='" + list[i][0] + "'>" +
-                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                        "</tr> ");
-
+                    if(mainTotalPrc) {
+                        $("#depositMainTb").append(
+                            "<tr id='#depositTotalMainTr' class='depositTotalMainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; background-color: lightpink'>합 계</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>" + mainTotalPrc + "</td> " +
+                            "</tr> ");
+                    }
                 }
             })
         });
@@ -389,17 +388,19 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal' id='btnEdit' name='btnEdit' main_code='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "' ><i class='fas fa-diamond me-2'></i>수정</button></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt' name='btnDlt' value='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal' id='btnEdit' name='btnEdit' main_code='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt' name='btnDlt' dlt_code='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "," + list[i][6] + "'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
+                            "</tr> ");
+
+                        var subTotalPrc =+ list[i][10];
+                    }
+                    if(subTotalPrc) {
+                        $("#depositSubTb").append(
+                            "<tr id='#depositSubTr' class='depositSubTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; background-color: lightpink' colspan='2'>합 계</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink' colspan='7'>" + subTotalPrc + "</td>" +
                             "</tr> ");
                     }
-
-                    $("#depositSubTb").append(
-                        "<tr id='#depositSubTr' class='depositSubTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem' colspan='2'>합계</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem' colspan='7'>" + list[i][0] + "</td>" +
-                        "</tr> ");
-
                 }
             })
 
@@ -415,14 +416,15 @@
         {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
-            var chk_cust_id_arr = [];
-            $('input[name="chkDep[]"]:checked').each(function (i) {
-                chk_cust_id_arr.push($(this).val());
-            })
+            {#11,0,1,6#}
+            let dlts = $(this).attr('dlt_code');
+            var split = dlts.split(',');
+            var date = split[0]
+            var seq = split[1]
+            var custCode = split[2]
+            var iogb = split[3]
 
-            //체크가 1개라도 안되있을때
-            let chk_count = $("input[name='chkDep[]']").filter(":checked").length;
-            if (chk_count < 1) {
+            if (split.length < 1) {
                 alert('삭제 하실 입금 전표를 체크 해 주세요.');
                 return false;
             }
@@ -430,15 +432,15 @@
             //체크 한 거래처 삭제
             var result = confirm("삭제하시겠습니까?")
 
+            let data = {'date': date, 'seq': seq, 'custCode': custCode, 'iogb': iogb}
+
             if (result) {
-                if (chk_cust_id_arr.length > 0)
+                if (split.length > 0)
 
                     $.ajax({
                         type: "post",
                         async: false,
-                        data: {
-                            'arrList': JSON.stringify(chk_cust_id_arr),
-                        },
+                        data: data,
                         dataType: "json",
                         url: '{% url "deposit_reg_dlt" %}',
                         headers: {
@@ -461,56 +463,39 @@
             var cboDepGbn = "";
             var cboDepCode = "";
             var cboDepMethod = "";
+            var cboDepActNum = "";
             var cboDepIssueCust = "";
-            var cboCustTxt = "";
+            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
             var cboDepGbnTxt = "";
-            var cboDepCodeTxt = "";
+            var cboDepCodeTxt = "<option value=''>:: 전체 ::</option>";
             var cboDepMethodTxt = "<option value=''>:: 전체 ::</option>";
+            var cboDepActNumTxt = "<option value=''>:: 전체 ::</option>";
             var cboDepIssueCustTxt = "";
 
             $("#cboDepCust").html("");
             $("#cboDepGbn").html("");
             $("#cboDepCode").html("");
             $("#cboDepMethod").html("");
+            $("#cboDepActNum").html("");
             $("#cboDepIssueCust").html("");
+            $("#txtDepRegDate").val("");
+            $("#txtDepSeq").val("");
+            $("#txtDepRecn").val("");
+            $("#txtDepPrice").val("");
+            $("#txtDepCashNum").val("");
+            $("#txtDepRemark").val("");
 
             document.getElementById('txtDepRegDate').valueAsDate = new Date
             document.getElementById('txtDepDeadline').valueAsDate = new Date
 
-            var year = document.getElementById("inputYear").value;
-            var month = document.getElementById("inputMonth").value;
-            var custCode = document.getElementById("cboDepCust").value;
-
-            if (month < 10) {
-                month = 0 + month
-            }
-
-            let data = {"inputYear": year, "inputMonth": month, 'custCode': custCode}
-
             $.ajax({
                 type: "post",
-                data: data,
                 url: '{% url "deposit_reg_out" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.modalList;
-
-                    $("#modalBuyTb").html("");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#modalBuyTb").append(
-                            "<tr id='#modalBuyTr' class='modalBuyTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][5] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "</tr> ");
-                    }
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
@@ -548,10 +533,20 @@
                         }
                     }
 
+                    var combolist5 = data.cboAcnumber;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboDepActNum) {
+                            cboDepActNumTxt = cboDepActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                        } else {
+                            cboDepActNumTxt = cboDepActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                        }
+                    }
+
                     $("#cboDepCust").append(cboCustTxt);
                     $("#cboDepGbn").append(cboDepGbnTxt);
                     $("#cboDepMethod").append(cboDepMethodTxt);
-                    $("#cboDepCode").append(cboDepMethodTxt);
+                    $("#cboDepCode").append(cboDepCodeTxt);
+                    $("#cboDepActNum").append(cboDepActNumTxt);
                 }
             })
 
@@ -566,17 +561,20 @@
             var cboDepGbn = "";
             var cboDepCode = "";
             var cboDepMethod = "";
+            var cboDepActNum = "";
             var cboDepIssueCust = "";
-            var cboCustTxt = "";
+            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
             var cboDepGbnTxt = "";
-            var cboDepCodeTxt = "";
+            var cboDepCodeTxt = "<option value=''>:: 전체 ::</option>";
             var cboDepMethodTxt = "<option value=''>:: 전체 ::</option>";
+            var cboDepActNumTxt = "<option value=''>:: 전체 ::</option>";
             var cboDepIssueCustTxt = "";
 
             $("#cboDepCust").html("");
             $("#cboDepGbn").html("");
             $("#cboDepCode").html("");
             $("#cboDepMethod").html("");
+            $("#cboDepActNum").html("");
             $("#cboDepIssueCust").html("");
 
             let serials = $(this).attr('main_code');
@@ -614,6 +612,7 @@
                         cboDepGbn = list2[i][4];
                         cboDepCode = list2[i][8];
                         cboDepMethod = list2[i][6];
+                        cboDepActNum = list2[i][12]
                         {#cboDepIssueCust = list2[i][10];#}
                     }
 
@@ -654,10 +653,20 @@
                         }
                     }
 
+                    var combolist5 = data.cboAcnumber;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboDepActNum) {
+                            cboDepActNumTxt = cboDepActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                        } else {
+                            cboDepActNumTxt = cboDepActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                        }
+                    }
+
                     $("#cboDepCust").append(cboCustTxt);
                     $("#cboDepGbn").append(cboDepGbnTxt);
                     $("#cboDepCode").append(cboDepCodeTxt);
                     $("#cboDepMethod").append(cboDepMethodTxt);
+                    $("#cboDepActNum").append(cboDepActNumTxt);
                 }
             })
 

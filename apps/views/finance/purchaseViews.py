@@ -158,15 +158,15 @@ def purchaseRegViews_save(request):
 
 def purchaseRegViews_dlt(request):
     if request.method == "POST":
-        dataList = json.loads(request.POST.get('arrList'))
-        print(dataList)
-        for buy in dataList:
-            acc_split_list = buy.split(',')
-            with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSBILL WHERE SERIAL_NUM = '" + acc_split_list[0] + "' "
-                               "                    AND GUBUN = '" + acc_split_list[1] + "' "
-                               "                    AND BAL_DD = '" + acc_split_list[2] + "'")
-                connection.commit()
+        serial = request.POST.get("serial")
+        gubun = request.POST.get("gubun")
+        date = request.POST.get("date")
+
+        with connection.cursor() as cursor:
+            cursor.execute(" DELETE FROM OSBILL WHERE SERIAL_NUM = '" + serial + "' "
+                           "                        AND GUBUN = '" + gubun + "' "
+                           "                        AND BAL_DD = '" + date + "' ")
+            connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 

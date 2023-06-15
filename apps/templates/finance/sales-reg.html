@@ -213,7 +213,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1'><button type='button' id='btnEdit' name='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
-                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' value='" + list[i][0] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' dlt_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -256,7 +256,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1'><button type='button' id='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
-                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' dlt_code='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -270,6 +270,15 @@
             var cboCustTxt = "<option value=''>:: 전체 ::</option>";
 
             $("#cboCust").html("");
+            $("#txtItem").val("");
+            $("#txtGubun").val("");
+            $("#txtSerial").val("");
+            $("#txtQty").val("");
+            $("#txtDanga").val("");
+            $("#txtSupply").val("");
+            $("#txtVat").val("");
+            $("#txtAmts").val("");
+            $("#txtRemark").val("");
 
             document.getElementById('txtDate').valueAsDate = new Date
 
@@ -370,30 +379,30 @@
         {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
-            var chk_cust_id_arr = [];
-            $('input[name="chkSale[]"]:checked').each(function (i) {
-                chk_cust_id_arr.push($(this).val());
-            })
+            {#0,1,2#}
+            let dlts = $(this).attr('dlt_code');
+            var split = dlts.split(',');
+            var serial = split[0]
+            var gubun = split[1]
+            var date = split[2]
 
-            //체크가 1개라도 안되있을때
-            let chk_count = $("input[name='chkSale[]']").filter(":checked").length;
-            if (chk_count < 1) {
-                alert('삭제하실 직원을 체크 해주세요.');
+            if (split.length < 1) {
+                alert('삭제 하실 입금 전표를 체크 해 주세요.');
                 return false;
             }
 
             //체크 한 거래처 삭제
             var result = confirm("삭제하시겠습니까?")
 
+            let data = {'serial': serial, 'gubun': gubun, 'date': date}
+
             if (result) {
-                if (chk_cust_id_arr.length > 0)
+                if (split.length > 0)
 
                     $.ajax({
                         type: "post",
                         async: false,
-                        data: {
-                            'arrList': JSON.stringify(chk_cust_id_arr),
-                        },
+                        data: data,
                         dataType: "json",
                         url: '{% url "sales_reg_dlt" %}',
                         headers: {
