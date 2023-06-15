@@ -26,6 +26,7 @@ def depositRegViews_search(request):
                            "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
                            "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.ACCODE,''), IFNULL(D.RESNAM, '') "
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'')"
+                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -34,10 +35,13 @@ def depositRegViews_search(request):
                            "    AND C.RECODE = 'OUB' "
                            "    LEFT OUTER JOIN OSREFCP D "
                            "    ON A.ACCODE = D.RESKEY "
-                           "    AND D.RECODE = 'BNK' "
+                           "    AND D.RECODE = 'ACC' "
                            "    LEFT OUTER JOIN OSREFCP E "
                            "    ON A.ACIOGB = E.RESKEY "
                            "    AND E.RECODE = 'OUA' "
+                           "    LEFT OUTER JOIN OSREFCP F "
+                           "    ON A.ACGUNO_BK = F.RESKEY "
+                           "    AND F.RECODE = 'BNK' "
                            "    WHERE A.ACDATE = '" + str(date) + "'"
                            "    AND A.ACIOGB = '2' "
                            "    ORDER BY A.ACSEQN ")
@@ -108,7 +112,7 @@ def depositRegViews_save(request):
                 connection.commit()
 
             messages.success(request, '저장 되었습니다.')
-            return render(request, 'finance/deposit-reg.html')
+            return redirect('/deposit_reg')
 
         elif acSeqn:
             with connection.cursor() as cursor:
@@ -129,12 +133,14 @@ def depositRegViews_save(request):
                 connection.commit()
 
             messages.success(request, '수정 되었습니다.')
-            return render(request, 'finance/deposit-reg.html')
-
+            return redirect('/deposit_reg')
 
     else:
         messages.warning(request, '입력 하신 정보를 확인 해주세요.')
         return redirect('/deposit_reg')
+
+    return render(request, 'finance/deposit-reg.html')
+
 
 
 
@@ -182,20 +188,29 @@ def depositRegOutList_search(request):
         #                    "    AND A.SERIAL_NUM = '" + str(seq) + "' ")
         #     modalresult = cursor.fetchall()
 
-        # 날짜, 순번, 입출금구분, 거래처, 금액, 계좌번호, 결제구분, 계정구분, 비고
+        # 순번, 거래처, 거래처명, 행번, 입/출금구분, 결제발벙, 계정과목, 금액, 등록일자, 계좌번호, 은행번호, 어음번호, 어음만료일, 비고
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.ACDATE, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACRECN, ''), IFNULL(A.ACIOGB, '')"
-                           "    , IFNULL(B.RESNAM, ''), IFNULL(A.ACCUST, ''), IFNULL(D.CUST_NME, '')"
-                           "    , IFNULL(A.ACAMTS, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACGUBN, '')"
-                           "    , IFNULL(C.RESNAM, ''), IFNULL(A.ACCODE, ''), IFNULL(A.ACDESC, '') "
-                           "    FROM SISACCTT A"
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.ACIOGB = B.RESKEY "
-                           "    AND B.RECODE = 'OUA' "
+            cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
+                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.ACCODE,''), IFNULL(D.RESNAM, '') "
+                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'')"
+                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
+                           "    , IFNULL(A.ACDESC,'') "
+                           "    FROM SISACCTT A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.ACCUST = B.CUST_NBR "
                            "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.ACIOGB = C.RESKEY "
-                           "    LEFT OUTER JOIN MIS1TB003 D "
-                           "    ON A.ACCUST = D.CUST_NBR "
+                           "    ON A.ACGUBN = C.RESKEY "
+                           "    AND C.RECODE = 'OUB' "
+                           "    LEFT OUTER JOIN OSREFCP D "
+                           "    ON A.ACCODE = D.RESKEY "
+                           "    AND D.RECODE = 'ACC' "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACIOGB = E.RESKEY "
+                           "    AND E.RECODE = 'OUA' "
+                           "    LEFT OUTER JOIN OSREFCP F "
+                           "    ON A.ACGUNO_BK = F.RESKEY "
+                           "    AND F.RECODE = 'BNK' "
                            "    WHERE A.ACIOGB = '2' "
                            "    AND A.ACCUST = '" + str(upCode) + "'"
                            "    AND A.ACDATE = '" + str(date) + "'"
@@ -212,27 +227,32 @@ def depositRegOutList_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '2' ORDER BY RESNAM ")
             cboGgn = cursor.fetchall()
 
+        # 계정과목
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACC' ORDER BY RESNAM ")
+            cboAcc = cursor.fetchall()
+
         # 결제방법
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
             cboPay = cursor.fetchall()
 
         return JsonResponse({'modalform': modalform
-                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboPay': cboPay})
+                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay})
 
     else:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
-                           "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
-                           "    FROM OSBILL A "
-                           "    LEFT OUTER JOIN MIS1TB003 B "
-                           "    ON A.UP_CODE = B.CUST_NBR "
-                           "    WHERE A.AMTS >= A.PASS_AMT "
-                           "    AND A.GUBUN = '2' "
-                           "    AND YEAR(A.BAL_DD ) = '" + str(year) + "' "
-                           "    AND MONTH(A.BAL_DD) = '" + str(month) + "' "
-                           "    AND A.UP_CODE LIKE '%" + str(upCode) + "%' ")
-            modalresult = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+        #                    "    , IFNULL(A.ITEM, ''), IFNULL(A.AMTS, 0), IFNULL(A.PASS_AMT, 0) "
+        #                    "    FROM OSBILL A "
+        #                    "    LEFT OUTER JOIN MIS1TB003 B "
+        #                    "    ON A.UP_CODE = B.CUST_NBR "
+        #                    "    WHERE A.AMTS >= A.PASS_AMT "
+        #                    "    AND A.GUBUN = '2' "
+        #                    "    AND YEAR(A.BAL_DD ) = '" + str(year) + "' "
+        #                    "    AND MONTH(A.BAL_DD) = '" + str(month) + "' "
+        #                    "    AND A.UP_CODE LIKE '%" + str(upCode) + "%' ")
+        #     modalresult = cursor.fetchall()
 
             # 거래처
             with connection.cursor() as cursor:
@@ -244,9 +264,14 @@ def depositRegOutList_search(request):
                 cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '2' ORDER BY RESNAM ")
                 cboGgn = cursor.fetchall()
 
+            # 계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACC' ORDER BY RESNAM ")
+                cboAcc = cursor.fetchall()
+
             # 결제방법
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
                 cboPay = cursor.fetchall()
 
-        return JsonResponse({'modalList': modalresult, 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboPay': cboPay})
+            return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay})

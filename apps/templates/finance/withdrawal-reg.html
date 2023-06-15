@@ -57,9 +57,9 @@
                             <tr id="withMainTr" class="withMainTr_tr">
 
                             </tr>
-                            <tr class="bg-light">
-                                <td class="text-end p-1" style="font-size: 0.85rem">합계</td>
-                                <td class="text-end p-1" style="font-size: 0.85rem">0</td>
+                            <tr id="withTotalMainTr" class="withTotalMainTr_tr">
+                                <td class="text-end p-1" style="font-size: 0.85rem; background-color: lightpink">합계</td>
+                                <td class="text-end p-1" style="font-size: 0.85rem; background-color: lightpink">0</td>
                             </tr>
                           </tbody>
                         </table>
@@ -73,7 +73,7 @@
                         <div class="row">
                           <div class="p-3 col-lg-4 mt-lg-0"></div>
                           <div class="p-3 col-lg-8 mt-lg-0 text-end">
-                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                              <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" id="btnAdd" name="btnAdd"
                                       data-bs-target="#withModal"><i class="fas fa-plus me-2"></i>추가</button>
                               <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
                                       data-bs-target="#withModal"><i class="fas fa-diamond me-2" id="btnAdd"></i>수정</button>-->
@@ -86,20 +86,18 @@
                       <div class="p-3 table-responsive-sm">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
-                                <col width="2%">
                                 <col width="10%">
-                                <col width="15%">
+                                <col width="10%">
                                 <col width="10%">
                                 <col width="8%">
+                                <col width="10%">
+                                <col width="10%">
                                 <col width="8%">
-                                <col width="6%">
-                                <col width="20%">
                                 <col width="2%">
                                 <col width="2%">
                             </colgroup>
                           <thead class="bg-danger-soft">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">거래처명</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계정 과목</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">결재 방법</th>
@@ -107,17 +105,16 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">발행 은행</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">어음 번호</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2" colspan="2"></th>
                             </tr>
                           </thead>
                           <tbody id="withSubTb">
                             <tr id="withSubTr" class="withSubTr_tr">
 
                             </tr>
-                          <tr class="bg-light">
-                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="2">합계</td>
-                              <td class="text-end p-1" style="font-size: 0.85rem" colspan="6">0</td>
+                          <tr id="withTotalSubTr" class="withTotalSubTr_tr">
+                              <td class="text-end p-1" style="font-size: 0.85rem; background-color: lightpink" colspan="2">합계</td>
+                              <td class="text-end p-1" style="font-size: 0.85rem; background-color: lightpink" colspan="7">0</td>
                           </tr>
                           </tbody>
                         </table>
@@ -132,7 +129,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="withModal" tabindex="-1" role="dialog" aria-labelledby="withModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 80vw">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 60vw">
         <div class="modal-content">
           <div class="modal-header bg-gradient-info">
             <h4 class="modal-title text-white font-weight-bolder" id="withModalLabel"><i class="fas fa-credit-card me-3"></i>출금 등록</h4>
@@ -143,7 +140,8 @@
           <div class="modal-body">
               <form method="post" action="{% url 'with_reg_save' %}">
                   <div class="row">
-                      <div class="col-8">
+                      <div class="col-1"></div>
+                      <div class="col-10">
                           <div class="card card-plain p-5">
                               <div class="row">
                                   <div class="col-4">
@@ -202,23 +200,24 @@
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>어음번호</label>
-                                      <input class="form-control text-end" type="text" id="txtWitCashNum" name="txtWitCashNum"/>
+                                      <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum"/>
                                   </div>
                                   <div class="col-4">
                                       <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
-                                      <input class="form-control text-end" type="date" id="txtWitDeadline" name="txtWitDeadline"/>
+                                      <input class="form-control text-center" type="date" id="txtWitDeadline" name="txtWitDeadline"/>
                                   </div>
                               </div>
                               <div class="row">
                                   <div class="col-8">
-                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
-                                      <input class="form-control text-end" type="text" id="txtWitRemark" name="txtWitRemark"/>
+                                      <label class="mt-4 h6"><i class="far fa-edit me-2">자</i>비고</label>
+                                      <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark"/>
                                   </div>
                                   <div class="col-4"></div>
                               </div>
                           </div>
                       </div>
-                      <div class="col-4">
+                      <div class="col-1"></div>
+                      <!--<div class="col-4">
                           <div class="card card-plain p-3">
                               <h5><i class="fas fa-list me-3"></i>매입 리스트</h5>
                              <div class="table-responsive-sm border border-light height-600 mt-2">
@@ -249,7 +248,7 @@
                                 </table>
                              </div>
                           </div>
-                      </div>
+                      </div>-->
                   </div>
               </form>
           </div>
@@ -297,9 +296,16 @@
                             "</tr> ");
                     }
 
+                    $("#withMainTb").append(
+                        "<tr id='#withTotalMainTr' class='withTotalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>합 계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>" + list[i][1] + "</td>" +
+                        "</tr> ");
+
                 }
             })
         });
+
 
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
@@ -341,7 +347,11 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "</tr> ");
                     }
-
+                    $("#withMainTb").append(
+                        "<tr id='#withTotalMainTr' class='withTotalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>합 계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>" + list[i][2] + "</td> " +
+                        "</tr> ");
                 }
             })
         });
@@ -367,21 +377,24 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#withSubTb").append(
                             "<tr id='#withSubTr' class='withSubTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][11] + "," + list[i][0] + "," + list[i][3] + "," + list[i][6] + "," + list[i][1] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#withModal' id='btnAdd'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#withModal' id='btnEdit' name='btnEdit'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt' name='btnDlt' value='" + list[i][11] + "," + list[i][0] + "," + list[i][3] + "," + list[i][6] + "," + list[i][1] + "'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
-
+                    $("#withSubTb").append(
+                        "<tr id='#withTotalSubTr' class='withTotalSubTr_tr'>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>합 계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightpink'>" + list[i][0] + "</td>" +
+                        "</tr> ");
                 }
             })
 
@@ -405,7 +418,7 @@
             //체크가 1개라도 안되있을때
             let chk_count = $("input[name='chkWith[]']").filter(":checked").length;
             if (chk_count < 1) {
-                alert('삭제하실 직원을 체크 해주세요.');
+                alert('삭제 하실 출금 전표를 체크 해 주세요.');
                 return false;
             }
 
@@ -437,26 +450,37 @@
         });
 
         {# 추가 버튼 누를시 #}
-        $(document).on('click', '#btnSearch', function () {
+        $(document).on('click', '#btnAdd', function () {
 
-        });
+            var cboWitCust2 = "";
+            var cboWitGbn = "";
+            var cboWitCode = "";
+            var cboWitMethod = "";
+            var cboWitIssueCust = "";
+            var cboWitCustTxt = "";
+            var cboWitGbnTxt = "";
+            var cboWitCodeTxt = "";
+            var cboWitMethodTxt = "<option value=''>:: 전체 ::</option>";
+            var cboWitIssueCustTxt = "";
 
-        {# 수정 버튼 누를시 #}
-        $(document).on('click', '#btnSearch', function () {
+            $("#cboWitCust").html("");
+            $("#cboWitGbn").html("");
+            $("#cboWitCode").html("");
+            $("#cboWitMethod").html("");
+            $("#cboWitIssueCust").html("");
 
-        });
-
-        {# 모달이 뜰 때 #}
-        $('#withModal').on('show.bs.modal', function (e) {
+            document.getElementById('txtWitRegDate').valueAsDate = new Date
+            document.getElementById('txtWitDeadline').valueAsDate = new Date
 
             var year = document.getElementById("inputYear").value;
             var month = document.getElementById("inputMonth").value;
+            var custCode = document.getElementById("cboWithCust").value;
 
             if (month < 10) {
                 month = 0 + month
             }
 
-            let data = {"inputYear": year, "inputMonth": month}
+            let data = {"inputYear": year, "inputMonth": month, 'custCode': custCode}
 
             $.ajax({
                 type: "post",
@@ -467,26 +491,180 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.modalList;
 
-                    $("#modalWithTb").html("");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#modalWithTb").append(
-                            "<tr id='#modalWithTr' class='modalWithTr_tr' main_code='" + list[i][0] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "</tr> ");
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboWitCust2) {
+                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
                     }
 
+                    var combolist2 = data.cboGgn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboWitGbn) {
+                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboWitMethod) {
+                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboAcc;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboWitCode) {
+                            cboWitCodeTxt = cboWitCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboWitCodeTxt = cboWitCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboWitCust").append(cboWitCustTxt);
+                    $("#cboWitGbn").append(cboWitGbnTxt);
+                    $("#cboWitMethod").append(cboWitMethodTxt);
+                    $("#cboWitCode").append(cboWitCodeTxt);
                 }
             })
 
+            $('#withModal').show();
+        });
 
+        {# 수정 버튼 누를시 #}
+        $(document).on('click', '#btnEdit', function () {
+
+            var cboWitCust2 = "";
+            var cboWitGbn = "";
+            var cboWitCode = "";
+            var cboWitMethod = "";
+            var cboWitIssueCust = "";
+            var cboWitCustTxt = "";
+            var cboWitGbnTxt = "";
+            var cboWitCodeTxt = "";
+            var cboWitMethodTxt = "<option value=''>:: 전체 ::</option>";
+            var cboWitIssueCustTxt = "";
+
+            $("#cboWitCust").html("");
+            $("#cboWitGbn").html("");
+            $("#cboWitCode").html("");
+            $("#cboWitMethod").html("");
+            $("#cboWitIssueCust").html("");
+
+            var year = document.getElementById("inputYear").value;
+            var month = document.getElementById("inputMonth").value;
+            var custCode = document.getElementById("cboDepCust").value;
+
+            if (month < 10) {
+                month = 0 + month
+            }
+
+            let data = {"inputYear": year, "inputMonth": month, 'custCode': custCode}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "with_reg_out" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var list2 = data.modalform;
+
+                    for (var i = 0; i < list2.length; i++) {
+                        for (var j = 0; j < 21; j++) {
+                            console.log("===================" + j + ":::" + list2[i][j]);
+                        }
+                        $("#txtDepSeq").val(list2[i][0])
+                        $("#txtDepRecn").val(list2[i][3])
+                        $("#txtDepRegDate").val(list2[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtDepPrice").val(list2[i][10])
+                        {#$("#depEmpCount").val(list2[i][4])#}
+                        $("#txtDepCashNum").val(list2[i][15])
+                        $("#txtDepDeadline").val(list2[i][16].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtDepRemark").val(list2[i][17])
+                        cboWitCust2 = list2[i][1];
+                        cboWitGbn = list2[i][4];
+                        cboWitCode = list2[i][8];
+                        cboWitMethod = list2[i][6];
+                        {#cboDepIssueCust = list2[i][10];#}
+                    }
+
+
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboWitCust2) {
+                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboGgn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboWitGbn) {
+                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboWitMethod) {
+                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboAcc;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboWitCode) {
+                            cboWitCodeTxt = cboWitCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboWitCodeTxt = cboWitCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboWitCust").append(cboWitCustTxt);
+                    $("#cboWitGbn").append(cboWitGbnTxt);
+                    $("#cboWitMethod").append(cboWitMethodTxt);
+                    $("#cboWitCode").append(cboWitCodeTxt);
+                }
+            })
+
+            $('#withModal').show();
+        });
+
+
+        {# 날짜 앤터시 input으로 이동 #}
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'inputYear') {
+                    document.getElementById("inputMonth").focus();
+                }
+            }
+        });
+
+        {# 날짜 앤터시 input으로 이동 #}
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'inputMonth') {
+                    $("#btnSearch").trigger('click');
+                }
+            }
         });
 
     </script>
