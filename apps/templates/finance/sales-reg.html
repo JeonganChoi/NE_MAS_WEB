@@ -39,15 +39,19 @@
                                 <input class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
                             </div>
                           </div>
-                          <div class="p-3 col-lg-8 mt-lg-0 text-end">
-                              <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch">
+                          <div class="p-3 col-lg-2 mt-lg-0 text-start">
+                              <button type="button" class="btn bg-gradient-warning" id="btnSearch" name="btnSearch">
                                   <i class="fas fa-search me-2"></i>조회</button>
+                          </div>
+                          <div class="p-3 col-lg-6 mt-lg-0 text-end">
+                              <!--<button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch">
+                                  <i class="fas fa-search me-2"></i>조회</button>-->
                               <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" id="btnAdd"
                                       data-bs-target="#exampleModal"><i class="fas fa-plus me-2"></i>추가</button>
                               <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
                                       data-bs-target="#buyModal"><i class="fas fa-diamond me-2" id="btnEdit"></i>수정</button>-->
-                              <button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
-                                  <i class="fas fa-minus me-2"></i>삭제</button>
+                              <!--<button type="button" class="btn bg-gradient-warning" id="btnDlt" name="btnDlt">
+                                  <i class="fas fa-minus me-2"></i>삭제</button>-->
                           </div>
                       </div>
                     </div>
@@ -55,7 +59,6 @@
                       <div class="p-3 table-responsive height-600 overflow-scroll">
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
-                                <col width="2%">
                                 <col width="8%">
                                 <col width="15%">
                                 <col width="6%">
@@ -65,10 +68,10 @@
                                 <col width="6%">
                                 <col width="10%">
                                 <col width="4%">
+                                <col width="4%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2">선택</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">출고 일자</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">품 목</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">수 량</th>
@@ -77,7 +80,7 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">부가세</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">합 계</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">매입처</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2" colspan="2"></th>
                             </tr>
                           </thead>
                           <tbody id="saleMainTb">
@@ -122,7 +125,7 @@
               <div class="row">
                   <div class="col-4">
                       <label class="mt-4 h6"><i class="fas fa-box me-2"></i>품 명</label>
-                      <input class="form-control text-end" type="text" id="txtItem" name="txtItem"/>
+                      <input class="form-control text-center" type="text" id="txtItem" name="txtItem"/>
                   </div>
                   <div class="col-8">
                       <input hidden class="form-control text-center" type="number" id="txtGubun" name="txtGubun"/>
@@ -154,7 +157,7 @@
               <div class="row">
                   <div class="col-10">
                       <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                      <input class="form-control border border-light rounded-1 text-center" type="text" name="txtRemark" id="txtRemark">
+                      <input class="form-control border border-light rounded-1 text-start" type="text" name="txtRemark" id="txtRemark">
                   </div>
                   <div class="col-2"></div>
               </div>
@@ -199,7 +202,6 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#saleMainTb").append(
                             "<tr id='#saleMainTr' class='saleMainTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -211,6 +213,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1'><button type='button' id='btnEdit' name='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' value='" + list[i][0] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -242,7 +245,6 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#saleMainTb").append(
                             "<tr id='#saleMainTr' class='saleMainTr_tr'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBuy[]' name='chkBuy[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -254,6 +256,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1'><button type='button' id='btnEdit' main_code='" + list[i][0] + "," + list[i][2] + "' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
+                            "<td class='text-center p-1'><button type='button' id='btnDlt' name='btnDlt' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "' class='btn btn-warning btn-sm m-0'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
                             "</tr> ");
                     }
                 }
@@ -406,7 +409,17 @@
             }
         });
 
-        {# 앤터시 단가 input으로 이동 #}
+        {# 품명 앤터시 수량 input으로 이동 #}
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtItem') {
+                    document.getElementById("txtQty").focus();
+                }
+            }
+        });
+
+        {# 수량 앤터시 단가 input으로 이동 #}
         $('input[type="number"]').keydown(function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
@@ -424,13 +437,26 @@
                 if (event.currentTarget.id === 'txtDanga') {
                     let qty = $("#txtQty").val();
                     let danga = $("#txtDanga").val();
-                    let supply = qty * danga
-                    let vat =  (qty * danga) / 10
-                    let total = supply + vat
 
-                    document.getElementById("txtSupply").value = supply;
-                    document.getElementById("txtVat").value = vat;
-                    document.getElementById("txtAmts").value = total;
+                    if(qty != ''){
+                        let supply = qty * danga
+                        let vat = (qty * danga) / 10
+                        let total = supply + vat
+
+                        document.getElementById("txtSupply").value = supply;
+                        document.getElementById("txtVat").value = vat;
+                        document.getElementById("txtAmts").value = total;
+
+                        document.getElementById("txtRemark").focus();
+                    }
+                    else{
+                        document.getElementById("txtQty").value = 0;
+                        document.getElementById("txtDanga").value = 0;
+                        document.getElementById("txtSupply").value = 0;
+                        document.getElementById("txtVat").value = 0;
+                        document.getElementById("txtAmts").value = 0;
+                    }
+
                 }
             }
         });

@@ -39,9 +39,13 @@
                                 <input class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
                             </div>
                           </div>
-                          <div class="p-3 col-lg-8 mt-lg-0 text-end">
-                              <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch">
+                          <div class="p-3 col-lg-2 mt-lg-0 text-start">
+                              <button type="button" class="btn bg-gradient-warning" id="btnSearch" name="btnSearch">
                                   <i class="fas fa-search me-2"></i>조회</button>
+                          </div>
+                          <div class="p-3 col-lg-6 mt-lg-0 text-end">
+                              <!--<button type="button" class="btn bg-gradient-warning" id="btnSearch" name="btnSearch">
+                                  <i class="fas fa-search me-2"></i>조회</button>-->
                               <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" id="btnAdd"
                                       data-bs-target="#buyModal"><i class="fas fa-plus me-2"></i>추가</button>
                               <!--<button type="button" class="btn bg-gradient-success" data-bs-toggle="modal"
@@ -406,7 +410,17 @@
             }
         });
 
-        {# 앤터시 단가 input으로 이동 #}
+        {# 품명 앤터시 수량 input으로 이동 #}
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtItem') {
+                    document.getElementById("txtQty").focus();
+                }
+            }
+        });
+
+        {# 수량 앤터시 단가 input으로 이동 #}
         $('input[type="number"]').keydown(function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
@@ -423,13 +437,27 @@
                 if (event.currentTarget.id === 'txtDanga') {
                     let qty = $("#txtQty").val();
                     let danga = $("#txtDanga").val();
-                    let supply = qty * danga
-                    let vat =  (qty * danga) / 10
-                    let total = supply + vat
 
-                    document.getElementById("txtSupply").value = supply;
-                    document.getElementById("txtVat").value = vat;
-                    document.getElementById("txtAmts").value = total;
+                    if(qty != ''){
+                        let supply = qty * danga
+                        let vat = (qty * danga) / 10
+                        let total = supply + vat
+
+                        document.getElementById("txtSupply").value = supply;
+                        document.getElementById("txtVat").value = vat;
+                        document.getElementById("txtAmts").value = total;
+
+                        document.getElementById("txtRemark").focus();
+                    }
+                    else{
+                        document.getElementById("txtQty").value = 0;
+                        document.getElementById("txtDanga").value = 0;
+                        document.getElementById("txtSupply").value = 0;
+                        document.getElementById("txtVat").value = 0;
+                        document.getElementById("txtAmts").value = 0;
+
+                        document.getElementById("txtRemark").focus();
+                    }
                 }
             }
         });

@@ -78,6 +78,7 @@ def purchaseRegViews_search(request):
 
 
 def purchaseRegViews_save(request):
+
     if 'btnSave' in request.POST:
         gubun = '1'
         serial_num = request.POST.get('txtSerial')
@@ -149,6 +150,10 @@ def purchaseRegViews_save(request):
         else:
             messages.warning(request, '입력 하신 정보를 확인 해주세요.')
             return redirect('/purchase_reg')
+
+    return render(request, 'finance/purchase-reg.html')
+
+
 
 
 def purchaseRegViews_dlt(request):

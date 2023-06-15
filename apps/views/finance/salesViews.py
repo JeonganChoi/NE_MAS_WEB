@@ -141,6 +141,8 @@ def salesRegViews_save(request):
             messages.warning(request, '입력 하신 정보를 확인 해주세요.')
             return redirect('/sales_reg')
 
+    return render(request, 'finance/sales-reg.html')
+
 
 def salesRegViews_dlt(request):
     if request.method == "POST":
