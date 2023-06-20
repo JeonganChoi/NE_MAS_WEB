@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
-from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews
+from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews, financeSearchViews
 from apps.views.currentstate import receivepayViews
 
 urlpatterns = [
@@ -60,12 +60,14 @@ urlpatterns = [
     path('purchase_reg_search/', purchaseViews.purchaseRegViews_search, name='purchase_reg_search'),
     path('purchase_reg_save/', purchaseViews.purchaseRegViews_save, name='purchase_reg_save'),
     path('purchase_reg_dlt/', purchaseViews.purchaseRegViews_dlt, name='purchase_reg_dlt'),
-
 #     매출관리
     path('sales_reg/', salesViews.salesRegViews, name='sales_reg'),
     path('sales_reg_search/', salesViews.salesRegViews_search, name='sales_reg_search'),
     path('sales_reg_save/', salesViews.salesRegViews_save, name='sales_reg_save'),
     path('sales_reg_dlt/', salesViews.salesRegViews_search, name='sales_reg_dlt'),
+    # 매입/매출 현황
+    path('purchases_sales/', financeSearchViews.purSaleSearchViews, name='purchases_sales'),
+    path('purchases_sales_search/', financeSearchViews.purSaleSearchViews_search, name='purchases_sales_search'),
 
 #     입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),
