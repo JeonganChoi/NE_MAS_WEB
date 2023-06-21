@@ -13,204 +13,349 @@
         <div class="row mt-n1">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card border border-white rounded-2 shadow-xs" style="background-color: #dddddd">
+                <div class="card border border-5 border-white rounded-2 shadow-none bg-dark mx-3 rounded-3">
                     <div class="card-body">
-                        <h3 class="mb-0 text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>입 출금 현황</h3>
+                        <h4 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>매출 거래 내역서</h4>
                     </div>
                 </div>
             </div>
             <div class="col-lg-1 col-1"></div>
         </div>
-        <div class="my-4 row">
-            <!--<div class="mb-4 col-lg-3 col-md-5 mb-md-0">
-                <div class="border shadow-xs card">
-                    <div class="pb-0 pt-0 card-header border-bottom" style="height: 8vh">
-                      <div class="row">
-                          <div class="p-3 col-lg-6 mt-lg-0">
-                            <div class="input-group">
-                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" maxlength="4" name="inputYear" id="inputYear">
-                                <label class="mt-2 me-4" style="font-size: 1rem">년</label>
-                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" maxlength="2" name="inputMonth" id="inputMonth">
-                                <label class="mt-2" style="font-size: 1rem">월</label>
-                            </div>
-                          </div>
-                          <div class="p-3 col-lg-6 mt-lg-0 text-end">
-                               <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="px-0 py-0 card-body height-600">
-                      <div class="p-3 table-responsive-sm">
-                        <table class="table mb-0 align-items-center justify-content-center">
-                            <colgroup>
-                                <col width="8%">
-                                <col width="10%">
-                            </colgroup>
-                          <thead class="bg-success-soft">
-                            <tr>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">금액</th>
-                            </tr>
-                          </thead>
-                          <tbody id="withMainTb">
-                            <tr id="withMainTr" class="withMainTr_tr">
-
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-            </div>-->
-            <div class="col-lg-12 col-12">
-                <div class="border shadow-xs card" style="height: 71vh">
-                    <div class="px-0 py-0 card-body">
-                        <div class="row">
-                            <div class="col-lg-4 col-4">
-                                <div class="p-1 pe-0 table-responsive-sm overflow-auto min-vh-70 max-height-vh-70">
-                                    <table class="table mb-0 align-items-center justify-content-center">
-                                        <colgroup>
-                                            <col width="10%">
-                                            <col width="10%">
-                                            <col width="8%">
-                                            <col width="5%">
-                                            <col width="8%">
-                                            <col width="8%">
-                                        </colgroup>
-                                      <thead class="" style="background-color: lightpink">
-                                        <tr>
-                                          <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2" rowspan="2">제품명</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2" rowspan="2">구매처</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2" rowspan="2">구분</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2" rowspan="2">결재</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2" rowspan="2">단위</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2" rowspan="2">기준</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody id="mainTb">
-                                        <tr id="mainTr" class="mainTr_tr">
-
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-lg-8 col-8">
-                                <div class="p-1 ps-0 table-responsive-sm overflow-auto min-vh-70 max-height-vh-70">
-                                    <table class="table mb-0 align-items-center justify-content-center">
-                                        <colgroup>
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                            <col width="5%">
-                                        </colgroup>
-                                      <thead class="" style="background-color: lightsteelblue">
-                                        <tr>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">1월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">2월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">3월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">4월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">5월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">6월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">7월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">8월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">9월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">10월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">11월계</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2" colspan="3">12월계</th>
-                                        </tr>
-                                        <tr>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">수량</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">금액</th>
-                                          <th style="font-size: 1rem" class="text-dark text-center border border-white font-weight-semibold opacity-7 p-2">부가세포함</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody id="SubTb">
-                                        <tr id="SubTr" class="SubTr_tr">
-
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-lg-6 col-6"></div>
+            <div class="col-lg-5 col-5 end-0">
+                <div class="nav-wrapper mt-3 position-relative start-40 max-width-500 mx-3 bg-light rounded-2">
+                    <ul class="nav nav-pills nav-pills-lg nav-fill bg-light border-0" role="tablist">
+                      <li class="nav-item rounded-1">
+                        <a class="nav-link mb-0 px-0 active p-1" style="font-size: 1rem" data-bs-toggle="tab" href="#byItem" role="tab" aria-controls="byItem" aria-selected="true">
+                          품목별
+                        </a>
+                      </li>
+                      <li class="nav-item rounded-1">
+                        <a class="nav-link mb-0 px-0 p-1" style="font-size: 1rem" data-bs-toggle="tab" href="#byCust" role="tab" aria-controls="byCust" aria-selected="false">
+                          거래처별
+                        </a>
+                      </li>
+                      <li class="nav-item rounded-1">
+                        <a class="nav-link mb-0 px-0 p-1" style="font-size: 1rem" data-bs-toggle="tab" href="#Charts" role="tab" aria-controls="Charts" aria-selected="false">
+                          Charts
+                        </a>
+                      </li>
+                    </ul>
                 </div>
             </div>
+            <div class="col-lg-1 col-1"></div>
         </div>
+      <div class="row mt-4">
+          <div class="col-lg-1 col-1"></div>
+          <div class="col-lg-10 col-10">
+            <div class="container-fluid">
+                  <div class="tab-content tab-space">
+                        <div class="tab-pane active" id="byItem">
+                            <div class="border shadow-xs card" style="height: 65vh">
+                                <div class="pb-0 pt-0 card-header border-bottom" style="height: 5vh">
+                                    <div class="row p-2">
+                                        <div class="col-lg-2">
+                                            <div class="input-group shadow-none">
+                                                <input class="form-control border border-light rounded-1 text-center me-3" style="max-width: 5vw" type="text" maxlength="4" name="inputYear" id="inputYear">
+                                                <label class="mt-2" for="inputYear" style="font-size: 1rem">년</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 text-start">
+                                            <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                                        </div>
+                                        <div class="col-lg-8"></div>
+                                    </div>
+                                </div>
+                                <div class="px-0 py-0 card-body">
+                                    <div class="p-2 pe-3 ps-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
+                                        <table class="table mb-0 align-items-center justify-content-center p-2">
+                                            <colgroup>
+                                                <col width="20%">
+                                                <col width="30%">
+                                                <col width="15%">
+                                                <col width="10%">
+                                                <col width="15%">
+                                                <col width="15%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                            </colgroup>
+                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3">
+                                            <tr>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">제품명</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구매처</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구분</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">결재</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단위</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">기준</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">1월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">2월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">3월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">4월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">5월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">6월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">7월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">8월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">9월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">10월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">11월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">12월</th>
+                                            </tr>
+                                            <tr>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody id="itemTb">
+                                            <tr id="itemTr" class="itemTr_tr">
+
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      <div class="tab-pane" id="byCust">
+                          <div class="border shadow-xs card" style="height: 65vh">
+                                <div class="pb-0 pt-0 card-header border-bottom" style="height: 5vh">
+                                    <div class="row p-2">
+                                        <div class="col-lg-2">
+                                            <div class="input-group shadow-none">
+                                                <input class="form-control border border-light rounded-1 text-center me-3" style="max-width: 5vw" type="text" maxlength="4" name="inputYear" id="inputYear">
+                                                <label class="mt-2" for="inputYear" style="font-size: 1rem">년</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 text-start">
+                                            <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                                        </div>
+                                        <div class="col-lg-8"></div>
+                                    </div>
+                                </div>
+                                <div class="px-0 py-0 card-body">
+                                    <div class="p-2 ps-3 pe-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
+                                        <table class="table mb-0 align-items-center justify-content-center p-2">
+                                            <colgroup>
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                            </colgroup>
+                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3">
+                                            <tr>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">거래처명</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">결재 조건</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">1월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">2월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">3월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">4월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">5월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">6월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">7월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">8월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">9월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">10월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">11월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">12월</th>
+                                            </tr>
+                                            <tr>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody id="itemTb">
+                                            <tr id="itemTr" class="itemTr_tr">
+
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                         </div>
+                      </div>
+                      <div class="tab-pane" id="Charts">
+                         <div class="border shadow-xs card" style="height: 65vh">
+                             <div class="pb-0 pt-0 card-header border-bottom" style="height: 5vh">
+
+                             </div>
+                             <div class="px-0 py-0 card-body">
+                                  <div class="chart">
+                                    <canvas id="bar-chart" class="chart-canvas" height="100">
+
+                                    </canvas>
+                                  </div>
+                             </div>
+                         </div>
+                      </div>
+                  </div>
+            </div>
+          </div>
+      </div>
     </div>
 
 
 {% endblock %}
 
 {% block javascripts %}
+
+    <script src="/static/assets/js/plugins/chartjs.min.js"></script>
     <script>
         $(document).ready(function () {
+
+            var itemTotal = 0;
+            var itemTotal1 = 0;
+            var itemTotal2 = 0;
+            var itemTotal3 = 0;
+            var itemTotal4 = 0;
+            var itemTotal5 = 0;
+            var itemTotal6 = 0;
+            var itemTotal7 = 0;
+            var itemTotal8 = 0;
+            var itemTotal9 = 0;
+            var itemTotal10 = 0;
+            var itemTotal11 = 0;
+            var itemTotal12 = 0;
+
+            date = new Date();
+            var year = date.getFullYear();
+            document.getElementById("inputYear").value = year;
+            var data = {'Year': year}
 
             $.ajax({
                 type: "post",
@@ -222,23 +367,69 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
-                    $("#mainTb").html("");
+
+                    $("#itemTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "'>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                        $("#itemTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][26] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][27] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][28] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][29] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][30] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][31] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][32] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][33] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][34] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][35] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][36] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][37] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][38] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][39] + "</td>" +
                             "</tr> ");
 
-                        var mainToalPrc =+ list[i][7]
+                            itemTotal += list[i][39];
+                            itemTotal1 += list[i][39];
+                            itemTotal2 += list[i][39];
+                            itemTotal3 += list[i][39];
+                            itemTotal4 += list[i][39];
+                            itemTotal5 += list[i][39];
+                            itemTotal6 += list[i][39];
+                            itemTotal7 += list[i][39];
+                            itemTotal8 += list[i][39];
+                            itemTotal9 += list[i][39];
+                            itemTotal10 += list[i][39];
+                            itemTotal11 += list[i][39];
+                            itemTotal12 += list[i][39];
                     }
                     if(mainToalPrc) {
-                        $("#mainTb").append(
+                        $("#itemTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>" + mainToalPrc + "</td>" +
@@ -246,7 +437,67 @@
                     }
                 }
             })
+
+
+            var ctx5 = document.getElementById("bar-chart").getContext("2d");
+
+            new Chart(ctx5, {
+                type: "bar",
+                data: {
+                    labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42+'],
+                    datasets: [{
+                        label: "Sales by age",
+                        weight: 5,
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        backgroundColor: '#1E293B',
+                        data: [15, 20, 12, 60, 20, 15],
+                        fill: false,
+                        maxBarThickness: 35
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                drawBorder: false,
+                                display: true,
+                                drawOnChartArea: true,
+                                drawTicks: false,
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                display: true,
+                                padding: 10,
+                                color: '#9ca2b7'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                drawBorder: false,
+                                display: false,
+                                drawOnChartArea: true,
+                                drawTicks: true,
+                            },
+                            ticks: {
+                                display: true,
+                                color: '#9ca2b7',
+                                padding: 10
+                            }
+                        },
+                    },
+                },
+            });
         });
+
+
     </script>
 
 {% endblock %}
