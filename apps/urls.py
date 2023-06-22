@@ -55,21 +55,24 @@ urlpatterns = [
     path('cashBalance_acname_search', cashBalanceViews.cashBalRegAcNmSearchViews, name='cashBalance_acname_search'),
     path('cashBalacne_save', cashBalanceViews.cashBalRegSaveViews, name='cashBalacne_save'),
 
-#     매입 관리
+    #  매입 관리
     path('purchase_reg/', purchaseViews.purchaseRegViews, name='purchase_reg'),
     path('purchase_reg_search/', purchaseViews.purchaseRegViews_search, name='purchase_reg_search'),
     path('purchase_reg_save/', purchaseViews.purchaseRegViews_save, name='purchase_reg_save'),
     path('purchase_reg_dlt/', purchaseViews.purchaseRegViews_dlt, name='purchase_reg_dlt'),
-#     매출관리
+    #  매출관리
     path('sales_reg/', salesViews.salesRegViews, name='sales_reg'),
     path('sales_reg_search/', salesViews.salesRegViews_search, name='sales_reg_search'),
     path('sales_reg_save/', salesViews.salesRegViews_save, name='sales_reg_save'),
     path('sales_reg_dlt/', salesViews.salesRegViews_search, name='sales_reg_dlt'),
-    # 매입/매출 현황
-    path('purchases_sales/', financeSearchViews.purSaleSearchViews, name='purchases_sales'),
-    path('purchases_sales_search/', financeSearchViews.purSaleSearchViews_search, name='purchases_sales_search'),
+    # 매입 내역서
+    path('purchases_report/', financeSearchViews.purTransSearchViews, name='purchases_report'),
+    path('purchases_report_search/', financeSearchViews.purTransSearchViews_search, name='purchases_report_search'),
+    # 매출 내역서
+    path('sales_report/', financeSearchViews.saleTransSearchViews, name='sales_report'),
+    path('sales_report_search/', financeSearchViews.saleTransSearchViews_search, name='sales_report_search'),
 
-#     입금관리
+    # 입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),
     path('deposit_reg_search/', depositViews.depositRegViews_search, name='deposit_reg_search'),
     path('deposit_reg_save/', depositViews.depositRegViews_save, name='deposit_reg_save'),
@@ -83,7 +86,7 @@ urlpatterns = [
     path('with_reg_dlt/', withdrawalViews.withRegViews_dlt, name='with_reg_dlt'),
     path('with_reg_out/', withdrawalViews.withRegOutList_search, name='with_reg_out'),
 
-#     자금관리 현황
+    #  자금관리 현황
     path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
 
 ]

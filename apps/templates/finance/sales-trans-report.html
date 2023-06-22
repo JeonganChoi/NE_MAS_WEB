@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} purchasesSalesSearch - 입/출금현황 {% endblock %}
+{% block title %} sale-trans-report - 매출내역서 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -341,7 +341,7 @@
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "purchases_sales_search" %}',
+                url: '{% url "sales_report_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },

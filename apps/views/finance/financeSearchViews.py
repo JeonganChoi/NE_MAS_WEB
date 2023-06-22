@@ -9,13 +9,29 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 
+# 매입
+def purTransSearchViews(request):
 
-def purSaleSearchViews(request):
+    return render(request, "finance/purchases-trans-report.html")
 
-    return render(request, "finance/purchases-sales-search.html")
+# 매출
+def saleTransSearchViews(request):
+
+    return render(request, "finance/sales-trans-report.html")
 
 
-def purSaleSearchViews_search(request):
+def purTransSearchViews_search(request):
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(ACDATE, ''), IFNULL(DAY(ACDATE), '') "
+                       "    , IFNULL(SUM(ACAMTS), 0), IFNULL(ACIOGB, '') "
+                       "    FROM OSBILL  "
+                       "    WHERE ACIOGB = '2' "
+                       "    GROUP BY DAY(ACDATE) ")
+        mainresult = cursor.fetchall()
+
+    return JsonResponse({"mainList": mainresult})
+
+def saleTransSearchViews_search(request):
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(ACDATE, ''), IFNULL(DAY(ACDATE), '') "
                        "    , IFNULL(SUM(ACAMTS), 0), IFNULL(ACIOGB, '') "
