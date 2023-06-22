@@ -26,6 +26,7 @@ def purchaseRegViews_search(request):
                            "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
                            "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.REMARK, '')"
                            "    , IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.OPT, ''), IFNULL(A.PAY_OPT, ''), IFNULL(A.PAY_DATE, '') "
                            "    FROM OSBILL A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.UP_CODE = B.CUST_NBR "
@@ -38,13 +39,21 @@ def purchaseRegViews_search(request):
             cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
             cboCust = cursor.fetchall()
 
-        return JsonResponse({"modalList": modalresult, 'cboCust': cboCust})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTP' ")
+            cboGbn = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PTP' ")
+            cboPay = cursor.fetchall()
+
+        return JsonResponse({"modalList": modalresult, 'cboCust': cboCust, 'cboGbn': cboGbn, 'cboPay': cboPay})
 
     elif strDate and endDate:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.SERIAL_NUM, ''), IFNULL(A.GUBUN, ''), IFNULL(A.BAL_DD, '') "
                            "    , IFNULL(A.ITEM, ''), IFNULL(A.QTY, 0), IFNULL(A.DANGA, 0), IFNULL(A.SUPPLY, 0) "
-                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.TAX, 0), IFNULL(A.AMTS, 0), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '')"
                            "    FROM OSBILL A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.UP_CODE = B.CUST_NBR "
@@ -57,6 +66,14 @@ def purchaseRegViews_search(request):
             cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
             cboCust = cursor.fetchall()
 
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTP' ")
+            cboGbn = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PTP' ")
+            cboPay = cursor.fetchall()
+
         # 구분
         # with connection.cursor() as cursor:
         #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'IPG' ORDER BY RESNAM ")
@@ -67,14 +84,22 @@ def purchaseRegViews_search(request):
         #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
         #     comboPay = cursor.fetchall()
 
-        return JsonResponse({"buyList": buyresult, 'cboCust': cboCust})
+        return JsonResponse({"buyList": buyresult, 'cboCust': cboCust, 'cboGbn': cboGbn, 'cboPay': cboPay})
 
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ORDER BY CUST_NBR ")
             cboCust = cursor.fetchall()
 
-        return JsonResponse({'cboCust': cboCust})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTP' ")
+            cboGbn = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PTP' ")
+            cboPay = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGbn': cboGbn, 'cboPay': cboPay})
 
 
 def purchaseRegViews_save(request):
@@ -91,6 +116,9 @@ def purchaseRegViews_save(request):
         tax = request.POST.get('txtVat')
         amts = request.POST.get('txtAmts')
         remark = request.POST.get('txtRemark')
+        gbn = request.POST.get('cboGbn')
+        pay = request.POST.get('cboPay')
+        payDate = request.POST.get('txtChkDate').replace('-', '')
 
         if serial_num == '':
             with connection.cursor() as cursor:
@@ -107,6 +135,9 @@ def purchaseRegViews_save(request):
                                ",    TAX "
                                ",    AMTS "
                                ",    REMARK "
+                               ",    OPT "
+                               ",    PAY_OPT "
+                               ",    PAY_DATE "
                                "    ) "
                                "    VALUES "
                                "    (   "
@@ -121,6 +152,9 @@ def purchaseRegViews_save(request):
                                ",   '" + str(tax) + "'"
                                ",   '" + str(amts) + "'"
                                ",   '" + str(remark) + "'"
+                               ",   '" + str(gbn) + "'"
+                               ",   '" + str(pay) + "'"
+                               ",   '" + str(payDate) + "'"
                                "    )   "
                                )
                 connection.commit()
@@ -141,6 +175,9 @@ def purchaseRegViews_save(request):
                                ",    TAX = '" + str(tax) + "' "
                                ",    AMTS = '" + str(amts) + "' "
                                ",    REMARK = '" + str(remark) + "' "
+                               ",    OPT = '" + str(gbn) + "' "
+                               ",    PAY_OPT = '" + str(pay) + "' "
+                               ",    PAY_DATE = '" + str(payDate) + "' "
                                "     WHERE SERIAL_NUM = '" + str(serial_num) + "' "
                                )
 

@@ -155,6 +155,20 @@
                   </div>
               </div>
               <div class="row">
+                  <div class="col-4">
+                      <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>구 분</label>
+                      <select class="form-control border border-light rounded-1 text-center" name="cboGbn" id="cboGbn"></select>
+                  </div>
+                  <div class="col-4">
+                      <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>결 재</label>
+                      <select class="form-control border border-light rounded-1 text-center" name="cboPay" id="cboPay"></select>
+                  </div>
+                  <div class="col-4">
+                      <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>일 자</label>
+                      <input class="form-control text-center" type="date" id="txtChkDate" name="txtChkDate"/>
+                  </div>
+              </div>
+              <div class="row">
                   <div class="col-10">
                       <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
                       <input class="form-control border border-light rounded-1 text-start" type="text" name="txtRemark" id="txtRemark">
@@ -267,7 +281,11 @@
         $(document).on('click', "#btnAdd", function () {
 
             var cboCust = "";
-            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
+            var cboGbn = "";
+            var cboPay = "";
+            var cboCustTxt = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt = "<option value=''>:: 선택 ::</option>";
+            var cboPayTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboCust").html("");
             $("#txtItem").val("");
@@ -279,8 +297,11 @@
             $("#txtVat").val("");
             $("#txtAmts").val("");
             $("#txtRemark").val("");
+            $("#cboGbn").html("");
+            $("#cboPay").html("");
 
             document.getElementById('txtDate').valueAsDate = new Date
+            document.getElementById('txtChkDate').valueAsDate = new Date
 
             $.ajax({
                 type: "post",
@@ -300,7 +321,27 @@
                         }
                     }
 
+                    var combolist2 = data.cboGbn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboGbn) {
+                            cboGbnTxt = cboGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboGbnTxt = cboGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboPay) {
+                            cboPayTxt = cboPayTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboPayTxt = cboPayTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboCust").append(cboCustTxt);
+                    $("#cboGbn").append(cboGbnTxt);
+                    $("#cboPay").append(cboPayTxt);
                 }
             })
 
@@ -311,10 +352,16 @@
         {# 수정 버튼 #}
         $(document).on('click', "#btnEdit", function () {
 
-            var cboCust = "";
-            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
+            var cboCust2 = "";
+            var cboGbn2 = "";
+            var cboPay2 = "";
+            var cboCustTxt = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt = "<option value=''>:: 선택 ::</option>";
+            var cboPayTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboCust").html("");
+            $("#cboGbn").html("");
+            $("#cboPay").html("");
 
             let serials = $(this).attr('main_code');
             var split = serials.split(',');
@@ -348,19 +395,42 @@
                         $("#txtVat").val(list[i][7])
                         $("#txtAmts").val(list[i][8])
                         $("#txtRemark").val(list[i][9])
-                        cboCust = list[i][10];
+                        $("#txtChkDate").val(list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        cboCust2 = list[i][10];
+                        cboGbn2 = list[i][12];
+                        cboPay2 = list[i][13];
                     }
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboCust) {
+                        if (combolist[i][0] == cboCust2) {
                             cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                         } else {
                             cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
 
+                    var combolist2 = data.cboGbn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboGbn2) {
+                            cboGbnTxt = cboGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboGbnTxt = cboGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboPay2) {
+                            cboPayTxt = cboPayTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboPayTxt = cboPayTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboCust").append(cboCustTxt);
+                    $("#cboGbn").append(cboGbnTxt);
+                    $("#cboPay").append(cboPayTxt);
                 }
             })
 
@@ -438,7 +508,6 @@
             }
         });
 
-
         {# 앤터시 자동 계산 #}
         $('input[type="number"]').keydown(function (event) {
             if (event.keyCode === 13) {
@@ -456,7 +525,6 @@
                         document.getElementById("txtVat").value = vat;
                         document.getElementById("txtAmts").value = total;
 
-                        document.getElementById("txtRemark").focus();
                     }
                     else{
                         document.getElementById("txtQty").value = 0;
@@ -464,6 +532,7 @@
                         document.getElementById("txtSupply").value = 0;
                         document.getElementById("txtVat").value = 0;
                         document.getElementById("txtAmts").value = 0;
+
                     }
 
                 }
