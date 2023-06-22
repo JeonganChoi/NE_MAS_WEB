@@ -350,71 +350,74 @@
                     var list = data.mainList;
 
                     $("#itemTb").html("");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#itemTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][26] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][27] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][28] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][29] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][30] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][31] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][32] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][33] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][34] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][35] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][36] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][37] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][38] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][39] + "</td>" +
-                            "</tr> ");
+                    for (var j = 0; j < list.length; j++) {
+                        var itemCode = [list][j][0];
+                        var custCode = [list][j][1];
+                        var Danga = [list][j][4];
 
-                            itemTotal += list[i][39];
-                            itemTotal1 += list[i][39];
-                            itemTotal2 += list[i][39];
-                            itemTotal3 += list[i][39];
-                            itemTotal4 += list[i][39];
-                            itemTotal5 += list[i][39];
-                            itemTotal6 += list[i][39];
-                            itemTotal7 += list[i][39];
-                            itemTotal8 += list[i][39];
-                            itemTotal9 += list[i][39];
-                            itemTotal10 += list[i][39];
-                            itemTotal11 += list[i][39];
-                            itemTotal12 += list[i][39];
-                    }
-                    if(mainToalPrc) {
-                        $("#itemTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>" + mainToalPrc + "</td>" +
-                            "</tr> ");
+                        if(itemCode != itemCode || custCode != custCode || Danga != Danga){
+
+                            for (var i = 0; i < list.length; i++) {
+
+                            $("#itemTb").append(
+                                "<tr id='#mainTr' class='mainTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][26] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][27] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][28] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][29] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][30] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][31] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][32] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][33] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][34] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][35] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][36] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][37] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][38] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][39] + "</td>" +
+                                "</tr> ");
+
+                                itemTotal += list[i][39];
+                                itemTotal1 += list[i][39];
+                                itemTotal2 += list[i][39];
+                                itemTotal3 += list[i][39];
+                                itemTotal4 += list[i][39];
+                                itemTotal5 += list[i][39];
+                                itemTotal6 += list[i][39];
+                                itemTotal7 += list[i][39];
+                                itemTotal8 += list[i][39];
+                                itemTotal9 += list[i][39];
+                                itemTotal10 += list[i][39];
+                                itemTotal11 += list[i][39];
+                                itemTotal12 += list[i][39];
+                            }
+                        }
                     }
                 }
             })
