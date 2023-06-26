@@ -86,6 +86,10 @@ urlpatterns = [
     path('with_reg_dlt/', withdrawalViews.withRegViews_dlt, name='with_reg_dlt'),
     path('with_reg_out/', withdrawalViews.withRegOutList_search, name='with_reg_out'),
 
+    # 거래처원장
+    path('custLedger_report/', financeSearchViews.custLedgerViews, name='custLedger_report'),
+    path('custLedger_report_search/', financeSearchViews.custLedgerViews_search, name='custLedger_report_search'),
+
     #  자금관리 현황
     path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
 

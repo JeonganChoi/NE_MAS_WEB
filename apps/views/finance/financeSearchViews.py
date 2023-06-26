@@ -478,3 +478,45 @@ def saleTransSearchViews_search(request):
         maincustresult = cursor.fetchall()
 
     return JsonResponse({"mainList": mainresult, 'mainCustList': maincustresult})
+
+
+
+# 거래처원장
+def custLedgerViews(request):
+
+    return render(request, "finance/custledger-report.html")
+
+# 거래처원장
+def custLedgerViews_search(request):
+    strDate = request.POST.get('startDate')
+    endDate = request.POST.get('endDate')
+    custCode = request.POST.get('')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT trdate, triocd, trrcid, tritem, itname, trqtys, trprce, tramts, trvats, trdesc FROM "
+                       "    (SELECT IFNULL(TRDATE, '') as trdate, IFNULL(TRIOCD, '') as triocd "
+                       "    , IFNULL(TRRCID, '') as trrcid, IFNULL(TRITEM, '') as tritem "
+                       "    , IFNULL(B.ITNAME, '') as itname, IFNULL(TRQTYS, 0) as trqtys "
+                       "    , IFNULL(TRPRCE, 0) as trprce, IFNULL(TRAMTS, 0) as tramts "
+                       "    , IFNULL(TRVATS, 0) as trvats, IFNULL(TRDESC, '') as trdesc "
+                       "    FROM OSTRNSP A "
+                       "    LEFT OUTER JOIN OSITEMP B "
+                       "    ON A.TRITEM = B.ITITEM "
+                       "    WHERE TRIOCD = 'I' "
+                       "    AND TRDATE >= '" + strDate + "' AND TRDATE <= '" + endDate + "' "
+                       "    UNION ALL "
+                       "    SELECT SADATE as a, 'OUT' as b, SARCID as c, SAITEM as d, B.ITNAME as e, SAQTYS as f "
+                       "    , SAPRCE as g, SAAMTS as h, SAAMTS as i, SADESC as j "
+                       "    FROM OSSALEP A "
+                       "    LEFT OUTER JOIN OSITEMP B "
+                       "    ON A.SAITEM = B.ITITEM "
+                       "    WHERE SADATE >= '" + strDate + "' AND SADATE <= '" + endDate + "' "
+                       "    ) result ORDER BY trdate "
+                       )
+        mainresult = cursor.fetchall()
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ")
+        cboCust = cursor.fetchall()
+
+    return JsonResponse({'mainList': mainresult, "cboCust": cboCust})
