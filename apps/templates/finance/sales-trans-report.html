@@ -116,7 +116,7 @@
                                               <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구분</th>
                                               <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">결재</th>
                                               <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단위</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단가</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">기준</th>
                                               <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">1월</th>
                                               <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">2월</th>
                                               <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">3월</th>
@@ -174,6 +174,50 @@
 
                                             </tr>
                                           </tbody>
+                                        </table>
+                                        <table class="bottom-0">
+                                            <colgroup>
+                                                <col width="auto" span="6">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                            </colgroup>
+                                            <tbody itemid="itemTotalTb">
+                                            <tr id="itemTotalTr" class="itemTotalTr_tr"></tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -321,17 +365,41 @@
 
             var itemTotal = 0;
             var itemTotal1 = 0;
+            var itemTotal1_S = 0;
+            var itemTotal1_A = 0;
             var itemTotal2 = 0;
+            var itemTotal2_S = 0;
+            var itemTotal2_A = 0;
             var itemTotal3 = 0;
+            var itemTotal3_S = 0;
+            var itemTotal3_A = 0;
             var itemTotal4 = 0;
+            var itemTotal4_S = 0;
+            var itemTotal4_A = 0;
             var itemTotal5 = 0;
+            var itemTotal5_S = 0;
+            var itemTotal5_A = 0;
             var itemTotal6 = 0;
+            var itemTotal6_S = 0;
+            var itemTotal6_A = 0;
             var itemTotal7 = 0;
+            var itemTotal7_S = 0;
+            var itemTotal7_A = 0;
             var itemTotal8 = 0;
+            var itemTotal8_S = 0;
+            var itemTotal8_A = 0;
             var itemTotal9 = 0;
+            var itemTotal9_S = 0;
+            var itemTotal9_A = 0;
             var itemTotal10 = 0;
+            var itemTotal10_S = 0;
+            var itemTotal10_A = 0;
             var itemTotal11 = 0;
+            var itemTotal11_S = 0;
+            var itemTotal11_A = 0;
             var itemTotal12 = 0;
+            var itemTotal12_S = 0;
+            var itemTotal12_A = 0;
 
             date = new Date();
             var year = date.getFullYear();
@@ -352,65 +420,132 @@
                     $("#itemTb").html("");
                     for (var i = 0; i < list.length; i++) {
 
-                    $("#itemTb").append(
-                        "<tr id='#mainTr' class='mainTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][26] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][27] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][28] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][29] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][30] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][31] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][32] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][33] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][34] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][35] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][36] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][37] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][38] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][39] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][40] + "</td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][41] + "</td>" +
-                        "</tr> ");
+                        $("#itemTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][26] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][27] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][28] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][29] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][30] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][31] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][32] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][33] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][34] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][35] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][36] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][37] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][38] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][39] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][40] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][41]+ "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][42] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][43] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][44] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][45] + "</td>" +
+                            "</tr> ");
 
-                        itemTotal += list[i][39];
-                        itemTotal1 += list[i][39];
-                        itemTotal2 += list[i][39];
-                        itemTotal3 += list[i][39];
-                        itemTotal4 += list[i][39];
-                        itemTotal5 += list[i][39];
-                        itemTotal6 += list[i][39];
-                        itemTotal7 += list[i][39];
-                        itemTotal8 += list[i][39];
-                        itemTotal9 += list[i][39];
-                        itemTotal10 += list[i][39];
-                        itemTotal11 += list[i][39];
-                        itemTotal12 += list[i][39];
+                            itemTotal += list[i][9];
+                            itemTotal1 += list[i][10];
+                            itemTotal1_S += list[i][11];
+                            itemTotal1_A += list[i][12];
+                            itemTotal2 += list[i][13];
+                            itemTotal2_S += list[i][14];
+                            itemTotal2_A += list[i][15];
+                            itemTotal3 += list[i][16];
+                            itemTotal3_S += list[i][17];
+                            itemTotal3_A += list[i][18];
+                            itemTotal4 += list[i][19];
+                            itemTotal4_S += list[i][20];
+                            itemTotal4_A += list[i][21];
+                            itemTotal5 += list[i][22];
+                            itemTotal5_S += list[i][23];
+                            itemTotal5_A += list[i][24];
+                            itemTotal6 += list[i][25];
+                            itemTotal6_S += list[i][26];
+                            itemTotal6_A += list[i][27];
+                            itemTotal7 += list[i][28];
+                            itemTotal7_S += list[i][29];
+                            itemTotal7_A += list[i][30];
+                            itemTotal8 += list[i][31];
+                            itemTotal8_S += list[i][32];
+                            itemTotal8_A += list[i][33];
+                            itemTotal9 += list[i][34];
+                            itemTotal9_S += list[i][35];
+                            itemTotal9_A += list[i][36];
+                            itemTotal10 += list[i][37];
+                            itemTotal10_S += list[i][38];
+                            itemTotal10_A += list[i][39];
+                            itemTotal11 += list[i][40];
+                            itemTotal11_S += list[i][41];
+                            itemTotal11_A += list[i][42];
+                            itemTotal12 += list[i][43];
+                            itemTotal12_S += list[i][44];
+                            itemTotal12_A += list[i][45];
                     }
+
+                    $("#itemTotalTb").html("");
+                    $("#itemTotalTb").append(
+                        "<tr id='#itemTotalTr' class='itemTotalTr_tr'>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem' colspan='6'>" + itemTotal + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal1 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal1_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal1_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal2 + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal2_S + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal2_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal3 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal3_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal3_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal4 + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal4_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal4_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal5 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal5_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal5_A + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal6 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal6_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal6_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal7 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal7_S + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal7_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal8 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal8_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal8_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal9 + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal9_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal9_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal10 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal10_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal10_A + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal11 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal11_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal11_A + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal12 + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal12_S + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal12_A + "</td> " +
+                        "</tr> ");
                 }
             })
         });
