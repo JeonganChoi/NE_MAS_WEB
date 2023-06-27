@@ -3,10 +3,79 @@
 {% block title %} sale-trans-report : 매출내역서 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
+    <style>
+        div#byCust table {
+            {#보더 부분에 왼쪽으로 스크롤 할 때 비쳤던거 방지#}
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(1), div#byCust table tr:nth-child(1) th:nth-child(2), div#byCust table td:nth-child(1), div#byCust table td:nth-child(2) {
+            position: sticky;
+            z-index: 4 !important;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(1), div#byCust table td:nth-child(1) {
+            min-width: 12rem;
+            left: 0;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(2), div#byCust table td:nth-child(2) {
+            left: 12rem;
+            min-width: 10rem;
+        }
 
+        div#byCust table tbody#custTb td {
+            background-color: white;
+        }
+        div#byCust table tbody#custTotalTb td {
+            background-color: #c9dae1;
+        }
+
+        div#byItem table {
+            {#보더 부분에 왼쪽으로 스크롤 할 때 비쳤던거 방지#}
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(1), div#byItem table tr:nth-child(1) th:nth-child(2), div#byItem table tr:nth-child(1) th:nth-child(3), div#byItem table tr:nth-child(1) th:nth-child(4), div#byItem table tr:nth-child(1) th:nth-child(5), div#byItem table tr:nth-child(1) th:nth-child(6),
+        div#byItem table td:nth-child(1), div#byItem table td:nth-child(2), div#byItem table td:nth-child(3), div#byItem table td:nth-child(4), div#byItem table td:nth-child(5), div#byItem table td:nth-child(6) {
+            position: sticky;
+            z-index: 4 !important;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(1), div#byItem table td:nth-child(1) {
+            min-width: 12rem;
+            left: 0;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(2), div#byItem table td:nth-child(2) {
+            left: 12rem;
+            min-width: 8rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(3), div#byItem table td:nth-child(3) {
+            min-width: 6rem;
+            left: 20rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(4), div#byItem table td:nth-child(4) {
+            left: 26rem;
+            min-width: 6rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(5), div#byItem table td:nth-child(5) {
+            min-width: 6rem;
+            left: 32rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(6), div#byItem table td:nth-child(6) {
+            left: 38rem;
+            min-width: 6rem;
+        }
+
+        div#byItem table tbody#itemTb td {
+            background-color: white;
+        }
+        div#byItem table tbody#itemTotalTb td {
+            background-color: #c9dae1;
+        }
+    </style>
 
     <!--<div class="pt-6 pb-6 bg-cover height-100"
          style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>-->
@@ -64,15 +133,15 @@
                                     </div>
                                 </div>
                                 <div class="px-0 py-0 card-body">
-                                    <div class="p-2 pe-3 ps-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
+                                    <div class="m-2 me-3 ms-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
                                         <table class="table mb-0 align-items-center justify-content-center p-2" style="max-height: 56vh; width: 100%">
                                             <colgroup>
-                                                <col style="min-width: 20rem">
-                                                <col style="min-width: 10rem">
+                                                <col style="min-width: 12rem">
                                                 <col style="min-width: 8rem">
-                                                <col style="min-width: 8rem">
-                                                <col style="min-width: 8rem">
-                                                <col style="min-width: 8rem">
+                                                <col style="min-width: 6rem">
+                                                <col style="min-width: 6rem">
+                                                <col style="min-width: 6rem">
+                                                <col style="min-width: 6rem">
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
@@ -112,62 +181,62 @@
                                             </colgroup>
                                           <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3" style="position: sticky; top: 0">
                                             <tr>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">제품명</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구매처</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구분</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">결재</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단위</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단가</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">1월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">2월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">3월</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">4월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">5월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">6월</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">7월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">8월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">9월</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">10월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">11월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">12월</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">제품명</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구매처</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구분</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">결재</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단위</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">단가</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">1월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">2월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">3월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">4월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">5월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">6월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">7월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">8월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">9월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">10월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">11월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2" colspan="3">12월</th>
                                             </tr>
                                             <tr>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-2">합계</th>
                                             </tr>
                                           </thead>
                                           <tbody id="itemTb">
@@ -176,14 +245,14 @@
                                             </tr>
                                           </tbody>
                                         </table>
-                                        <table class="bottom-0" style="height: 3vh; width: 100%;">
+                                        <table class="bottom-0 px-2" style="height: 3vh; width: 100%;">
                                             <colgroup>
-                                                <col style="min-width: 20rem">
-                                                <col style="min-width: 10rem">
+                                                <col style="min-width: 12rem">
                                                 <col style="min-width: 8rem">
-                                                <col style="min-width: 8rem">
-                                                <col style="min-width: 8rem">
-                                                <col style="min-width: 8rem">
+                                                <col style="min-width: 6rem">
+                                                <col style="min-width: 6rem">
+                                                <col style="min-width: 6rem">
+                                                <col style="min-width: 6rem">
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
@@ -246,7 +315,7 @@
                                     </div>
                                 </div>
                                 <div class="px-0 py-0 card-body">
-                                    <div class="p-2 ps-3 pe-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
+                                    <div class="m-2 ms-3 me-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
                                         <table class="table mb-0 align-items-center justify-content-center p-2">
                                             <colgroup>
                                                 <col style="min-width: 12rem">
@@ -290,58 +359,58 @@
                                             </colgroup>
                                           <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3">
                                             <tr>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-1" rowspan="2">거래처명</th>
-                                              <th style="font-size: 1rem; background-color: #e2e5e9" class="text-dark text-center border border-dark font-weight-semibold p-1" rowspan="2">결재</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">1월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">2월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">3월</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">4월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">5월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">6월</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">7월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">8월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">9월</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">10월</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">11월</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">12월</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-1" rowspan="2">거래처명</th>
+                                              <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-1" rowspan="2">결재</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">1월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">2월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">3월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">4월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">5월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">6월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">7월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">8월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">9월</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">10월</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">11월</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-top: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1" colspan="3">12월</th>
                                             </tr>
                                             <tr>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e2c6c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e3d4c2" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
-                                              <th style="font-size: 1rem; background-color: #e4dbf6" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e2c6c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e3d4c2; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">수량</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">공급가액</th>
+                                              <th style="font-size: 1rem; background-color: #e4dbf6; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-semibold p-1">합계</th>
                                             </tr>
                                           </thead>
                                           <tbody id="custTb">
@@ -350,9 +419,9 @@
                                             </tr>
                                           </tbody>
                                         </table>
-                                        <table class="table mb-0 align-items-center justify-content-center p-2 bottom-0" style="height: 3vh; width: 100%;">
+                                        <table class="table mb-0 align-items-center justify-content-center px-2 bottom-0" style="height: 3vh; width: 100%;">
                                             <colgroup>
-                                                <col style="min-width: 20rem">
+                                                <col style="min-width: 12rem">
                                                 <col style="min-width: 10rem">
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
@@ -518,7 +587,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][45] + "</td>" +
                             "</tr> ");
 
-                            itemTotal += list[i][9];
+                            itemTotal += Number(list[i][9]);
                             itemTotal1 += list[i][10];
                             itemTotal1_S += list[i][11];
                             itemTotal1_A += list[i][12];
@@ -560,7 +629,12 @@
                     $("#itemTotalTb").html("");
                     $("#itemTotalTb").append(
                         "<tr id='#itemTotalTr' class='itemTotalTr_tr'>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem' colspan='6'>" + itemTotal + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal1 + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal1_S + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + itemTotal1_A + "</td>" +
@@ -691,7 +765,8 @@
                     $("#custTotalTb").html("");
                     $("#custTotalTb").append(
                         "<tr id='#custTotalTr' class='custTotalTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem' colspan='2'>합 계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>합 계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal1 + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal1_S + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal1_A + "</td>" +

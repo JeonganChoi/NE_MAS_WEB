@@ -367,7 +367,8 @@ def saleTransSearchViews_search(request):
                        "     WHERE GUBUN = '2' "
                        "     AND YEAR(BAL_DD) = '" + Year + "' "
                        "     GROUP BY A.ITEM, A.UP_CODE, A.DANGA, A.GUBUN, DATE_FORMAT(BAL_DD, '%Y%m')) C "
-                       "     ) BB GROUP BY ITEM, UP_CODE, CUST_NME, GUBUN, DANGA ")
+                       "     ) BB GROUP BY ITEM, UP_CODE, CUST_NME, GUBUN, DANGA "
+                       )
 
     mainresult = cursor.fetchall()
 
