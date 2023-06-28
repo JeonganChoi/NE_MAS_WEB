@@ -1,0 +1,177 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} yearlyMonthly-sales-report : 년간월별매출현황 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!--<div class="pt-6 pb-6 bg-cover height-100"
+         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>-->
+    <div class="px-5 py-4 container-fluid">
+        <div class="row mt-n1">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card border border-5 border-white rounded-2 shadow-none mx-3 rounded-3" style="background-image: url('/static/assets/img/header-blue-purple.jpg')">
+                    <div class="card-body">
+                        <h4 class="mb-0 text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>년간 월간 매출 현황</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 col-1"></div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="chart">
+                            <canvas id="line-chart-gradient" class="chart-canvas" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-body"></div>
+            </div>
+            <div class="col-lg-1 col-1"></div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+
+    $(document).ready(function () {
+
+        // Line chart with gradient
+        var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
+
+        var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+        gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.31)');
+        gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+        gradientStroke1.addColorStop(0, 'rgba(94, 114, 228,0)'); //purple colors
+
+        var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+        // linear-gradient(180deg, rgba(47, 47, 47, 0.19) 0%, rgba(37, 37, 37, 0) 63.87%)
+
+        gradientStroke2.addColorStop(1, 'rgba(47, 47, 47, 0.19)');
+        gradientStroke2.addColorStop(0.2, 'rgba(47, 47, 47, 0.0)');
+        gradientStroke2.addColorStop(0, 'rgba(47, 47, 47,0)'); //purple colors
+
+
+        $.ajax({
+            type: "post",
+            url: '{% url "ym_sales_search" %}',
+            async: false,
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            success: function (data) {
+                var list = data.saleLineList;
+
+                var score = [];
+                var month = [];
+
+                for (var i = 0; i < list.length; i++) {
+                    score.push(list[i][0]);
+                    month.push(list[i][1]);
+                }
+
+                new Chart(ctx2, {
+                    type: "line",
+                    data: {
+                        labels: month,
+                        datasets: [{
+                            label: "Mobile apps",
+                            tension: 0.4,
+                            borderWidth: 0,
+                            pointRadius: 0,
+                            borderColor: "#774DD3",
+                            borderWidth: 3,
+                            backgroundColor: gradientStroke1,
+                            fill: true,
+                            data: score,
+                            maxBarThickness: 6
+
+                        },
+                            {
+                                label: "Websites",
+                                tension: 0.4,
+                                borderWidth: 0,
+                                pointRadius: 0,
+                                borderColor: "#1E293B",
+                                borderWidth: 3,
+                                backgroundColor: gradientStroke2,
+                                fill: true,
+                                data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+                                maxBarThickness: 6
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        },
+                        scales: {
+                            y: {
+                                grid: {
+                                    drawBorder: false,
+                                    display: true,
+                                    drawOnChartArea: true,
+                                    drawTicks: false,
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    display: true,
+                                    padding: 10,
+                                    color: '#b2b9bf',
+                                    font: {
+                                        size: 11,
+                                        family: "Open Sans",
+                                        style: 'normal',
+                                        lineHeight: 2
+                                    },
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    drawBorder: false,
+                                    display: false,
+                                    drawOnChartArea: false,
+                                    drawTicks: false,
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    display: true,
+                                    color: '#b2b9bf',
+                                    padding: 10,
+                                    font: {
+                                        size: 11,
+                                        family: "Open Sans",
+                                        style: 'normal',
+                                        lineHeight: 2
+                                    },
+                                }
+                            },
+                        },
+                    },
+                });
+            }
+        });
+    });
+    </script>
+
+{% endblock %}
