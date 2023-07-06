@@ -22,6 +22,7 @@ def saleTransSearchViews(request):
 
 def purTransSearchViews_search(request):
     Year = request.POST.get('Year')
+    Year = request.POST.get('Year2')
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT ITEM, UP_CODE, CUST_NME, GUBUN, DANGA "
@@ -131,6 +132,7 @@ def purTransSearchViews_search(request):
 
 def saleTransSearchViews_search(request):
     Year = request.POST.get('Year')
+    Year = request.POST.get('Year2')
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT ITEM, UP_CODE, CUST_NME, GUBUN, DANGA "
