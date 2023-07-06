@@ -94,7 +94,7 @@
         <div class="row">
             <div class="col-lg-6 col-6"></div>
             <div class="col-lg-5 col-5 end-0">
-                <div class="nav-wrapper mt-3 position-relative start-40 max-width-500 mx-3 bg-light rounded-2">
+                <div class="nav-wrapper mt-3 position-relative start-40 max-width-400 mx-3 bg-light rounded-2">
                     <ul class="nav nav-pills nav-pills-lg nav-fill bg-light border-0" role="tablist">
                       <li class="nav-item rounded-1">
                         <a class="nav-link mb-0 px-0 active p-1" style="font-size: 1rem" data-bs-toggle="tab" href="#byItem" role="tab" aria-controls="byItem" aria-selected="true">
@@ -117,8 +117,8 @@
             <div class="container-fluid">
                   <div class="tab-content tab-space">
                         <div class="tab-pane active" id="byItem">
-                            <div class="border shadow-xs card" style="height: 65vh">
-                                <div class="pb-0 pt-0 card-header border-bottom" style="height: 5vh">
+                            <div class="card border shadow-xs">
+                                <div class="card-header pt-0 pb-0 border-bottom" style="height: 8vh">
                                     <div class="row p-2">
                                         <div class="col-lg-2">
                                             <div class="input-group shadow-none">
@@ -133,8 +133,8 @@
                                     </div>
                                 </div>
                                 <div class="px-0 py-0 card-body">
-                                    <div class="m-2 me-3 ms-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
-                                        <table class="table mb-0 align-items-center justify-content-center p-2" style="max-height: 56vh; width: 100%">
+                                    <div class="m-2 table-responsive-sm overflow-auto" style="height: 50vh">
+                                        <table class="table mb-0 align-items-center justify-content-center">
                                             <colgroup>
                                                 <col style="min-width: 12rem">
                                                 <col style="min-width: 8rem">
@@ -179,7 +179,7 @@
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
                                             </colgroup>
-                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3" style="position: sticky; top: 0">
+                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-2" style="position: sticky; top: 0">
                                             <tr>
                                               <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">제품명</th>
                                               <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-2" rowspan="2">구매처</th>
@@ -299,8 +299,8 @@
                             </div>
                         </div>
                       <div class="tab-pane" id="byCust">
-                          <div class="border shadow-xs card" style="height: 65vh">
-                                <div class="pb-0 pt-0 card-header border-bottom" style="height: 5vh">
+                          <div class="border shadow-xs card">
+                                <div class="pb-0 pt-0 card-header border-bottom" style="height: 8vh">
                                     <div class="row p-2">
                                         <div class="col-lg-2">
                                             <div class="input-group shadow-none">
@@ -315,8 +315,8 @@
                                     </div>
                                 </div>
                                 <div class="px-0 py-0 card-body">
-                                    <div class="m-2 ms-3 me-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
-                                        <table class="table mb-0 align-items-center justify-content-center p-2">
+                                    <div class="m-2 table-responsive-sm overflow-auto" style="height: 50vh">
+                                        <table class="table mb-0 align-items-center justify-content-center">
                                             <colgroup>
                                                 <col style="min-width: 12rem">
                                                 <col style="min-width: 10rem">
@@ -357,7 +357,7 @@
                                                 <col style="min-width: 8rem">
                                                 <col style="min-width: 8rem">
                                             </colgroup>
-                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3">
+                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-2">
                                             <tr>
                                               <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-1" rowspan="2">거래처명</th>
                                               <th style="font-size: 1rem; background-color: #e2e5e9; border-top: 3px solid #1e293b !important; border-bottom: 3px solid #1e293b !important;" class="text-dark text-center border border-dark font-weight-semibold p-1" rowspan="2">결재</th>
@@ -479,7 +479,11 @@
 
 {% block javascripts %}
 
-
+{#    <script>#}
+{#        function addComma(str){#}
+{#        return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");#}
+{#        }#}
+{#    </script>#}
     <script>
         $(document).ready(function () {
 
@@ -548,7 +552,6 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td>" +
@@ -580,7 +583,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][38] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][39] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][40] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][41]+ "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][41] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][42] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][43] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][44] + "</td> " +
@@ -686,42 +689,42 @@
                             "<tr id='#custTr' class='custTr_tr'>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem' >" + custlist[j][1] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + custlist[j][3] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][4] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][5] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][6] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][7] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][8] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][9] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][10] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][11] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][12] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][13] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][14] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][15] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][16] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][17] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][18] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][19] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][20] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][21] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][22] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][23] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][24] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][25] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][26] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][27] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][28] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][29] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][30] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][31] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][32] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][33] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][34] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][35]+ "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][36] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][37] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][38] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + custlist[j][39] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][6]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][7]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][11]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][12]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][16]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][25]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][26]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][27]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][28]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][29]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][30]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][31]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][32]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][33]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][34]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][35])+ "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][36]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][37]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][38]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custlist[j][39]) + "</td>" +
                             "</tr> ");
 
                             custTotal1 += custlist[j][4];
@@ -767,42 +770,42 @@
                         "<tr id='#custTotalTr' class='custTotalTr_tr'>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>합 계</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal1 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal1_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal1_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal2 + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal2_S + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal2_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal3 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal3_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal3_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal4 + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal4_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal4_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal5 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal5_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal5_A + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal6 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal6_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal6_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal7 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal7_S + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal7_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal8 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal8_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal8_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal9 + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal9_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal9_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal10 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal10_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal10_A + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal11 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal11_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal11_A + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal12 + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal12_S + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + custTotal12_A + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal1) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal1_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal1_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal2) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal2_S) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal2_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal3_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal3_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal4) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal4_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal4_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal5) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal5_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal5_A) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal6_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal6_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal7_S) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal7_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal8_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal8_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal9) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal9_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal9_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal10_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal10_A) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal11_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal11_A) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal12) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal12_S) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(custTotal12_A) + "</td> " +
                         "</tr> ");
                 }
             })
@@ -810,5 +813,7 @@
 
 
     </script>
+
+
 
 {% endblock %}

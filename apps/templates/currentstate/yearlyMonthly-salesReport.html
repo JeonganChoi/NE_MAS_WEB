@@ -47,6 +47,9 @@
 
     $(document).ready(function () {
 
+        date = new Date();
+        var year = date.getFullYear();
+
         // Line chart with gradient
         var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
 
@@ -63,9 +66,11 @@
         gradientStroke2.addColorStop(0.2, 'rgba(47, 47, 47, 0.0)');
         gradientStroke2.addColorStop(0, 'rgba(47, 47, 47,0)'); //purple colors
 
+        let data = {'year': year}
 
         $.ajax({
             type: "post",
+            data: data,
             url: '{% url "ym_sales_search" %}',
             async: false,
             headers: {
@@ -75,19 +80,19 @@
                 var list = data.saleLineList;
 
                 var score = [];
-                var month = [];
-
                 for (var i = 0; i < list.length; i++) {
-                    score.push(list[i][0]);
-                    month.push(list[i][1]);
+                    for(var j = 1; j < 13; j++){
+                        score.push(list[i][j])
+                    }
+
                 }
 
                 new Chart(ctx2, {
                     type: "line",
                     data: {
-                        labels: month,
+                        labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                         datasets: [{
-                            label: "Mobile apps",
+                            label: "2023년",
                             tension: 0.4,
                             borderWidth: 0,
                             pointRadius: 0,
@@ -100,7 +105,7 @@
 
                         },
                             {
-                                label: "Websites",
+                                label: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                                 tension: 0.4,
                                 borderWidth: 0,
                                 pointRadius: 0,
@@ -108,7 +113,7 @@
                                 borderWidth: 3,
                                 backgroundColor: gradientStroke2,
                                 fill: true,
-                                data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+                                data: ['10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000'],
                                 maxBarThickness: 6
                             },
                         ],
