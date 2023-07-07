@@ -58,6 +58,12 @@
       }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+
+    // 콤마 추가
+    function addComma(str) {
+        return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
   </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
