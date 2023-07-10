@@ -14,9 +14,9 @@
         <div class="row mt-n1">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card border border-5 border-white rounded-2 shadow-none mx-3 rounded-3" style="background-image: url('/static/assets/img/header-orange-purple.jpg')">
+                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
                     <div class="card-body">
-                        <h4 class="mb-0 text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>년간 월간 매출 현황</h4>
+                        <h4 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>년간 월간 매출 현황</h4>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="card card-body"></div>
+                <div class="card card-body">
+                    <div class="p-0 table-responsive">
+                        <table class="table mb-0 align-items-center justify-content-center">
+                            <colgroup>
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                                <col width="6%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem"></th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">1월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">2월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">3월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">4월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">5월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">6월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">7월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">8월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">9월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">10월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">11월</th>
+                                <th class="pb-0 border border-2 border-dark border-top-0 border-start-0 border-end-0 text-uppercase text-dark font-weight-bolder text-center" style="font-size: 0.85rem">12월</th>
+                            </tr>
+                            </thead>
+                            <tbody id="mainTb">
+                            <tr id="mainTr" class="mainTr_tr">
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-1 col-1"></div>
         </div>
@@ -47,10 +88,7 @@
 
     $(document).ready(function () {
 
-        date = new Date();
-        var year = date.getFullYear();
-
-        // Line chart with gradient
+       // Line chart with gradient
         var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
 
         var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
@@ -66,6 +104,10 @@
         gradientStroke2.addColorStop(0.2, 'rgba(47, 47, 47, 0.0)');
         gradientStroke2.addColorStop(0, 'rgba(47, 47, 47,0)'); //purple colors
 
+
+        date = new Date();
+        var year = date.getFullYear();
+
         let data = {'year': year}
 
         $.ajax({
@@ -78,102 +120,153 @@
             },
             success: function (data) {
                 var list = data.saleLineList;
+                var list3 = data.lastList;
 
                 var score = [];
                 for (var i = 0; i < list.length; i++) {
                     for(var j = 1; j < 13; j++){
                         score.push(list[i][j])
                     }
+                }
 
+                var score2 = [];
+                for (var i = 0; i < list3.length; i++) {
+                    for (var j = 1; j < 13; j++) {
+                        score2.push(list3[i][j])
+                    }
                 }
 
                 new Chart(ctx2, {
-                    type: "line",
-                    data: {
-                        labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                        datasets: [{
-                            label: "2023년",
-                            tension: 0.4,
-                            borderWidth: 0,
-                            pointRadius: 0,
-                            borderColor: "#774DD3",
-                            borderWidth: 3,
-                            backgroundColor: gradientStroke1,
-                            fill: true,
-                            data: score,
-                            maxBarThickness: 6
+                  type: "line",
+                  data: {
+                    labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                    datasets: [{
+                        label: "2023년 매출",
+                        tension: 0.4,
+                        borderWidth: 0,
+                        pointRadius: 0,
+                        borderColor: "#774DD3",
+                        borderWidth: 3,
+                        backgroundColor: gradientStroke1,
+                        fill: true,
+                        data: score,
+                        maxBarThickness: 6
 
-                        },
-                            {
-                                label: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                                tension: 0.4,
-                                borderWidth: 0,
-                                pointRadius: 0,
-                                borderColor: "#1E293B",
-                                borderWidth: 3,
-                                backgroundColor: gradientStroke2,
-                                fill: true,
-                                data: ['10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000', '10000'],
-                                maxBarThickness: 6
-                            },
-                        ],
+                      },
+                      {
+                        label: "2022년 매출",
+                        tension: 0.4,
+                        borderWidth: 0,
+                        pointRadius: 0,
+                        borderColor: "#1E293B",
+                        borderWidth: 3,
+                        backgroundColor: gradientStroke2,
+                        fill: true,
+                        data: score2,
+                        maxBarThickness: 6
+                      },
+                    ],
+                  },
+                  options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      }
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false,
-                            }
-                        },
-                        interaction: {
-                            intersect: false,
-                            mode: 'index',
-                        },
-                        scales: {
-                            y: {
-                                grid: {
-                                    drawBorder: false,
-                                    display: true,
-                                    drawOnChartArea: true,
-                                    drawTicks: false,
-                                    borderDash: [5, 5]
-                                },
-                                ticks: {
-                                    display: true,
-                                    padding: 10,
-                                    color: '#b2b9bf',
-                                    font: {
-                                        size: 11,
-                                        family: "Open Sans",
-                                        style: 'normal',
-                                        lineHeight: 2
-                                    },
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    drawBorder: false,
-                                    display: false,
-                                    drawOnChartArea: false,
-                                    drawTicks: false,
-                                    borderDash: [5, 5]
-                                },
-                                ticks: {
-                                    display: true,
-                                    color: '#b2b9bf',
-                                    padding: 10,
-                                    font: {
-                                        size: 11,
-                                        family: "Open Sans",
-                                        style: 'normal',
-                                        lineHeight: 2
-                                    },
-                                }
-                            },
-                        },
+                    interaction: {
+                      intersect: false,
+                      mode: 'index',
                     },
+                    scales: {
+                      y: {
+                        grid: {
+                          drawBorder: false,
+                          display: true,
+                          drawOnChartArea: true,
+                          drawTicks: false,
+                          borderDash: [5, 5]
+                        },
+                        ticks: {
+                          display: true,
+                          padding: 10,
+                          color: '#b2b9bf',
+                          font: {
+                            size: 11,
+                            family: "Open Sans",
+                            style: 'normal',
+                            lineHeight: 2
+                          },
+                        }
+                      },
+                      x: {
+                        grid: {
+                          drawBorder: false,
+                          display: false,
+                          drawOnChartArea: false,
+                          drawTicks: false,
+                          borderDash: [5, 5]
+                        },
+                        ticks: {
+                          display: true,
+                          color: '#b2b9bf',
+                          padding: 10,
+                          font: {
+                            size: 11,
+                            family: "Open Sans",
+                            style: 'normal',
+                            lineHeight: 2
+                          },
+                        }
+                      },
+                    },
+                  },
                 });
+
+
+                var list2 = data.tbSaleList;
+
+                $("#mainTb").html("");
+                for (var j = 0; j < list2.length; j++) {
+                    $("#mainTb").append(
+                        "<tr id='#mainTr' class='mainTr_tr'>" +
+                        "<td class='text-start p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2023년 </td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][1]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][2]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][3]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][4]) + "</td> " +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][5]) + "</td> " +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][6]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][7]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][8]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][9]) + "</td> " +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][10]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][11]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][12]) + "</td> " +
+                        "</tr> ");
+                }
+
+                var list2 = data.lastList;
+
+                for (var j = 0; j < list2.length; j++) {
+                    $("#mainTb").append(
+                        "<tr id='#mainTr' class='mainTr_tr'>" +
+                        "<td class='text-start p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2022년 </td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][1]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][2]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][3]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][4]) + "</td> " +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][5]) + "</td> " +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][6]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][7]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][8]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][9]) + "</td> " +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][10]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][11]) + "</td>" +
+                        "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][12]) + "</td> " +
+                        "</tr> ");
+                }
             }
         });
     });

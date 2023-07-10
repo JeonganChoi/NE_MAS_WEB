@@ -69,4 +69,4 @@ def yearlyMontlySales_search(request):
 
         lastresult = cursor.fetchall()
 
-    return JsonResponse({"saleLineList": mainresult, 'lastList': lastresult})
+    return JsonResponse({"saleLineList": mainresult, 'lastList': lastresult, 'tbSaleList': mainresult})
