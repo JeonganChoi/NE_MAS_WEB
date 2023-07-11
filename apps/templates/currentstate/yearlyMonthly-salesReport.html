@@ -189,6 +189,7 @@
                           borderDash: [5, 5]
                         },
                         ticks: {
+                          minY: 1000000,
                           display: true,
                           padding: 10,
                           color: '#b2b9bf',
@@ -231,7 +232,7 @@
                 for (var j = 0; j < list2.length; j++) {
                     $("#mainTb").append(
                         "<tr id='#mainTr' class='mainTr_tr'>" +
-                        "<td class='text-start p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2023년 </td>" +
+                        "<td class='text-center border border-secondary border-top-0 border-end-0 p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2023년 </td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][1]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][2]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][3]) + "</td>" +
@@ -252,7 +253,7 @@
                 for (var j = 0; j < list2.length; j++) {
                     $("#mainTb").append(
                         "<tr id='#mainTr' class='mainTr_tr'>" +
-                        "<td class='text-start p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2022년 </td>" +
+                        "<td class='text-center border border-secondary border-top-0 border-end-0 p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2022년 </td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][1]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][2]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][3]) + "</td>" +
