@@ -502,21 +502,45 @@ def custLedgerViews(request):
     return render(request, "finance/custledger-report.html")
 
 def custLedgerViews_search(request):
-    Year = request.POST.get('Year')
+    strDate = request.POST.get('startDate')
+    endDate = request.POST.get('endDate')
+    custCode = request.POST.get('custCode')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(A.ITEM, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '')"
-                       "    , IFNULL(A.GUBUN, ''), IFNULL(A.DANGA, ''), IFNULL(SUM(A.QTY), 0)"
-                       "    , IFNULL(SUM(A.SUPPLY), 0), IFNULL(SUM(A.AMTS), 0), IFNULL(DATE_FORMAT(BAL_DD, '%Y%m'), '')"
-                       "    , IFNULL(SUM(ACAMTS), 0), IFNULL(ACIOGB, '') "
-                       "    FROM OSBILL A  "
-                       "    LEFT OUTER JOIN MIS1TB003 B "
-                       "    ON A.UP_CODE = B.CUST_NBR "
-                       "    WHERE GUBUN = '2' "
-                       "    AND YEAR(BAL_DD) = '" + Year + "' "
-                       "    GROUP BY A.ITEM, A.UP_CODE, A.DANGA, A.GUBUN, DATE_FORMAT(BAL_DD, '%Y%m') "
-                       "    ORDER BY A.ITEM, A.UP_CODE, A.DANGA, A.GUBUN, DATE_FORMAT(BAL_DD, '%Y%m') ")
+        cursor.execute(" SELECT DATE, GUBUN, GUBUN_NME, OPT, OPT_NME, ITEM, QTY, DANGA, SUPPLY, TAX, BALANCE, AMTS, REMARK FROM "
+                       " (SELECT IFNULL(A.BAL_DD, '') AS DATE, IFNULL(A.GUBUN, '') AS GUBUN, IFNULL(C.RESNAM, '') AS GUBUN_NME "
+                       "       , IFNULL(A.OPT, '') AS OPT, IFNULL(B.RESNAM, '') AS OPT_NME "
+                       "       , IFNULL(A.ITEM, '') AS ITEM, IFNULL(A.QTY, 0) AS QTY, IFNULL(A.DANGA, 0) AS DANGA "
+                       "       , IFNULL(A.SUPPLY, 0) AS SUPPLY, IFNULL(A.TAX, 0) AS TAX, IFNULL(A.PASS_AMT, 0) AS BALANCE "
+                       "       , IFNULL(A.AMTS, 0) AS AMTS, IFNULL(A.REMARK, '') AS REMARK "
+                       "       FROM OSBILL A "
+                       "       LEFT OUTER JOIN OSREFCP B "
+                       "       ON A.OPT = B.RESKEY AND B.RECODE = 'OPT' "
+                       "       LEFT OUTER JOIN OSREFCP C "
+                       "       ON A.OPT = C.RESKEY AND C.RECODE = 'OUA' "
+                       "       WHERE A.GUBUN = '1' AND A.UP_CODE = '" + custCode + "' "
+                       "       AND A.BAL_DD BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                       " UNION ALL "
+                       " SELECT IFNULL(A.BAL_DD, '') AS DATE, IFNULL(A.GUBUN, '') AS GUBUN, IFNULL(C.RESNAM, '') AS GUBUN_NME "
+                       "      , IFNULL(A.OPT, '') AS OPT, IFNULL(B.RESNAM, '') AS OPT_NME "
+                       "      , IFNULL(A.ITEM, '') AS ITEM, IFNULL(A.QTY, 0) AS QTY, IFNULL(A.DANGA, 0) AS DANGA "
+                       "      , IFNULL(A.SUPPLY, 0) AS SUPPLY, IFNULL(A.TAX, 0) AS TAX, IFNULL(A.PASS_AMT, 0) AS BALANCE "
+                       "      , IFNULL(A.AMTS, 0) AS AMTS, IFNULL(A.REMARK, '') AS REMARK "
+                       "      FROM OSBILL A "
+                       "      LEFT OUTER JOIN OSREFCP B "
+                       "      ON A.OPT = B.RESKEY AND B.RECODE = 'OPT' "
+                       "      LEFT OUTER JOIN OSREFCP C "
+                       "      ON A.OPT = C.RESKEY AND C.RECODE = 'OUA' "
+                       "      WHERE A.GUBUN = '2' AND A.UP_CODE = '" + custCode + "' "
+                       "      AND A.BAL_DD BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                       "     ) AA ORDER BY DATE ")
 
         mainresult = cursor.fetchall()
 
-    return JsonResponse({"mainList": mainresult})
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ")
+
+        custresult = cursor.fetchall()
+        print(custresult)
+
+    return JsonResponse({"mainList": mainresult, "custList": custresult})

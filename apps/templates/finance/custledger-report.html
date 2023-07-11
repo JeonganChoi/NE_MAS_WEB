@@ -57,7 +57,7 @@
                                                 <select class="border border-light rounded-1 text-center me-3" style="min-width: 10vw" name="inputCust" id="inputCust"></select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-4">
+                                        <div class="col-lg-6 col-6">
                                             <div class="input-group shadow-none">
                                                 <label class="mt-2 me-3" for="strDate" style="font-size: 1rem"><i class="ni ni-calendar-grid-58 pe-3"></i>일자</label>
                                                 <input class="form-control border border-light rounded-1 text-center me-3" style="max-width: 8vw" type="date" name="strDate" id="strDate">
@@ -65,28 +65,27 @@
                                                 <input class="form-control border border-light rounded-1 text-center me-3" style="max-width: 8vw" type="date" name="endDate" id="endDate">
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-2 text-start">
+                                        <div class="col-lg-2 col-2 text-end pe-0">
                                             <button type="button" class="btn bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
                                         </div>
-                                        <div class="col-lg-3 col-3"></div>
                                     </div>
                                 </div>
                                 <div class="px-0 py-0 card-body">
-                                    <div class="p-2 pe-3 ps-3 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
+                                    <div class="p-2 table-responsive-sm overflow-auto" style="height: 59vh; width: 75vw">
                                         <table class="table mb-0 align-items-center justify-content-center p-2" style="max-height: 56vh; width: 100%">
                                             <colgroup>
                                                 <col width="8%">
                                                 <col width="10%">
-                                                <col width="15%">
-                                                <col width="20%">
-                                                <col width="6%">
-                                                <col width="6%">
-                                                <col width="6%">
-                                                <col width="6%">
-                                                <col width="6%">
+                                                <col width="10%">
+                                                <col width="10%">
+                                                <col width="8%">
+                                                <col width="8%">
+                                                <col width="8%">
+                                                <col width="8%">
+                                                <col width="8%">
                                                 <col width="20%">
                                             </colgroup>
-                                          <thead class="border border-dark border-top border-start-0 border-end-0 border-bottom border-3" style="position: sticky; top: 0">
+                                          <thead class="border border-dark border-start-0 border-end-0 border-2" style="position: sticky; top: 0">
                                             <tr>
                                               <th style="font-size: 1rem; background-color: #e4dbf6;" class="text-dark text-center border border-dark font-weight-semibold p-2">일자</th>
                                               <th style="font-size: 1rem; background-color: #e4dbf6;" class="text-dark text-center border border-dark font-weight-semibold p-2">구분</th>
@@ -110,13 +109,13 @@
                                             <colgroup>
                                                 <col width="8%">
                                                 <col width="10%">
-                                                <col width="15%">
-                                                <col width="20%">
-                                                <col width="6%">
-                                                <col width="6%">
-                                                <col width="6%">
-                                                <col width="6%">
-                                                <col width="6%">
+                                                <col width="10%">
+                                                <col width="10%">
+                                                <col width="8%">
+                                                <col width="8%">
+                                                <col width="8%">
+                                                <col width="8%">
+                                                <col width="8%">
                                                 <col width="20%">
                                             </colgroup>
                                             <tbody style="background-color: #c9dae1" id="totalTb">
@@ -162,13 +161,13 @@
             document.getElementById('endDate').valueAsDate = new Date
 
             var strDate = document.getElementById('strDate').value;
-            var eDate = document.getElementById('endDate').value;
+            var endDate = document.getElementById('endDate').value;
 
-            var startDate = strDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
+            var sDate = strDate.replace(/\-/g, '')
+            var eDate = endDate.replace(/\-/g, '')
             var custCode = '';
 
-            let data = {'startDate': startDate, "endDate": endDate, 'custCode': custCode}
+            let data = {'startDate': sDate, 'endDate': eDate, 'custCode': custCode}
 
             $.ajax({
                 type: "post",
@@ -183,39 +182,47 @@
 
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
+                        var Bal = list[i][11] - list[i][10]
+                        if(Bal <= 0) {
+                            Bal = 0
+                        }
+                        else{
+                            Bal = Bal
+                        }
+
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bal) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                             "</tr> ");
 
-                        totalQty += list[i][4];
-                        totalDanga += list[i][5];
-                        totalPrc += list[i][6];
-                        totalVat += list[i][7];
-                        totalBal += list[i][8];
+                        totalQty += list[i][6];
+                        totalDanga += list[i][7];
+                        totalPrc += list[i][8];
+                        totalVat += list[i][9];
+                        totalBal += list[i][10];
                     }
 
                     $("#subTb").append(
                         "<tr id='#subTr' class='subTr_tr'>" +
                         "<td class='text-center p-1' style='font-size: 0.85rem' rowspan='4'>합 계</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + totalQty + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + totalDanga + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + totalPrc + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + totalVat + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + totalBal + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalQty) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalDanga) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalPrc) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalVat) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalBal) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "</tr> ");
 
-                    var combolist = data.cboCust;
+                    var combolist = data.custList;
                     for (var i = 0; i < combolist.length; i++) {
                         if (combolist[i][0] == inputCust) {
                             inputCustTxt = inputCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
@@ -228,6 +235,80 @@
                 }
             })
 
+        });
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+
+            var totalQty = 0;
+            var totalDanga = 0;
+            var totalPrc = 0;
+            var totalVat = 0;
+            var totalBal = 0;
+
+            var strDate = document.getElementById('strDate').value;
+            var endDate = document.getElementById('endDate').value;
+            var custCode = document.getElementById('inputCust').value;
+
+            var sDate = strDate.replace(/\-/g, '')
+            var eDate = endDate.replace(/\-/g, '')
+
+            let data = {'startDate': sDate, 'endDate': eDate, 'custCode': custCode}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "custLedger_report_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        var Bal = list[i][11] -  list[i][10]
+                        if(Bal <= 0) {
+                            Bal = 0
+                        }
+                        else{
+                            Bal = Bal
+                        }
+
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bal) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                            "</tr> ");
+
+                        totalQty += list[i][6];
+                        totalDanga += list[i][7];
+                        totalPrc += list[i][8];
+                        totalVat += list[i][9];
+                        totalBal += list[i][10];
+                    }
+
+                    $("#subTb").append(
+                        "<tr id='#subTr' class='subTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem' rowspan='4'>합 계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalQty) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalDanga) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalPrc) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalVat) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + (totalBal) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "</tr> ");
+                }
+            })
         });
     </script>
 
