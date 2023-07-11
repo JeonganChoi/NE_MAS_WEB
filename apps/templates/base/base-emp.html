@@ -41,40 +41,40 @@
         <div class="my-4 row">
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card h-100">
-                    <div class="pb-0 pt-0 card-header border-bottom">
+                    <div class="pb-1 pt-1 card-header border-bottom">
                       <div class="row">
-                          <div class="p-3 col-lg-3 mt-lg-0">
-                            <div class="input-group">
-                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                          <div class="col-lg-4 col-4">
+                            <div class="input-group mt-2 shadow-none justify-content-center align-content-center">
+                                <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>사원 번호/ 이름</label>
                                 </span>
-                                <input class="form-control border border-light rounded-1 text-center" type="text" id="inputEmpNo" name="inputEmpNo"/>
+                                <input style="height: 2rem; width: 10rem" class="form-control border border-light rounded-1 text-center" type="text" id="inputEmpNo" name="inputEmpNo"/>
                             </div>
                           </div>
-                          <div class="p-3 col-lg-3 mt-lg-0">
-                              <div class="input-group">
+                          <div class="col-lg-3 col-3">
+                              <div class="input-group shadow-none">
                                 <input type="radio" id="inputEmpCount" name="inputEmpCount" checked value="1"/>
-                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 1rem">근무자</label>
                                 </span>
                                 <input type="radio" id="inputEmpCount" name="inputEmpCount" value="2"/>
-                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 1rem">퇴직자</label>
                                 </span>
-                                <input type="radio" id="inputEmpCount" name="inputEmpCount" value=""/>
-                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                                <input type="radio" id="inputEmpCount" name="inputEmpCount" value="0"/>
+                                <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 1rem">전 체</label>
                                 </span>
 
                               </div>
                           </div>
-                          <div class="p-3 col-lg-4 mt-lg-0"></div>
-                          <div class="p-3 col-lg-2 mt-lg-0 text-end">
-                             <div class="input-group">
-                                <span class="input-group-text text-body bg-transparent border-0 shadow-none">
+                          <div class="col-lg-3 col-3"></div>
+                          <div class="col-lg-2 col-2 text-end">
+                             <div class="input-group mt-2 shadow-none align-content-center justify-content-center">
+                                <span class="input-group-text bg-transparent border-0">
                                     <div class="badge badge-success"><label style="font-size: 1rem">인원 수</label></div>
                                 </span>
-                                <input class="form-control border-0 rounded-1 text-center text-success font-weight-bold text-center" type="number" id="inputEmpNum" name="inputEmpNum"/>
+                                <input style="height: 2rem; width: 3rem; font-size: 1.5rem" readonly class="bg-transparent border-0 text-center mt-2 text-success font-weight-bold" id="inputEmpNum" name="inputEmpNum"/>
                             </div>
                           </div>
                       </div>
@@ -86,15 +86,15 @@
                                 <col width="2%">
                                 <col width="6%">
                                 <col width="8%">
-                                <col width="10%">
+                                <col width="5%">
                                 <col width="8%">
                                 <col width="8%">
                                 <col width="8%">
                                 <col width="10%">
+                                <!--<col width="10%">
                                 <col width="10%">
                                 <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
+                                <col width="10%">-->
                                 <col width="2%">
                             </colgroup>
                           <thead class="bg-gray-100">
@@ -107,10 +107,10 @@
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">퇴사 일자</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">근무조</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">부 서</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>
+                              <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
+                              <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
+                              <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
+                              <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">구 분</th>
                             </tr>
                           </thead>
@@ -268,24 +268,20 @@
                         $("#empMainTb").append(
                             "<tr id='#empMainTr' class='empMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkGbn[]' name='chkGbn[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "</tr> ");
                     }
 
-                    {#var num = i#}
-                    {#$("#inputEmpNum").value(num)#}
+                    var Num = list.length;
+                    document.getElementById("inputEmpNum").value = Num;
 
                     var combolist = data.jjoCombo;
                     for (var i = 0; i < combolist.length; i++) {
@@ -413,24 +409,19 @@
                         $("#empMainTb").append(
                             "<tr id='#empMainTr' class='empMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkGbn[]' name='chkGbn[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "</tr> ");
                     }
-
-                    var num = i
-                    $("#inputEmpNum").value(num)
+                    var Num = list.length;
+                    document.getElementById("inputEmpNum").value = Num;
 
                     var combolist = data.jjoCombo;
                     for (var i = 0; i < combolist.length; i++) {

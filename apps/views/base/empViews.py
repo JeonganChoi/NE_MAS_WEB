@@ -18,6 +18,58 @@ def empViews_search(request):
     empCode = request.POST.get('empCode')
     empType = request.POST.get('empType')
 
+    if empType == '0':
+        with connection.cursor() as cursor:
+            cursor.execute(
+                            "SELECT "
+                            "       A.EMP_NBR "
+                            "     , IFNULL(A.EMP_GBN, '') "
+                            "     , IFNULL(A.EMP_NME, '') "
+                            "     , IFNULL(A.EMP_PASS, '') "
+                            "     , IFNULL(A.EMP_IPSA, '') "
+                            "     , IFNULL(A.EMP_TESA, '') "
+                            "     , IFNULL(A.EMP_JO, '') "
+                            "     , IFNULL(C.RESNAM, '') "
+                            "     , IFNULL(A.EMP_DEPT, '') "
+                            "     , IFNULL(B.RESNAM, '') "
+                            "     , IFNULL(A.EMP_TEL, '') "
+                            "     , IFNULL(A.EMP_PRC, '') "
+                            "     , IFNULL(D.RESNAM, '') "
+                            "     , IFNULL(A.EMP_PRC1, '') "
+                            "     , IFNULL(E.RESNAM, '') "
+                            "     , IFNULL(A.EMP_PRC2, '') "
+                            "     , IFNULL(F.RESNAM, '') "
+                            "     , IFNULL(A.EMP_PRC3, '') "
+                            "     , IFNULL(G.RESNAM, '') "
+                            "     , IFNULL(A.EMP_COM, '') "
+                            "     , IFNULL(H.RESNAM, '') "
+                            "   FROM pis1tb001 A "
+                            "   LEFT OUTER JOIN osrefcp B "
+                            "   ON B.RECODE = 'DPT' "
+                            "   AND A.EMP_DEPT = B.RESKEY "
+                            "   LEFT OUTER JOIN osrefcp C "
+                            "   ON C.RECODE = 'JJO' "
+                            "   AND A.EMP_JO = C.RESKEY "
+                            "   LEFT OUTER JOIN osrefcp D "
+                            "   ON D.RECODE = 'POP' "
+                            "   AND A.EMP_PRC = D.RESKEY "
+                            "   LEFT OUTER JOIN osrefcp E "
+                            "   ON E.RECODE = 'POP' "
+                            "   AND A.EMP_PRC1 = E.RESKEY "
+                            "   LEFT OUTER JOIN osrefcp F "
+                            "   ON F.RECODE = 'POP' "
+                            "   AND A.EMP_PRC2 = F.RESKEY "
+                            "   LEFT OUTER JOIN osrefcp G "
+                            "   ON G.RECODE = 'POP' "
+                            "   AND A.EMP_PRC3 = G.RESKEY "
+                            "   LEFT OUTER JOIN osrefcp H "
+                            "   ON H.RECODE = 'COM' "
+                            "   AND A.EMP_COM = H.RESKEY "
+                           )
+            empresult = cursor.fetchall()
+
+        return JsonResponse({"empList": empresult})
+
     if empCode != '' and empCode is not None:
         with connection.cursor() as cursor:
             cursor.execute(
@@ -42,7 +94,7 @@ def empViews_search(request):
                 "     , IFNULL(A.EMP_PRC3, '') "
                 "     , IFNULL(G.RESNAM, '') "
                 "     , IFNULL(A.EMP_COM, '') "
-                "     , IFNULL(H.RESNAM, '') "
+                "     , IFNULL(H.RESNAM, '')"
                 "   FROM pis1tb001 A "
                 "   LEFT OUTER JOIN osrefcp B "
                 "   ON B.RECODE = 'DPT' "
@@ -118,7 +170,7 @@ def empViews_search(request):
                             "     , IFNULL(A.EMP_PRC3, '') "
                             "     , IFNULL(G.RESNAM, '') "
                             "     , IFNULL(A.EMP_COM, '') "
-                            "     , IFNULL(H.RESNAM, '') "
+                            "     , IFNULL(H.RESNAM, '')"
                             "   FROM pis1tb001 A "
                             "   LEFT OUTER JOIN osrefcp B "
                             "   ON B.RECODE = 'DPT' "

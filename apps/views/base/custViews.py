@@ -18,95 +18,101 @@ def custViews_search(request):
     custCode = request.POST.get('custCode')
     custYn = request.POST.get('custYn')
 
-
-    if custCode is not None and custCode != '' or custType is not None and custType != '' or custYn is not None and custYn != '':
+    if custCode is not None and custCode != '' and custType is not None and custType != '':
         with connection.cursor() as cursor:
             cursor.execute(
-                " SELECT IFNULL(CUST_NME, ''), IFNULL(CUST_NBR, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ID_NBR, '') "
-                "   , IFNULL(CUST_BSN_CON, ''), IFNULL(CUST_BSN_TYP, ''), IFNULL(CUST_POST_NBR, '') "
-                "   , IFNULL(CUST_ADDR, ''), IFNULL(CUST_TEL_NBR, ''), IFNULL(CUST_FAX_NBR, '') "
-                "   , IFNULL(CUST_EMP_NME, ''), IFNULL(CUST_EMP_PHN, ''), IFNULL(CUST_EMAIL, '') "
-                "   , IFNULL(CUST_HOMEP, ''), IFNULL(CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(CUST_BUNR, '')"
-                "   , IFNULL(CUST_END_CHK, 'Y') "
+                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
+                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
+                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
+                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
+                "   , IFNULL(A.CUST_END_CHK, 'Y') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
                 "   AND D.RECODE = 'CGB' "
-                "   WHERE CUST_NBR LIKE '%" + custCode + "%' "
-                "   OR CUST_NME LIKE '%" + custCode + "%' "
-                "   AND CUST_GBN LIKE '%" + custType + "%' "
-                "   AND CUST_END_CHK LIKE '%" + custYn + "%' "
+                "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
+                "   OR A.CUST_NME LIKE '%" + custCode + "%'"
+                "   AND A.CUST_GBN = '" + custType + "'"
             )
             custresult = cursor.fetchall()
             print(custresult)
 
-        # 업체 구분 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
-            inputCustType = cursor.fetchall()
-
-        # 사용여부 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'UST' ")
-            cboCustYn = cursor.fetchall()
-
-        # 업체 분류 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
-            cboCustType = cursor.fetchall()
-
-        # 업체군 분류 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
-            cboCustType2 = cursor.fetchall()
-
-        return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "cboCustType": cboCustType, "cboCustType2": cboCustType2
-                                , "custList": custresult})
-
-    if custCode is not None and custCode != '':
+        return JsonResponse({"custList": custresult})
+    elif custCode is not None and custCode != '':
         with connection.cursor() as cursor:
             cursor.execute(
-                " SELECT IFNULL(CUST_NME, ''), IFNULL(CUST_NBR, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ID_NBR, '') "
-                "   , IFNULL(CUST_BSN_CON, ''), IFNULL(CUST_BSN_TYP, ''), IFNULL(CUST_POST_NBR, '') "
-                "   , IFNULL(CUST_ADDR, ''), IFNULL(CUST_TEL_NBR, ''), IFNULL(CUST_FAX_NBR, '') "
-                "   , IFNULL(CUST_EMP_NME, ''), IFNULL(CUST_EMP_PHN, ''), IFNULL(CUST_EMAIL, '') "
-                "   , IFNULL(CUST_HOMEP, ''), IFNULL(CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(CUST_BUNR, '')"
-                "   , IFNULL(CUST_END_CHK, 'Y') "
+                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
+                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
+                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
+                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
+                "   , IFNULL(A.CUST_END_CHK, 'Y') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
                 "   AND D.RECODE = 'CGB' "
-                "   WHERE CUST_NBR LIKE '%" + custCode + "%' "
-                "   OR CUST_NME LIKE '%" + custCode + "%' "
+                "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
+                "   OR A.CUST_NME LIKE '%" + custCode + "%' "
             )
             custresult = cursor.fetchall()
 
-        # 업체 구분 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
-            inputCustType = cursor.fetchall()
-
-        # 사용여부 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'UST' ")
-            cboCustYn = cursor.fetchall()
-
-        # 업체 분류 - 콤보박스
+            # 업체 분류 - 콤보박스
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
             cboCustType = cursor.fetchall()
 
-        # 업체군 분류 - 콤보박스
+            # 업체군 분류 - 콤보박스
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
             cboCustType2 = cursor.fetchall()
 
-        return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "cboCustType": cboCustType, "cboCustType2": cboCustType2
-                                , "custList": custresult})
+        return JsonResponse({"cboCustType": cboCustType, "cboCustType2": cboCustType2, "custList": custresult})
+
+    elif custYn is not None and custYn != '':
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
+                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
+                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
+                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
+                "   , IFNULL(A.CUST_END_CHK, 'Y') "
+                "   FROM MIS1TB003 A "
+                "   LEFT OUTER JOIN OSREFCP D "
+                "   ON A.CUST_GBN = D.RESKEY "
+                "   AND D.RECODE = 'CGB' "
+                "   WHERE A.CUST_END_CHK LIKE '%" + custYn + "%' "
+            )
+            custresult = cursor.fetchall()
+            print(custresult)
+
+        return JsonResponse({"custList": custresult})
+
+    elif custType is not None and custType != '':
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
+                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
+                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
+                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
+                "   , IFNULL(A.CUST_END_CHK, 'Y') "
+                "   FROM MIS1TB003 A "
+                "   LEFT OUTER JOIN OSREFCP D "
+                "   ON A.CUST_GBN = D.RESKEY "
+                "   AND D.RECODE = 'CGB' "
+                "   WHERE A.CUST_GBN LIKE '%" + custType + "%' "
+            )
+            custresult = cursor.fetchall()
+            print(custresult)
+
+        return JsonResponse({"custList": custresult})
+
     else:
         with connection.cursor() as cursor:
             cursor.execute(
-                " SELECT IFNULL(CUST_NBR, ''), IFNULL(CUST_NME, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ADDR, '') "
+                " SELECT IFNULL(CUST_NME, ''), IFNULL(CUST_NBR, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ADDR, '') "
                 "   , IFNULL(CUST_ID_NBR, ''), IFNULL(CUST_POST_NBR, ''), IFNULL(CUST_TEL_NBR, '')"
                 "   , IFNULL(CUST_GBN, ''), IFNULL(CUST_END_CHK, 'Y') "
                 "   FROM MIS1TB003"
