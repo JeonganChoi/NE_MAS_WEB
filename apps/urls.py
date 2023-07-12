@@ -12,6 +12,7 @@ urlpatterns = [
 #     기초정보
     # 계정코드관리
     path('base_accountCode/', accountCodeViews.accountCodeViews, name='base_accountCode'),
+    path('base_accountCode_search/', accountCodeViews.accountCodeViews_search, name='base_accountCode_search'),
     # 참조코드관리
     path('base_code/', baseCodeViews.baseCodeViews, name='base_code'),
     path('base_code_search/', baseCodeViews.baseCodeViews_search, name='base_code_search'),

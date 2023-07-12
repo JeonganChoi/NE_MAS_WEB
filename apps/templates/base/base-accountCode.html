@@ -11,30 +11,32 @@
     <form method="post">
         {% csrf_token %}
         <div class="row">
-            <div class="col-lg-12 col-sm-12">
+            <div class="col-lg-4 col-sm-4">
                 <div class="mx-2 mb-3 d-md-flex align-items-center">
                     <div class="mb-3 mb-md-0">
                         <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>계정 과목 관리</h3>
                     </div>
-                    <button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-search me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">조회</span>
-                    </button>
-                    <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">저장</span>
-                    </button>
-                    <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">삭제</span>
-                    </button>
                 </div>
+            </div>
+            <div class="col-lg-8 col-sm-8 text-end">
+                <!--<button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
+                  <span class="btn-inner--icon">
+                      <i class="fas fa-search me-2 fs-5"></i>
+                  </span>
+                  <span class="btn-inner--text text-lg">조회</span>
+                </button>-->
+                <button type="submit" class="mb-0 btn btn-success btn-icon align-items-center me-2" id="btnSave" name="btnSave">
+                  <span class="btn-inner--icon">
+                      <i class="fas fa-plus me-2 fs-5"></i>
+                  </span>
+                  <span class="btn-inner--text text-lg">저장</span>
+                </button>
+                <button type="button" class="mb-0 btn btn-dark btn-icon align-items-center" id="btnDlt" name="btnDlt">
+                  <span class="btn-inner--icon">
+                      <i class="fas fa-minus me-2 fs-5"></i>
+                  </span>
+                  <span class="btn-inner--text text-lg">삭제</span>
+                </button>
             </div>
         </div>
         <hr class="my-0">
@@ -64,11 +66,23 @@
                   <div class="tab-content tab-space">
                         <div class="tab-pane active" id="byAdmin">
                             <div class="card border shadow-xs">
+                                <div class="px-0 py-0 card-header border border-top-0 border-start-0 border-end-0">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-3 m-2">
+                                            <select class="form-control border border-light rounded-1 text-center w-40 p-0" style="height: 2rem; font-size: 0.8rem"
+                                                    name="cboInput" id="cboInput">
+                                                <option selected value="0">수익</option>
+                                                <option value="1">비용</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-9 col-9"></div>
+                                    </div>
+                                </div>
                                 <div class="px-0 py-0 card-body">
                                     <div class="row">
                                         <div class="col-lg-7 col-7">
                                             <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>관리 계정 리스트</h6>
-                                            <div class="m-4 mt-0 table-responsive-sm overflow-auto" style="height: 50vh">
+                                            <div class="m-4 mt-0 table-responsive-sm overflow-auto border border-light" style="height: 50vh">
                                                 <table class="table mb-0 align-items-center justify-content-center">
                                                     <colgroup>
                                                         <col width="2%">
@@ -97,7 +111,7 @@
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정명</label>
                                                 <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>비  고</label>
-                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc" name="txtDesc"/>
+                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc_M" name="txtDesc_M"/>
                                             </div>
                                         </div>
                                     </div>
@@ -106,11 +120,23 @@
                         </div>
                       <div class="tab-pane" id="byAct">
                           <div class="border shadow-xs card">
+                                <div class="px-0 py-0 card-header border border-top-0 border-start-0 border-end-0">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-3 m-2">
+                                            <select class="form-control border border-light rounded-1 text-center w-40 p-0" style="height: 2rem; font-size: 0.8rem"
+                                                    name="cboInput" id="cboInput">
+                                                <option selected value="0">수익</option>
+                                                <option value="1">비용</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-9 col-9"></div>
+                                    </div>
+                                </div>
                                 <div class="px-0 py-0 card-body">
                                     <div class="row">
                                         <div class="col-lg-7 col-7">
                                             <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>회계 계정 리스트</h6>
-                                            <div class="m-4 mt-0 table-responsive-sm overflow-auto" style="height: 50vh">
+                                            <div class="m-4 mt-0 table-responsive-sm overflow-auto border border-light" style="height: 50vh">
                                                 <table class="table mb-0 align-items-center justify-content-center">
                                                     <colgroup>
                                                         <col width="2%">
@@ -135,11 +161,11 @@
                                         <div class="col-lg-5 col-5">
                                             <div class="form-group m-4">
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정과목</label>
-                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCode_M" name="txtCode_M"/>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCode_A" name="txtCode_A"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정명</label>
-                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_A" name="txtCodeNme_A"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>비  고</label>
-                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc" name="txtDesc"/>
+                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc_A" name="txtDesc_A"/>
                                             </div>
                                         </div>
                                     </div>
@@ -157,8 +183,96 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function () {
 
+            $.ajax({
+                type: "post",
+                url: '{% url "base_accountCode_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mList;
+                    var list2 = data.aList;
+
+                    $("#adminMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#adminMainTb").append(
+                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    $("#actMainTb").html("");
+                    for (var i = 0; i < list2.length; i++) {
+                        $("#actMainTb").append(
+                            "<tr id='#actMainTr' class='actMainTr_tr' main_code2='" + list2[i][0] + "'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][0] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#adminMainTb .adminMainTr_tr', function () {
+
+            let mainCode = $(this).attr('main_code');
+
+            let data = {'mainCode': mainCode}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "base_accountCode_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.subMList;
+
+                    for (var i = 0; i < list.length; i++) {
+                        $("#txtCode_M").val(list[i][0])
+                        $("#txtCodeNme_M").val(list[i][1])
+                        $("#txtDesc_M").val(list[i][2])
+                    }
+
+                }
+            })
+
+        });
+
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#actMainTb .actMainTr_tr', function () {
+
+            let mainCode2 = $(this).attr('main_code2');
+
+            let data = {'mainCode2': mainCode2}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "base_accountCode_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.subAList;
+
+                    for (var i = 0; i < list.length; i++) {
+                        $("#txtCode_A").val(list[i][0])
+                        $("#txtCodeNme_A").val(list[i][1])
+                        $("#txtDesc_A").val(list[i][2])
+                    }
+                }
+            })
+
+        });
     </script>
 {% endblock %}
