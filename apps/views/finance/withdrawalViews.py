@@ -24,18 +24,20 @@ def withRegViews_search(request):
             # 거래처구분/명/행/결제방법명/결제방법코드/입출금구분/계정/금액/순번/날짜/계좌번호
             cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
                            "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
-                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.ACCODE,''), IFNULL(D.RESNAM, '') "
+                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'') "
-                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'') "
+                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
+                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
                            "    LEFT OUTER JOIN OSREFCP C "
                            "    ON A.ACGUBN = C.RESKEY "
                            "    AND C.RECODE = 'OUB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.ACCODE = D.RESKEY "
-                           "    AND D.RECODE = 'ACC' "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.MCODE = D.MCODE "
+                           "    LEFT OUTER JOIN OSCODEA G "
+                           "    ON A.ACCODE = G.ACODE "
                            "    LEFT OUTER JOIN OSREFCP E "
                            "    ON A.ACIOGB = E.RESKEY "
                            "    AND E.RECODE = 'OUA' "
@@ -69,7 +71,8 @@ def withRegViews_save(request):
         acRecn = '1' # 행
         acCust = request.POST.get("cboWitCust")     # 거래처
         acIogb = request.POST.get("cboWitGbn")     # 구분(출금)
-        acCode = request.POST.get("cboWitCode")  # 계정과목
+        mCode = request.POST.get("cboAdminCode")  # 관리계정
+        acCode = request.POST.get("cboActCode")  # 회계계정
         acAmts = request.POST.get("txtWitPrice")      # 금액
         acAcnumber = request.POST.get("cboWitActNum")     # 계좌번호
         acGubn = request.POST.get("cboWitMethod")     # 결제방법
@@ -95,6 +98,7 @@ def withRegViews_save(request):
                                ",    ACIOGB "
                                ",    ACCUST "
                                ",    ACGUBN "
+                               ",    MCODE "
                                ",    ACCODE "
                                ",    ACAMTS "
                                ",    ACACNUMBER "
@@ -113,6 +117,7 @@ def withRegViews_save(request):
                                ",   '1'"
                                ",   '" + str(acCust) + "'"
                                ",   '" + str(acGubn) + "'"
+                               ",   '" + str(mCode) + "'"
                                ",   '" + str(acCode) + "'"
                                ",   '" + str(acAmts) + "'"
                                ",   '" + str(acAcnumber) + "'"
@@ -135,6 +140,7 @@ def withRegViews_save(request):
                 cursor.execute("    UPDATE  SISACCTT SET"
                                "     ACCUST = '" + str(acCust) + "' "
                                ",    ACGUBN = '" + str(acGubn) + "' "
+                               ",    MCODE = '" + str(mCode) + "' "
                                ",    ACCODE = '" + str(acCode) + "' "
                                ",    ACAMTS = '" + str(acAmts) + "' "
                                ",    ACACNUMBER = '" + str(acAcnumber) + "' "

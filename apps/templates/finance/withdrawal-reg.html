@@ -28,7 +28,7 @@
                     <div class="pb-0 pt-0 card-header border-bottom" style="height: 8vh">
                       <div class="row">
                           <div class="p-3 col-lg-6 mt-lg-0">
-                            <div class="input-group">
+                            <div class="input-group shadow-none">
                                 <input class="form-control border border-light rounded-1 text-center me-2" type="text" maxlength="4" name="inputYear" id="inputYear">
                                 <label class="mt-2 me-4" style="font-size: 1rem">년</label>
                                 <input class="form-control border border-light rounded-1 text-center me-2" type="text" maxlength="2" name="inputMonth" id="inputMonth">
@@ -85,6 +85,7 @@
                                 <col width="10%">
                                 <col width="10%">
                                 <col width="10%">
+                                <col width="10%">
                                 <col width="8%">
                                 <col width="10%">
                                 <col width="10%">
@@ -95,7 +96,8 @@
                           <thead class="bg-danger-soft">
                             <tr>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">거래처명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계정 과목</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">관리계정</th>
+                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">회계계정</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">결재 방법</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">금 액</th>
                               <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">발행 은행</th>
@@ -255,8 +257,8 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
 
                         var mainToalPrc =+ list[i][2]
@@ -265,7 +267,7 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>" + mainToalPrc + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>" + addComma(mainToalPrc) + "</td>" +
                             "</tr> ");
                     }
                 }
@@ -309,8 +311,8 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTb' class='withMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
 
                             var mainToalPrc =+ list[i][2]
@@ -319,7 +321,7 @@
                         $("#withMainTb").append(
                         "<tr id='#withMainTr' class='withMainTr_tr'>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>" + mainToalPrc + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue'>" + addComma(mainToalPrc) + "</td> " +
                         "</tr> ");
                     }
                 }
@@ -347,14 +349,15 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#withSubTb").append(
                             "<tr id='#withSubTr' class='withSubTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-success btn-sm m-0' data-bs-toggle='modal' data-bs-target='#withModal' id='btnEdit' name='btnEdit' main_code='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "'><i class='fas fa-diamond me-2'></i>수정</button></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><button type='button' class='btn btn-warning btn-sm m-0' id='btnDlt' name='btnDlt' dlt_code='" + list[i][11] + "," + list[i][0] + "," + list[i][1] + "," + list[i][6] + "'><i class='fas fa-minus me-2'></i>삭제</button></td> " +
@@ -365,8 +368,8 @@
                     if(subToalPrc) {
                         $("#withSubTb").append(
                             "<tr id='#withSubTr' class='withSubTr_tr'>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue' colspan='2'>합 계</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue' colspan='7'>" + subToalPrc + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue' colspan='3'>합 계</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; background-color: lightblue' colspan='7'>" + addComma(subToalPrc) + "</td>" +
                             "</tr> ");
                     }
                 }
