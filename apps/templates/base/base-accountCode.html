@@ -38,103 +38,118 @@
             </div>
         </div>
         <hr class="my-0">
-        <div class="my-4 row">
-            <div class="col-lg-8 col-md-6">
-                <div class="border shadow-xs card">
-                    <div class="pb-0 pt-0 card-header border-bottom">
-                      <div class="p-3 col-lg-3 mt-lg-0">
-                        <div class="input-group">
-                            <span class="input-group-text text-body bg-transparent border-0 shadow-none">
-                                <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
-                            </span>
-                            <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
-
-                            </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="px-0 py-0 card-body height-600">
-                      <div class="p-3 table-responsive">
-                        <table class="table mb-0 align-items-center justify-content-center">
-                            <colgroup>
-                                <col width="2%">
-                                <col width="10%">
-                                <col width="15%">
-                                <col width="10%">
-                                <col width="8%">
-                                <col width="8%">
-                                <col width="6%">
-                                <col width="20%">
-                            </colgroup>
-                          <thead class="bg-gray-100">
-                            <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">통장명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">가입 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">만기 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">월 납입액</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
-                            </tr>
-                          </thead>
-                          <tbody id="custMainTb">
-                            <tr id="custMainTr" class="custMainTr_tr">
-
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+        <div class="row">
+            <div class="col-lg-4 col-4">
+                <div class="nav-wrapper mt-3 position-relative max-width-400 bg-light rounded-2">
+                    <ul class="nav nav-pills nav-pills-lg nav-fill bg-light border-0" role="tablist">
+                      <li class="nav-item rounded-1">
+                        <a class="nav-link mb-0 px-0 active p-1" style="font-size: 1rem" data-bs-toggle="tab" href="#byAdmin" role="tab" aria-controls="byAdmin" aria-selected="true">
+                          관리 계정
+                        </a>
+                      </li>
+                      <li class="nav-item rounded-1">
+                        <a class="nav-link mb-0 px-0 p-1" style="font-size: 1rem" data-bs-toggle="tab" href="#byAct" role="tab" aria-controls="byAct" aria-selected="false">
+                          회계 계정
+                        </a>
+                      </li>
+                    </ul>
                 </div>
             </div>
-            <div class="mb-4 col-lg-4 col-md-6 mb-md-0">
-                <div class="card shadow-xs border h-100">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cbobankType" id="cbobankType"></select>
-                            </div>
-                            <div class="col-6">
+            <div class="col-lg-8 col-8"></div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-2 col-2"></div>
+            <div class="col-lg-8 col-8">
+                <div class="container-fluid">
+                  <div class="tab-content tab-space">
+                        <div class="tab-pane active" id="byAdmin">
+                            <div class="card border shadow-xs">
+                                <div class="px-0 py-0 card-body">
+                                    <div class="row">
+                                        <div class="col-lg-7 col-7">
+                                            <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>관리 계정 리스트</h6>
+                                            <div class="m-4 mt-0 table-responsive-sm overflow-auto" style="height: 50vh">
+                                                <table class="table mb-0 align-items-center justify-content-center">
+                                                    <colgroup>
+                                                        <col width="2%">
+                                                        <col width="10%">
+                                                        <col width="15%">
+                                                    </colgroup>
+                                                  <thead class="bg-gray-100">
+                                                    <tr>
+                                                      <th class="text-center text-dark text-center font-weight-bolder p-2"></th>
+                                                      <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정과목</th>
+                                                      <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정명</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody id="adminMainTb">
+                                                    <tr id="adminMainTr" class="adminMainTr_tr">
 
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-5">
+                                            <div class="form-group m-4">
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정과목</label>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCode_M" name="txtCode_M"/>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정명</label>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>비  고</label>
+                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc" name="txtDesc"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
-                                <input class="form-control" type="text" value="000-0000-0000" id="txtActNum" name="txtActNum"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>가입 일자</label>
-                                <input class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>만기 일자</label>
-                                <input class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>통장명</label>
-                                <input class="form-control" type="text" id="txtActName" name="txtActName"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>월 납입액</label>
-                                <input class="form-control" type="number" value="0" id="txtAmount" name="txtAmount"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                                <input class="form-control" type="text" id="txtBigo" name="txtBigo"/>
-                            </div>
-                        </div>
-                    </div>
+                      <div class="tab-pane" id="byAct">
+                          <div class="border shadow-xs card">
+                                <div class="px-0 py-0 card-body">
+                                    <div class="row">
+                                        <div class="col-lg-7 col-7">
+                                            <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>회계 계정 리스트</h6>
+                                            <div class="m-4 mt-0 table-responsive-sm overflow-auto" style="height: 50vh">
+                                                <table class="table mb-0 align-items-center justify-content-center">
+                                                    <colgroup>
+                                                        <col width="2%">
+                                                        <col width="10%">
+                                                        <col width="15%">
+                                                    </colgroup>
+                                                  <thead class="bg-gray-100">
+                                                    <tr>
+                                                      <th class="text-center text-dark text-center font-weight-bolder p-2"></th>
+                                                      <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정과목</th>
+                                                      <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정명</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody id="actMainTb">
+                                                    <tr id="actMainTr" class="actMainTr_tr">
+
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-5">
+                                            <div class="form-group m-4">
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정과목</label>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCode_M" name="txtCode_M"/>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정명</label>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>비  고</label>
+                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc" name="txtDesc"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                      </div>
+                  </div>
                 </div>
             </div>
+            <div class="col-lg-2 col-2"></div>
         </div>
     </form>
     </div>

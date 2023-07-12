@@ -195,19 +195,18 @@ def withRegOutList_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
                            "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
-                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.ACCODE,''), IFNULL(D.RESNAM, '') "
+                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.ACCODE,''), IFNULL(D.MCODENM, '') "
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'')"
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
-                           "    , IFNULL(A.ACDESC,'') "
+                           "    , IFNULL(A.ACDESC,'')  "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
                            "    LEFT OUTER JOIN OSREFCP C "
                            "    ON A.ACGUBN = C.RESKEY "
                            "    AND C.RECODE = 'OUB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.ACCODE = D.RESKEY "
-                           "    AND D.RECODE = 'ACC' "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.ACCODE = D.MCODE "
                            "    LEFT OUTER JOIN OSREFCP E "
                            "    ON A.ACIOGB = E.RESKEY "
                            "    AND E.RECODE = 'OUA' "
@@ -230,10 +229,15 @@ def withRegOutList_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '1' ORDER BY RESNAM ")
             cboGgn = cursor.fetchall()
 
-        # 계정과목
+        # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACC' ORDER BY RESNAM ")
-            cboAcc = cursor.fetchall()
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+            cboMCode = cursor.fetchall()
+
+        # 회계게정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+            cboACode = cursor.fetchall()
 
         # 결제방법
         with connection.cursor() as cursor:
@@ -246,8 +250,8 @@ def withRegOutList_search(request):
             cboAcnumber = cursor.fetchall()
 
         return JsonResponse({'modalform': modalform
-                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay
-                              , "cboAcnumber": cboAcnumber})
+                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboACode': cboACode
+                              ,'cboPay': cboPay, "cboAcnumber": cboAcnumber})
     else:
         # with connection.cursor() as cursor:
         #     cursor.execute(" SELECT IFNULL(A.BAL_DD, ''), IFNULL(A.UP_CODE, ''), IFNULL(B.CUST_NME, '') "
@@ -272,10 +276,15 @@ def withRegOutList_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '1' ORDER BY RESNAM ")
             cboGgn = cursor.fetchall()
 
-        # 계정과목
+        # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACC' ORDER BY RESNAM ")
-            cboAcc = cursor.fetchall()
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+            cboMCode = cursor.fetchall()
+
+        # 회계게정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+            cboACode = cursor.fetchall()
 
         # 결제방법
         with connection.cursor() as cursor:
@@ -287,4 +296,5 @@ def withRegOutList_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAcnumber = cursor.fetchall()
 
-        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboACode': cboACode
+                                , 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})

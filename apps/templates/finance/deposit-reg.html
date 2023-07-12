@@ -132,117 +132,88 @@
             </button>
           </div>
           <div class="modal-body">
-                  <div class="row">
-                      <div class="col-1"></div>
-                      <div class="col-10">
-                          <div class="card card-plain pb-5">
-                              <div class="row">
-                                  <div class="col-4">
-                                      <label class="mt-4 h6 text-danger"><i class="far fa-edit me-2"></i>거래처</label>
-                                      <select class="form-control border border-light rounded-1 text-center bg-danger-soft" name="cboDepCust" id="cboDepCust"></select>
-                                  </div>
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="far fa-calendar me-2"></i>등록 일자</label>
-                                      <input class="form-control text-center" type="date" id="txtDepRegDate" name="txtDepRegDate"/>
-                                  </div>
-                                  <div class="col-4">
-                                      <input hidden class="form-control text-center" type="number" id="txtDepSeq" name="txtDepSeq"/>
-                                      <input hidden class="form-control text-center" type="number" id="txtDepRecn" name="txtDepRecn"/>
-                                  </div>
+              <div class="row">
+                  <div class="col-1"></div>
+                  <div class="col-10">
+                      <div class="card card-plain pb-5">
+                          <div class="row">
+                              <div class="col-4">
+                                  <label class="mt-4 h6 text-danger"><i class="far fa-edit me-2"></i>거래처</label>
+                                  <select class="form-control border border-light rounded-1 text-center bg-danger-soft" name="cboDepCust" id="cboDepCust"></select>
                               </div>
-                              <div class="row">
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구분</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepGbn" id="cboDepGbn"></select>
-                                  </div>
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>계정과목</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepCode" id="cboDepCode"></select>
-                                  </div>
-                                  <div class="col-4"></div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="far fa-calendar me-2"></i>등록 일자</label>
+                                  <input class="form-control text-center" type="date" id="txtDepRegDate" name="txtDepRegDate"/>
                               </div>
-                              <div class="row">
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
-                                      <input class="form-control text-end" type="text" id="txtDepPrice" name="txtDepPrice"/>
-                                  </div>
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum"></select>
-                                  </div>
-                                  <div class="col-4"></div>
+                              <div class="col-4">
+                                  <input hidden class="form-control text-center" type="number" id="txtDepSeq" name="txtDepSeq"/>
+                                  <input hidden class="form-control text-center" type="number" id="txtDepRecn" name="txtDepRecn"/>
                               </div>
-                              <div class="row">
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="fas fa-edit me-2"></i>결제방법</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepMethod" id="cboDepMethod"></select>
-                                  </div>
-                                  <div class="col-4">
-                                      <label class="mt-4 h6 me-4"><i class="fas fa-edit me-2"></i>처리</label>
-                                      <input type="radio" id="txtDeal" name="depEmpCount" checked value="0"/>
-                                      <label class="mt-4 h6 text-info me-4">현금</label>
-                                      <input type="radio" id="txtDeal" name="depEmpCount" value="1"/>
-                                      <label class="mt-4 h6 text-danger">계산서</label>
-                                  </div>
-                                  <div class="col-4"></div>
+                          </div>
+                          <div class="row">
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구분</label>
+                                  <select class="form-control border border-light rounded-1 text-center" name="cboDepGbn" id="cboDepGbn"></select>
                               </div>
-                              <div class="row">
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="fas fa-box me-2"></i>발행처</label>
-                                      <select class="form-control border border-light rounded-1 text-center" name="cboDepIssueCust" id="cboDepIssueCust"></select>
-                                  </div>
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>어음번호</label>
-                                      <input class="form-control text-center" type="text" id="txtDepCashNum" name="txtDepCashNum"/>
-                                  </div>
-                                  <div class="col-4">
-                                      <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
-                                      <input class="form-control text-center" type="date" id="txtDepDeadline" name="txtDepDeadline"/>
-                                  </div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="far fa-edit me-2"></i>관리계정</label>
+                                  <select class="form-control border border-light rounded-1 text-center" name="cboAdminCode" id="cboAdminCode"></select>
                               </div>
-                              <div class="row">
-                                  <div class="col-8">
-                                      <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
-                                      <input class="form-control text-start" type="text" id="txtDepRemark" name="txtDepRemark"/>
-                                  </div>
-                                  <div class="col-4"></div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
+                                  <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
                               </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
+                                  <input class="form-control text-end" type="text" id="txtDepPrice" name="txtDepPrice"/>
+                              </div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
+                                  <select class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum"></select>
+                              </div>
+                              <div class="col-4"></div>
+                          </div>
+                          <div class="row">
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="fas fa-edit me-2"></i>결제방법</label>
+                                  <select class="form-control border border-light rounded-1 text-center" name="cboDepMethod" id="cboDepMethod"></select>
+                              </div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6 me-4"><i class="fas fa-edit me-2"></i>처리</label>
+                                  <input type="radio" id="txtDeal" name="depEmpCount" checked value="0"/>
+                                  <label class="mt-4 h6 text-info me-4">현금</label>
+                                  <input type="radio" id="txtDeal" name="depEmpCount" value="1"/>
+                                  <label class="mt-4 h6 text-danger">계산서</label>
+                              </div>
+                              <div class="col-4"></div>
+                          </div>
+                          <div hidden class="row">
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="fas fa-box me-2"></i>발행처</label>
+                                  <select class="form-control border border-light rounded-1 text-center" name="cboDepIssueCust" id="cboDepIssueCust"></select>
+                              </div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>어음번호</label>
+                                  <input class="form-control text-center" type="text" id="txtDepCashNum" name="txtDepCashNum"/>
+                              </div>
+                              <div class="col-4">
+                                  <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
+                                  <input class="form-control text-center" type="date" id="txtDepDeadline" name="txtDepDeadline"/>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-8">
+                                  <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
+                                  <input class="form-control text-start" type="text" id="txtDepRemark" name="txtDepRemark"/>
+                              </div>
+                              <div class="col-4"></div>
                           </div>
                       </div>
-                      <div class="col-1"></div>
-                      <!--<div class="col-4">
-                          <div class="card card-plain p-3">
-                              <h5><i class="fas fa-list me-3"></i>매출 리스트</h5>
-                             <div class="table-responsive-sm border border-light height-600 mt-2">
-                                <table class="table mb-0 align-items-center justify-content-center">
-                                    <colgroup>
-                                        <col width="2%">
-                                        <col width="8%">
-                                        <col width="10%">
-                                        <col width="10%">
-                                        <col width="8%">
-                                        <col width="8%">
-                                    </colgroup>
-                                  <thead class="bg-success-soft">
-                                    <tr>
-                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2"></th>
-                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">일자</th>
-                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">매입처</th>
-                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">품목</th>
-                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">합계</th>
-                                      <th style="font-size: 1rem" class="text-dark text-center font-weight-semibold opacity-7 p-2">잔액</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody id="modalBuyTb">
-                                    <tr id="modalBuyTr" class="modalBuyTr_tr">
-
-                                    </tr>
-                                  </tbody>
-                                </table>
-                             </div>
-                          </div>
-                      </div>-->
                   </div>
+                  <div class="col-1"></div>
+              </div>
           </div>
           <div class="modal-footer">
             <button type="submit" class="m-1 btn btn-primary text-lg" id="btnSave" name="btnSave">저 장</button>
@@ -461,20 +432,23 @@
 
             var cboCust2 = "";
             var cboDepGbn = "";
-            var cboDepCode = "";
+            var cboAdminCode = "";
+            var cboActCode = "";
             var cboDepMethod = "";
             var cboDepActNum = "";
             var cboDepIssueCust = "";
-            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
+            var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboDepGbnTxt = "";
-            var cboDepCodeTxt = "<option value=''>:: 전체 ::</option>";
-            var cboDepMethodTxt = "<option value=''>:: 전체 ::</option>";
-            var cboDepActNumTxt = "<option value=''>:: 전체 ::</option>";
+            var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboActCodeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDepMethodTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDepActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboDepIssueCustTxt = "";
 
             $("#cboDepCust").html("");
             $("#cboDepGbn").html("");
-            $("#cboDepCode").html("");
+            $("#cboAdminCode").html("");
+            $("#cboActCode").html("");
             $("#cboDepMethod").html("");
             $("#cboDepActNum").html("");
             $("#cboDepIssueCust").html("");
@@ -524,12 +498,21 @@
                         }
                     }
 
-                    var combolist4 = data.cboAcc;
+                    var combolist4 = data.cboMCode;
                     for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboDepCode) {
-                            cboDepCodeTxt = cboDepCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        if (combolist4[i][0] == cboAdminCode) {
+                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
                         } else {
-                            cboDepCodeTxt = cboDepCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist6 = data.cboACode;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboActCode) {
+                            cboActCodeTxt = cboActCodeTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            cboActCodeTxt = cboActCodeTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
                         }
                     }
 
@@ -545,7 +528,8 @@
                     $("#cboDepCust").append(cboCustTxt);
                     $("#cboDepGbn").append(cboDepGbnTxt);
                     $("#cboDepMethod").append(cboDepMethodTxt);
-                    $("#cboDepCode").append(cboDepCodeTxt);
+                    $("#cboAdminCode").append(cboAdminCodeTxt);
+                    $("#cboActCode").append(cboActCodeTxt);
                     $("#cboDepActNum").append(cboDepActNumTxt);
                 }
             })
@@ -559,20 +543,23 @@
 
             var cboCust2 = "";
             var cboDepGbn = "";
-            var cboDepCode = "";
+            var cboAdminCode = "";
+            var cboActCode = "";
             var cboDepMethod = "";
             var cboDepActNum = "";
             var cboDepIssueCust = "";
-            var cboCustTxt = "<option value=''>:: 전체 ::</option>";
+            var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboDepGbnTxt = "";
-            var cboDepCodeTxt = "<option value=''>:: 전체 ::</option>";
-            var cboDepMethodTxt = "<option value=''>:: 전체 ::</option>";
-            var cboDepActNumTxt = "<option value=''>:: 전체 ::</option>";
+            var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboActCodeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDepMethodTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDepActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboDepIssueCustTxt = "";
 
             $("#cboDepCust").html("");
             $("#cboDepGbn").html("");
-            $("#cboDepCode").html("");
+            $("#cboAdminCode").html("");
+            $("#cboActCode").html("");
             $("#cboDepMethod").html("");
             $("#cboDepActNum").html("");
             $("#cboDepIssueCust").html("");
@@ -610,7 +597,8 @@
                         $("#txtDepRemark").val(list2[i][17])
                         cboCust2 = list2[i][1];
                         cboDepGbn = list2[i][4];
-                        cboDepCode = list2[i][8];
+                        cboAdminCode = list2[i][8];
+                        cboActCode = list2[i][8];
                         cboDepMethod = list2[i][6];
                         cboDepActNum = list2[i][12]
                         {#cboDepIssueCust = list2[i][10];#}
@@ -635,7 +623,6 @@
                     }
 
                     var combolist3 = data.cboPay;
-                    console.log(combolist3)
                     for (var i = 0; i < combolist3.length; i++) {
                         if (combolist3[i][0] == cboDepMethod) {
                             cboDepMethodTxt = cboDepMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
@@ -644,12 +631,21 @@
                         }
                     }
 
-                    var combolist4 = data.cboAcc;
+                    var combolist4 = data.cboMCode;
                     for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboDepCode) {
-                            cboDepCodeTxt = cboDepCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        if (combolist4[i][0] == cboAdminCode) {
+                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
                         } else {
-                            cboDepCodeTxt = cboDepCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist6 = data.cboACode;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboActCode) {
+                            cboActCodeTxt = cboActCodeTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            cboActCodeTxt = cboActCodeTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
                         }
                     }
 
@@ -664,7 +660,8 @@
 
                     $("#cboDepCust").append(cboCustTxt);
                     $("#cboDepGbn").append(cboDepGbnTxt);
-                    $("#cboDepCode").append(cboDepCodeTxt);
+                    $("#cboAdminCode").append(cboAdminCodeTxt);
+                    $("#cboActCode").append(cboActCodeTxt);
                     $("#cboDepMethod").append(cboDepMethodTxt);
                     $("#cboDepActNum").append(cboDepActNumTxt);
                 }

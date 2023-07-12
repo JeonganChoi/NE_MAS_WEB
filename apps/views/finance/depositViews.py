@@ -256,10 +256,15 @@ def depositRegOutList_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '2' ORDER BY RESNAM ")
             cboGgn = cursor.fetchall()
 
-        # 계정과목
+        # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACC' ORDER BY RESNAM ")
-            cboAcc = cursor.fetchall()
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+            cboMCode = cursor.fetchall()
+
+        # 회계게정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+            cboACode = cursor.fetchall()
 
         # 결제방법
         with connection.cursor() as cursor:
@@ -272,7 +277,8 @@ def depositRegOutList_search(request):
             cboAcnumber = cursor.fetchall()
 
         return JsonResponse({'modalform': modalform
-                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+                              , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboACode': cboACode
+                              , 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
 
     else:
         # with connection.cursor() as cursor:
@@ -298,10 +304,15 @@ def depositRegOutList_search(request):
                 cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '2' ORDER BY RESNAM ")
                 cboGgn = cursor.fetchall()
 
-            # 계정과목
+                # 관리계정
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACC' ORDER BY RESNAM ")
-                cboAcc = cursor.fetchall()
+                cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+                cboMCode = cursor.fetchall()
+
+                # 회계게정
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+                cboACode = cursor.fetchall()
 
             # 결제방법
             with connection.cursor() as cursor:
@@ -313,4 +324,5 @@ def depositRegOutList_search(request):
                 cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
                 cboAcnumber = cursor.fetchall()
 
-            return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboAcc': cboAcc, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+            return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboACode': cboACode
+                                    , 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
