@@ -94,13 +94,13 @@
                                         </div>
                                         <div class="col-lg-5 col-5">
                                             <div class="form-group m-4">
-                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정과목</label>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-bookmark me-2 text-info text-sm"></i>계정과목</label>
                                                 <input maxlength="6" style="max-width: 15rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>
-                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정명</label>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fa fa-bookmark-o me-2 text-info text-sm"></i>계정명</label>
                                                 <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
-                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>비  고</label>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>비  고</label>
                                                 <input class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtDesc_M" name="txtDesc_M"/>
-                                                <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>순번</label>
+                                                <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>순번</label>
                                                 <input hidden class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtSeq_M" name="txtSeq_M"/>
                                                 <div class="text-end m-2 mt-5">
                                                     <button type="button" class="mb-0 btn btn-info btn-sm text-sm align-items-center" id="btnSave" name="btnSave">
@@ -161,13 +161,13 @@
                                         </div>
                                         <div class="col-lg-5 col-5">
                                             <div class="form-group m-4">
-                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정과목</label>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-bookmark me-2 text-success text-sm"></i>계정과목</label>
                                                 <input maxlength="6" style="max-width: 15rem" class="form-control border border-light text-danger rounded-1 text-start" value="" type="text" id="txtCode_A" name="txtCode_A"/>
-                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정명</label>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fa fa-bookmark-o me-2 text-success text-sm"></i>계정명</label>
                                                 <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_A" name="txtCodeNme_A"/>
-                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>비  고</label>
+                                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-success text-sm"></i>비  고</label>
                                                 <input class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtDesc_A" name="txtDesc_A"/>
-                                                <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>순번</label>
+                                                <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-success text-sm"></i>순번</label>
                                                 <input hidden class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtSeq_A" name="txtSeq_A"/>
                                                 <div class="text-end m-2 mt-5">
                                                     <button type="button" class="mb-0 btn btn-success btn-sm text-sm align-items-center" id="btnSave2" name="btnSave2">
@@ -231,7 +231,7 @@
                     for (var i = 0; i < list2.length; i++) {
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code2='" + list2[i][0] + "'>" +
-                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkA[]' name='chkA[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkA[]' name='chkA[]' value='" + list2[i][0] + "," + list2[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][3] + "</td> " +
@@ -295,7 +295,7 @@
                     for (var i = 0; i < list2.length; i++) {
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code2='" + list2[i][0] + "'>" +
-                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkA[]' name='chkA[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkA[]' name='chkA[]' value='" + list2[i][0] + "," + list2[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][3] + "</td> " +
@@ -458,7 +458,6 @@
                         location.href = "{% url 'base_accountCode' %}";
                     }
                 }
-
             });
         });
 
