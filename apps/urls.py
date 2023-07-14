@@ -13,6 +13,10 @@ urlpatterns = [
     # 계정코드관리
     path('base_accountCode/', accountCodeViews.accountCodeViews, name='base_accountCode'),
     path('base_accountCode_search/', accountCodeViews.accountCodeViews_search, name='base_accountCode_search'),
+    path('base_accountCode_saveM/', accountCodeViews.accountCodeViews_saveM, name='base_accountCode_saveM'),
+    path('base_accountCode_saveA/', accountCodeViews.accountCodeViews_saveA, name='base_accountCode_saveA'),
+    path('base_accountCode_dltM/', accountCodeViews.accountCodeViews_dltM, name='base_accountCode_dltM'),
+    path('base_accountCode_dltA/', accountCodeViews.accountCodeViews_dltA, name='base_accountCode_dltA'),
     # 참조코드관리
     path('base_code/', baseCodeViews.baseCodeViews, name='base_code'),
     path('base_code_search/', baseCodeViews.baseCodeViews_search, name='base_code_search'),

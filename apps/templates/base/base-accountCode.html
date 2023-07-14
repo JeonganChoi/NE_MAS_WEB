@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post">
+    <form method="post" type="form">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-4 col-sm-4">
@@ -25,18 +25,6 @@
                   </span>
                   <span class="btn-inner--text text-lg">조회</span>
                 </button>-->
-                <button type="submit" class="mb-0 btn btn-success btn-icon align-items-center me-2" id="btnSave" name="btnSave">
-                  <span class="btn-inner--icon">
-                      <i class="fas fa-plus me-2 fs-5"></i>
-                  </span>
-                  <span class="btn-inner--text text-lg">저장</span>
-                </button>
-                <button type="button" class="mb-0 btn btn-dark btn-icon align-items-center" id="btnDlt" name="btnDlt">
-                  <span class="btn-inner--icon">
-                      <i class="fas fa-minus me-2 fs-5"></i>
-                  </span>
-                  <span class="btn-inner--text text-lg">삭제</span>
-                </button>
             </div>
         </div>
         <hr class="my-0">
@@ -66,34 +54,34 @@
                   <div class="tab-content tab-space">
                         <div class="tab-pane active" id="byAdmin">
                             <div class="card border shadow-xs">
-                                <div class="px-0 py-0 card-header border border-top-0 border-start-0 border-end-0">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-3 m-2">
-                                            <select class="form-control border border-light rounded-1 text-center w-40 p-0" style="height: 2rem; font-size: 0.8rem"
-                                                    name="cboInput" id="cboInput">
-                                                <option selected value="0">수익</option>
-                                                <option value="1">비용</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-9 col-9"></div>
-                                    </div>
-                                </div>
                                 <div class="px-0 py-0 card-body">
                                     <div class="row">
                                         <div class="col-lg-7 col-7">
-                                            <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>관리 계정 리스트</h6>
+                                            <div class="row">
+                                                <div class="col-lg-9 col-9 text-start">
+                                                   <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>관리 계정 리스트</h6>
+                                                </div>
+                                                <div class="col-lg-3 col-3 text-end">
+                                                    <select class="mx-4 my-3 form-control text-center w-40 p-0" style="height: 2rem; font-size: 0.8rem; min-width: 6rem" name="cboCodeType" id="cboCodeType">
+                                                        <option selected value="4">수익</option>
+                                                        <option value="5">비용</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="m-4 mt-0 table-responsive-sm overflow-auto border border-light" style="height: 50vh">
                                                 <table class="table mb-0 align-items-center justify-content-center">
                                                     <colgroup>
-                                                        <col width="2%">
+                                                        <col width="3%">
                                                         <col width="10%">
-                                                        <col width="15%">
+                                                        <col width="10%">
+                                                        <col width="20%">
                                                     </colgroup>
                                                   <thead class="bg-gray-100">
                                                     <tr>
                                                       <th class="text-center text-dark text-center font-weight-bolder p-2"></th>
                                                       <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정과목</th>
                                                       <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정명</th>
+                                                      <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">비 고</th>
                                                     </tr>
                                                   </thead>
                                                   <tbody id="adminMainTb">
@@ -107,11 +95,24 @@
                                         <div class="col-lg-5 col-5">
                                             <div class="form-group m-4">
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정과목</label>
-                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCode_M" name="txtCode_M"/>
+                                                <input maxlength="6" style="max-width: 15rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계정명</label>
-                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>비  고</label>
-                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc_M" name="txtDesc_M"/>
+                                                <input class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtDesc_M" name="txtDesc_M"/>
+                                                <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>순번</label>
+                                                <input hidden class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtSeq_M" name="txtSeq_M"/>
+                                                <div class="text-end m-2 mt-5">
+                                                    <button type="button" class="mb-0 btn btn-info btn-sm text-sm align-items-center" id="btnSave" name="btnSave">
+                                                            <i class="fas fa-plus me-2 fs-6"></i>저장
+                                                    </button>
+                                                    <button type="button" class="mb-0 btn btn-dark btn-sm text-sm align-items-center" id="btnDlt" name="btnDlt">
+                                                           <i class="fas fa-minus me-2 fs-6"></i>삭제
+                                                    </button>
+                                                    <button type="button" class="mb-0 btn btn-light btn-sm text-sm align-items-center" id="btnClear" name="btnClear">
+                                                           <i class="fas fa-eraser me-2 fs-6"></i>초기화
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -120,34 +121,34 @@
                         </div>
                       <div class="tab-pane" id="byAct">
                           <div class="border shadow-xs card">
-                                <div class="px-0 py-0 card-header border border-top-0 border-start-0 border-end-0">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-3 m-2">
-                                            <select class="form-control border border-light rounded-1 text-center w-40 p-0" style="height: 2rem; font-size: 0.8rem"
-                                                    name="cboInput" id="cboInput">
-                                                <option selected value="0">수익</option>
-                                                <option value="1">비용</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-9 col-9"></div>
-                                    </div>
-                                </div>
                                 <div class="px-0 py-0 card-body">
                                     <div class="row">
                                         <div class="col-lg-7 col-7">
-                                            <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>회계 계정 리스트</h6>
+                                            <div class="row">
+                                                <div class="col-lg-9 col-9 text-start">
+                                                   <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>회계 계정 리스트</h6>
+                                                </div>
+                                                <div class="col-lg-3 col-3 text-end">
+                                                    <select class="mx-4 my-3 form-control text-center w-40 p-0" style="height: 2rem; font-size: 0.8rem; min-width: 6rem" name="cboCodeType2" id="cboCodeType2">
+                                                        <option selected value="4">수익</option>
+                                                        <option value="5">비용</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="m-4 mt-0 table-responsive-sm overflow-auto border border-light" style="height: 50vh">
                                                 <table class="table mb-0 align-items-center justify-content-center">
                                                     <colgroup>
-                                                        <col width="2%">
+                                                        <col width="3%">
                                                         <col width="10%">
-                                                        <col width="15%">
+                                                        <col width="10%">
+                                                        <col width="20%">
                                                     </colgroup>
                                                   <thead class="bg-gray-100">
                                                     <tr>
                                                       <th class="text-center text-dark text-center font-weight-bolder p-2"></th>
                                                       <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정과목</th>
                                                       <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정명</th>
+                                                      <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">비 고</th>
                                                     </tr>
                                                   </thead>
                                                   <tbody id="actMainTb">
@@ -161,11 +162,24 @@
                                         <div class="col-lg-5 col-5">
                                             <div class="form-group m-4">
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정과목</label>
-                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCode_A" name="txtCode_A"/>
+                                                <input maxlength="6" style="max-width: 15rem" class="form-control border border-light text-danger rounded-1 text-start" value="" type="text" id="txtCode_A" name="txtCode_A"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>계정명</label>
-                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" type="text" id="txtCodeNme_A" name="txtCodeNme_A"/>
+                                                <input style="max-width: 15rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_A" name="txtCodeNme_A"/>
                                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>비  고</label>
-                                                <input class="form-control border border-light rounded-1 text-start" type="text" id="txtDesc_A" name="txtDesc_A"/>
+                                                <input class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtDesc_A" name="txtDesc_A"/>
+                                                <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-success text-sm"></i>순번</label>
+                                                <input hidden class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtSeq_A" name="txtSeq_A"/>
+                                                <div class="text-end m-2 mt-5">
+                                                    <button type="button" class="mb-0 btn btn-success btn-sm text-sm align-items-center" id="btnSave2" name="btnSave2">
+                                                            <i class="fas fa-plus me-2 fs-6"></i>저장
+                                                    </button>
+                                                    <button type="button" class="mb-0 btn btn-dark btn-sm text-sm align-items-center" id="btnDlt2" name="btnDlt2">
+                                                           <i class="fas fa-minus me-2 fs-6"></i>삭제
+                                                    </button>
+                                                    <button type="button" class="mb-0 btn btn-light btn-sm text-sm align-items-center" id="btnClear2" name="btnClear2">
+                                                           <i class="fas fa-eraser me-2 fs-6"></i>초기화
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -186,8 +200,13 @@
     <script>
         $(document).ready(function () {
 
+            let mCodeType = document.getElementById('cboCodeType').value;
+            let aCodeType = document.getElementById('cboCodeType2').value;
+            let data = {'cboCodeType': mCodeType, 'cboCodeType2': aCodeType}
+
             $.ajax({
                 type: "post",
+                data: data,
                 url: '{% url "base_accountCode_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -201,8 +220,10 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "</tr> ");
                     }
 
@@ -210,8 +231,74 @@
                     for (var i = 0; i < list2.length; i++) {
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code2='" + list2[i][0] + "'>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkA[]' name='chkA[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][3] + "</td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+        {# 조회 콤보박스 클릭시 #}
+        $('#cboCodeType').change(function () {
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            let aCodeType = document.getElementById('cboCodeType2').value;
+            let data = {'cboCodeType': mCodeType, 'cboCodeType2': aCodeType}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "base_accountCode_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mList;
+
+                    $("#adminMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#adminMainTb").append(
+                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+        {# 조회 콤보박스 클릭시 #}
+        $('#cboCodeType2').change(function () {
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            let aCodeType = document.getElementById('cboCodeType2').value;
+            let data = {'cboCodeType': mCodeType,'cboCodeType2': aCodeType}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "base_accountCode_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list2 = data.aList;
+
+                    $("#actMainTb").html("");
+                    for (var i = 0; i < list2.length; i++) {
+                        $("#actMainTb").append(
+                            "<tr id='#actMainTr' class='actMainTr_tr' main_code2='" + list2[i][0] + "'>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkA[]' name='chkA[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][0] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][3] + "</td> " +
                             "</tr> ");
                     }
                 }
@@ -240,6 +327,7 @@
                         $("#txtCode_M").val(list[i][0])
                         $("#txtCodeNme_M").val(list[i][1])
                         $("#txtDesc_M").val(list[i][2])
+                        $("#txtSeq_M").val(list[i][3])
                     }
 
                 }
@@ -269,9 +357,210 @@
                         $("#txtCode_A").val(list[i][0])
                         $("#txtCodeNme_A").val(list[i][1])
                         $("#txtDesc_A").val(list[i][2])
+                        $("#txtSeq_A").val(list[i][3])
                     }
                 }
             })
+
+        });
+
+
+        {# 저장 클릭 시 #}
+        $(document).on('click', "#btnSave", function () {
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            let mCode = document.getElementById('txtCode_M').value;
+            let mCodeNme = document.getElementById('txtCodeNme_M').value;
+            let mSeq = document.getElementById('txtSeq_M').value;
+            let mDesc = document.getElementById('txtDesc_M').value;
+
+            if (mCode == '') {
+                alert('계정과목을 입력해주세요.')
+                return false
+            }
+            if(mCode.substring(0, 1) != mCodeType){
+                if(mCodeType == '4'){
+                    alert('수익에 관한 계정과목은 앞자리 숫자 4로 시작한 6자리로 입력해주세요. 예시) 4XXXXX')
+                    return false
+                }
+                else if(mCodeType == '5') {
+                    alert('비용에 관한 계정과목은 앞자리 숫자 5로 시작한 6자리로 입력해주세요. 예시) 5XXXXX')
+                    return false
+                }
+            }
+            if(mCodeNme == ''){
+                alert('계정명을 입력해주세요.')
+                return false
+            }
+
+            let data = {'cboCodeType': mCodeType,'txtCode_M': mCode,'txtCodeNme_M': mCodeNme
+                        , 'txtSeq_M': mSeq, 'txtDesc_M': mDesc}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_accountCode_saveM" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+
+                    if(data.sucYn === 'Y'){
+                        location.href = "{% url 'base_accountCode' %}";
+                    }
+                }
+
+            });
+        });
+
+        {# 저장 클릭 시 #}
+        $(document).on('click', "#btnSave2", function () {
+
+            let aCodeType = document.getElementById('cboCodeType2').value;
+            let aCode = document.getElementById('txtCode_A').value;
+            let aCodeNme = document.getElementById('txtCodeNme_A').value;
+            let aSeq = document.getElementById('txtSeq_A').value;
+            let aDesc = document.getElementById('txtDesc_A').value;
+
+            if (aCode == '') {
+                alert('계정과목을 입력해주세요.')
+                return false
+            }
+            if(aCode.substring(0, 1) != aCodeType){
+                if(aCodeType == '4'){
+                    alert('수익에 관한 계정과목은 앞자리 숫자 4로 시작한 6자리로 입력해주세요. 예시) 4XXXXX')
+                    return false
+                }
+                else if(aCodeType == '5') {
+                    alert('비용에 관한 계정과목은 앞자리 숫자 5로 시작한 6자리로 입력해주세요. 예시) 5XXXXX')
+                    return false
+                }
+            }
+            if (aCodeNme == '') {
+                alert('계정명을 입력해주세요.')
+                return false
+            }
+
+            let data = {'cboCodeType2': aCodeType,'txtCode_A': aCode,'txtCodeNme_A': aCodeNme
+                        , 'txtSeq_A': aSeq, 'txtDesc_A': aDesc}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_accountCode_saveA" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if(data.sucYn === 'Y'){
+                        location.href = "{% url 'base_accountCode' %}";
+                    }
+                }
+
+            });
+        });
+
+        {#체크한 내용 삭제#}
+        $(document).on('click', "#btnDlt", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="chkM[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='chkM[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('삭제하실 직원을 체크 해주세요.');
+                return false;
+            }
+
+            //체크 한 거래처 삭제
+            var result = confirm("삭제하시겠습니까?")
+
+            if (result) {
+                if (chk_cust_id_arr.length > 0)
+
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        data: {
+                            'arrList': JSON.stringify(chk_cust_id_arr),
+                        },
+                        dataType: "json",
+                        url: '{% url "base_accountCode_dltM" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            location.href = "{% url 'base_accountCode' %}";
+                        }
+
+                    });
+            } else {
+
+            }
+        });
+
+        {#체크한 내용 삭제#}
+        $(document).on('click', "#btnDlt2", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="chkA[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='chkA[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('삭제하실 직원을 체크 해주세요.');
+                return false;
+            }
+
+            //체크 한 거래처 삭제
+            var result = confirm("삭제하시겠습니까?")
+
+            if (result) {
+                if (chk_cust_id_arr.length > 0)
+
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        data: {
+                            'arrList': JSON.stringify(chk_cust_id_arr),
+                        },
+                        dataType: "json",
+                        url: '{% url "base_accountCode_dltA" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            location.href = "{% url 'base_accountCode' %}";
+                        }
+
+                    });
+            } else {
+
+            }
+        });
+
+        {#입력란 내용 삭제#}
+        $(document).on('click', "#btnClear", function () {
+            document.getElementById("txtCode_M").value = "";
+            document.getElementById("txtCodeNme_M").value = "";
+            document.getElementById("txtDesc_M").value = "";
+            document.getElementById("txtSeq_M").value = "";
+
+        });
+
+        {#입력란 내용 삭제#}
+        $(document).on('click', "#btnClear2", function () {
+            document.getElementById("txtCode_A").value = "";
+            document.getElementById("txtCodeNme_A").value = "";
+            document.getElementById("txtDesc_A").value = "";
+            document.getElementById("txtSeq_A").value = "";
 
         });
     </script>
