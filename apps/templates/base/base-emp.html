@@ -12,27 +12,16 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
-                <div class="mx-2 mb-3 d-md-flex align-items-center">
-                    <div class="mb-3 mb-md-0">
-                        <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>직원 정보 등록</h3>
-                    </div>
-                    <button type="button" class="mb-0 mb-2 btn btn-sm btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-search me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">조회</span>
+                <div class="mx-2 mb-2 d-md-flex align-items-center">
+                    <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>직원 정보 등록</h5>
+                    <button type="button" class="mb-0 mb-2 btn btn-sm btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
+                          <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
-                    <button type="submit" class="mb-0 btn btn-sm btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">저장</span>
+                    <button type="submit" class="mb-0 btn btn-sm btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                          <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
-                    <button type="button" class="mb-0 btn btn-sm btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">삭제</span>
+                    <button type="button" class="mb-0 btn btn-sm btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
+                          <i class="fas fa-minus me-2 fs-6"></i>삭제
                     </button>
                 </div>
             </div>
@@ -41,41 +30,39 @@
         <div class="my-4 row">
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card h-100">
-                    <div class="pb-1 pt-1 card-header border-bottom">
-                      <div class="row">
-                          <div class="col-lg-4 col-4">
-                            <div class="input-group mt-2 shadow-none justify-content-center align-content-center">
+                    <div class="pb-0 pt-0 card-header border-bottom">
+                      <div class="row pb-0">
+                          <div class="p-2 pb-0 col-lg-4 mt-lg-0">
+                            <div class="input-group shadow-none justify-content-center align-content-center">
                                 <span class="input-group-text text-body bg-transparent border-0">
-                                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>사원 번호/ 이름</label>
+                                    <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>사원 번호/ 이름</label>
                                 </span>
-                                <input style="height: 2rem; width: 10rem" class="form-control border border-light rounded-1 text-center" type="text" id="inputEmpNo" name="inputEmpNo"/>
+                                <input style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center" type="text" id="inputEmpNo" name="inputEmpNo"/>
                             </div>
                           </div>
-                          <div class="col-lg-3 col-3">
+                          <div class="p-2 pb-0 col-lg-3 mt-lg-0">
                               <div class="input-group shadow-none">
                                 <input type="radio" id="inputEmpCount" name="inputEmpCount" checked value="1"/>
                                 <span class="input-group-text text-body bg-transparent border-0">
-                                    <label style="font-size: 1rem">근무자</label>
+                                    <label style="font-size: 0.8rem">근무자</label>
                                 </span>
                                 <input type="radio" id="inputEmpCount" name="inputEmpCount" value="2"/>
                                 <span class="input-group-text text-body bg-transparent border-0">
-                                    <label style="font-size: 1rem">퇴직자</label>
+                                    <label style="font-size: 0.8rem">퇴직자</label>
                                 </span>
                                 <input type="radio" id="inputEmpCount" name="inputEmpCount" value="0"/>
                                 <span class="input-group-text text-body bg-transparent border-0">
-                                    <label style="font-size: 1rem">전 체</label>
+                                    <label style="font-size: 0.8rem">전 체</label>
                                 </span>
 
                               </div>
                           </div>
-                          <div class="col-lg-3 col-3"></div>
-                          <div class="col-lg-2 col-2 text-end">
-                             <div class="input-group mt-2 shadow-none align-content-center justify-content-center">
-                                <span class="input-group-text bg-transparent border-0">
-                                    <div class="badge badge-success"><label style="font-size: 1rem">인원 수</label></div>
-                                </span>
-                                <input style="height: 2rem; width: 3rem; font-size: 1.5rem" readonly class="bg-transparent border-0 text-center mt-2 text-success font-weight-bold" id="inputEmpNum" name="inputEmpNum"/>
-                            </div>
+                          <div class="p-2 pb-0 col-lg-3 mt-lg-0"></div>
+                          <div class="p-2 pb-0 col-lg-2 mt-lg-0 text-end">
+                              <div class="input-group shadow-none">
+                                <label class="input-group-text tex-body border-0 bg-transparent" style="font-size: 0.8rem"><i class="fa fa-users me-2"></i>인원 수</label>
+                                <input style="height: 2rem; max-width: 3rem; font-size: 1rem" readonly class="form-control border-0 bg-transparent text-center mt-2 text-success font-weight-bold" id="inputEmpNum" name="inputEmpNum"/>
+                              </div>
                           </div>
                       </div>
                     </div>
@@ -99,19 +86,19 @@
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">사 번</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">이 름</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비밀 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">입사 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">퇴사 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">근무조</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">부 서</th>
+                              <th class="text-center text-secondary text-center font-weight-bolder p-2"></th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">사 번</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">이 름</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">비밀 번호</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">입사 일자</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">퇴사 일자</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">근무조</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">부 서</th>
                               <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
                               <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
                               <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
                               <!--<th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">작업 공정</th>-->
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">구 분</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">구 분</th>
                             </tr>
                           </thead>
                           <tbody id="empMainTb">
@@ -137,22 +124,22 @@
                         </div>-->
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>사 번</label>
-                                <input class="form-control" type="text" id="txtEmpNo" name="txtEmpNo"/>
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사 번</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpNo" name="txtEmpNo"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>이 름</label>
-                                <input class="form-control" type="text" id="txtEmpName" name="txtEmpName"/>
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>이 름</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpName" name="txtEmpName"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>비밀 번호</label>
-                                <input class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비밀 번호</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>전화 번호</label>
-                                <input class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
+                                <label class="mt-4" style="font-size: 0.8rem">전화 번호</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
                             </div>
                             <!--<div class="col-2">
                                 <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>구 분</label>
@@ -162,18 +149,18 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>입사 일자</label>
-                                <input class="form-control" type="date" id="txtEmployDate" name="txtEmployDate"/>
+                                <label class="mt-4" style="font-size: 0.8rem">입사 일자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtEmployDate" name="txtEmployDate"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>퇴사 일자</label>
-                                <input class="form-control" type="date" id="txtQuitDate" name="txtQuitDate"/>
+                                <label class="mt-4" style="font-size: 0.8rem">퇴사 일자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtQuitDate" name="txtQuitDate"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>사업장</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboCom" id="cboCom"></select>
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사업장</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
                             </div>
                             <div class="col-6">
 
@@ -181,32 +168,12 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>근무조</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboGroup" id="cboGroup"></select>
+                                <label class="mt-4" style="font-size: 0.8rem">근무조</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboGroup" id="cboGroup"></select>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>부 서</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboDpt" id="cboDpt"></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>작업 공정</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboBom" id="cboBom"></select>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>작업 공정</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboBom1" id="cboBom1"></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>작업 공정</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboBom2" id="cboBom2"></select>
-                            </div>
-                            <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>작업 공정</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboBom3" id="cboBom3"></select>
+                                <label class="mt-4" style="font-size: 0.8rem">부 서</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDpt" id="cboDpt"></select>
                             </div>
                         </div>
                     </div>
@@ -224,27 +191,15 @@
 
             var group = "";
             var dpt = "";
-            var bom = "";
-            var bom1 = "";
-            var bom2 = "";
-            var bom3 = "";
             var com = "";
-            var groupTxt = "<option value=''>:: 전체 ::</option>";
-            var dptTxt = "<option value=''>:: 전체 ::</option>";
-            var bomTxt = "<option value=''>:: 전체 ::</option>";
-            var bom1Txt = "<option value=''>:: 전체 ::</option>";
-            var bom2Txt = "<option value=''>:: 전체 ::</option>";
-            var bom3Txt = "<option value=''>:: 전체 ::</option>";
-            var comTxt = "<option value=''>:: 전체 ::</option>";
+            var groupTxt = "<option value=''>:: 선택 ::</option>";
+            var dptTxt = "<option value=''>:: 선택 ::</option>";
+            var comTxt = "<option value=''>:: 선택 ::</option>";
             document.getElementById('txtEmployDate').valueAsDate = new Date
             document.getElementById('txtQuitDate').valueAsDate = new Date
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboBom").html("");
-            $("#cboBom1").html("");
-            $("#cboBom2").html("");
-            $("#cboBom3").html("");
             $("#cboCom").html("");
             $("#inputEmpNum").html("");
 
@@ -301,42 +256,6 @@
                         }
                     }
 
-                    var combolist2 = data.bomCombo;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == bom) {
-                            bomTxt = bomTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            bomTxt = bomTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist3 = data.bomCombo;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == bom1) {
-                            bom1Txt = bom1Txt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            bom1Txt = bom1Txt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist4 = data.bomCombo;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == bom2) {
-                            bom2Txt = bom2Txt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            bom2Txt = bom2Txt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist5 = data.bomCombo;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == bom3) {
-                            bom3Txt = bom3Txt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
-                        } else {
-                            bom3Txt = bom3Txt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist6 = data.comCombo;
                     for (var i = 0; i < combolist6.length; i++) {
                         if (combolist6[i][0] == com) {
@@ -348,10 +267,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboBom").append(bomTxt);
-                    $("#cboBom1").append(bom1Txt);
-                    $("#cboBom2").append(bom2Txt);
-                    $("#cboBom3").append(bom3Txt);
                     $("#cboCom").append(comTxt);
 
                 }
@@ -366,25 +281,13 @@
         $(document).on('click', '#btnSearch', function () {
             var group = "";
             var dpt = "";
-            var bom = "";
-            var bom1 = "";
-            var bom2 = "";
-            var bom3 = "";
             var com = "";
-            var groupTxt = "<option value=''>:: 전체 ::</option>";
-            var dptTxt = "<option value=''>:: 전체 ::</option>";
-            var bomTxt = "<option value=''>:: 전체 ::</option>";
-            var bom1Txt = "<option value=''>:: 전체 ::</option>";
-            var bom2Txt = "<option value=''>:: 전체 ::</option>";
-            var bom3Txt = "<option value=''>:: 전체 ::</option>";
-            var comTxt = "<option value=''>:: 전체 ::</option>";
+            var groupTxt = "<option value=''>:: 선택 ::</option>";
+            var dptTxt = "<option value=''>:: 선택 ::</option>";
+            var comTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboBom").html("");
-            $("#cboBom1").html("");
-            $("#cboBom2").html("");
-            $("#cboBom3").html("");
             $("#cboCom").html("");
             $("#inputEmpNum").html("");
 
@@ -441,42 +344,6 @@
                         }
                     }
 
-                    var combolist2 = data.bomCombo;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == bom) {
-                            bomTxt = bomTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            bomTxt = bomTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist3 = data.bomCombo;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == bom1) {
-                            bom1Txt = bom1Txt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            bom1Txt = bom1Txt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist4 = data.bomCombo;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == bom2) {
-                            bom2Txt = bom2Txt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            bom2Txt = bom2Txt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist5 = data.bomCombo;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == bom3) {
-                            bom3Txt = bom3Txt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
-                        } else {
-                            bom3Txt = bom3Txt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist6 = data.comCombo;
                     for (var i = 0; i < combolist6.length; i++) {
                         if (combolist6[i][0] == com) {
@@ -488,10 +355,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboBom").append(bomTxt);
-                    $("#cboBom1").append(bom1Txt);
-                    $("#cboBom2").append(bom2Txt);
-                    $("#cboBom3").append(bom3Txt);
                     $("#cboCom").append(comTxt);
                 }
             })
@@ -511,25 +374,13 @@
         $(document).on('click', '#empMainTb .empMainTr_tr', function () {
             var group = "";
             var dpt = "";
-            var bom = "";
-            var bom1 = "";
-            var bom2 = "";
-            var bom3 = "";
             var com = "";
-            var groupTxt = "<option value=''>:: 전체 ::</option>";
-            var dptTxt = "<option value=''>:: 전체 ::</option>";
-            var bomTxt = "<option value=''>:: 전체 ::</option>";
-            var bom1Txt = "<option value=''>:: 전체 ::</option>";
-            var bom2Txt = "<option value=''>:: 전체 ::</option>";
-            var bom3Txt = "<option value=''>:: 전체 ::</option>";
-            var comTxt = "<option value=''>:: 전체 ::</option>";
+            var groupTxt = "<option value=''>:: 선택 ::</option>";
+            var dptTxt = "<option value=''>:: 선택 ::</option>";
+            var comTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboBom").html("");
-            $("#cboBom1").html("");
-            $("#cboBom2").html("");
-            $("#cboBom3").html("");
             $("#cboCom").html("");
 
             let empCode = $(this).attr('main_code');
@@ -561,10 +412,6 @@
                         $("#txtQuitDate").val(list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         group = list[i][6];
                         dpt = list[i][8];
-                        bom = list[i][11];
-                        bom1 = list[i][13];
-                        bom2 = list[i][15];
-                        bom3 = list[i][17];
                         com = list[i][19];
                     }
 
@@ -586,42 +433,6 @@
                         }
                     }
 
-                    var combolist2 = data.bomCombo;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == bom) {
-                            bomTxt = bomTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            bomTxt = bomTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist3 = data.bomCombo;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == bom1) {
-                            bom1Txt = bom1Txt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            bom1Txt = bom1Txt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist4 = data.bomCombo;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == bom2) {
-                            bom2Txt = bom2Txt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            bom2Txt = bom2Txt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist5 = data.bomCombo;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == bom3) {
-                            bom3Txt = bom3Txt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
-                        } else {
-                            bom3Txt = bom3Txt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist6 = data.comCombo;
                     for (var i = 0; i < combolist6.length; i++) {
                         if (combolist6[i][0] == com) {
@@ -633,10 +444,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboBom").append(bomTxt);
-                    $("#cboBom1").append(bom1Txt);
-                    $("#cboBom2").append(bom2Txt);
-                    $("#cboBom3").append(bom3Txt);
                     $("#cboCom").append(comTxt);
                 }
             })
