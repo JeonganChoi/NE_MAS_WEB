@@ -12,33 +12,22 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
-                <div class="mx-2 mb-3 d-md-flex align-items-center">
-                    <div class="mb-3 mb-md-0">
-                        <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>참조 코드 관리</h3>
-                    </div>
+                <div class="mx-2 mb-2 d-md-flex align-items-center">
+                    <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>참조 코드 관리</h5>
                     <!--<button type="button" class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                       <span class="btn-inner--icon">
                           <i class="fas fa-search me-2 fs-5"></i>
                       </span>
                       <span class="btn-inner--text text-lg">조회</span>
                     </button>-->
-                    <button type="button" class="mb-0 mb-2 btn btn-warning btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2" id="btnAdd" name="btnAdd">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">추가</span>
+                    <button type="button" class="mb-0 mb-2 btn btn-warning btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnAdd" name="btnAdd">
+                          <i class="fas fa-plus me-2 fs-6"></i>추가
                     </button>
-                    <button type="submit" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2" id="btnSave" name="btnSave">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">저장</span>
+                    <button type="submit" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                          <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
-                    <button type="button" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt" name="btnDlt">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">삭제</span>
+                    <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
+                          <i class="fas fa-minus me-2 fs-6"></i>삭제
                     </button>
                 </div>
             </div>
@@ -158,8 +147,8 @@
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + list[i][0] + "'/></td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control' id='mainName' name='mainName' value='" + list[i][1] + "'/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control border-0 text-xs text-center' id='subCode' name='subCode' value='" + list[i][2] + "'/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control border-0 text-xs text-center' id='subName' name='subName' value='" + list[i][3] + "'/></td> " +
+                            "<td class='text-center p-0' style='font-size: 0.85rem'><input type='text' class='form-control shadow-none border-0 text-xs text-center' id='subCode' name='subCode' value='" + list[i][2] + "'/></td> " +
+                            "<td class='text-center p-0' style='font-size: 0.85rem'><input type='text' class='form-control shadow-none border-0 text-xs text-center' id='subName' name='subName' value='" + list[i][3] + "'/></td> " +
                             "</tr> ");
                     }
                 }
@@ -180,8 +169,8 @@
             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]'/></div></td>" +
             "<td hidden class='text-center'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + firstVal + "'/></td>" +
             "<td hidden class='text-center'><input type='text' class='form-control' id='mainName' name='mainName' value='" + secVal + "'/></td> " +
-            "<td class='text-center p-1'><input class='form-control border-0 text-xs text-center' type='text' name='subCode' id='subCode'></td> " +
-            "<td class='text-center p-1'><input class='form-control border-0 text-xs text-center' type='text' name='subName' id='subName'></td>" +
+            "<td class='text-center p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' name='subCode' id='subCode'></td> " +
+            "<td class='text-center p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' name='subName' id='subName'></td>" +
             "</tr> "
         );
     });

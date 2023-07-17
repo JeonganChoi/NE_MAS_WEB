@@ -12,10 +12,8 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
-                <div class="mx-2 mb-3 d-md-flex align-items-center">
-                    <div class="mb-3 mb-md-0">
-                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>은행 계좌 잔액 관리</h5>
-                    </div>
+                <div class="mx-2 mb-2 d-md-flex align-items-center">
+                    <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>은행 계좌 잔액 관리</h5>
                     <button type="button" class="mb-0 mb-2 btn btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                           <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
@@ -39,11 +37,11 @@
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
                     <div class="pb-0 pt-0 card-header border-bottom">
-                      <div class="row">
+                      <div class="row pb-0">
                           <div class="p-2 col-lg-3 mt-lg-0">
                             <div class="input-group shadow-none">
                                 <span class="input-group-text text-body bg-transparent border-0 ">
-                                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>은행명</label>
+                                    <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>은행명</label>
                                 </span>
                                 <select class="form-control border border-light rounded-1 text-center p-0" name="inputBankType" id="inputBankType" style="font-size: 0.85rem; height: 2rem">
 
@@ -69,13 +67,13 @@
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-semibold opacity-7 p-2"></th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌 번호</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">기준 일자</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">잔 액</th>
-                              <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">비 고</th>
+                              <th class="text-center text-secondary text-center font-weight-bolder p-2"></th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">계좌 번호</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">계좌명</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">은행명</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">기준 일자</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">잔 액</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">비 고</th>
                             </tr>
                           </thead>
                           <tbody id="acBalMainTb">
@@ -93,8 +91,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>은행명</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboBankName" id="cboBankName"></select>
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>은행명</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboBankName" id="cboBankName"></select>
                             </div>
                             <div class="col-6">
 
@@ -102,28 +100,28 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌 번호</label>
-                                <select class="form-control border border-light rounded-1 text-center" name="cboActNum" id="cboActNum"></select>
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>계좌 번호</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboActNum" id="cboActNum"></select>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>계좌명</label>
-                                <input class="form-control text-center" type="text" id="txtActName" name="txtActName"/>
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>계좌명</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtActName" name="txtActName"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>기준 일자</label>
-                                <input class="form-control text-center" type="date" id="txtDate" name="txtDate"/>
+                                <label class="mt-4" style="font-size: 0.8rem">기준 일자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtDate" name="txtDate"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>잔 액</label>
-                                <input class="form-control text-end" type="number" id="txtBalance" name="txtBalance"/>
+                                <label class="mt-4" style="font-size: 0.8rem">잔 액</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="number" value="0" id="txtBalance" name="txtBalance"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-sm"></i>비 고</label>
-                                <input class="form-control text-start" type="text" id="txtRemark" name="txtRemark"/>
+                                <label class="mt-4" style="font-size: 0.8rem">비 고</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtRemark" name="txtRemark"/>
                             </div>
                         </div>
                     </div>
@@ -142,8 +140,8 @@
             var inputBankType = "";
             var cboBankName = "";
             var inputBankTypeTxt = "<option value=''>:: 전체 ::</option>";
-            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
-            var cboActNumTxt = "<option value=''>:: 전체 ::</option>";
+            var cboBankNameTxt = "<option value=''>:: 선택 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputBankType").html("");
             $("#cboBankName").html("");
@@ -166,13 +164,13 @@
                         $("#acBalMainTb").append(
                             "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][4] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "</tr> ");
                     }
 
@@ -232,13 +230,13 @@
                         $("#acBalMainTb").append(
                             "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][4] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "</tr> ");
                     }
 
@@ -320,8 +318,8 @@
 
             var cboBankName = "";
             var cboActNum = "";
-            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
-            var cboActNumTxt = "<option value=''>:: 전체 ::</option>";
+            var cboBankNameTxt = "<option value=''>:: 선택 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboBankName").html("");
             $("#cboActNum").html("");
