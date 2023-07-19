@@ -2,7 +2,7 @@ from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews, financeSearchViews
-from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews
+from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews
 
 urlpatterns = [
     path('', redirectToMain, name="redirectToMain"),
@@ -97,7 +97,12 @@ urlpatterns = [
 
     #  자금관리 현황
     path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
+    path('receive_pay_search/', receivepayViews.receivepaySheetViews_search, name='receive_pay_search'),
     path('yearly_monthly_sales/', yearlyMonthlyAnalysisViews.yearlyMontlySales, name='yearly_monthly_sales'),
     path('ym_sales_search/', yearlyMonthlyAnalysisViews.yearlyMontlySales_search, name='ym_sales_search'),
+    path('yearly_monthly_account/', yearlyMonthlyAccountAnalysisViews.yearlyMontlyAccount, name='yearly_monthly_account'),
+    path('ym_account_cbo/', yearlyMonthlyAccountAnalysisViews.yearlyMontlyAccount_cbo, name='ym_account_cbo'),
+    path('ym_account_search/', yearlyMonthlyAccountAnalysisViews.yearlyMontlyAccount_search,
+         name='ym_account_search'),
 
 ]

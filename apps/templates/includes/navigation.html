@@ -217,12 +217,12 @@
               <li class="mb-2">
                 <a href="{% url 'with_reg' %}" class="dropdown-item border-radius-md">출금 등록</a>
               </li>
-              <li class="mb-2">
+              <!--<li class="mb-2">
                 <a href="#" class="dropdown-item border-radius-md">입금 출금 현황</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'custLedger_report' %}" class="dropdown-item border-radius-md">거래처 원장</a>
-              </li>
+              </li>-->
+{#              <li class="mb-2">#}
+{#                <a href="{% url 'custLedger_report' %}" class="dropdown-item border-radius-md">거래처 원장</a>#}
+{#              </li>#}
             </ul>
           </li>
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
@@ -237,9 +237,9 @@
                 <a href="#" class="dropdown-item border-radius-md">년간 월별 매입 현황</a>
               </li>
               <li class="mb-2">
-                <a href="#" class="dropdown-item border-radius-md">년간 월별 영업비 현황</a>
+                <a href="{% url 'yearly_monthly_account' %}" class="dropdown-item border-radius-md">년간 월별 현황</a>
               </li>
-              <li class="mb-2">
+              <!--<li class="mb-2">
                 <a href="#" class="dropdown-item border-radius-md">년간 월별 관리비 현황</a>
               </li>
               <li class="mb-2">
@@ -262,7 +262,7 @@
               </li>
               <li class="mb-2">
                 <a href="#" class="dropdown-item border-radius-md">년간 월별 잡자재비 현황</a>
-              </li>
+              </li>-->
               <li class="mb-2">
                 <a href="#" class="dropdown-item border-radius-md">년간 월별 평균 잔고 현황</a>
               </li>

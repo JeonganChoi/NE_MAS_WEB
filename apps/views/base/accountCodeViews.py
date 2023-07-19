@@ -21,26 +21,26 @@ def accountCodeViews_search(request):
 
     if mainCode != '' and mainCode is not None:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM, MDESC, MSEQ FROM OSCODEM WHERE MCODE = '" + mainCode + "' ")
+            cursor.execute(" SELECT MCODE, MCODENM, IFNULL(MDESC, ''), MSEQ FROM OSCODEM WHERE MCODE = '" + mainCode + "' ")
             mresult = cursor.fetchall()
 
         return JsonResponse({"subMList": mresult})
 
     elif mainCode2 != '' and mainCode2 is not None:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM, ADESC, ASEQ FROM OSCODEA WHERE ACODE = '" + mainCode2 + "' ")
+            cursor.execute(" SELECT ACODE, ACODENM, IFNULL(ADESC, ''), ASEQ FROM OSCODEA WHERE ACODE = '" + mainCode2 + "' ")
             aresult = cursor.fetchall()
 
         return JsonResponse({'subAList': aresult})
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM, MSEQ, MDESC FROM OSCODEM "
+            cursor.execute(" SELECT MCODE, MCODENM, MSEQ, IFNULL(MDESC, '') FROM OSCODEM "
                            "        WHERE MCODE LIKE '" + str(codeType) + "%' ORDER BY MCODE ")
             mresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM, ASEQ, ADESC FROM OSCODEA "
+            cursor.execute(" SELECT ACODE, ACODENM, ASEQ, IFNULL(ADESC, '') FROM OSCODEA "
                            "        WHERE ACODE LIKE '" + str(codeType2) + "%' ORDER BY ACODE ")
             aresult = cursor.fetchall()
 

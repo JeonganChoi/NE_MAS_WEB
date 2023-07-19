@@ -1,117 +1,232 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} depositWithdrawal - 입금등록 {% endblock %}
+{% block title %} receive-pay-banksheets : 은행내역서 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
+    <style>
+        div#byCust table {
+            {#보더 부분에 왼쪽으로 스크롤 할 때 비쳤던거 방지#}
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(1), div#byCust table tr:nth-child(1) th:nth-child(2), div#byCust table td:nth-child(1), div#byCust table td:nth-child(2) {
+            position: sticky;
+            z-index: 4 !important;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(1), div#byCust table td:nth-child(1) {
+            min-width: 12rem;
+            left: 0;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(2), div#byCust table td:nth-child(2) {
+            left: 12rem;
+            min-width: 10rem;
+        }
 
-    <div class="pb-6 bg-cover pt-7" style="background-image: url('/static/assets/img/header-orange-purple.jpg'); background-position: bottom;"></div>
-    <div class="container-fluid">
-    <div class="py-2 bg-transparent border-0 shadow-none card card-body">
-        <div class="row">
-          <div class="col-auto my-auto">
-            <div class="h-100">
-                <div class="input-group">
-                    <label style="font-size: 1rem"><i class="fas fa-search me-2"></i>조회 일자</label>
-                    <input class="form-control border border-light rounded-1 text-center" type="date" id="inputStrDate" name="inputStrDate"/>
-                    <label style="font-size: 1rem">-</label>
-                    <input class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
-                </div>
-            </div>
-          </div>
-          <div class="col-6 my-auto"></div>
-        </div>
-      </div>
-    </div>
+        div#byCust table tbody#custTb td {
+            background-color: white;
+        }
+        div#byCust table tbody#custTotalTb td {
+            background-color: #c9dae1;
+        }
+
+        div#byItem table {
+            {#보더 부분에 왼쪽으로 스크롤 할 때 비쳤던거 방지#}
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(1), div#byItem table tr:nth-child(1) th:nth-child(2), div#byItem table tr:nth-child(1) th:nth-child(3), div#byItem table tr:nth-child(1) th:nth-child(4), div#byItem table tr:nth-child(1) th:nth-child(5), div#byItem table tr:nth-child(1) th:nth-child(6),
+        div#byItem table td:nth-child(1), div#byItem table td:nth-child(2), div#byItem table td:nth-child(3), div#byItem table td:nth-child(4), div#byItem table td:nth-child(5), div#byItem table td:nth-child(6) {
+            position: sticky;
+            z-index: 4 !important;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(1), div#byItem table td:nth-child(1) {
+            min-width: 12rem;
+            left: 0;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(2), div#byItem table td:nth-child(2) {
+            left: 12rem;
+            min-width: 8rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(3), div#byItem table td:nth-child(3) {
+            min-width: 6rem;
+            left: 20rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(4), div#byItem table td:nth-child(4) {
+            left: 26rem;
+            min-width: 6rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(5), div#byItem table td:nth-child(5) {
+            min-width: 6rem;
+            left: 32rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(6), div#byItem table td:nth-child(6) {
+            left: 38rem;
+            min-width: 6rem;
+        }
+
+        div#byItem table tbody#itemTb td {
+            background-color: white;
+        }
+        div#byItem table tbody#itemTotalTb td {
+            background-color: #c9dae1;
+        }
+    </style>
+
+    <!--<div class="pt-6 pb-6 bg-cover height-100"
+         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>-->
     <div class="px-5 py-4 container-fluid">
-        <div class="my-4 row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body height-150">
-                        <h5><i class="fas fa-documents"></i>은행 계좌 리스트</h5>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="table-responsive-sm">
-                                    <table class="table mb-0 align-items-center justify-content-center">
-                                        <colgroup>
-                                            <col width="2%">
-                                            <col width="6%">
-                                            <col width="8%">
-                                        </colgroup>
-                                        <thead class="bg-gray-100">
-                                        <tr>
-                                            <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">은행명</th>
-                                            <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌번호</th>
-                                            <th style="font-size: 1rem" class="text-secondary text-center font-weight-semibold opacity-7 p-2">계좌명</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="actMainTb">
-                                        <tr id="actMainTr" class="actMainTr_tr">
-
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row mt-n1">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card border border-5 border-white rounded-2 shadow-none bg-dark mx-3 rounded-3">
+                    <div class="card-body">
+                        <h4 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>은행 내역서</h4>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-1 col-1"></div>
         </div>
-        <div class="my-4">
-            <div class="col-12 text-start mx-3 my-2">
-                <div class="badge badge-success w-10">
-                    <h5>계좌 번호</h5>
-                </div>
+        <div class="row mx-5 my-3">
+            <div class="col-lg-1 col-1 text-start"></div>
+            <div class="col-lg-2 col-2 text-start">
+                <select class="form-control text-center" id="cboBank" name="cboBank"></select>
             </div>
+            <div class="col-lg-2 col-2 text-start">
+                <select class="form-control text-center" id="cboAccount" name="cboAccount"></select>
+            </div>
+            <div class="col-lg-7 col-7"></div>
         </div>
-        <div class="my-4 row">
-            <div class="col-12">
-                <div class="card mb-3 mt-lg-0 mt-4">
-                    <div class="card-body pb-0 height-500">
-                        <div class="table-responsive-sm">
-                            <table class="table mb-0 align-items-center justify-content-center">
-                                <colgroup>
-                                    <col width="2%">
-                                    <col width="6%">
-                                    <col width="8%">
-                                </colgroup>
-                                <thead class="bg-gray-100">
-                                <tr>
-                                    <th style="font-size: 1rem"
-                                        class="text-secondary text-center font-weight-semibold opacity-7 p-2">
-                                        은행명
-                                    </th>
-                                    <th style="font-size: 1rem"
-                                        class="text-secondary text-center font-weight-semibold opacity-7 p-2">
-                                        계좌번호
-                                    </th>
-                                    <th style="font-size: 1rem"
-                                        class="text-secondary text-center font-weight-semibold opacity-7 p-2">
-                                        계좌명
-                                    </th>
-                                </tr>
+        <div class="row mt-4">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                  <div class="card border shadow-xs">
+                      <div class="px-0 py-0 card-body">
+                          <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                              <table class="table mb-0 align-items-center justify-content-center">
+                                  <colgroup>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                      <col width="8%"/>
+                                  </colgroup>
+                                  <thead class="text-white bg-dark">
+                                  <tr>
+                                    <th class="text-center" style="font-size: 0.85rem;">거래일시</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">맡기신 금액</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">찾으신 금액</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">잔금</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">거래처</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">내역</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">고정비</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">변동비</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">실지금액</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">계정</th>
+                                    <th class="text-center" style="font-size: 0.85rem;">처리</th>
+                                  </tr>
                                 </thead>
-                                <tbody id="actMainTb">
-                                <tr id="actMainTr" class="actMainTr_tr">
+                                <tbody id="sheetTb">
+                                  <tr id="sheetTr" class="sheetTr_tr">
 
-                                </tr>
+                                  </tr>
                                 </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                                <tfoot class="text-dark p-0">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Total</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
             </div>
         </div>
     </div>
+
 
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function () {
+            var cboBank = "";
+            var cboAccount = "";
+            var cboBankTxt = "";
+            var cboAccountTxt = "<option value=''>:: 전체 ::</option>";
+
+            $("#cboBank").html("");
+            $("#cboAccount").html("");
+
+            $.ajax({
+                type: "post",
+                url: '{% url "receive_pay_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    {#var list = data.custList;#}
+                    {##}
+                    {#$("#sheetTb").html("");#}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    $("#sheetTb").append(#}
+                    {#        "<tr id='#sheetTr' class='sheetTr_tr' main_code='" + list[i][1] + "'>" +#}
+                    {#        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +#}
+                    {#        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +#}
+                    {#        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +#}
+                    {#        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +#}
+                    {#        "</tr> ");#}
+                    {#}#}
+
+                    var combolist = data.cboBank;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboBank) {
+                            cboBankTxt = cboBankTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboBankTxt = cboBankTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboAccount;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboAccount) {
+                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboBank").append(cboBankTxt);
+                    $("#cboAccount").append(cboAccountTxt);
+
+                }
+            })
+        });
+
 
     </script>
 {% endblock %}

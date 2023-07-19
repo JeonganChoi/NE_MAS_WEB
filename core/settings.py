@@ -87,7 +87,7 @@ DATABASES = {
         # 사용자 유저 계정 생성 후 입력
         'USER': 'Nadmin',
         # 사용자 비밀번호 생성 후 입력
-        'PASSWORD': 'eotjd1@#',
+        'PASSWORD': 'naeunChoi1@#',
         # default host인 localhost
         'HOST': '14.45.24.56',
         # MySQL default 포트 번호

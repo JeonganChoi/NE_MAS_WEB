@@ -1,0 +1,89 @@
+import json
+from django.shortcuts import render, redirect
+from django import template
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import loader
+from django.urls import reverse
+from django.contrib import messages
+from django.http import JsonResponse
+from django.db import connection
+
+
+def yearlyMontlyAccount(request):
+
+    return render(request, "currentstate/yearlyMonthly-accountReport.html")
+
+def yearlyMontlyAccount_cbo(request):
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+        cboMresult = cursor.fetchall()
+
+        cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+
+        cboAresult = cursor.fetchall()
+
+    return JsonResponse({"cboMList": cboMresult, 'cboAList': cboAresult})
+def yearlyMontlyAccount_search(request):
+    year = request.POST.get('year')
+    lastYear = int(year) - 1
+    actCode = request.POST.get('actCode')
+
+
+
+    if year != '' and year is not None and actCode != '' and actCode is not None:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT  YEAR, IFNULL(SUM(MONTH01), 0) AS MONTH01, IFNULL(SUM(MONTH02), 0) AS MONTH02, IFNULL(SUM(MONTH03), 0) AS MONTH03 "
+                           "              , IFNULL(SUM(MONTH04), 0) AS MONTH04, IFNULL(SUM(MONTH05), 0) AS MONTH05, IFNULL(SUM(MONTH06), 0) AS MONTH06 "
+                           "              , IFNULL(SUM(MONTH07), 0) AS MONTH07, IFNULL(SUM(MONTH08), 0) AS MONTH08, IFNULL(SUM(MONTH09), 0) AS MONTH09 "
+                           "              , IFNULL(SUM(MONTH10), 0) AS MONTH10, IFNULL(SUM(MONTH11), 0) AS MONTH11, IFNULL(SUM(MONTH12), 0) AS MONTH12 "
+                           " FROM "
+                           "     ( SELECT        YEAR(ACDATE) AS YEAR "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '01' THEN SUM(ACAMTS) END) AS MONTH01 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '02' THEN SUM(ACAMTS) END) AS MONTH02 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '03' THEN SUM(ACAMTS) END) AS MONTH03 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '04' THEN SUM(ACAMTS) END) AS MONTH04 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '05' THEN SUM(ACAMTS) END) AS MONTH05 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '06' THEN SUM(ACAMTS) END) AS MONTH06 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '07' THEN SUM(ACAMTS) END) AS MONTH07 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '08' THEN SUM(ACAMTS) END) AS MONTH08 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '09' THEN SUM(ACAMTS) END) AS MONTH09 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '10' THEN SUM(ACAMTS) END) AS MONTH10 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '11' THEN SUM(ACAMTS) END) AS MONTH11 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '12' THEN SUM(ACAMTS) END) AS MONTH12 "
+                           "              FROM SISACCTT "
+                           "              WHERE YEAR(ACDATE) = '" + str(year) + "' "
+                           "              AND ACCODE = '" + str(actCode) + "' "
+                           "              OR MCODE = '" + str(actCode) + "' "
+                           "              GROUP BY MONTH(ACDATE) ORDER BY MONTH(ACDATE)) A GROUP BY YEAR ")
+            mainresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT  YEAR, IFNULL(SUM(MONTH01), 0) AS MONTH01, IFNULL(SUM(MONTH02), 0) AS MONTH02, IFNULL(SUM(MONTH03), 0) AS MONTH03 "
+                           "              , IFNULL(SUM(MONTH04), 0) AS MONTH04, IFNULL(SUM(MONTH05), 0) AS MONTH05, IFNULL(SUM(MONTH06), 0) AS MONTH06 "
+                           "              , IFNULL(SUM(MONTH07), 0) AS MONTH07, IFNULL(SUM(MONTH08), 0) AS MONTH08, IFNULL(SUM(MONTH09), 0) AS MONTH09 "
+                           "              , IFNULL(SUM(MONTH10), 0) AS MONTH10, IFNULL(SUM(MONTH11), 0) AS MONTH11, IFNULL(SUM(MONTH12), 0) AS MONTH12 "
+                           " FROM "
+                           "     ( SELECT        YEAR(ACDATE) AS YEAR "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '01' THEN SUM(ACAMTS) END) AS MONTH01 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '02' THEN SUM(ACAMTS) END) AS MONTH02 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '03' THEN SUM(ACAMTS) END) AS MONTH03 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '04' THEN SUM(ACAMTS) END) AS MONTH04 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '05' THEN SUM(ACAMTS) END) AS MONTH05 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '06' THEN SUM(ACAMTS) END) AS MONTH06 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '07' THEN SUM(ACAMTS) END) AS MONTH07 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '08' THEN SUM(ACAMTS) END) AS MONTH08 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '09' THEN SUM(ACAMTS) END) AS MONTH09 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '10' THEN SUM(ACAMTS) END) AS MONTH10 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '11' THEN SUM(ACAMTS) END) AS MONTH11 "
+                           "                   , (CASE WHEN MONTH(ACDATE) = '12' THEN SUM(ACAMTS) END) AS MONTH12 "
+                           "              FROM SISACCTT "
+                           "              WHERE YEAR(ACDATE) = '" + str(lastYear) + "' "
+                           "              AND ACCODE = '" + str(actCode) + "' "
+                           "              OR MCODE = '" + str(actCode) + "' "
+                           "             GROUP BY MONTH(ACDATE) ORDER BY MONTH(ACDATE)) A GROUP BY YEAR ")
+            lastresult = cursor.fetchall()
+
+        return JsonResponse({"saleLineList": mainresult, 'lastList': lastresult})
+
+
