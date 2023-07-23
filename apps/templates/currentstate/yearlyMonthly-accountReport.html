@@ -16,7 +16,7 @@
             <div class="col-lg-10 col-10">
                 <div class="card rounded-2 shadow-none bg-gradient-faded-info">
                     <div class="card-body">
-                        <h4 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>년간 월간 현황</h4>
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>년간 월간 현황</h5>
                     </div>
                 </div>
             </div>
@@ -28,8 +28,7 @@
                 <div class="card-profile pb-3">
                     <div class="row">
                         <div class="col-lg-2 col-2">
-                            <select style="height: 1.5rem; font-size: 0.8rem" class="form-control border border-light text-center text-dark" id="inputActCode" name="inputActCode">
-                            </select>
+                            <select style="height: 2rem; font-size: 0.8rem" class="form-control text-center text-dark p-1" id="inputActCode" name="inputActCode"></select>
                         </div>
                         <div class="col-lg-9 col-9"></div>
                     </div>
@@ -94,6 +93,22 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
+
+            var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
+
+            var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+            gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.31)');
+            gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+            gradientStroke1.addColorStop(0, 'rgba(94, 114, 228,0)'); //purple colors
+
+            var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+            // linear-gradient(180deg, rgba(47, 47, 47, 0.19) 0%, rgba(37, 37, 37, 0) 63.87%)
+
+            gradientStroke2.addColorStop(1, 'rgba(47, 47, 47, 0.19)');
+            gradientStroke2.addColorStop(0.2, 'rgba(47, 47, 47, 0.0)');
+            gradientStroke2.addColorStop(0, 'rgba(47, 47, 47,0)'); //purple colors
+
             var inputActCode = "";
             var inputActCodeTxt = "";
 
@@ -168,7 +183,7 @@
                         data: {
                             labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
                             datasets: [{
-                                label: "2022년 매출",
+                                label: "2023년 매출",
                                 tension: 0.4,
                                 borderWidth: 0,
                                 pointRadius: 0,
@@ -181,11 +196,11 @@
 
                             },
                                 {
-                                    label: "2021년 매출",
+                                    label: "2022년 매출",
                                     tension: 0.4,
                                     borderWidth: 0,
                                     pointRadius: 0,
-                                    borderColor: "#1E293B",
+                                    borderColor: "#FFE933",
                                     borderWidth: 3,
                                     backgroundColor: gradientStroke2,
                                     fill: true,
@@ -253,7 +268,7 @@
                     });
 
 
-                    var list2 = data.tbSaleList;
+                    var list2 = data.saleLineList;
 
                     $("#mainTb").html("");
                     for (var j = 0; j < list2.length; j++) {
@@ -295,7 +310,6 @@
                             "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][12]) + "</td> " +
                             "</tr> ");
                     }
-
 
                 }
             });

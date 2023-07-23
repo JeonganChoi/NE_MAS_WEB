@@ -12,31 +12,16 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
-                    <div class="mx-2 mb-3 d-md-flex align-items-center">
-                        <div class="mb-3 mb-md-0">
-                            <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>지표 관리</h3>
-                        </div>
-                        <button type="button"
-                                class="mb-0 mb-2 btn btn-white btn-icon d-flex align-items-center ms-md-auto mb-sm-0 me-2"
-                                id="btnSearch" name="btnSearch">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-search me-2 fs-5"></i>
-                      </span>
-                            <span class="btn-inner--text text-lg">조회</span>
+                    <div class="mx-2 mb-2 d-md-flex align-items-center">
+                        <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>지표 관리</h5>
+                        <button type="button" class="mb-0 mb-2 btn btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
+                          <i class="fas fa-search me-2 fs-6"></i>조회
                         </button>
-                        <button type="button" class="mb-0 btn btn-success btn-icon d-flex align-items-center me-2"
-                                id="btnSave" name="btnSave">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-plus me-2 fs-5"></i>
-                      </span>
-                            <span class="btn-inner--text text-lg">저장</span>
+                        <button type="button" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                          <i class="fas fa-plus me-2 fs-6"></i>저장
                         </button>
-                        <button type="submit" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnDlt"
-                                name="btnDlt">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                            <span class="btn-inner--text text-lg">삭제</span>
+                        <button type="submit" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
+                          <i class="fas fa-minus me-2 fs-6"></i>삭제
                         </button>
                     </div>
                 </div>
@@ -46,12 +31,10 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="border shadow-xs card">
                         <div class="pb-0 pt-0 card-header border-bottom">
-                            <div class="p-3 col-lg-3 col-3 mt-lg-0">
+                            <div class="p-2 col-lg-3 col-3 mt-lg-0">
                                 <div class="input-group shadow-none">
                                     <span class="input-group-text border-0 text-dark bg-transparent text-left rounded-0"
-                                          id="" style="width: 6rem; height: 2rem">
-                                        <i class="ni ni-bold-right pr-2"></i>목표 년도
-                                    </span>
+                                          id="" style="width: 6rem; height: 2rem"><i class="fas fa-search me-2"></i>목표 년도</span>
                                     <input class="form-control border border-light rounded-1 text-start t-dark" style="max-width: 8rem; height: 2rem" type="text" id="year" name="year">
                                 </div>
                             </div>
@@ -78,48 +61,20 @@
                                     </colgroup>
                                     <thead class="bg-dark">
                                     <tr>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">선택
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">구분
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">1월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold ttext-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">2월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">3월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">4월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">5월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">6월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">7월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">8월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">9월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">10월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">11월
-                                        </th>
-                                        <th class="sort text-white font-weight-bold text-center p-2"
-                                            data-sort="" style="font-size: 0.8rem">12월
-                                        </th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">선택</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">구분</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">1월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">2월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">3월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">4월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">5월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">6월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">7월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">8월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">9월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">10월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">11월</th>
+                                        <th style="font-size: 0.85rem" class="text-white text-center font-weight-bolder bg-dark p-2">12월</th>
                                     </tr>
                                     <tbody class="list" id="targetTb">
                                     <tr id="targetTr" class="targetTr_tr">
@@ -233,67 +188,6 @@
             $('form').submit();
         });
 
-
-        {#$("#btnDlt").on('click', function () {#}
-        {#    var chk_index_id_arr = [];#}
-        {#    $('input[name="Index[]"]:checked').each(function (i) {#}
-        {#        chk_index_id_arr.push($(this).val());#}
-        {#    });#}
-        {##}
-        {##}
-        {#    $("#index_id").val(chk_index_id_arr);#}
-        {#    let data = {#}
-        {#        'index_id': chk_index_id_arr,#}
-        {#    }#}
-        {##}
-        {#    //체크가 1개라도 안되있을때#}
-        {#    let chk_count = $("input[name='Index[]']").filter(":checked").length;#}
-        {#    if (chk_count < 1) {#}
-        {#        alert('삭제하실 지수를 체크 해주세요.');#}
-        {#        return false;#}
-        {#    }#}
-        {##}
-        {#    //체크 한 거래처 삭제#}
-        {#    var result = confirm("삭제하시겠습니까?")#}
-        {##}
-        {#    if (result) {#}
-        {#        if (chk_index_id_arr.length > 1) {#}
-        {#            for (var i = 0; i < chk_index_id_arr.length; i++) {#}
-        {#                var allData = {"index_id": chk_index_id_arr[i]};#}
-        {#                $.ajax({#}
-        {#                    type: "post",#}
-        {#                    async: false,#}
-        {#                    data: allData,#}
-        {#                    dataType: "json",#}
-        {#                    url: '{% url "base_target_dlt" %}',#}
-        {#                    headers: {#}
-        {#                        'X-CSRFTOKEN': '{{ csrf_token }}'#}
-        {#                    },#}
-        {#                    success: function (data) {#}
-        {#                        window.location.href = "/base_03";#}
-        {#                    }#}
-        {##}
-        {#                });#}
-        {#            }#}
-        {#        } else {#}
-        {#            var allData = {"index_id": chk_index_id_arr[0]};#}
-        {#            $.ajax({#}
-        {#                type: "post",#}
-        {#                data: allData,#}
-        {#                dataType: "json",#}
-        {#                url: '{% url "base_target_dlt" %}',#}
-        {#                headers: {#}
-        {#                    'X-CSRFTOKEN': '{{ csrf_token }}'#}
-        {#                },#}
-        {#                success: function (data) {#}
-        {#                    window.location.href = "/base_03";#}
-        {#                }#}
-        {#            });#}
-        {#        }#}
-        {#    } else {#}
-        {##}
-        {#    }#}
-        {#});#}
     </script>
 
 {% endblock javascripts%}
