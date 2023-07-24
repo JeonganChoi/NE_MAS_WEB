@@ -95,14 +95,19 @@ urlpatterns = [
     path('custLedger_report/', financeSearchViews.custLedgerViews, name='custLedger_report'),
     path('custLedger_report_search/', financeSearchViews.custLedgerViews_search, name='custLedger_report_search'),
 
-    #  자금관리 현황
-    path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
-    path('receive_pay_search/', receivepayViews.receivepaySheetViews_search, name='receive_pay_search'),
+
+    #  자금 분석
     path('yearly_monthly_sales/', yearlyMonthlyAnalysisViews.yearlyMontlySales, name='yearly_monthly_sales'),
     path('ym_sales_search/', yearlyMonthlyAnalysisViews.yearlyMontlySales_search, name='ym_sales_search'),
+    path('yearly_monthly_purs/', yearlyMonthlyAnalysisViews.yearlyMontlyPurs, name='yearly_monthly_purs'),
+    path('ym_purchases_search/', yearlyMonthlyAnalysisViews.yearlyMontlyPurs_search, name='ym_purchases_search'),
     path('yearly_monthly_account/', yearlyMonthlyAccountAnalysisViews.yearlyMontlyAccount, name='yearly_monthly_account'),
     path('ym_account_cbo/', yearlyMonthlyAccountAnalysisViews.yearlyMontlyAccount_cbo, name='ym_account_cbo'),
     path('ym_account_search/', yearlyMonthlyAccountAnalysisViews.yearlyMontlyAccount_search,
          name='ym_account_search'),
+
+    #  자금 현황
+    path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
+    path('receive_pay_search/', receivepayViews.receivepaySheetViews_search, name='receive_pay_search'),
 
 ]

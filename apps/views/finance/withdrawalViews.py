@@ -79,6 +79,7 @@ def withRegViews_save(request):
         acDesc = request.POST.get("txtWitRemark")     # 비고
         acbunho = request.POST.get("txtWitCashNum")     # 어음번호
         acguno_dt = request.POST.get("txtWitCashNum")     # 만기일자
+        gbn = request.POST.get('WitEmpCount')
         acIuser = '101'
         acIdate = acDate.replace('-', '')
         acUuser = '101'
@@ -109,6 +110,7 @@ def withRegViews_save(request):
                                ",    ACBUNHO "
                                ",    ACGUNO_DT "
                                ",    ACGUNO_BK "
+                               ",    GBN "
                                "    ) "
                                "    VALUES "
                                "    (   "
@@ -128,6 +130,7 @@ def withRegViews_save(request):
                                ",   '" + str(acbunho) + "'"
                                ",   '" + str(acguno_dt) + "'"
                                ",   '" + str(bnk) + "'"
+                               ",   '" + str(gbn) + "'"
                                "    )   "
                                )
                 connection.commit()
@@ -149,6 +152,7 @@ def withRegViews_save(request):
                                ",    ACBUNHO = '" + str(acbunho) + "' "
                                ",    ACGUNO_DT = '" + str(acguno_dt) + "' "
                                ",    ACGUNO_BK = '" + str(bnk) + "' "
+                               ",    GBN = '" + str(gbn) + "' "
                                ",    UUSER = '" + str(acUuser) + "' "
                                ",    UDATE = date_format(now(), '%Y%m%d') "
                                "     WHERE ACDATE = '" + str(acDate) + "' "

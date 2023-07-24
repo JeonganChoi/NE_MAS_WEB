@@ -32,7 +32,6 @@ def accountViews_search(request):
                            "    AND ACBKCD LIKE '%" + bankCode + "%'")
             accountresult = cursor.fetchall()
 
-        print(accountresult)
         return JsonResponse({"accountList": accountresult})
 
     if actCode != '' and actCode is not None:
@@ -73,27 +72,25 @@ def accountViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
             bankCombo = cursor.fetchall()
 
-        print(bankCombo, accountresult)
         return JsonResponse({"bankCombo": bankCombo, "accountList": accountresult})
 
 
 
 def accountViews_save(request):
-    if 'btnSave' in request.POST:
-        accNum = request.POST.get('txtActNum')
-        accName = request.POST.get('txtActName')
-        bankCode = request.POST.get('inputbankType')
-        strDate = request.POST.get('txtRegDate').replace('-', '')
-        endDate = request.POST.get('txtExpireDate').replace('-', '')
-        accPrc = request.POST.get('txtAmount')
-        remark = request.POST.get('txtRemark')
-        inepno = '101'
-        utepno = '101'
-        # inepno = request.session['userid']
-        # utepno = request.session['userid']
-
+    accNum = request.POST.get('actCode')
+    accName = request.POST.get('actNme')
+    bankCode = request.POST.get('bankcode')
+    strDate = request.POST.get('regDate').replace('-', '')
+    endDate = request.POST.get('eprDate').replace('-', '')
+    accPrc = request.POST.get('amts')
+    remark = request.POST.get('remark')
+    inepno = request.POST.get('user')
+    user = '101'
+    # inepno = request.session['userid']
+    # utepno = request.session['userid']
+    if inepno is None or inepno == '':
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO ACNUMBER "
+            cursor.execute(" INSERT INTO ACNUMBER "
                            "   ("
                            "     ACNUMBER "
                            ",    ACNUM_NAME "
@@ -112,30 +109,34 @@ def accountViews_save(request):
                            ",   '" + str(bankCode) + "'"
                            ",   '" + str(strDate) + "'"
                            ",   '" + str(endDate) + "'"
-                           ",   '" + str(accPrc) + "'"
+                           ",   '" + int(accPrc) + "'"
                            ",   '" + str(remark) + "'"
-                           ",   '" + str(inepno) + "'"
+                           ",   '" + str(user) + "'"
                            ",   date_format(now(), '%Y%m%d')"
                            "    ) "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
+                           )
+            connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    elif inepno:
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE ACNUMBER SET"
                            "     ACNUM_NAME = '" + str(accName) + "' "
                            ",    ACBKCD = '" + str(bankCode) + "' "
                            ",    ACINDTE = '" + str(strDate) + "' "
                            ",    ACENDTE = '" + str(endDate) + "' "
-                           ",    ACPAY = '" + str(accPrc) + "' "
+                           ",    ACPAY = '" + int(accPrc) + "' "
                            ",    ACDESC = '" + str(remark) + "' "
-                           ",    UEPNO = '" + str(utepno) + "' "
+                           ",    UEPNO = '" + str(user) + "' "
                            ",    UDATE = date_format(now(), '%Y%m%d') "
+                           "     WHERE ACNUMBER = '" + str(accNum) + "' "
                            )
             connection.commit()
 
-            messages.success(request, '저장 되었습니다.')
-            return render(request, 'base/base-account.html')
+            return JsonResponse({'sucYn': "Y"})
 
-    else:
-        messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/base_account')
+    return render(request, 'base/base-account.html')
 
 
 def accountViews_dlt(request):

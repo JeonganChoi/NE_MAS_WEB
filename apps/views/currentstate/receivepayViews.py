@@ -47,11 +47,13 @@ def receivepaySheetViews_search(request):
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(UN.ACDATE, ''), IFNULL(UN.ACIOGB, ''), IFNULL(UN.RESNAM, ''), IFNULL(UN.OACAMTS, 0), IFNULL(UN.IACAMTS, 0) "
-                           "      , IFNULL(UN.ACCUST, ''), IFNULL(UN.CUST_NME, ''), IFNULL(UN.ACACNUMBER, ''), IFNULL(UN.ACNUM_NAME, ''), IFNULL(UN.MCODE, ''), IFNULL(UN.MCODENM, '') "
+                           "        , IFNULL(UN.ACCUST, ''), IFNULL(UN.CUST_NME, ''), IFNULL(UN.ACACNUMBER, ''), IFNULL(UN.ACNUM_NAME, ''), IFNULL(UN.MCODE, ''), IFNULL(UN.MCODENM, '')"
+                           "        , IFNULL(UN.ACDESC, ''), IFNULL(UN.GBN, ''), IFNULL(UN.RESNAM2, '') "
                            " FROM( "
                            "         SELECT IFNULL(A.ACDATE, '') AS ACDATE, IFNULL(A.ACIOGB, '') AS ACIOGB, IFNULL(B.RESNAM, '') AS RESNAM, IFNULL(A.ACAMTS, 0) AS OACAMTS, 0 AS IACAMTS "
-                           "              , IFNULL(A.ACCUST, '') AS ACCUST, IFNULL(C.CUST_NME, '') AS CUST_NME "
-                           "             , IFNULL(A.ACACNUMBER, '') AS ACACNUMBER, IFNULL(D.ACNUM_NAME, '') AS ACNUM_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM "
+                           "                , IFNULL(A.ACCUST, '') AS ACCUST, IFNULL(C.CUST_NME, '') AS CUST_NME "
+                           "                , IFNULL(A.ACACNUMBER, '') AS ACACNUMBER, IFNULL(D.ACNUM_NAME, '') AS ACNUM_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM"
+                           "                , IFNULL(A.ACDESC, '') AS ACDESC, IFNULL(A.GBN, '') AS GBN, IFNULL(F.RESNAM, '') AS RESNAM2 "
                            "         FROM SISACCTT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -62,10 +64,14 @@ def receivepaySheetViews_search(request):
                            "         ON A.ACACNUMBER = D.ACNUMBER "
                            "         LEFT OUTER JOIN OSCODEM E "
                            "         ON A.MCODE = E.MCODE "
+                           "         LEFT OUTER JOIN OSREFCP F "
+                           "         ON A.GBN = F.RESKEY "
+                           "         AND F.RECODE = 'PGB' "
                            "         WHERE A.ACIOGB = '1' "
                            "         UNION ALL "
                            "         SELECT IFNULL(A.ACDATE, ''), IFNULL(A.ACIOGB, ''), IFNULL(B.RESNAM, ''), 0 AS OACAMTS, IFNULL(A.ACAMTS, 0) AS IACAMTS "
-                           "             , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
+                           "                , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '')"
+                           "                , IFNULL(A.ACDESC, ''), IFNULL(A.GBN, ''), IFNULL(F.RESNAM, '')"
                            "         FROM SISACCTT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -76,6 +82,9 @@ def receivepaySheetViews_search(request):
                            "         ON A.ACACNUMBER = D.ACNUMBER "
                            "         LEFT OUTER JOIN OSCODEM E "
                            "         ON A.MCODE = E.MCODE "
+                           "         LEFT OUTER JOIN OSREFCP F "
+                           "         ON A.GBN = F.RESKEY "
+                           "         AND F.RECODE = 'PGB' "
                            "         WHERE A.ACIOGB = '2' "
                            "         ) UN "
                            " LEFT OUTER JOIN ACNUMBER CC "
@@ -84,7 +93,18 @@ def receivepaySheetViews_search(request):
 
             mainresult = cursor.fetchall()
 
-        return JsonResponse({'cboAccount': cboAresult, 'titleList': titleresult, 'totalList': totalresult, 'mainList': mainresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.MCODE, B.MCODENM, SUM(A.ACAMTS) FROM SISACCTT A "
+                           " LEFT OUTER JOIN OSCODEM B "
+                           " ON A.MCODE = B.MCODE "
+                           " LEFT OUTER JOIN ACNUMBER C "
+                           " ON A.ACACNUMBER = C.ACNUMBER "
+                           " WHERE A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND C.ACBKCD = '" + str(cboBank) + "' "
+                           " GROUP BY A.MCODE, B.MCODENM ")
+
+            subresult = cursor.fetchall()
+
+        return JsonResponse({'cboAccount': cboAresult, 'titleList': titleresult, 'totalList': totalresult, 'mainList': mainresult, 'subList': subresult})
 
     if cboAccount != '':
 
@@ -103,10 +123,12 @@ def receivepaySheetViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(UN.ACDATE, ''), IFNULL(UN.ACIOGB, ''), IFNULL(UN.RESNAM, ''), IFNULL(UN.OACAMTS, 0), IFNULL(UN.IACAMTS, 0) "
                            "      , IFNULL(UN.ACCUST, ''), IFNULL(UN.CUST_NME, ''), IFNULL(UN.ACACNUMBER, ''), IFNULL(UN.ACNUM_NAME, ''), IFNULL(UN.MCODE, ''), IFNULL(UN.MCODENM, '') "
+                           "        , IFNULL(UN.ACDESC, ''), IFNULL(UN.GBN, ''), IFNULL(UN.RESNAM2, '') "
                            " FROM( "
                            "         SELECT IFNULL(A.ACDATE, '') AS ACDATE, IFNULL(A.ACIOGB, '') AS ACIOGB, IFNULL(B.RESNAM, '') AS RESNAM, IFNULL(A.ACAMTS, 0) AS OACAMTS, 0 AS IACAMTS "
-                           "              , IFNULL(A.ACCUST, '') AS ACCUST, IFNULL(C.CUST_NME, '') AS CUST_NME "
-                           "             , IFNULL(A.ACACNUMBER, '') AS ACACNUMBER, IFNULL(D.ACNUM_NAME, '') AS ACNUM_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM "
+                           "                , IFNULL(A.ACCUST, '') AS ACCUST, IFNULL(C.CUST_NME, '') AS CUST_NME "
+                           "                , IFNULL(A.ACACNUMBER, '') AS ACACNUMBER, IFNULL(D.ACNUM_NAME, '') AS ACNUM_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM "
+                           "                , IFNULL(A.ACDESC, '') AS ACDESC, IFNULL(A.GBN, '') AS GBN, IFNULL(F.RESNAM, '') AS RESNAM2 "
                            "         FROM SISACCTT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -117,10 +139,14 @@ def receivepaySheetViews_search(request):
                            "         ON A.ACACNUMBER = D.ACNUMBER "
                            "         LEFT OUTER JOIN OSCODEM E "
                            "         ON A.MCODE = E.MCODE "
+                           "         LEFT OUTER JOIN OSREFCP F "
+                           "         ON A.GBN = F.RESKEY "
+                           "         AND F.RECODE = 'PGB' "
                            "         WHERE A.ACIOGB = '1' "
                            "         UNION ALL "
                            "         SELECT IFNULL(A.ACDATE, ''), IFNULL(A.ACIOGB, ''), IFNULL(B.RESNAM, ''), 0 AS OACAMTS, IFNULL(A.ACAMTS, 0) AS IACAMTS "
-                           "             , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
+                           "                , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
+                           "                , IFNULL(A.ACDESC, ''), IFNULL(A.GBN, ''), IFNULL(F.RESNAM, '') "
                            "         FROM SISACCTT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -131,13 +157,25 @@ def receivepaySheetViews_search(request):
                            "         ON A.ACACNUMBER = D.ACNUMBER "
                            "         LEFT OUTER JOIN OSCODEM E "
                            "         ON A.MCODE = E.MCODE "
+                           "         LEFT OUTER JOIN OSREFCP F "
+                           "         ON A.GBN = F.RESKEY "
+                           "         AND F.RECODE = 'PGB' "
                            "         WHERE A.ACIOGB = '2' "
                            "         ) UN "
                            " WHERE UN.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND UN.ACACNUMBER = '" + str(cboAccount) + "'  ORDER BY UN.ACDATE ")
 
             mainresult = cursor.fetchall()
 
-        return JsonResponse({'totalList': totalresult, 'mainList': mainresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.MCODE, B.MCODENM, SUM(A.ACAMTS) FROM SISACCTT A "
+                           " LEFT OUTER JOIN OSCODEM B "
+                           " ON A.MCODE = B.MCODE "
+                           " WHERE A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND A.ACACNUMBER = '" + str(cboAccount) + "' "
+                           " GROUP BY A.MCODE, B.MCODENM ")
+
+        subresult = cursor.fetchall()
+
+        return JsonResponse({'totalList': totalresult, 'mainList': mainresult, 'subList': subresult})
 
     else:
         with connection.cursor() as cursor:

@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post" action="{% url 'base_account_save' %}">
+    <form method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -88,9 +88,7 @@
                                 <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>은행명</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="inputbankType" id="inputbankType"></select>
                             </div>
-                            <div class="col-6">
-
-                            </div>
+                            <div class="col-6"></div>
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -122,6 +120,12 @@
                             <div class="col-12">
                                 <label class="mt-4" style="font-size: 0.8rem">비 고</label>
                                 <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtRemark" name="txtRemark"/>
+                            </div>
+                        </div>
+                        <div class="row" hidden>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 0.8rem">등록자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtUser" name="txtUser"/>
                             </div>
                         </div>
                     </div>
@@ -261,6 +265,7 @@
                         $("#txtActName").val(list[i][3])
                         $("#txtAmount").val(list[i][6])
                         $("#txtRemark").val(list[i][7])
+                        $("#txtUser").val(list[i][8])
                         bankType = list[i][0];
                     }
 
@@ -281,8 +286,42 @@
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
+            var bankcode = $("#inputbankType").val()
+            var actCode = $("#txtActNum").val()
+            var regDate = document.getElementById('txtRegDate').value
+            var eprDate = document.getElementById('txtExpireDate').value
+            var actNme = document.getElementById('txtActName').value
+            var amts = document.getElementById('txtAmount').value
+            var remark = document.getElementById('txtRemark').value
+            var user = document.getElementById('txtUser').value
 
-            $('form').submit();
+            if(bankcode == '')
+            {
+                alert("은행명을 선택 해 주세요.")
+                return false
+            }
+            if (actCode == '') {
+                alert("계좌번호를 선택 해 주세요.")
+                return false
+            }
+
+            let data = {'bankcode': bankcode,'actCode': actCode,'regDate': regDate
+                        , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_account_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if(data.sucYn === 'Y'){
+                        location.href = "{% url 'base_account' %}";
+                    }
+                }
+            });
 
         });
 

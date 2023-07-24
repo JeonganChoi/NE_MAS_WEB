@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} receive-pay-banksheets : 은행내역서 {% endblock %}
+{% block title %} 은행 내역서 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
@@ -117,62 +117,81 @@
                       </div>
                     </div>
                       <div class="px-0 py-0 card-body">
-                          <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
-                              <table class="table mb-0 align-items-center justify-content-center">
-                                  <colgroup>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <!--<col width="8%"/>
-                                      <col width="8%"/>-->
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                  </colgroup>
-                                  <thead class="bg-dark text-white font-weight-bolder">
-                                  <tr>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">거래일시</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">맡기신 금액</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">찾으신 금액</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">잔금</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">거래처</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">내역</th>
-                                      <!--<th class="text-center p-2 font-weight-bolder" style="font-size: 0.8rem;">고정비</th>
-                                      <th class="text-center p-2 font-weight-bolder" style="font-size: 0.8rem;">변동비</th>-->
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">실지금액</th>
-                                      <th class="text-center p-2" style="font-size: 0.8rem;">처리</th>
-                                  </tr>
-                                  </thead>
-                                <tbody id="sheetTb">
-                                  <tr id="#sheetTr" class="sheetTr_tr">
+                          <div class="row">
+                              <div class="col-lg-9 col-9">
+                                  <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>날짜별 내역서</h6>
+                                  <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                      <table class="table mb-0 align-items-center justify-content-center">
+                                          <colgroup>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="15%"/>
+                                              <col width="8%"/>
+                                              <col width="6%"/>
+                                          </colgroup>
+                                          <thead class="bg-dark text-white font-weight-bolder">
+                                          <tr>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">거래일시</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">맡기신 금액</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">찾으신 금액</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">잔금</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">거래처</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">내역</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">처리</th>
+                                          </tr>
+                                          </thead>
+                                        <tbody id="sheetTb">
+                                          <tr id="#sheetTr" class="sheetTr_tr">
 
-                                  </tr>
-                                </tbody>
-                              </table>
-                              <table>
-                                  <colgroup>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <!--<col width="8%"/>
-                                      <col width="8%"/>-->
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                      <col width="8%"/>
-                                  </colgroup>
-                                  <tbody class="text-dark" id="subTb">
-                                      <tr id="#subTr" class="subTr_tr">
-                                      </tr>
-                                  </tbody>
-                              </table>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                      <table>
+                                          <colgroup>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                              <col width="15%"/>
+                                              <col width="8%"/>
+                                              <col width="6%"/>
+                                          </colgroup>
+                                          <tbody class="text-dark" id="subTb">
+                                              <tr id="#subTr" class="subTr_tr">
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                              <div class="col-lg-3 col-3">
+                                  <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>계정별 총액</h6>
+                                  <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                      <table class="table mb-0 align-items-center justify-content-center">
+                                          <colgroup>
+                                              <col width="8%"/>
+                                              <col width="8%"/>
+                                          </colgroup>
+                                          <thead class="bg-dark text-white font-weight-bolder">
+                                          <tr>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
+                                              <th class="text-center p-2" style="font-size: 0.8rem;">총 금액</th>
+                                          </tr>
+                                          </thead>
+                                        <tbody id="acTb">
+                                          <tr id="#acTr" class="acTr_tr">
+
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                  </div>
+                              </div>
                           </div>
+
                       </div>
                   </div>
             </div>
@@ -187,9 +206,12 @@
         $(document).ready(function () {
 
             var date = new Date();
+            {#var Year = now.getFullYear()#}
+            {#var date = Year + '-01-01'#}
             date.setDate(1);
             document.getElementById('inputStrDate').valueAsDate = date
             document.getElementById('inputEndDate').valueAsDate = new Date
+
 
             var cboBank = "";
             var cboAccount = "";
@@ -261,7 +283,20 @@
                     var gbn = '';
 
                     $("#sheetTb").html("");
-                    $("#subTb").html("");
+                    $("#acTb").html("");
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "</tr> ");
+
                     for (var i = 0; i < list.length; i++) {
 
                         gbn = list[i][1]
@@ -275,10 +310,9 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                 "</tr> ");
                         }
                         if(gbn == '2'){
@@ -291,26 +325,22 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                 "</tr> ");
                         }
                     }
-                    $("#subTb").append(
-                        "<tr id='#subTr' class='subTr_tr'>" +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>Total</td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "</tr> ");
 
+                    var list3 = data.subList;
+
+                    for (var i = 0; i < list3.length; i++) {
+                        $("#acTb").append(
+                            "<tr id='#acTb' class='acTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td> " +
+                            "</tr> ");
+                    }
                 }
             })
 
@@ -361,7 +391,20 @@
                     var gbn = '';
 
                     $("#sheetTb").html("");
-                    $("#subTb").html("");
+                    $("#acTb").html("");
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "</tr> ");
+
                     for (var i = 0; i < list.length; i++) {
 
                         gbn = list[i][1]
@@ -375,10 +418,9 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                         if(gbn == '2'){
@@ -391,25 +433,22 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                     }
-                    $("#subTb").append(
-                        "<tr id='#subTr' class='subTr_tr'>" +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>Total</td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "</tr> ");
+
+                    var list3 = data.subList;
+
+                    for (var i = 0; i < list3.length; i++) {
+                        $("#acTb").append(
+                            "<tr id='#acTr' class='acTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td> " +
+                            "</tr> ");
+                    }
                 }
             })
         });
@@ -442,7 +481,20 @@
                     var gbn = '';
 
                     $("#sheetTb").html("");
-                    $("#subTb").html("");
+                    $("#acTb").html("");
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "</tr> ");
+
                     for (var i = 0; i < list.length; i++) {
 
                         gbn = list[i][1]
@@ -456,10 +508,9 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                         if(gbn == '2'){
@@ -472,26 +523,21 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                     }
-                    $("#subTb").append(
-                        "<tr id='#subTr' class='subTr_tr'>" +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>Total</td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "</tr> ");
+                    var list3 = data.subList;
 
+                    for (var i = 0; i < list3.length; i++) {
+                        $("#acTb").append(
+                            "<tr id='#acTr' class='acTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td> " +
+                            "</tr> ");
+                    }
 
                 }
             })
@@ -524,7 +570,20 @@
                     var gbn = '';
 
                     $("#sheetTb").html("");
-                    $("#subTb").html("");
+                    $("#acTb").html("");
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "</tr> ");
+
                     for (var i = 0; i < list.length; i++) {
 
                         gbn = list[i][1]
@@ -538,10 +597,9 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                         if(gbn == '2'){
@@ -554,27 +612,22 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                     }
-                    $("#subTb").append(
-                        "<tr id='#subTr' class='subTr_tr'>" +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>Total</td> " +
-                        "<td class='text-end text-dark p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "<td></td> " +
-                        "</tr> ");
 
+                    var list3 = data.subList;
 
+                    for (var i = 0; i < list3.length; i++) {
+                        $("#acTb").append(
+                            "<tr id='#acTr' class='acTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td> " +
+                            "</tr> ");
+                    }
                 }
             })
         });

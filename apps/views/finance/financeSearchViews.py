@@ -138,11 +138,12 @@ def purTransSearchViews_search(request):
                        "            AND E.RECODE = 'UNT' "
                        "            WHERE GUBUN = '1' "
                        "            AND YEAR(BAL_DD) = '" + Year + "' "
-                       "            GROUP BY A.ITEM, A.UP_CODE, A.DANGA, DATE_FORMAT(BAL_DD, '%Y%m')) C "
+                       "            GROUP BY A.ITEM, A.UP_CODE, B.CUST_NME, A.OPT, C.RESNAM, A.PAY_OPT, D.RESNAM, A.DANWI, E.RESNAM, A.BAL_DD, A.DANGA, DATE_FORMAT(BAL_DD, '%Y%m')) C "
                        "    ) BB "
-                       "  GROUP BY ITEM, UP_CODE, DANGA ")
+                       "  GROUP BY ITEM, UP_CODE, CUST_NME, OPT, OPT_NME, PAY_OPT, PTP_NME, DANWI, DANWI_NME, DANGA ")
 
         mainresult = cursor.fetchall()
+
 
     with connection.cursor() as cursor:
         cursor.execute("  SELECT IFNULL(UP_CODE, ''), IFNULL(CUST_NME, ''), IFNULL(PAY_OPT, ''), IFNULL(PTP_NME, '') "
@@ -250,9 +251,9 @@ def purTransSearchViews_search(request):
                        "           AND E.RECODE = 'UNT' "
                        "           WHERE GUBUN = '1' "
                        "           AND YEAR(BAL_DD) = '" + Year2 + "' "
-                       "           GROUP BY A.UP_CODE, DATE_FORMAT(BAL_DD, '%Y%m')) C "
+                       "           GROUP BY A.UP_CODE, B.CUST_NME, A.PAY_OPT, PTP_NME, BAL_DD, DATE_FORMAT(BAL_DD, '%Y%m')) C "
                        "   ) BB "
-                       " GROUP BY UP_CODE ")
+                       " GROUP BY UP_CODE, CUST_NME, PAY_OPT, PTP_NME ")
 
         custresult = cursor.fetchall()
 
@@ -376,9 +377,9 @@ def saleTransSearchViews_search(request):
                        "            AND E.RECODE = 'UNT' "
                        "            WHERE GUBUN = '1' "
                        "            AND YEAR(BAL_DD) = '" + Year + "' "
-                       "            GROUP BY A.ITEM, A.UP_CODE, A.DANGA, DATE_FORMAT(BAL_DD, '%Y%m')) C "
+                       "            GROUP BY A.ITEM, A.UP_CODE, B.CUST_NME, A.OPT, C.RESNAM, A.PAY_OPT, D.RESNAM, A.DANWI, E.RESNAM, A.BAL_DD, A.DANGA, DATE_FORMAT(BAL_DD, '%Y%m')) C "
                        "    ) BB "
-                       "  GROUP BY ITEM, UP_CODE, DANGA ")
+                       "  GROUP BY ITEM, UP_CODE, CUST_NME, OPT, OPT_NME, PAY_OPT, PTP_NME, DANWI, DANWI_NME, DANGA ")
 
         mainresult = cursor.fetchall()
 
@@ -488,9 +489,9 @@ def saleTransSearchViews_search(request):
                        "           AND E.RECODE = 'UNT' "
                        "           WHERE GUBUN = '2' "
                        "           AND YEAR(BAL_DD) = '" + Year2 + "' "
-                       "           GROUP BY A.UP_CODE, DATE_FORMAT(BAL_DD, '%Y%m')) C "
+                       "           GROUP BY A.UP_CODE, B.CUST_NME, A.PAY_OPT, PTP_NME, BAL_DD, DATE_FORMAT(BAL_DD, '%Y%m')) C "
                        "   ) BB "
-                       " GROUP BY UP_CODE ")
+                       " GROUP BY UP_CODE, CUST_NME, PAY_OPT, PTP_NME ")
 
         custresult = cursor.fetchall()
 
