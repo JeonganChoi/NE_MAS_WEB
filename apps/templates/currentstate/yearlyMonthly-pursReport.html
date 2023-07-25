@@ -124,6 +124,7 @@
 
                 var score = [];
                 for (var i = 0; i < list.length; i++) {
+                    var Year = list[i][0]
                     for(var j = 1; j < 13; j++){
                         score.push(list[i][j])
                     }
@@ -131,6 +132,7 @@
 
                 var score2 = [];
                 for (var i = 0; i < list3.length; i++) {
+                    var lastYear = list3[i][0]
                     for (var j = 1; j < 13; j++) {
                         score2.push(list3[i][j])
                     }
@@ -141,7 +143,7 @@
                   data: {
                     labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
                     datasets: [{
-                        label: "2023년 매입",
+                        label: Year + "년 매입",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -154,7 +156,7 @@
 
                       },
                       {
-                        label: "2022년 매입",
+                        label: lastYear + "년 매입",
                         tension: 0.4,
                         borderWidth: 0,
                         pointRadius: 0,
@@ -232,7 +234,7 @@
                 for (var j = 0; j < list2.length; j++) {
                     $("#mainTb").append(
                         "<tr id='#mainTr' class='mainTr_tr'>" +
-                        "<td class='text-center border border-secondary border-top-0 border-end-0 p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2023년 </td>" +
+                        "<td class='text-center border border-secondary border-top-0 border-end-0 p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' >" + Year + "년 </td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][1]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][2]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][3]) + "</td>" +
@@ -253,7 +255,7 @@
                 for (var j = 0; j < list2.length; j++) {
                     $("#mainTb").append(
                         "<tr id='#mainTr' class='mainTr_tr'>" +
-                        "<td class='text-center border border-secondary border-top-0 border-end-0 p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' > 2022년 </td>" +
+                        "<td class='text-center border border-secondary border-top-0 border-end-0 p-1 mb-0 font-weight-bold' style='font-size: 0.85rem' >" + lastYear + "년 </td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][1]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][2]) + "</td>" +
                         "<td class='text-end border border-top-0 border-secondary p-1 mb-0' style='font-size: 0.75rem'>" + addComma(list2[j][3]) + "</td>" +
