@@ -107,7 +107,11 @@ urlpatterns = [
          name='ym_account_search'),
 
     #  자금 현황
+    # 은행 내역서
     path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
     path('receive_pay_search/', receivepayViews.receivepaySheetViews_search, name='receive_pay_search'),
+    # 계정별 내역서
+    path('receive_pay_code/', receivepayViews.receivepayCodeSheetViews, name='receive_pay_code'),
+    path('receive_pay_code_search/', receivepayViews.receivepayCodeSheetViews_search, name='receive_pay_code_search'),
 
 ]

@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 
-
+# 은행내역서
 def receivepaySheetViews(request):
 
     return render(request, "currentstate/receive-pay-banksheet.html")
@@ -188,3 +188,84 @@ def receivepaySheetViews_search(request):
             cboAresult = cursor.fetchall()
 
         return JsonResponse({"cboBank": bankresult, 'cboAccount': cboAresult})
+
+
+
+
+# 계정별 내역서
+def receivepayCodeSheetViews(request):
+
+    return render(request, "currentstate/receive-pay-codesheet.html")
+
+def receivepayCodeSheetViews_search(request):
+    strDate = request.POST.get('startDate')
+    endDate = request.POST.get('endDate')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUM_NAME FROM ACNUMBER ORDER BY ACNUMBER ")
+        headresult = cursor.fetchall()
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL((BALANCE - OAMTS) + IAMTS, 0) AS TOTAL, BANK FROM( "
+                       "         SELECT "
+                       "          IFNULL(SUM(A.ACAMTS), 0) AS BALANCE "
+                       "         ,IFNULL(B.ACNUM_NAME, '') AS BANK "
+                       "         ,(SELECT IFNULL(SUM(A.ACAMTS), 0) AS OAMTS FROM SISACCTT A LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER WHERE A.ACIOGB = '1' AND A.ACDATE < '" + strDate + "') AS OAMTS "
+                       "         ,(SELECT IFNULL(SUM(A.ACAMTS), 0) AS IAMTS FROM SISACCTT A LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER WHERE A.ACIOGB = '2' AND A.ACDATE < '" + strDate + "') AS IAMTS "
+                       "          FROM ACBALANCE A "
+                       "          LEFT OUTER JOIN ACNUMBER B "
+                       "          ON A.ACNUMBER = B.ACNUMBER "
+                       "          WHERE A.ACDATE < '" + strDate + "' "
+                       "          GROUP BY BANK "
+                       " ) A ")
+
+        mainresult = cursor.fetchall()
+
+    # with connection.cursor() as cursor:
+    #     cursor.execute(" SELECT AA.AMTS, AA.ACIOGB, AA.ACBKCD, AA.BANK_NAME, AA.AMTS, AA.MCODE, AA.MCODENM FROM "
+    #                    "    (SELECT   IFNULL(SUM(A.ACAMTS), 0) AS AMTS, IFNULL(A.ACIOGB, '') AS ACIOGB "
+    #                    "           , IFNULL(D.ACBKCD, '') AS ACBKCD, IFNULL(F.RESNAM, '') AS BANK_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM "
+    #                    "    FROM SISACCTT A "
+    #                    "    LEFT OUTER JOIN ACNUMBER D "
+    #                    "    ON A.ACACNUMBER = D.ACNUMBER "
+    #                    "    LEFT OUTER JOIN OSREFCP F "
+    #                    "    ON D.ACBKCD = F.RESKEY "
+    #                    "    AND F.RECODE = 'BNK' "
+    #                    "    LEFT OUTER JOIN OSCODEM E "
+    #                    "    ON A.MCODE = E.MCODE "
+    #                    "    WHERE A.ACIOGB = '1' "
+    #                    "    AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "'"
+    #                    "    GROUP BY A.ACIOGB, D.ACBKCD, F.RESNAM, A.MCODE, E.MCODENM "
+    #                    "   UNION ALL "
+    #                    "    SELECT   IFNULL(SUM(A.ACAMTS), 0) AS AMTS, IFNULL(A.ACIOGB, '') "
+    #                    "           , IFNULL(D.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
+    #                    "    FROM SISACCTT A "
+    #                    "    LEFT OUTER JOIN ACNUMBER D "
+    #                    "    ON A.ACACNUMBER = D.ACNUMBER "
+    #                    "    LEFT OUTER JOIN OSREFCP F "
+    #                    "    ON D.ACBKCD = F.RESKEY "
+    #                    "    AND F.RECODE = 'BNK' "
+    #                    "    LEFT OUTER JOIN OSCODEM E "
+    #                    "    ON A.MCODE = E.MCODE "
+    #                    "    WHERE A.ACIOGB = '2' "
+    #                    "    AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "'"
+    #                    "    GROUP BY A.ACIOGB, D.ACBKCD, F.RESNAM, A.MCODE, E.MCODENM "
+    #                    "    ) AA "
+    #                    "   GROUP BY AA.AMTS, AA.ACIOGB, AA.ACBKCD, AA.BANK_NAME, AA.MCODE, AA.MCODENM "
+    #                    "   ORDER BY AA.ACBKCD, AA.MCODE ")
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT A.ACIOGB, D.ACBKCD, "
+                       " (CASE WHEN A.ACIOGB = '1' THEN SUM(A.ACAMTS) END ) AS INAMTS "
+                       "       ,(CASE WHEN A.ACIOGB  = '2' THEN SUM(A.ACAMTS) END ) AS OUTAMTS "
+                       "         , A.MCODE, E.MCODENM "
+                       "       FROM SISACCTT A "
+                       "          LEFT OUTER JOIN ACNUMBER D "
+                       "    ON A.ACACNUMBER = D.ACNUMBER "
+                       "    LEFT OUTER JOIN OSCODEM E "
+                       "    ON A.MCODE = E.MCODE "
+                       " GROUP BY A.ACIOGB, A.MCODE, E.MCODENM, D.ACBKCD ")
+
+        tbresult = cursor.fetchall()
+
+    return JsonResponse({"headList": headresult, 'mainList': mainresult, 'tbList': tbresult})

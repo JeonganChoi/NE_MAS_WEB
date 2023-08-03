@@ -97,17 +97,24 @@
                   <div class="card border shadow-xs">
                     <div class="pb-0 pt-0 card-header border-bottom" style="height: 6vh">
                       <div class="row">
-                          <div class="p-2 col-lg-2 col-2 text-start">
-                              <select class="form-control text-center p-0" id="cboBank" name="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
+                          <div class="p-2 pb-0 col-lg-2 col-2">
+                               <div class="input-group shadow-none">
+                                   <label class="mt-1" style="font-size: 0.85rem; width: 5rem" for="cboBank"><i class="fas fa-search me-2"></i>은행명</label>
+                                   <select class="form-control border border-light rounded-1 text-center p-0" id="cboBank" name="cboBank" style="height: 2rem; font-size: 0.8rem; max-width: 12rem"></select>
+                               </div>
                           </div>
-                          <div class="p-2 col-lg-2 col-2 text-start">
-                              <select class="form-control text-center p-0" id="cboAccount" name="cboAccount" style="height: 2rem; font-size: 0.8rem"></select>
+                          <div class="p-2 pb-0 col-lg-3 col-3">
+                              <div class="input-group shadow-none">
+                                  <label class="mt-1" style="font-size: 0.85rem; width: 5rem" for="cboAccount"><i class="fas fa-search me-2"></i>계좌번호</label>
+                                  <select class="form-control border border-light rounded-1 text-center p-0" id="cboAccount" name="cboAccount" style="height: 2rem; font-size: 0.8rem; max-width: 15rem"></select>
+                              </div>
                           </div>
-                          <div class="p-2 col-lg-4 col-4"></div>
-                          <div class="p-2 col-lg-3 col-3 text-end">
+                          <div class="p-2 pb-0 col-lg-2 col-2"></div>
+                          <div class="p-2 pb-0 col-lg-4 col-4 text-end">
                             <div class="input-group shadow-none">
+                                <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>기 간</label>
                                 <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
-                                <label class="mt-2 me-2">-</label>
+                                <label class="h5 me-2">-</label>
                                 <input class="form-control border border-light rounded-1 text-center" type="date" name="inputEndDate" id="inputEndDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                             </div>
                           </div>
