@@ -202,8 +202,12 @@ def receivepayCodeSheetViews_search(request):
     endDate = request.POST.get('endDate')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUM_NAME FROM ACNUMBER ORDER BY ACNUMBER ")
+        cursor.execute(" SELECT ACNUM_NAME, ACBKCD FROM ACNUMBER ORDER BY ACNUMBER ")
         headresult = cursor.fetchall()
+        itembomlist2 = []
+        for i in range(len(headresult)):
+            itembomlist = [headresult[i][1]]
+            itembomlist2 += [itembomlist]
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL((BALANCE - OAMTS) + IAMTS, 0) AS TOTAL, BANK FROM( "
@@ -221,51 +225,107 @@ def receivepayCodeSheetViews_search(request):
 
         mainresult = cursor.fetchall()
 
-    # with connection.cursor() as cursor:
-    #     cursor.execute(" SELECT AA.AMTS, AA.ACIOGB, AA.ACBKCD, AA.BANK_NAME, AA.AMTS, AA.MCODE, AA.MCODENM FROM "
-    #                    "    (SELECT   IFNULL(SUM(A.ACAMTS), 0) AS AMTS, IFNULL(A.ACIOGB, '') AS ACIOGB "
-    #                    "           , IFNULL(D.ACBKCD, '') AS ACBKCD, IFNULL(F.RESNAM, '') AS BANK_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM "
-    #                    "    FROM SISACCTT A "
-    #                    "    LEFT OUTER JOIN ACNUMBER D "
-    #                    "    ON A.ACACNUMBER = D.ACNUMBER "
-    #                    "    LEFT OUTER JOIN OSREFCP F "
-    #                    "    ON D.ACBKCD = F.RESKEY "
-    #                    "    AND F.RECODE = 'BNK' "
-    #                    "    LEFT OUTER JOIN OSCODEM E "
-    #                    "    ON A.MCODE = E.MCODE "
-    #                    "    WHERE A.ACIOGB = '1' "
-    #                    "    AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "'"
-    #                    "    GROUP BY A.ACIOGB, D.ACBKCD, F.RESNAM, A.MCODE, E.MCODENM "
-    #                    "   UNION ALL "
-    #                    "    SELECT   IFNULL(SUM(A.ACAMTS), 0) AS AMTS, IFNULL(A.ACIOGB, '') "
-    #                    "           , IFNULL(D.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
-    #                    "    FROM SISACCTT A "
-    #                    "    LEFT OUTER JOIN ACNUMBER D "
-    #                    "    ON A.ACACNUMBER = D.ACNUMBER "
-    #                    "    LEFT OUTER JOIN OSREFCP F "
-    #                    "    ON D.ACBKCD = F.RESKEY "
-    #                    "    AND F.RECODE = 'BNK' "
-    #                    "    LEFT OUTER JOIN OSCODEM E "
-    #                    "    ON A.MCODE = E.MCODE "
-    #                    "    WHERE A.ACIOGB = '2' "
-    #                    "    AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "'"
-    #                    "    GROUP BY A.ACIOGB, D.ACBKCD, F.RESNAM, A.MCODE, E.MCODENM "
-    #                    "    ) AA "
-    #                    "   GROUP BY AA.AMTS, AA.ACIOGB, AA.ACBKCD, AA.BANK_NAME, AA.MCODE, AA.MCODENM "
-    #                    "   ORDER BY AA.ACBKCD, AA.MCODE ")
+    itembomlist2 = sum(itembomlist2, [])
+    if itembomlist2:
+        print(itembomlist2)
+        print(itembomlist[0][0])
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM, SUM(1ACMTS), SUM(2ACMTS), SUM(3ACMTS), SUM(4ACMTS), SUM(5ACMTS), SUM(6ACMTS), SUM(7ACMTS), SUM(8ACMTS), SUM(9ACMTS), SUM(10ACMTS) FROM ( "
+                           "    SELECT MCODE, MCODENM, 1ACMTS, 2ACMTS, 3ACMTS, 4ACMTS, 5ACMTS, 6ACMTS, 7ACMTS, 8ACMTS, 9ACMTS, 10ACMTS "
+                           "     FROM( "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, SUM(A.ACAMTS) AS 1ACMTS, 0 AS 2ACMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[0] + "' AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, SUM(A.ACAMTS) AS 2ACAMTS,  0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[1] + "' AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS, SUM(A.ACAMTS) AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[2] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS, 0 AS 3ACMTS, SUM(A.ACAMTS) AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[3] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS,0 AS 2ACAMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, SUM(A.ACAMTS) AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[4] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS,0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, SUM(A.ACAMTS) AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[5] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENMㅍ B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS,0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, SUM(A.ACAMTS) AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[6] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, SUM(A.ACAMTS) AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[7] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, CㅍMCODENM, B.ㅍCBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, SUM(A.ACAMTS) AS 9ACMTS, 0 AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[8] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         UNION ALL "
+                           "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, SUM(A.ACAMTS) AS 10ACMTS "
+                           "         FROM SISACCTT A "
+                           "         LEFT OUTER JOIN ACNUMBER B "
+                           "         ON A.ACACNUMBER = B.ACNUMBER "
+                           "         LEFT OUTER JOIN OSCODEM C "
+                           "         ON A.MCODE = C.MCODE "
+                           "         WHERE B.ACBKCD = '" + itembomlist2[9] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
+                           "         ) TMP GROUP BY MCODE, MCODENM, 1ACMTS, 2ACMTS, 3ACMTS, 4ACMTS, 5ACMTS, 6ACMTS, 7ACMTS, 8ACMTS, 9ACMTS, 10ACMTS "
+                           "     ) BB "
+                           " GROUP BY MCODE, MCODENM ")
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.ACIOGB, D.ACBKCD, "
-                       " (CASE WHEN A.ACIOGB = '1' THEN SUM(A.ACAMTS) END ) AS INAMTS "
-                       "       ,(CASE WHEN A.ACIOGB  = '2' THEN SUM(A.ACAMTS) END ) AS OUTAMTS "
-                       "         , A.MCODE, E.MCODENM "
-                       "       FROM SISACCTT A "
-                       "          LEFT OUTER JOIN ACNUMBER D "
-                       "    ON A.ACACNUMBER = D.ACNUMBER "
-                       "    LEFT OUTER JOIN OSCODEM E "
-                       "    ON A.MCODE = E.MCODE "
-                       " GROUP BY A.ACIOGB, A.MCODE, E.MCODENM, D.ACBKCD ")
+            tbresult = cursor.fetchall()
 
-        tbresult = cursor.fetchall()
-
-    return JsonResponse({"headList": headresult, 'mainList': mainresult, 'tbList': tbresult})
+        return JsonResponse({"headList": headresult, 'mainList': mainresult, 'tbList': tbresult})

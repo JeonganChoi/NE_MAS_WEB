@@ -20,7 +20,7 @@ def yearlyMontlyPurs(request):
 
 def yearlyMontlySales_search(request):
     year = request.POST.get('year')
-    lastYear = int(year) - 1;
+    lastyear = request.POST.get('lastyear')
 
     with connection.cursor() as cursor:
         cursor.execute("    SELECT  YEAR, IFNULL(SUM(MONTH01), 0) AS MONTH01, IFNULL(SUM(MONTH02), 0) AS MONTH02, IFNULL(SUM(MONTH03), 0) AS MONTH03"
@@ -42,7 +42,7 @@ def yearlyMontlySales_search(request):
                        "                     , (CASE WHEN MONTH(BAL_DD) = '11' THEN SUM(AMTS) END) AS MONTH11 "
                        "                     , (CASE WHEN MONTH(BAL_DD) = '12' THEN SUM(AMTS) END) AS MONTH12 "
                        "                FROM OSBILL "
-                       "                WHERE YEAR(BAL_DD) = '" + year + "' "
+                       "                WHERE YEAR(BAL_DD) = '" + str(year) + "' "
                        "                AND GUBUN = '2' "
                        "               GROUP BY BAL_DD, MONTH(BAL_DD) ORDER BY MONTH(BAL_DD)) A GROUP BY YEAR ")
 
@@ -69,7 +69,7 @@ def yearlyMontlySales_search(request):
             "                     , (CASE WHEN MONTH(BAL_DD) = '11' THEN SUM(AMTS) END) AS MONTH11 "
             "                     , (CASE WHEN MONTH(BAL_DD) = '12' THEN SUM(AMTS) END) AS MONTH12 "
             "                FROM OSBILL "
-            "                WHERE YEAR(BAL_DD) = '" + str(lastYear) + "' "
+            "                WHERE YEAR(BAL_DD) = '" + str(lastyear) + "' "
             "                AND GUBUN = '2' "
             "               GROUP BY BAL_DD, MONTH(BAL_DD) ORDER BY MONTH(BAL_DD)) A GROUP BY YEAR ")
 
@@ -81,7 +81,7 @@ def yearlyMontlySales_search(request):
 
 def yearlyMontlyPurs_search(request):
     year = request.POST.get('year')
-    lastYear = int(year) - 1;
+    lastyear = request.POST.get('lastyear')
 
     with connection.cursor() as cursor:
         cursor.execute("    SELECT  YEAR, IFNULL(SUM(MONTH01), 0) AS MONTH01, IFNULL(SUM(MONTH02), 0) AS MONTH02, IFNULL(SUM(MONTH03), 0) AS MONTH03"
@@ -103,7 +103,7 @@ def yearlyMontlyPurs_search(request):
                        "                     , (CASE WHEN MONTH(BAL_DD) = '11' THEN SUM(AMTS) END) AS MONTH11 "
                        "                     , (CASE WHEN MONTH(BAL_DD) = '12' THEN SUM(AMTS) END) AS MONTH12 "
                        "                FROM OSBILL "
-                       "                WHERE YEAR(BAL_DD) = '" + year + "' "
+                       "                WHERE YEAR(BAL_DD) = '" + str(year) + "' "
                        "                AND GUBUN = '1' "
                        "               GROUP BY BAL_DD, MONTH(BAL_DD) ORDER BY MONTH(BAL_DD)) A GROUP BY YEAR ")
 
@@ -131,7 +131,7 @@ def yearlyMontlyPurs_search(request):
             "                     , (CASE WHEN MONTH(BAL_DD) = '11' THEN SUM(AMTS) END) AS MONTH11 "
             "                     , (CASE WHEN MONTH(BAL_DD) = '12' THEN SUM(AMTS) END) AS MONTH12 "
             "                FROM OSBILL "
-            "                WHERE YEAR(BAL_DD) = '" + str(lastYear) + "' "
+            "                WHERE YEAR(BAL_DD) = '" + str(lastyear) + "' "
             "                AND GUBUN = '1' "
             "               GROUP BY BAL_DD, MONTH(BAL_DD) ORDER BY MONTH(BAL_DD)) A GROUP BY YEAR ")
 

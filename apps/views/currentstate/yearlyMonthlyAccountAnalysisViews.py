@@ -26,7 +26,7 @@ def yearlyMontlyAccount_cbo(request):
     return JsonResponse({"cboMList": cboMresult, 'cboAList': cboAresult})
 def yearlyMontlyAccount_search(request):
     year = request.POST.get('year')
-    lastYear = int(year) - 1
+    lastyear = request.POST.get('lastyear')
     actCode = request.POST.get('actCode')
 
     if year != '' and year is not None and actCode != '' and actCode is not None:
@@ -79,12 +79,12 @@ def yearlyMontlyAccount_search(request):
                            "                   , (CASE WHEN MONTH(ACDATE) = '11' THEN SUM(ACAMTS) END) AS MONTH11 "
                            "                   , (CASE WHEN MONTH(ACDATE) = '12' THEN SUM(ACAMTS) END) AS MONTH12 "
                            "              FROM SISACCTT "
-                           "              WHERE YEAR(ACDATE) = '" + str(lastYear) + "' "
+                           "              WHERE YEAR(ACDATE) = '" + str(lastyear) + "' "
                            "              AND ACIOGB = '1' "
                            "              AND ACCODE = '" + str(actCode) + "' "
                            "              OR MCODE = '" + str(actCode) + "' "
                            "              GROUP BY ACDATE, MONTH(ACDATE) "
-                           "              ORDER BY MONTH(ACDATE)) A WHERE A.YEAR IS NOT NULL AND A.YEAR = '" + str(lastYear) + "' GROUP BY A.YEAR ")
+                           "              ORDER BY MONTH(ACDATE)) A WHERE A.YEAR IS NOT NULL AND A.YEAR = '" + str(lastyear) + "' GROUP BY A.YEAR ")
             lastresult = cursor.fetchall()
 
         return JsonResponse({"saleLineList": mainresult, 'lastList': lastresult})

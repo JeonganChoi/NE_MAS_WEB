@@ -7,7 +7,11 @@
 
 {% block content %}
 
+    <style>
+        .chart-canvas.active{
 
+        }
+    </style>
     <!--<div class="pt-6 pb-6 bg-cover height-100"
          style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>-->
     <div class="px-5 py-4 container-fluid">
@@ -25,21 +29,36 @@
         <div class="row mt-4">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card-profile pb-3">
-                    <div class="row">
-                        <div class="col-lg-3 col-3">
-                            <div class="input-group shadow-none">
+                <div class="card">
+                    <div class="card-header border border-light border-top-0 border-end-0 border-start-0 pb-0">
+                        <div class="row">
+                            <div class="col-lg-3 col-3 text-start">
+                                <div class="input-group shadow-none">
                                 <label style="font-size: 0.85rem; width: 5rem" for="inputActCode"><i class="fas fa-search me-2"></i>계정명</label>
-                                <select style="height: 2rem; font-size: 0.8rem; width: 10rem" class="form-control border border-light rounded-0 text-center text-dark p-1" id="inputActCode" name="inputActCode"></select>
+                                <select style="height: 2rem; font-size: 0.8rem; max-width: 12rem" class="form-control border border-light rounded-0 text-center text-dark p-1" id="inputActCode" name="inputActCode"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4 text-start">
+                                <div class="input-group shadow-none">
+                                    <label class="mt-1" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>기 간</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2" type="number" value="" name="inputStrDate" id="inputStrDate" style="max-width: 8rem;height: 2rem; font-size: 0.8rem">
+                                    <label class="h5 me-2">-</label>
+                                    <input class="form-control border border-light rounded-1 text-center" type="number" value="" name="inputEndDate" id="inputEndDate" style="max-width: 8rem;height: 2rem; font-size: 0.8rem">
+                                </div>
+                                <label class="text-info opacity-6"><i class="ni ni-calendar-grid-58 me-2"></i>조회 가능 기간은 최대 3년 입니다.</label>
+                            </div>
+                            <div class="col-lg-1 col-1 text-start">
+                                <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i
+                                        class="fas fa-search me-2"></i>조회
+                                </button>
+                            </div>
+                            <div class="col-lg-2 col-2 text-end">
                             </div>
                         </div>
-                        <div class="col-lg-9 col-9"></div>
                     </div>
-                </div>
-                <div class="card">
                     <div class="card-body">
                         <div class="chart">
-                            <canvas id="line-chart-gradient" class="chart-canvas" height="300"></canvas>
+                            <canvas id="line-chart-gradient" class="chart-canvas" height="350"></canvas>
                         </div>
                     </div>
                 </div>
@@ -97,6 +116,12 @@
     <script>
         $(document).ready(function () {
 
+            date = new Date();
+            var year = date.getFullYear();
+            var lastyear = year - 2;
+            document.getElementById("inputStrDate").value = lastyear;
+            document.getElementById("inputEndDate").value = year;
+
             var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
 
             var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
@@ -149,11 +174,9 @@
             }
             });
 
-            date = new Date();
-            var year = date.getFullYear();
             var actCode = document.getElementById('inputActCode').value;
 
-            let data2 = {'year': year, 'actCode': actCode}
+            let data2 = {'year': year, 'actCode': actCode, 'lastyear': lastyear}
 
             $.ajax({
                 type: "post",
@@ -322,8 +345,9 @@
 
         {# 계정별 따른 조회 #}
         $('#inputActCode').change(function () {
-            {#const canvas = document.getElementById("line-chart-gradient");#}
-            {#canvas.width = canvas.width;#}
+            $('.chart-canvas').removeClass('active');
+
+            $(this).addClass('active');
 
             var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
 
@@ -340,11 +364,11 @@
             gradientStroke2.addColorStop(0.2, 'rgba(47, 47, 47, 0.0)');
             gradientStroke2.addColorStop(0, 'rgba(47, 47, 47,0)'); //purple colors
 
-            date = new Date();
-            var year = date.getFullYear();
             var actCode = document.getElementById('inputActCode').value;
+            var year = document.getElementById('inputEndDate').value;
+            var lastyear = document.getElementById('inputStrDate').value;
 
-           let data2 = {'year': year, 'actCode': actCode}
+           let data2 = {'year': year, 'actCode': actCode, 'lastyear': lastyear}
 
             $.ajax({
                 type: "post",
