@@ -7,11 +7,6 @@
 
 {% block content %}
 
-    <style>
-        .chart-canvas.active{
-
-        }
-    </style>
     <!--<div class="pt-6 pb-6 bg-cover height-100"
          style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>-->
     <div class="px-5 py-4 container-fluid">
@@ -114,6 +109,7 @@
 
 {% block javascripts %}
     <script>
+        var chart;
         $(document).ready(function () {
 
             date = new Date();
@@ -206,7 +202,7 @@
                         }
                     }
 
-                    new Chart(ctx2, {
+                    chart = new Chart(ctx2, {
                         type: "line",
                         data: {
                             labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
@@ -345,9 +341,6 @@
 
         {# 계정별 따른 조회 #}
         $('#inputActCode').change(function () {
-            $('.chart-canvas').removeClass('active');
-
-            $(this).addClass('active');
 
             var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
 
@@ -398,7 +391,8 @@
                         }
                     }
 
-                    new Chart(ctx2, {
+                    chart.destroy();
+                    chart = new Chart(ctx2, {
                         type: "line",
                         data: {
                             labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
