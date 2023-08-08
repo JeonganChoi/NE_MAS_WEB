@@ -205,6 +205,7 @@ def receivepayCodeSheetViews_search(request):
         cursor.execute(" SELECT ACNUM_NAME, ACBKCD FROM ACNUMBER ORDER BY ACNUMBER ")
         headresult = cursor.fetchall()
         itembomlist2 = []
+
         for i in range(len(headresult)):
             itembomlist = [headresult[i][1]]
             itembomlist2 += [itembomlist]
@@ -225,12 +226,21 @@ def receivepayCodeSheetViews_search(request):
 
         mainresult = cursor.fetchall()
 
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT MCODE FROM SISACCTT GROUP BY MCODE ")
+        coderesult = cursor.fetchall()
+
     itembomlist2 = sum(itembomlist2, [])
     if itembomlist2:
-        print(itembomlist2)
-        print(itembomlist[0][0])
+        if int(max(itembomlist2)) < 10:
+            for i in range(10 - int(max(itembomlist2))):
+                itembomlist2 += ['']
+            print(itembomlist2)
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM, SUM(1ACMTS), SUM(2ACMTS), SUM(3ACMTS), SUM(4ACMTS), SUM(5ACMTS), SUM(6ACMTS), SUM(7ACMTS), SUM(8ACMTS), SUM(9ACMTS), SUM(10ACMTS) FROM ( "
+            cursor.execute(" SELECT MCODE, MCODENM, SUM(1ACMTS), SUM(2ACMTS), SUM(3ACMTS) "
+                           "    , SUM(4ACMTS), SUM(5ACMTS), SUM(6ACMTS), SUM(7ACMTS) "
+                           "    , SUM(8ACMTS), SUM(9ACMTS), SUM(10ACMTS)"
+                           "    , SUM(1ACMTS + 2ACMTS + 3ACMTS + 4ACMTS + 5ACMTS + 6ACMTS + 7ACMTS + 8ACMTS +  9ACMTS + 10ACMTS) FROM ( "
                            "    SELECT MCODE, MCODENM, 1ACMTS, 2ACMTS, 3ACMTS, 4ACMTS, 5ACMTS, 6ACMTS, 7ACMTS, 8ACMTS, 9ACMTS, 10ACMTS "
                            "     FROM( "
                            "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, SUM(A.ACAMTS) AS 1ACMTS, 0 AS 2ACMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
@@ -285,7 +295,7 @@ def receivepayCodeSheetViews_search(request):
                            "         LEFT OUTER JOIN OSCODEM C "
                            "         ON A.MCODE = C.MCODE "
                            "         WHERE B.ACBKCD = '" + itembomlist2[5] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           "         GROUP BY A.MCODE, C.MCODENMㅍ B.ACBKCD "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
                            "         UNION ALL "
                            "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS,0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, SUM(A.ACAMTS) AS 7ACMTS, 0 AS 8ACMTS, 0 AS 9ACMTS, 0 AS 10ACMTS "
                            "         FROM SISACCTT A "
@@ -303,7 +313,7 @@ def receivepayCodeSheetViews_search(request):
                            "         LEFT OUTER JOIN OSCODEM C "
                            "         ON A.MCODE = C.MCODE "
                            "         WHERE B.ACBKCD = '" + itembomlist2[7] + "'  AND A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           "         GROUP BY A.MCODE, CㅍMCODENM, B.ㅍCBKCD "
+                           "         GROUP BY A.MCODE, C.MCODENM, B.ACBKCD "
                            "         UNION ALL "
                            "         SELECT A.MCODE, C.MCODENM, B.ACBKCD, 0 AS 1ACMTS, 0 AS 2ACAMTS, 0 AS 3ACMTS, 0 AS 4ACMTS, 0 AS 5ACMTS, 0 AS 6ACMTS, 0 AS 7ACMTS, 0 AS 8ACMTS, SUM(A.ACAMTS) AS 9ACMTS, 0 AS 10ACMTS "
                            "         FROM SISACCTT A "
@@ -327,5 +337,6 @@ def receivepayCodeSheetViews_search(request):
                            " GROUP BY MCODE, MCODENM ")
 
             tbresult = cursor.fetchall()
+            print(tbresult)
 
-        return JsonResponse({"headList": headresult, 'mainList': mainresult, 'tbList': tbresult})
+        return JsonResponse({"headList": headresult, 'mainList': mainresult,'tbList': tbresult})
