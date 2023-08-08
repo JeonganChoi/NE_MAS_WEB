@@ -267,7 +267,6 @@
                     var list = data.headList;
                     var list2 = data.mainList;
                     var list3 = data.tbList;
-                    var list4 = data.codeList;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
@@ -286,46 +285,62 @@
                         "<th class='text-center p-1' style='font-size: 0.85rem'>입금 대비 점유</th> " +
                         "<th class='text-center p-1' style='font-size: 0.85rem'>지출 대비 점유</th> " );
 
-
                     {# 통장 이월 #}
                     var total = 0;
                     for (var i = 0; i < list2.length; i++) {
-                        total = Number(list2[i][0]) + Number(list2[i][1]) + Number(list2[i][2]) + Number(list2[i][3])
+                        total += Number(list2[i][0])
                         $("#sheetTb").append(
-                            "<tr  id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][0]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][1]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][3]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>통장 이월</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "</tr> ");
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list2[i][0]) + "</td>");
                     }
-
-                    for (var i = 0; i < list3.length; i++) {
+                    for (var i = 0; i < list2.length; i++) {
+                        total += Number(list2[i][0])
                         $("#sheetTb").append(
-                            "<tr  id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][3]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][4]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][5]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][6]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][7]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][8]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][9]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][8]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][9]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][10]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "</tr> ");
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
+                    }
+                     $("#sheetTb").append(
+                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>통장 이월</td> " +
+                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td>");
+
+                    {# 계정별 #}
+                    var count = 0;
+                    count = list.length;
+                    for (var i = 0; i < list3.length; i++) {
+                        {#입금#}
+                        if(list3[i][10].startsWith('4') === true) {
+                            $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");
+                            for (var j = 0; j < count; j++) {
+                                $("#sheetTb").append(
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list3[i][j]) + "</td>");
+                            }
+                            for (var j = 0; j < count; j++) {
+                                $("#sheetTb").append(
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
+                            }
+                            $("#sheetTb").append(
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
+                        }
+                        {#출금#}
+                        if(list3[i][10].startsWith('5') === true){
+                            $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");
+                            for (var j = 0; j < count; j++) {
+                                $("#sheetTb").append(
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
+                            }
+                            for (var j = 0; j < count; j++) {
+                                $("#sheetTb").append(
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list3[i][j]) + "</td>");
+                            }
+                            $("#sheetTb").append(
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
+                        }
                     }
                 }
             })
@@ -390,36 +405,42 @@
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td>");
 
                     {# 계정별 #}
+                    var count = 0;
+                    count = list.length;
                     for (var i = 0; i < list3.length; i++) {
-                        if(list3[i][0] === '${4}') {
+                        {#입금#}
+                        if(list3[i][10].startsWith('4') === true) {
+                            $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");
                             for (var j = 0; j < count; j++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][j]) + "</td>");
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list3[i][j]) + "</td>");
                             }
                             for (var j = 0; j < count; j++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>0</td>");
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
                             }
                             $("#sheetTb").append(
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][10]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> ");
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
                         }
-                        if(list[i][0].startsWith('5')){
+                        {#출금#}
+                        if(list3[i][10].startsWith('5') === true){
+                            $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");
                             for (var j = 0; j < count; j++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>0</td>");
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
                             }
                             for (var j = 0; j < count; j++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][j]) + "</td>");
+                                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list3[i][j]) + "</td>");
                             }
                             $("#sheetTb").append(
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][10]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> ");
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
                         }
                     }
                 }

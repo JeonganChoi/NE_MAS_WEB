@@ -237,9 +237,9 @@ def receivepayCodeSheetViews_search(request):
                 itembomlist2 += ['']
             print(itembomlist2)
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM, SUM(1ACMTS), SUM(2ACMTS), SUM(3ACMTS) "
+            cursor.execute(" SELECT SUM(1ACMTS), SUM(2ACMTS), SUM(3ACMTS) "
                            "    , SUM(4ACMTS), SUM(5ACMTS), SUM(6ACMTS), SUM(7ACMTS) "
-                           "    , SUM(8ACMTS), SUM(9ACMTS), SUM(10ACMTS)"
+                           "    , SUM(8ACMTS), SUM(9ACMTS), SUM(10ACMTS), MCODE, MCODENM "
                            "    , SUM(1ACMTS + 2ACMTS + 3ACMTS + 4ACMTS + 5ACMTS + 6ACMTS + 7ACMTS + 8ACMTS +  9ACMTS + 10ACMTS) FROM ( "
                            "    SELECT MCODE, MCODENM, 1ACMTS, 2ACMTS, 3ACMTS, 4ACMTS, 5ACMTS, 6ACMTS, 7ACMTS, 8ACMTS, 9ACMTS, 10ACMTS "
                            "     FROM( "

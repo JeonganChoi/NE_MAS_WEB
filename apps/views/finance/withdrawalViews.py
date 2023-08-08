@@ -70,7 +70,7 @@ def withRegViews_save(request):
         acSeqn = request.POST.get("txtWitSeq")               # 순번
         acRecn = '1' # 행
         acCust = request.POST.get("cboWitCust")     # 거래처
-        acIogb = request.POST.get("cboWitGbn")     # 구분(출금)
+        acIogb = '1'     # 구분(출금)
         mCode = request.POST.get("cboAdminCode")  # 관리계정
         acCode = request.POST.get("cboActCode")  # 회계계정
         acAmts = request.POST.get("txtWitPrice")      # 금액
@@ -243,12 +243,12 @@ def withRegOutList_search(request):
 
         # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
             cboMCode = cursor.fetchall()
 
         # 회계게정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ACODE LIKE '5%'")
             cboACode = cursor.fetchall()
 
         # 결제방법
@@ -290,12 +290,12 @@ def withRegOutList_search(request):
 
         # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
             cboMCode = cursor.fetchall()
 
         # 회계게정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ")
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ACODE LIKE '5%' ")
             cboACode = cursor.fetchall()
 
         # 결제방법

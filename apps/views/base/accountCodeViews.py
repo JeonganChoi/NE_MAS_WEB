@@ -52,6 +52,7 @@ def accountCodeViews_saveM(request):
     mCodeNme = request.POST.get("txtCodeNme_M")
     mSeq = request.POST.get("txtSeq_M")
     mDesc = request.POST.get("txtDesc_M")
+    # 수익4/ 비용5
 
 
     if mSeq == '' or mSeq is None:
