@@ -285,14 +285,16 @@
                         "<th class='text-center p-1' style='font-size: 0.85rem'>입금 대비 점유</th> " +
                         "<th class='text-center p-1' style='font-size: 0.85rem'>지출 대비 점유</th> " );
 
+                    var count = 0;
+                    count = list.length;
                     {# 통장 이월 #}
                     var total = 0;
-                    for (var i = 0; i < list2.length; i++) {
+                    for (var i = 0; i < count; i++) {
                         total += Number(list2[i][0])
                         $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list2[i][0]) + "</td>");
                     }
-                    for (var i = 0; i < list2.length; i++) {
+                    for (var i = 0; i < count; i++) {
                         total += Number(list2[i][0])
                         $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
@@ -304,8 +306,6 @@
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td>");
 
                     {# 계정별 #}
-                    var count = 0;
-                    count = list.length;
                     for (var i = 0; i < list3.length; i++) {
                         {#입금#}
                         if(list3[i][10].startsWith('4') === true) {
@@ -386,15 +386,19 @@
                         "<th class='text-center p-1' style='font-size: 0.85rem'>입금 대비 점유</th> " +
                         "<th class='text-center p-1' style='font-size: 0.85rem'>지출 대비 점유</th> " );
 
+                    var count = 0;
+                    count = list.length;
                     {# 통장 이월 #}
                     var total = 0;
                     for (var i = 0; i < list2.length; i++) {
                         total += Number(list2[i][0])
-                        $("#sheetTb").append(
+                        if(list2[i][0]){
+                            $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list2[i][0]) + "</td>");
+                        }
                     }
-                    for (var i = 0; i < list2.length; i++) {
-                        total += Number(list2[i][0])
+                    count += (count - list2.length)
+                    for (var i = 0; i < count; i++) {
                         $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
                     }
@@ -405,8 +409,6 @@
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td>");
 
                     {# 계정별 #}
-                    var count = 0;
-                    count = list.length;
                     for (var i = 0; i < list3.length; i++) {
                         {#입금#}
                         if(list3[i][10].startsWith('4') === true) {

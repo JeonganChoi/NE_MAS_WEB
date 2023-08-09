@@ -85,10 +85,10 @@ def accountViews_save(request):
     accPrc = request.POST.get('amts')
     remark = request.POST.get('remark')
     inepno = request.POST.get('user')
-    user = '101'
     # inepno = request.session['userid']
     # utepno = request.session['userid']
     if inepno is None or inepno == '':
+        accPrc = 0
         with connection.cursor() as cursor:
             cursor.execute(" INSERT INTO ACNUMBER "
                            "   ("
@@ -101,18 +101,18 @@ def accountViews_save(request):
                            ",    ACDESC "
                            ",    INEPNO "
                            ",    INDATE "
-                           ") "
+                           "    ) "
                            "    VALUES "
                            "    ("
-                           "    '" + accNum + "'"
-                           ",   '" + str(accName) + "'"
-                           ",   '" + str(bankCode) + "'"
-                           ",   '" + str(strDate) + "'"
-                           ",   '" + str(endDate) + "'"
-                           ",   '" + int(accPrc) + "'"
-                           ",   '" + str(remark) + "'"
-                           ",   '" + str(user) + "'"
-                           ",   date_format(now(), '%Y%m%d')"
+                           "    '" + accNum + "' "
+                           ",   '" + str(accName) + "' "
+                           ",   '" + str(bankCode) + "' "
+                           ",   '" + str(strDate) + "' "
+                           ",   '" + str(endDate) + "' "
+                           ",   '" + int(accPrc) + "' "
+                           ",   '" + str(remark) + "' "
+                           ",   '" + str(inepno) + "' "
+                           ",   date_format(now(), '%Y%m%d') "
                            "    ) "
                            )
             connection.commit()
