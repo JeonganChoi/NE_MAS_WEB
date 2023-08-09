@@ -227,8 +227,14 @@ def receivepayCodeSheetViews_search(request):
         mainresult = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT MCODE FROM SISACCTT GROUP BY MCODE ")
-        coderesult = cursor.fetchall()
+        cursor.execute(" SELECT SUM(ACAMTS) FROM SISACCTT WHERE MCODE LIKE '4%' AND ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' ")
+        inTotalresult = cursor.fetchall()
+        inTotal = inTotalresult[0][0]
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT SUM(ACAMTS) FROM SISACCTT WHERE MCODE LIKE '5%' AND ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' ")
+        outTotalresult = cursor.fetchall()
+        outTotal = outTotalresult[0][0]
 
     itembomlist2 = sum(itembomlist2, [])
     if itembomlist2:
@@ -339,4 +345,5 @@ def receivepayCodeSheetViews_search(request):
             tbresult = cursor.fetchall()
             print(tbresult)
 
-        return JsonResponse({"headList": headresult, 'mainList': mainresult,'tbList': tbresult})
+        return JsonResponse({"headList": headresult, 'inTotal': inTotal, 'outTotal': outTotal
+                                ,'mainList': mainresult,'tbList': tbresult})

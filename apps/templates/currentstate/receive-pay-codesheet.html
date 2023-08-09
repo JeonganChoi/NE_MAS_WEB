@@ -267,6 +267,8 @@
                     var list = data.headList;
                     var list2 = data.mainList;
                     var list3 = data.tbList;
+                    var list4 = data.inTotal;
+                    var list5 = data.outTotal;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
@@ -294,7 +296,10 @@
                         $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list2[i][0]) + "</td>");
                     }
-                    for (var i = 0; i < count; i++) {
+                    var num = 0;
+                    num = count
+                    num += (count - list2.length)
+                    for (var i = 0; i < num; i++) {
                         total += Number(list2[i][0])
                         $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
@@ -302,7 +307,7 @@
                      $("#sheetTb").append(
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>통장 이월</td> " +
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((total * 100) / list4), 2).toFixed(2) + "</td> " +
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td>");
 
                     {# 계정별 #}
@@ -320,8 +325,8 @@
                             }
                             $("#sheetTb").append(
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total + list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((list3[i][12] * 100) / list4), 2).toFixed(2) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
                         }
                         {#출금#}
@@ -339,7 +344,7 @@
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((list3[i][12] * 100) / list5), 2).toFixed(2) + "</td> ");
                         }
                     }
                 }
@@ -368,6 +373,8 @@
                     var list = data.headList;
                     var list2 = data.mainList;
                     var list3 = data.tbList;
+                    var list4 = data.inTotal;
+                    var list5 = data.outTotal;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
@@ -397,15 +404,17 @@
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(list2[i][0]) + "</td>");
                         }
                     }
-                    count += (count - list2.length)
-                    for (var i = 0; i < count; i++) {
+                    var num = 0;
+                    num = count;
+                    num += (count - list2.length)
+                    for (var i = 0; i < num; i++) {
                         $("#sheetTb").append(
                             "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>0</td>");
                     }
                      $("#sheetTb").append(
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>통장 이월</td> " +
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                    "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((total * 100) / list4, 2)).toFixed(2) + "</td> " +
                     "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td>");
 
                     {# 계정별 #}
@@ -423,8 +432,8 @@
                             }
                             $("#sheetTb").append(
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total + list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((list3[i][12] * 100) / list4), 2).toFixed(2) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
                         }
                         {#출금#}
@@ -442,7 +451,7 @@
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + list3[i][11] + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + addComma(total - list3[i][12]) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'></td> ");
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((list3[i][12] * 100) / list5), 2).toFixed(2) + "</td> ");
                         }
                     }
                 }
