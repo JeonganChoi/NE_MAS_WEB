@@ -118,16 +118,6 @@
                                   <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>계정별 내역서</h6>
                                   <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
                                       <table class="table mb-0 align-items-center justify-content-center">
-{#                                          <colgroup>#}
-{#                                              <col width="8%"/>#}
-{#                                              <col width="8%"/>#}
-{#                                              <col width="8%"/>#}
-{#                                              <col width="8%"/>#}
-{#                                              <col width="8%"/>#}
-{#                                              <col width="15%"/>#}
-{#                                              <col width="8%"/>#}
-{#                                              <col width="6%"/>#}
-{#                                          </colgroup>#}
                                           <thead class="bg-dark text-white font-weight-bolder" id="codeHead">
                                           <tr id="#codeTr" class="codeTr_tr">
 
@@ -139,23 +129,13 @@
                                             </tr>
                                           </tbody>
                                       </table>
-                                      <table>
-                                          <colgroup>
-                                              <col width="8%"/>
-                                              <col width="8%"/>
-                                              <col width="8%"/>
-                                              <col width="8%"/>
-                                              <col width="8%"/>
-                                              <col width="15%"/>
-                                              <col width="8%"/>
-                                              <col width="6%"/>
-                                          </colgroup>
-                                          <tbody class="text-dark" id="subTb">
-                                              <tr id="#subTr" class="subTr_tr">
-                                              </tr>
-                                          </tbody>
-                                      </table>
                                   </div>
+                                  <table class="m-2">
+                                      <tbody class="bg-dark text-white" id="subTb">
+                                          <tr id="#subTr" class="subTr_tr">
+                                          </tr>
+                                      </tbody>
+                                  </table>
                               </div>
                               <!--<div class="col-lg-3 col-3">
                                   <div class="card m-3">
@@ -347,6 +327,19 @@
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.85rem'>" + (Math.round((list3[i][12] / list5 )* 100).toFixed(2)) + "</td> ");
                         }
                     }
+
+                    {#총계#}
+                    $("#subTb").append(
+                    "<tr id='#subTr' class='subTr_tr'>" +
+                    "<td class='text-center p-1' style='font-size: 0.85rem'>1</td>" +
+                    "<td class='text-end p-1' style='font-size: 0.85rem'>2</td> " +
+                    "<td class='text-end p-1' style='font-size: 0.85rem'>3</td> " +
+                    "<td class='text-end p-1' style='font-size: 0.85rem'>4</td> " +
+                    "<td class='text-start p-1' style='font-size: 0.85rem'>5</td> " +
+                    "<td class='text-start p-1' style='font-size: 0.85rem'>6</td> " +
+                    "<td class='text-start p-1' style='font-size: 0.85rem'>7</td> " +
+                    "<td class='text-start p-1' style='font-size: 0.85rem'>8</td> " +
+                    "</tr> ");
                 }
             })
         });

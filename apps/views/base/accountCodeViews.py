@@ -21,30 +21,68 @@ def accountCodeViews_search(request):
 
     if mainCode != '' and mainCode is not None:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM, IFNULL(MDESC, ''), MSEQ FROM OSCODEM WHERE MCODE = '" + mainCode + "' ")
+            cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEM A "
+                           "    LEFT OUTER JOIN OSREFCP B "
+                           "    ON A.GBN = B.RESKEY "
+                           "    AND B.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.GBN2 = C.RESKEY "
+                           "    AND C.RECODE = 'AGB' "
+                           "    WHERE MCODE = '" + mainCode + "' ")
             mresult = cursor.fetchall()
 
         return JsonResponse({"subMList": mresult})
 
     elif mainCode2 != '' and mainCode2 is not None:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM, IFNULL(ADESC, ''), ASEQ FROM OSCODEA WHERE ACODE = '" + mainCode2 + "' ")
+            cursor.execute(" SELECT IFNULL(A.ACODE, ''), IFNULL(A.ACODENM, ''), IFNULL(A.ADESC, ''), IFNULL(A.ASEQ, '')"
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEA A "
+                           "    LEFT OUTER JOIN OSREFCP B "
+                           "    ON A.GBN = B.RESKEY "
+                           "    AND B.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.GBN2 = C.RESKEY "
+                           "    AND C.RECODE = 'AGB' "
+                           "    WHERE ACODE = '" + mainCode2 + "' ")
             aresult = cursor.fetchall()
 
         return JsonResponse({'subAList': aresult})
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM, MSEQ, IFNULL(MDESC, '') FROM OSCODEM "
-                           "        WHERE MCODE LIKE '" + str(codeType) + "%' ORDER BY MCODE ")
+            cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEM A "
+                           "    LEFT OUTER JOIN OSREFCP B "
+                           "    ON A.GBN = B.RESKEY "
+                           "    AND B.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.GBN2 = C.RESKEY "
+                           "    AND C.RECODE = 'AGB' "
+                           "    WHERE MCODE LIKE '" + str(codeType) + "%' ORDER BY MCODE ")
             mresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM, ASEQ, IFNULL(ADESC, '') FROM OSCODEA "
-                           "        WHERE ACODE LIKE '" + str(codeType2) + "%' ORDER BY ACODE ")
+            cursor.execute(" SELECT IFNULL(A.ACODE, ''), IFNULL(A.ACODENM, ''), IFNULL(A.ASEQ, ''), IFNULL(A.ADESC, '')"
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEA A "
+                           "    LEFT OUTER JOIN OSREFCP B "
+                           "    ON A.GBN = B.RESKEY "
+                           "    AND B.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.GBN2 = C.RESKEY "
+                           "    AND C.RECODE = 'AGB' "
+                           "    WHERE ACODE LIKE '" + str(codeType2) + "%' ORDER BY ACODE ")
             aresult = cursor.fetchall()
 
-        return JsonResponse({"mList": mresult, 'aList': aresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+            gbnesult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
+            gbn2result = cursor.fetchall()
+
+        return JsonResponse({"mList": mresult, 'aList': aresult, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
 
 def accountCodeViews_saveM(request):
     codeType = request.POST.get("cboCodeType")
@@ -52,6 +90,8 @@ def accountCodeViews_saveM(request):
     mCodeNme = request.POST.get("txtCodeNme_M")
     mSeq = request.POST.get("txtSeq_M")
     mDesc = request.POST.get("txtDesc_M")
+    gbn = request.POST.get("cboGbn_M")
+    gbn2 = request.POST.get("cboGbn2_M")
     # 수익4/ 비용5
 
 
@@ -74,6 +114,8 @@ def accountCodeViews_saveM(request):
                              ",    MSEQ "
                              ",    MCODENM "
                              ",    MDESC "
+                             ",    GBN "
+                             ",    GBN2 "
                              "    ) "
                              "    VALUES "
                              "    (   "
@@ -81,6 +123,8 @@ def accountCodeViews_saveM(request):
                              ",   (SELECT IFNULL(MAX(A.MSEQ) + 1, 1) AS COUNTED FROM OSCODEM A)"
                              ",   '" + str(mCodeNme) + "'"
                              ",   '" + str(mDesc) + "'"
+                             ",   '" + str(gbn) + "'"
+                             ",   '" + str(gbn2) + "'"
                              "    )   "
                              )
               connection.commit()
@@ -92,6 +136,8 @@ def accountCodeViews_saveM(request):
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODENM = '" + str(mCodeNme) + "' "
                            ",    MDESC = '" + str(mDesc) + "' "
+                           ",    GBN = '" + str(gbn) + "' "
+                           ",    GBN2 = '" + str(gbn2) + "' "
                            "     WHERE MCODE = '" + str(mCode) + "' "
                            "     AND MSEQ = '" + str(mSeq) + "' "
                            )
@@ -107,7 +153,8 @@ def accountCodeViews_saveA(request):
     aCode = request.POST.get("txtCode_A")
     aCodeNme = request.POST.get("txtCodeNme_A")
     aSeq = request.POST.get("txtSeq_A")
-    aDesc = request.POST.get("txtDesc_A")
+    gbn = request.POST.get("cboGbn_A")
+    gbn2 = request.POST.get("cboGbn2_A")
 
     if aSeq is None or aSeq == '':
         # with connection.cursor() as cursor:
@@ -129,6 +176,8 @@ def accountCodeViews_saveA(request):
                            ",    ASEQ "
                            ",    ACODENM "
                            ",    ADESC "
+                           ",    GBN "
+                           ",    GBN2 "
                            "    ) "
                            "    VALUES "
                            "    (   "
@@ -136,6 +185,8 @@ def accountCodeViews_saveA(request):
                            ",   (SELECT IFNULL (MAX(A.ASEQ) + 1,1) AS COUNTED FROM OSCODEA A)"
                            ",   '" + str(aCodeNme) + "'"
                            ",   '" + str(aDesc) + "'"
+                           ",   '" + str(gbn) + "'"
+                           ",   '" + str(gbn2) + "'"
                            "    )   "
                            )
             connection.commit()
@@ -147,6 +198,8 @@ def accountCodeViews_saveA(request):
             cursor.execute("    UPDATE  OSCODEA SET"
                            "     ACODENM = '" + str(aCodeNme) + "' "
                            ",    ADESC = '" + str(aDesc) + "' "
+                           ",    GBN = '" + str(gbn) + "' "
+                           ",    GBN2 = '" + str(gbn2) + "' "
                            "     WHERE ACODE = '" + str(aCode) + "' "
                            "     AND ASEQ = '" + str(aSeq) + "' "
                            )
