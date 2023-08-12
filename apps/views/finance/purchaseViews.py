@@ -40,7 +40,7 @@ def purchaseRegViews_search(request):
             cboCust = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTP' ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
             cboGbn = cursor.fetchall()
 
         with connection.cursor() as cursor:
@@ -67,7 +67,7 @@ def purchaseRegViews_search(request):
             cboCust = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTP' ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
             cboGbn = cursor.fetchall()
 
         with connection.cursor() as cursor:
@@ -92,7 +92,7 @@ def purchaseRegViews_search(request):
             cboCust = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OTP' ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
             cboGbn = cursor.fetchall()
 
         with connection.cursor() as cursor:
