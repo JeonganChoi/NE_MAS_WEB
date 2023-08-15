@@ -2,7 +2,7 @@ from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews, financeSearchViews
-from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews, monthlyCircleFundsViews
+from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews, monthlyCircleFundsViews, monthlyCountViews
 
 urlpatterns = [
     path('', redirectToMain, name="redirectToMain"),
@@ -117,4 +117,7 @@ urlpatterns = [
     # 월별 자금 유동 현황
     path('monthly_circle_funds/', monthlyCircleFundsViews.montlyCircleFundsViews, name='monthly_circle_funds'),
 
+    # 월별 자금 유동 현황
+    path('monthly_count/', monthlyCountViews.montlyCountViews, name='monthly_count'),
+    path('monthly_count_search/', monthlyCountViews.montlyCountViews_search, name='monthly_count_search'),
 ]

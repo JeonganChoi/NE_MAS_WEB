@@ -117,9 +117,9 @@
     </div>
 
 
-    <!-- Modal -->
+    <!-- Modal -->ß
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 50vw">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 60vw">
         <div class="modal-content">
           <form method="post" action="{% url 'deposit_reg_save' %}">
               {% csrf_token %}
@@ -131,15 +131,14 @@
           </div>
           <div class="modal-body">
               <div class="row">
-                  <div class="col-1"></div>
-                  <div class="col-10">
-                      <div class="card card-plain pb-5">
+                  <div class="col-lg-7 col-7">
+                      <div class="form-group p-3">
                           <div class="row">
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6 text-danger"><i class="far fa-edit me-2"></i>거래처</label>
                                   <select class="form-control border border-light rounded-1 text-center bg-danger-soft" name="cboDepCust" id="cboDepCust"></select>
                               </div>
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6"><i class="far fa-calendar me-2"></i>등록 일자</label>
                                   <input class="form-control text-center" type="date" id="txtDepRegDate" name="txtDepRegDate"/>
                               </div>
@@ -149,43 +148,41 @@
                               </div>
                           </div>
                           <div class="row">
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6"><i class="far fa-edit me-2"></i>구분</label>
                                   <select class="form-control border border-light rounded-1 text-center" name="cboDepGbn" id="cboDepGbn"></select>
                               </div>
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6"><i class="far fa-edit me-2"></i>관리계정</label>
                                   <select class="form-control border border-light rounded-1 text-center" name="cboAdminCode" id="cboAdminCode"></select>
                               </div>
-                              <div class="col-4">
+                              <!--<div class="col-4">
                                   <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
                                   <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
-                              </div>
+                              </div>-->
                           </div>
                           <div class="row">
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6"><i class="fas fa-circle me-2"></i>금액</label>
                                   <input class="form-control text-end" type="text" id="txtDepPrice" name="txtDepPrice"/>
                               </div>
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
                                   <select class="form-control border border-light rounded-1 text-center" name="cboDepActNum" id="cboDepActNum"></select>
                               </div>
-                              <div class="col-4"></div>
                           </div>
                           <div class="row">
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6"><i class="fas fa-edit me-2"></i>결제방법</label>
                                   <select class="form-control border border-light rounded-1 text-center" name="cboDepMethod" id="cboDepMethod"></select>
                               </div>
-                              <div class="col-4">
+                              <div class="col-5">
                                   <label class="mt-4 h6 me-4"><i class="fas fa-edit me-2"></i>처리</label>
                                   <input type="radio" id="txtDeal" name="depEmpCount" checked value="1"/>
                                   <label class="mt-4 h6 text-info me-4">현금</label>
                                   <input type="radio" id="txtDeal" name="depEmpCount" value="2"/>
                                   <label class="mt-4 h6 text-danger">계산서</label>
                               </div>
-                              <div class="col-4"></div>
                           </div>
                           <div hidden class="row">
                               <div class="col-4">
@@ -202,7 +199,7 @@
                               </div>
                           </div>
                           <div class="row">
-                              <div class="col-8">
+                              <div class="col-10">
                                   <label class="mt-4 h6"><i class="far fa-edit me-2"></i>비고</label>
                                   <input class="form-control text-start" type="text" id="txtDepRemark" name="txtDepRemark"/>
                               </div>
@@ -210,7 +207,34 @@
                           </div>
                       </div>
                   </div>
-                  <div class="col-1"></div>
+                  <div class="col-lg-5 col-5">
+                      <h6 class="mt-4"><i class="ni ni-ungroup me-2"></i>매출 전표 잔액 리스트</h6>
+                      <div class="table-responsive-sm m-2 overflow-auto border border-light min-height-400 max-height-400">
+                        <table class="table mb-0 align-items-center justify-content-center">
+                            <colgroup>
+                                <col width="2%"/>
+                                <col width="8%"/>
+                                <col width="20%"/>
+                                <col width="8%"/>
+                                <col width="8%"/>
+                            </colgroup>
+                            <thead class="text-white text-center font-weight-bolder" style="background-color: rgb(0, 92, 151);">
+                            <tr>
+                                <th style="font-size: 0.8rem" class="p-1"></th>
+                                <th style="font-size: 0.8rem" class="p-1">일 자</th>
+                                <th style="font-size: 0.8rem" class="p-1">항 목</th>
+                                <th style="font-size: 0.8rem" class="p-1">매출금액</th>
+                                <th style="font-size: 0.8rem" class="p-1">입금액</th>
+                            </tr>
+                            </thead>
+                            <tbody id="saleTb">
+                                <tr id="#saleTr" class="saleTr_tr">
+
+                                </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                  </div>
               </div>
           </div>
           <div class="modal-footer">
