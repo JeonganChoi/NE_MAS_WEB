@@ -287,7 +287,7 @@
                     if(mainTotalPrc) {
                         $("#depositMainTb").append(
                             "<tr id='#depositTotalMainTr' class='depositTotalMainTr_tr'>" +
-                            "<td class='text-center p-1 pe-3' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
+                            "<td class='text-end p-1 pe-3' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
                             "<td class='text-end p-1 pe-3' style='font-size: 0.85rem; background-color: lightblue'>" + addComma(mainTotalPrc) + "</td> " +
                             "</tr> ");
                     }
@@ -341,7 +341,7 @@
                     if(mainTotalPrc) {
                         $("#depositMainTb").append(
                             "<tr id='#depositTotalMainTr' class='depositTotalMainTr_tr'>" +
-                            "<td class='text-center p-1 pe-3' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
+                            "<td class='text-end p-1 pe-3' style='font-size: 0.85rem; background-color: lightblue'>합 계</td>" +
                             "<td class='text-end p-1 pe-3' style='font-size: 0.85rem; background-color: lightblue'>" + addComma(mainTotalPrc) + "</td> " +
                             "</tr> ");
                     }
@@ -493,6 +493,18 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    var list = data.saleList;
+                    $("#saleTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#saleTb").append(
+                            "<tr id='#saleTr' class='saleTr_tr'>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
+                            "</tr> ");
+                    }
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {

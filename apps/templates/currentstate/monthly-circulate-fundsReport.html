@@ -99,10 +99,8 @@
                       <div class="row">
                           <div class="p-2 col-lg-4 col-4 text-start">
                             <div class="input-group shadow-none">
-                                <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>기 간</label>
-                                <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
-                                <label class="h5 me-2">-</label>
-                                <input class="form-control border border-light rounded-1 text-center" type="date" name="inputEndDate" id="inputEndDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                                <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>년도</label>
+                                <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                             </div>
                           </div>
                           <div class="p-2 col-lg-1 col-1 text-start">
@@ -151,6 +149,46 @@
     <script>
         $(document).ready(function () {
 
+            date = new Date();
+            var year = date.getFullYear();
+            document.getElementById("inputYear").value = year;
+            {#var data = {'Year': year}#}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "base_target_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.targetList;
+                    $("#targetTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#targetTb").append(
+                            "<tr id='#targetTr'>" +
+                            "<td class='text-center' style='width: 2rem'><input type='checkbox' id='Index[]' name='Index[]' value=" + list[i][13] + "></td>" +
+                            "<td hidden><input style='width: 5rem' class='border-0 text-sm text-center' type='text' id='index_code' name='index_code' value='" + list[i][13] + "'></td>" +
+                            "<td hidden><input style='width: 5rem' class='border-0 text-sm text-center' type='text' id='yymm' name='yymm' value='" + list[i][14] + "'></td>" +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-center shadow-none p-1' type='text' id='Index' name='Index' value='" + list[i][0] + "'></td>" +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month01_'" + i + " name='month01' value='" + list[i][1] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month02_'" + i + " name='month02' value='" + list[i][2] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month03_'" + i + " name='month03' value='" + list[i][3] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month04_'" + i + " name='month04' value='" + list[i][4] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month05_'" + i + " name='month05' value='" + list[i][5] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month06_'" + i + " name='month06' value='" + list[i][6] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month07_'" + i + " name='month07' value='" + list[i][7] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month08_'" + i + " name='month08' value='" + list[i][8] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month09_'" + i + " name='month09' value='" + list[i][9] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month10_'" + i + " name='month10' value='" + list[i][10] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month11_'" + i + " name='month11' value='" + list[i][11] + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month12_'" + i + " name='month12' value='" + list[i][12] + "'></td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
         });
 
     </script>

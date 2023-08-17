@@ -58,7 +58,7 @@ def withRegViews_search(request):
                            "    WHERE ACIOGB = '1' "
                            "    AND YEAR(ACDATE) = '" + str(year) + "' "
                            "    AND MONTH(ACDATE) = '" + str(month) + "' "
-                           "    GROUP BY DAY(ACDATE) ")
+                           "    GROUP BY DAY(ACDATE), ACDATE, ACAMTS, ACIOGB ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -253,13 +253,14 @@ def withRegOutList_search(request):
 
         # 결제방법
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
             cboPay = cursor.fetchall()
 
         # 계좌번호
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAcnumber = cursor.fetchall()
+
 
         return JsonResponse({'modalform': modalform
                               , 'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboACode': cboACode
@@ -300,7 +301,7 @@ def withRegOutList_search(request):
 
         # 결제방법
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUB' ORDER BY RESNAM ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
             cboPay = cursor.fetchall()
 
         # 계좌번호
@@ -308,5 +309,16 @@ def withRegOutList_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAcnumber = cursor.fetchall()
 
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT  A.SERIAL_NUM, A.BAL_DD, A.OPT, B.MCODENM, A.AMTS, A.PASS_AMT FROM OSBILL A "
+                           "     LEFT OUTER JOIN OSCODEM B "
+                           "     ON A.OPT = B.MCODE "
+                           "     AND A.AMTS > A.PASS_AMT "
+                           "     AND A.GUBUN = '1'"
+                           "     WHERE BAL_DD >= now() ")
+
+            buyresult = cursor.fetchall()
+            print(buyresult)
+
         return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboACode': cboACode
-                                , 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+                                , 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'buyList': buyresult})

@@ -44,7 +44,7 @@ def purchaseRegViews_search(request):
             cboGbn = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PTP' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ")
             cboPay = cursor.fetchall()
 
         return JsonResponse({"modalList": modalresult, 'cboCust': cboCust, 'cboGbn': cboGbn, 'cboPay': cboPay})
@@ -71,7 +71,7 @@ def purchaseRegViews_search(request):
             cboGbn = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PTP' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ")
             cboPay = cursor.fetchall()
 
         # 구분
@@ -96,7 +96,7 @@ def purchaseRegViews_search(request):
             cboGbn = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PTP' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ")
             cboPay = cursor.fetchall()
 
         return JsonResponse({'cboCust': cboCust, 'cboGbn': cboGbn, 'cboPay': cboPay})

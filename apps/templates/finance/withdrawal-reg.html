@@ -232,8 +232,8 @@
                                 <th style="font-size: 0.8rem" class="p-1">출금액</th>
                             </tr>
                             </thead>
-                            <tbody id="saleTb">
-                                <tr id="#saleTr" class="saleTr_tr">
+                            <tbody id="buyTb">
+                                <tr id="#buyTr" class="buyTr_tr">
 
                                 </tr>
                             </tbody>
@@ -282,7 +282,7 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
 
@@ -336,7 +336,7 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTb' class='withMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
 
@@ -497,6 +497,18 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    {#var list = data.buyList;#}
+                    {#$("#buyTb").html("");#}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    $("#buyTb").append(#}
+                    {#        "<tr id='#buyTr' class='buyTr_tr'>" +#}
+                    {#        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +#}
+                    {#        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +#}
+                    {#        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +#}
+                    {#        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +#}
+                    {#        "</tr> ");#}
+                    {#}#}
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
@@ -558,6 +570,7 @@
                     $("#cboAdminCode").append(cboAdminCodeTxt);
                     $("#cboActCode").append(cboActCodeTxt);
                     $("#cboWitActNum").append(cboWitActNumTxt);
+
                 }
             })
 
@@ -659,15 +672,6 @@
                         }
                     }
 
-                    var combolist4 = data.cboAcc;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboWitCode) {
-                            cboWitCodeTxt = cboWitCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            cboWitCodeTxt = cboWitCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist5 = data.cboAcnumber;
                     for (var i = 0; i < combolist5.length; i++) {
                         if (combolist5[i][0] == cboWitActNum) {
@@ -680,7 +684,6 @@
                     $("#cboWitCust").append(cboWitCustTxt);
                     $("#cboWitGbn").append(cboWitGbnTxt);
                     $("#cboWitMethod").append(cboWitMethodTxt);
-                    $("#cboWitCode").append(cboWitCodeTxt);
                     $("#cboWitActNum").append(cboWitActNumTxt);
                 }
             })

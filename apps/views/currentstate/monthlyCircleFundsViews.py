@@ -13,3 +13,13 @@ from django.db import connection
 def montlyCircleFundsViews(request):
 
     return render(request, "currentstate/monthly-circulate-fundsReport.html")
+
+def montlyCircleFundsViews_search(request):
+    year = request.POST.get('Year')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" ")
+        headerresult = cursor.fetchall()
+        print(headerresult)
+
+        return JsonResponse({"headerList": headerresult})
