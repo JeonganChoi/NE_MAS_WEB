@@ -95,20 +95,27 @@
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
                   <div class="card border shadow-xs">
-                    <div class="pb-0 pt-0 card-header border-bottom" style="height: 6vh">
-                      <div class="row">
-                          <div class="p-2 col-lg-4 col-4 text-start">
-                            <div class="input-group shadow-none">
-                                <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>년도</label>
-                                <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                    <div class="pb-0 pt-0 card-header border-bottom">
+                        <div class="row p-2">
+                            <div class="col-lg-3 col-3 text-start">
+                                 <div class="input-group shadow-none">
+                                    <label class="mt-1" style="font-size: 0.85rem; width: 4rem" for="inputGbn"><i class="fas fa-search me-2"></i>구분</label>
+                                    <select style="height: 2rem; font-size: 0.8rem; max-width: 12rem" class="form-control border border-light rounded-0 text-center text-dark p-1" id="inputGbn" name="inputGbn">
+                                        <option value="1">매출</option>
+                                        <option value="2">매입</option>
+                                    </select>
+                                </div>
                             </div>
-                          </div>
-                          <div class="p-2 col-lg-1 col-1 text-start">
-                            <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
-                          </div>
-                          <div class="p-2 col-lg-6 col-6 text-start">
-                          </div>
-                      </div>
+                            <div class="col-lg-3 col-3 text-start">
+                                <div class="input-group shadow-none">
+                                    <label class="mt-1" style="font-size: 0.85rem; width: 4rem" for="inputYear"><i class="fas fa-search me-2"></i>년도</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-3 text-start">
+                                <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            </div>
+                        </div>
                     </div>
                       <div class="px-0 py-0 card-body">
                           <div class="row">
@@ -116,9 +123,54 @@
                                   <!--<h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>계정별 내역서</h6>-->
                                   <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
                                       <table class="table mb-0 align-items-center justify-content-center">
-                                          <thead class="bg-dark text-white font-weight-bolder" id="codeHead">
-                                          <tr id="#codeTr" class="codeTr_tr">
-
+                                          <thead class="bg-dark text-white font-weight-bolder">
+                                          <tr>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" rowspan="2">매출 업체명</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" rowspan="2">계정</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" rowspan="2">결재조건</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">1월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">2월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">3월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">4월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">5월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">6월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">7월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">8월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">9월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">10월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">11월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="2">12월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1" colspan="4">미수/미지급현황</th>
+                                          </tr>
+                                          <tr>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">전원이월</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">계산서</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">입금</th>
+                                              <th style="font-size: 0.8rem; background-color: #e2c6c2; border-bottom: 1px solid #1e293b !important;" class="text-dark text-center border border-white font-weight-bolder p-1">미수/미지급</th>
                                           </tr>
                                           </thead>
                                           <tbody id="sheetTb">
@@ -148,42 +200,221 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
+            var totalBill = 0;
+            var totalDeposit = 0;
+            var totalBal = 0;
 
             date = new Date();
             var year = date.getFullYear();
             document.getElementById("inputYear").value = year;
-            {#var data = {'Year': year}#}
+            var gbn = document.getElementById('inputGbn').value;
+            var data = {'Year': year, 'gbn': gbn}
 
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "base_target_search" %}',
+                url: '{% url "monthly_circle_funds_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.targetList;
-                    $("#targetTb").html("");
+                    var list = data.mainList;
+                    $("#sheetTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        $("#targetTb").append(
-                            "<tr id='#targetTr'>" +
-                            "<td class='text-center' style='width: 2rem'><input type='checkbox' id='Index[]' name='Index[]' value=" + list[i][13] + "></td>" +
-                            "<td hidden><input style='width: 5rem' class='border-0 text-sm text-center' type='text' id='index_code' name='index_code' value='" + list[i][13] + "'></td>" +
-                            "<td hidden><input style='width: 5rem' class='border-0 text-sm text-center' type='text' id='yymm' name='yymm' value='" + list[i][14] + "'></td>" +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-center shadow-none p-1' type='text' id='Index' name='Index' value='" + list[i][0] + "'></td>" +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month01_'" + i + " name='month01' value='" + list[i][1] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month02_'" + i + " name='month02' value='" + list[i][2] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month03_'" + i + " name='month03' value='" + list[i][3] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month04_'" + i + " name='month04' value='" + list[i][4] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month05_'" + i + " name='month05' value='" + list[i][5] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month06_'" + i + " name='month06' value='" + list[i][6] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month07_'" + i + " name='month07' value='" + list[i][7] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month08_'" + i + " name='month08' value='" + list[i][8] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month09_'" + i + " name='month09' value='" + list[i][9] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month10_'" + i + " name='month10' value='" + list[i][10] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month11_'" + i + " name='month11' value='" + list[i][11] + "'></td> " +
-                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='number' id='month12_'" + i + " name='month12' value='" + list[i][12] + "'></td> " +
+
+                        {# 미수/미지급금 계산 #}
+                        for(var j = 2; j < 26; j++){
+                            if(i % 2 == 0){
+                                totalBill += list[i][j]
+                            } else if(i % 2 == 1){
+                                totalDeposit += list[i][j]
+                            }
+                        }
+                        totalBal = totalBill - totalDeposit
+
+                        $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>매출</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalBill) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalDeposit) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalBal) + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+        });
+
+        {# 구분에 따른 조회 #}
+        $('#inputGbn').change(function () {
+            var totalBill = 0;
+            var totalDeposit = 0;
+            var totalBal = 0;
+
+            var gbn = document.getElementById('inputGbn').value;
+            var year = document.getElementById('inputYear').value;
+
+            let data = {'gbn': gbn, 'Year': year}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "monthly_circle_funds_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    $("#sheetTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+
+                        {# 미수/미지급금 계산 #}
+                        for(var j = 2; j < 26; j++){
+                            if(i % 2 == 0){
+                                totalBill += list[i][j]
+                            } else if(i % 2 == 1){
+                                totalDeposit += list[i][j]
+                            }
+                        }
+                        totalBal = totalBill - totalDeposit
+
+                        $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>매출</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalBill) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalDeposit) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalBal) + "</td> " +
+                            "</tr> ");
+                    }
+
+                }
+            })
+
+        });
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+            var totalBill = 0;
+            var totalDeposit = 0;
+            var totalBal = 0;
+
+            var gbn = document.getElementById('inputGbn').value;
+            var year = document.getElementById('inputYear').value;
+
+            let data = {'gbn': gbn, 'Year': year}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "monthly_circle_funds_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    $("#sheetTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+
+                        {# 미수/미지급금 계산 #}
+                        for(var j = 2; j < 26; j++){
+                            if(i % 2 == 0){
+                                totalBill += list[i][j]
+                            } else if(i % 2 == 1){
+                                totalDeposit += list[i][j]
+                            }
+                        }
+                        totalBal = totalBill - totalDeposit
+
+                        $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>매출</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalBill) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalDeposit) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(totalBal) + "</td> " +
                             "</tr> ");
                     }
 

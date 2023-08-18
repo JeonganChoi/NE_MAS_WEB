@@ -116,6 +116,7 @@ urlpatterns = [
 
     # 월별 자금 유동 현황
     path('monthly_circle_funds/', monthlyCircleFundsViews.montlyCircleFundsViews, name='monthly_circle_funds'),
+    path('monthly_circle_funds_search/', monthlyCircleFundsViews.montlyCircleFundsViews_search, name='monthly_circle_funds_search'),
 
     # 월별 자금 유동 현황
     path('monthly_count/', monthlyCountViews.montlyCountViews, name='monthly_count'),
