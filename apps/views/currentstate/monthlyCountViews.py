@@ -15,9 +15,7 @@ def montlyCountViews(request):
     return render(request, "currentstate/monthly-countReport.html")
 
 def montlyCountViews_search(request):
-    strDate = request.POST.get('startDate')
-    endDate = request.POST.get('endDate')
-
+    year = request.POST.get('Year')
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
@@ -26,13 +24,17 @@ def montlyCountViews_search(request):
 
     # 매입/매출
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.OPT, B.MCODENM FROM OSBILL A LEFT OUTER JOIN OSCODEM B ON A.OPT = B.MCODE GROUP BY A.OPT, B.MCODENM ")
+        cursor.execute(" SELECT A.OPT, B.MCODENM FROM OSBILL A LEFT OUTER JOIN OSCODEM B ON A.OPT = B.MCODE "
+                       "    WHERE YEAR(BAL_DD) = '" + year + "' "
+                       "    GROUP BY A.OPT, B.MCODENM ")
         headresult = cursor.fetchall()
         print(headresult)
 
     # 입금/출금
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.MCODE, B.MCODENM FROM SISACCTT A LEFT OUTER JOIN OSCODEM B ON A.MCODE = B.MCODE GROUP BY A.MCODE, B.MCODENM ")
+        cursor.execute(" SELECT A.MCODE, B.MCODENM FROM SISACCTT A LEFT OUTER JOIN OSCODEM B ON A.MCODE = B.MCODE"
+                       "    WHERE YEAR(ACDATE) = '" + year + "' "
+                       "    GROUP BY A.MCODE, B.MCODENM ")
         headresult2 = cursor.fetchall()
         print(headresult2)
 
@@ -60,7 +62,7 @@ def montlyCountViews_search(request):
                        "              FROM OSBILL A "
                        "              LEFT OUTER JOIN OSCODEM B "
                        "              ON A.OPT = B.MCODE "
-                       "              WHERE YEAR(BAL_DD) = '2023' "
+                       "              WHERE YEAR(BAL_DD) = '" + year + "' "
                        "              GROUP BY A.OPT, B.MCODENM, MONTH(A.BAL_DD), BAL_DD "
                        "              ORDER BY MONTH(A.BAL_DD)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '2023' GROUP BY AA.OPT, AA.MCODENM, AA.YEAR ");
         mainresult = cursor.fetchall()
@@ -90,7 +92,7 @@ def montlyCountViews_search(request):
                        "              FROM SISACCTT A "
                        "              LEFT OUTER JOIN OSCODEM B "
                        "              ON A.MCODE = B.MCODE "
-                       "              WHERE YEAR(ACDATE) = '2023' "
+                       "              WHERE YEAR(ACDATE) = '" + year + "' "
                        "              GROUP BY A.MCODE, B.MCODENM, MONTH(A.ACDATE), ACDATE "
                        "              ORDER BY MONTH(A.ACDATE)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '2023' GROUP BY AA.MCODE, AA.MCODENM, AA.YEAR ");
 

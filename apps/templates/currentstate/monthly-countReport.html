@@ -97,12 +97,10 @@
                   <div class="card border shadow-xs">
                     <div class="pb-0 pt-0 card-header border-bottom" style="height: 6vh">
                       <div class="row">
-                          <div class="p-2 col-lg-4 col-4 text-start">
+                          <div class="p-2 col-lg-3 col-3 text-start">
                             <div class="input-group shadow-none">
-                                <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>기 간</label>
-                                <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
-                                <label class="h5 me-2">-</label>
-                                <input class="form-control border border-light rounded-1 text-center" type="date" name="inputEndDate" id="inputEndDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                                <label class="mt-1" style="font-size: 0.85rem; width: 4rem" for="inputYear"><i class="fas fa-search me-2"></i>년도</label>
+                                <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                             </div>
                           </div>
                           <div class="p-2 col-lg-1 col-1 text-start">
@@ -128,14 +126,12 @@
 
                                             </tr>
                                           </tbody>
+                                          <tfoot id="totalTb">
+                                          <tr id="#totalTr" class="totalTr_tr">
+                                          </tr>
+                                          </tfoot>
                                       </table>
                                   </div>
-                                  <table class="m-2">
-                                      <tbody class="bg-dark text-white" id="subTb">
-                                          <tr id="#subTr" class="subTr_tr">
-                                          </tr>
-                                      </tbody>
-                                  </table>
                               </div>
                           </div>
                       </div>
@@ -153,19 +149,213 @@
 
             var hCount = 0;
             var hTotal = 0;
-            var date = new Date();
-            {#var Year = now.getFullYear()#}
-            {#var date = Year + '-01-01'#}
-            date.setDate(1);
-            document.getElementById('inputStrDate').valueAsDate = date
-            document.getElementById('inputEndDate').valueAsDate = new Date
+            var now = new Date();
+            var Year = now.getFullYear()
+            document.getElementById('inputYear').value = Year
 
-            var sDate = document.getElementById('inputStrDate').value
-            var eDate = document.getElementById('inputEndDate').value
-            var startDate = sDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
+            var year = document.getElementById('inputYear').value
 
-            let data = {'startDate': startDate, 'endDate': endDate}
+            let data = {'Year': year}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "monthly_count_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.headerList;
+                    {# 매입/매출 #}
+                    var list2 = data.headList;
+                    {# 출금/입금 #}
+                    var list3 = data.headList2;
+
+                    $("#codeHead").html("");
+                    $("#sheetTb").html("");
+
+                    {# 1번째줄 헤더 #}
+                    $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.85rem' rowspan='3'>구분</td>");
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i][0] === '1') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if(list3[j][0].startsWith('4') === true){
+                                    hCount += 1;
+                                    hTotal += 1;
+                                }
+                            }
+                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '2') {
+                            for (var j = 0; j < list2.length; j++) {
+                                if(list2[j][0].startsWith('4') === true){
+                                    hCount += 1;
+                                    hTotal += 1;
+                                }
+                            }
+                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '3') {
+                            for (var j = 0; j < list2.length; j++) {
+                                if(list2[j][0].startsWith('5') === true){
+                                    hCount += 1;
+                                    hTotal += 1;
+                                }
+                            }
+                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '4') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if(list3[j][0].startsWith('5') === true){
+                                    hCount += 1;
+                                    hTotal += 1;
+                                }
+                            }
+                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                        }
+                    }
+
+                    {# 2번째줄 헤더 #}
+                    $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i][0] === '1') {
+                            for (var j = 0; j < list3.length; j++) {
+
+                                if (list3[j][0].startsWith('4') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='2'>" + list3[j][1] + "</td>");
+                                    {# 환급금/ 수입이자 #}
+
+                                }
+                            }
+                        }
+                        if (list[i][0] === '2') {
+                            for (var j = 0; j < list2.length; j++) {
+                                if (list2[j][0].startsWith('4') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='2'>" + list2[j][1] + "</td>");
+                                {# 상품매출/ 생산매출 #}
+
+                                }
+                            }
+                        }
+                        if (list[i][0] === '3') {
+                            for (var j = 0; j < list2.length; j++) {
+                                if (list2[j][0].startsWith('5') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='2'>" + list2[j][1] + "</td>");
+                                }
+                            }
+                        }
+                        if (list[i][0] === '4') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if (list3[j][0].startsWith('5') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem' colspan='2'>" + list3[j][1] + "</td>");
+                                }
+                            }
+                        }
+                    }
+
+                    $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
+                    $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.85rem'></td> ");
+                    for (var h = 0; h < hTotal; h++) {
+                        $("#codeHead").append(
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>금 액</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>매출 대비</td>");
+                    }
+
+
+
+
+
+
+
+                {#    데이터     #}
+                    {# 매입/매출 #}
+                    var list4 = data.mainList;
+                    {# 출금/입금 #}
+                    var list5 = data.mainList2;
+
+                    for (var d = 1; d < 13; d++) {
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem'>" + d + "월</td> " +
+                            "</tr> ");
+                    }
+
+
+
+
+
+                    {# 메인데이터 #}
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i][0] === '1') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if(list5[j][12].startsWith('4') === true){
+                                    {#$("#sheetTb").insertCell(-1);#}
+                                    for (var d = 0; d < 12; d++) {
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list5[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>매출대비(투자입금)</td>");
+                                        {#alert(list4[j][d])#}
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '2') {
+                            for (var j = 0; j < list4.length; j++) {
+                                if (list4[j][12].startsWith('4') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list4[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>매출대비(매출)</td>");
+                                        {#alert(list5[j][d])#}
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '3') {
+                           for (var j = 0; j < list4.length; j++) {
+                                if (list4[j][12].startsWith('5') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list4[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>매출대비(매입)</td>");
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '4') {
+                           for (var j = 0; j < list5.length; j++) {
+                                if (list5[j][12].startsWith('5') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list5[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>매출대비(투자지출)</td>");
+                                    }
+                                }
+                            }
+                        }
+
+                    {#    소계   #}
+                        $(".sheetTr_tr").eq(d).append(
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>매출대비금(소계)</td>");
+                    }
+
+                }
+            })
+        });
+
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+            var hCount = 0;
+            var hTotal = 0;
+
+            var year = document.getElementById('inputYear').value
+
+            let data = {'Year': year}
 
             $.ajax({
                 type: "post",
@@ -352,7 +542,6 @@
                 }
             })
         });
-
     </script>
 
 {% endblock %}
