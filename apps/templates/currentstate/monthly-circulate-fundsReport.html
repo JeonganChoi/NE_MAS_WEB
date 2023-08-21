@@ -693,27 +693,42 @@
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11).toFixed(2)) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12).toFixed(2)) + "</td>" +
                         "</tr> ");
-
+                    $("#subTb2").append(
+                        `<tr id='#subTr2' class='subTr2_Tr'>
+                            <td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10)/ totalDeposit_10) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12) <= 0 ? '부실경영' : '정상경영'}</td>
+                        </tr>`);
 
                     {# *********************************************** #}
-                    var business = "";
-                    var name = "";
-                    var businessName = "";
-                    $("#subTb2").append(
-                        "<tr id='#subTr2' class='subTr2_Tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>" +
-                        "</tr> ");
-
-                    for (var d = 1; d < 13; d++) {
-                        business = ((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01
-                        if (business <= 0) {
-                            businessName = '부실경영'
-                        } else {
-                            businessName = '정상경영'
-                        }
-                        $(".subTr2_tr").eq(d).append(
-                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + businessName + "</td> ");
-                    }
+                    {#var business = "";#}
+                    {#var name = "";#}
+                    {#var businessName = "";#}
+                    {#$("#subTb2").append(#}
+                    {#    "<tr id='#subTr2' class='subTr2_Tr'>" +#}
+                    {#    "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>" +#}
+                    {#    "</tr> ");#}
+                    {##}
+                    {#for (var d = 1; d < 13; d++) {#}
+                    {#    business = ((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01#}
+                    {#    if (business <= 0) {#}
+                    {#        businessName = '부실경영'#}
+                    {#    } else {#}
+                    {#        businessName = '정상경영'#}
+                    {#    }#}
+                    {#    $(".subTr2_tr").eq(d).append(#}
+                    {#        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + businessName + "</td> ");#}
+                    {#}#}
                     {# *********************************************** #}
 
 
