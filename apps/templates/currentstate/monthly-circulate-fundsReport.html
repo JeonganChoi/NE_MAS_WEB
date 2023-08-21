@@ -168,7 +168,7 @@
 
                                             </tr>
                                           </tbody>
-                                          <tfoot id="totalTb">
+                                          <tfoot class="bg-light text-dark">
                                           <tr id="#totalTr" class="totalTr_tr">
 
                                           </tr>
@@ -230,23 +230,25 @@
 
                                             </tr>
                                           </tbody>
-                                          <tfoot id="totalTb2">
+                                          <tfoot class="bg-light text-dark">
                                           <tr id="#totalTr2" class="totalTr2_tr">
 
                                           </tr>
                                           </tfoot>
                                       </table>
-                                      <table class="table mb-0 align-items-center justify-content-center">
+                                      <table class="table mb-0 border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0 align-items-center justify-content-center">
                                           <tbody id="subTb">
                                             <tr id="#subTr" class="subTr_tr">
 
                                             </tr>
                                           </tbody>
-                                          <tfoot id="subTb2">
+                                      </table>
+                                      <table class="table mb-0 border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0 align-items-center justify-content-center">
+                                          <tbody class="border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0" id="subTb2">
                                           <tr id="#subTr2" class="subTr2_Tr">
 
                                           </tr>
-                                          </tfoot>
+                                          </tbody>
                                       </table>
                                   </div>
                               </div>
@@ -270,34 +272,36 @@
             var totalDeposit = 0; var totalDeposit2 = 0;
             var totalBal = 0; var totalBal2 = 0;
 
-            var totalBill_01 = 0;
-            var totalDeposit_01 = 0;
-            var totalBill_02 = 0;
-            var totalDeposit_02 = 0;
-            var totalBill_03 = 0;
-            var totalDeposit_03 = 0;
-            var totalBill_04 = 0;
-            var totalDeposit_04 = 0;
-            var totalBill_05 = 0;
-            var totalDeposit_05 = 0;
-            var totalBill_06 = 0;
-            var totalDeposit_06 = 0;
-            var totalBill_07 = 0;
-            var totalDeposit_07 = 0;
-            var totalBill_08 = 0;
-            var totalDeposit_08 = 0;
-            var totalBill_09 = 0;
-            var totalDeposit_09 = 0;
-            var totalBill_10 = 0;
-            var totalDeposit_10 = 0;
-            var totalBill_11 = 0;
-            var totalDeposit_11 = 0;
-            var totalBill_12 = 0;
-            var totalDeposit_12 = 0;
+            var totalBill_01 = 0; var totalBill2_01 = 0;
+            var totalDeposit_01 = 0; var totalDeposit2_01 = 0;
+            var totalBill_02 = 0; var totalBill2_02 = 0;
+            var totalDeposit_02 = 0; var totalDeposit2_02 = 0;
+            var totalBill_03 = 0; var totalBill2_03 = 0;
+            var totalDeposit_03 = 0; var totalDeposit2_03 = 0;
+            var totalBill_04 = 0; var totalBill2_04 = 0;
+            var totalDeposit_04 = 0; var totalDeposit2_04 = 0;
+            var totalBill_05 = 0; var totalBill2_05 = 0;
+            var totalDeposit_05 = 0; var totalDeposit2_05 = 0;
+            var totalBill_06 = 0; var totalBill2_06 = 0;
+            var totalDeposit_06 = 0; var totalDeposit2_06 = 0;
+            var totalBill_07 = 0; var totalBill2_07 = 0;
+            var totalDeposit_07 = 0; var totalDeposit2_07 = 0;
+            var totalBill_08 = 0; var totalBill2_08 = 0;
+            var totalDeposit_08 = 0; var totalDeposit2_08 = 0;
+            var totalBill_09 = 0; var totalBill2_09 = 0;
+            var totalDeposit_09 = 0; var totalDeposit2_09 = 0;
+            var totalBill_10 = 0; var totalBill2_10 = 0;
+            var totalDeposit_10 = 0; var totalDeposit2_10 = 0;
+            var totalBill_11 = 0; var totalBill2_11 = 0;
+            var totalDeposit_11 = 0; var totalDeposit2_11 = 0;
+            var totalBill_12 = 0; var totalBill2_12 = 0;
+            var totalDeposit_12 = 0; var totalDeposit2_12 = 0;
 
             date = new Date();
             var year = date.getFullYear();
             document.getElementById("inputYear").value = year;
+
+            year = document.getElementById('inputYear').value
 
             var data = {'Year': year}
 
@@ -316,14 +320,15 @@
                     $("#sheetTb").html("");
                     $("#sheetTb2").html("");
                     $("#subTb").html("");
+                    $("#subTb2").html("");
 
                     for (var i = 0; i < list.length; i++) {
 
                         {# 미수/미지급금 계산 #}
-                        for(var j = 2; j < 26; j++){
-                            if(i % 2 == 0){
+                        for (var j = 2; j < 26; j++) {
+                            if (i % 2 == 0) {
                                 Bill += list[i][j]
-                            } else if(i % 2 == 1){
+                            } else if (i % 2 == 1) {
                                 Deposit += list[i][j]
                             }
                         }
@@ -331,39 +336,100 @@
 
                         $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list[i][1] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>매출</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][11]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][12]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][13]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][14]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][15]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][17]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][18]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][19]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][20]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][21]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][22]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][24]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][25]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bill) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Deposit) + "</td>" +
-                            "<td class='text-danger text-end p-1' style='font-size: 0.85rem'>" + addComma(Bal) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem' >" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>매출</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit) + "</td>" +
+                            "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal) + "</td> " +
                             "</tr> ");
+
+                        totalBill_01 += list[i][2];
+                        totalDeposit_01 += list[i][3];
+                        totalBill_02 += list[i][4];
+                        totalDeposit_02 += list[i][5];
+                        totalBill_03 += list[i][6];
+                        totalDeposit_03 += list[i][7];
+                        totalBill_04 += list[i][8];
+                        totalDeposit_04 += list[i][9];
+                        totalBill_05 += list[i][10];
+                        totalDeposit_05 += list[i][11];
+                        totalBill_06 += list[i][12];
+                        totalDeposit_06 += list[i][13];
+                        totalBill_07 += list[i][14];
+                        totalDeposit_07 += list[i][15];
+                        totalBill_08 += list[i][16];
+                        totalDeposit_08 += list[i][17];
+                        totalBill_09 += list[i][18];
+                        totalDeposit_09 += list[i][19];
+                        totalBill_10 += list[i][20];
+                        totalDeposit_10 += list[i][21];
+                        totalBill_11 += list[i][22];
+                        totalDeposit_11 += list[i][23];
+                        totalBill_12 += list[i][24];
+                        totalDeposit_12 += list[i][25];
+                        totalBill += Bill;
+                        totalDeposit += Deposit;
+                        totalBal += Bal;
                     }
+
+                    $("#sheetTb").append(
+                        "<tr id='#totalTr' class='totalTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>입금 소계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_01) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_01) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_03) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_03) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_05) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_05) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_11) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_12) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_12) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit) + "</td>" +
+                        "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal) + "</td> " +
+                        "</tr> ");
 
                     for (var i = 0; i < list2.length; i++) {
 
@@ -379,77 +445,278 @@
 
                         $("#sheetTb2").append(
                             "<tr id='#sheetTr2' class='sheetTr2_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list2[i][1] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>매입</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][3]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][4]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][5]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][6]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][7]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][8]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][9]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][10]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][11]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][12]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][13]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][14]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][15]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][16]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][17]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][18]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][19]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][20]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][21]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][22]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][23]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][24]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][25]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bill2) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Deposit2) + "</td>" +
-                            "<td class='text-danger text-end p-1' style='font-size: 0.85rem'>" + addComma(Bal2) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem' >" + list2[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>매입</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill2) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit2) + "</td>" +
+                            "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal2) + "</td> " +
                             "</tr> ");
-                    }
 
+                        totalBill2_01 += list2[i][2];
+                        totalDeposit2_01 += list2[i][3];
+                        totalBill2_02 += list2[i][4];
+                        totalDeposit2_02 += list2[i][5];
+                        totalBill2_03 += list2[i][6];
+                        totalDeposit2_03 += list2[i][7];
+                        totalBill2_04 += list2[i][8];
+                        totalDeposit2_04 += list2[i][9];
+                        totalBill2_05 += list2[i][10];
+                        totalDeposit2_05 += list2[i][11];
+                        totalBill2_06 += list2[i][12];
+                        totalDeposit2_06 += list2[i][13];
+                        totalBill2_07 += list2[i][14];
+                        totalDeposit2_07 += list2[i][15];
+                        totalBill2_08 += list2[i][16];
+                        totalDeposit2_08 += list2[i][17];
+                        totalBill2_09 += list2[i][18];
+                        totalDeposit2_09 += list2[i][19];
+                        totalBill2_10 += list2[i][20];
+                        totalDeposit2_10 += list2[i][21];
+                        totalBill2_11 += list2[i][22];
+                        totalDeposit2_11 += list2[i][23];
+                        totalBill2_12 += list2[i][24];
+                        totalDeposit2_12 += list2[i][25];
+                        totalBill2 += Bill2;
+                        totalDeposit2 += Deposit2;
+                        totalBal2 += Bal2;
+                    }
+                    $("#sheetTb2").append(
+                        "<tr id='#totalTr2' class='totalTr2_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>출금 소계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_01) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_01) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_03) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_03) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_05) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_05) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_11) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_12) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_12) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit2) + "</td>" +
+                        "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal2) + "</td> " +
+                        "</tr> ");
+
+
+                    {# 집계 비교값 #}
+                    var monthTotal_1 = 0; var monthTotal_2 = 0; var monthTotal_3 = 0; var monthTotal_4 = 0; var monthTotal_5 = 0; var monthTotal_6 = 0;
+                    var monthTotal_7 = 0; var monthTotal_8 = 0; var monthTotal_9 = 0; var monthTotal_10 = 0; var monthTotal_11 = 0; var monthTotal_12 = 0;
 
                     var gubun = '';
                     var gubunName = '';
                     var gbnTotal = 0;
                     for (var i = 0; i < list3.length; i++) {
                         var gubun = list3[i][0]
-                        if(gubun == '1'){
+                        var exception = list3[i][1]
+                        if (gubun == '1') {
                             gubunName = "매입";
                         }
-                         if(gubun == '2'){
+                        if (gubun == '2') {
                             gubunName = "매출";
                         }
 
-                        for(var t = 3; t < 15; t++){
+                        for (var t = 3; t < 15; t++) {
                             gbnTotal += list3[i][t]
                         }
 
                         $("#subTb").append(
                             "<tr id='#subTr' class='subTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list3[i][2] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + gubunName + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][3]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][4]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][5]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][6]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][7]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][8]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][9]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][10]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][11]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][12]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][13]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='2'>" + addComma(list3[i][14]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem' colspan='4'>" + addComma(gbnTotal) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem; max-width: 10rem; background-color: lightpink' >" + list3[i][2] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>" + gubunName + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][3]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][6]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][7]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][11]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][12]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 32rem'>" + addComma(gbnTotal) + "</td> " +
                             "</tr> ");
+
+                        if(gubunName == '매입'){
+
+                            monthTotal_1 -= list3[i][3];
+                            monthTotal_2 -= list3[i][4];
+                            monthTotal_3 -= list3[i][5];
+                            monthTotal_4 -= list3[i][6];
+                            monthTotal_5 -= list3[i][7];
+                            monthTotal_6 -= list3[i][8];
+                            monthTotal_7 -= list3[i][9];
+                            monthTotal_8 -= list3[i][10];
+                            monthTotal_9 -= list3[i][11];
+                            monthTotal_10 -= list3[i][12];
+                            monthTotal_11 -= list3[i][13];
+                            monthTotal_12 -= list3[i][14];
+
+                        }
+                        if (gubunName == '매출') {
+                            monthTotal_1 += list3[i][3];
+                            monthTotal_2 += list3[i][4];
+                            monthTotal_3 += list3[i][5];
+                            monthTotal_4 += list3[i][6];
+                            monthTotal_5 += list3[i][7];
+                            monthTotal_6 += list3[i][8];
+                            monthTotal_7 += list3[i][9];
+                            monthTotal_8 += list3[i][10];
+                            monthTotal_9 += list3[i][11];
+                            monthTotal_10 += list3[i][12];
+                            monthTotal_11 += list3[i][13];
+                            monthTotal_12 += list3[i][14];
+                        }
                     }
+                    {# 마지막 분석 집계 #}
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightblue'>통장잔액</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightblue'>월별집계 비교</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>매출계산서 - 매입계산서</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_01 - totalBill2_01) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_02 - totalBill2_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_03 - totalBill2_03) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_04 - totalBill2_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_05 - totalBill2_05) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_06 - totalBill2_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_07 - totalBill2_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_08 - totalBill2_08) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_09 - totalBill2_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_10 - totalBill2_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_11 - totalBill2_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_12 - totalBill2_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익(원)</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익율</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10)/ totalDeposit_10).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12).toFixed(2)) + "</td>" +
+                        "</tr> ");
+
+
+                    {# *********************************************** #}
+                    var business = "";
+                    var name = "";
+                    var businessName = "";
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>" +
+                        "</tr> ");
+
+                    for (var d = 1; d < 13; d++) {
+                        business = ((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01
+                        if (business <= 0) {
+                            businessName = '부실경영'
+                        } else {
+                            businessName = '정상경영'
+                        }
+                        $(".subTr2_tr").eq(d).append(
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + businessName + "</td> ");
+                    }
+                    {# *********************************************** #}
+
+
                 }
             })
         });
@@ -464,35 +731,34 @@
             var totalDeposit = 0; var totalDeposit2 = 0;
             var totalBal = 0; var totalBal2 = 0;
 
-            var totalBill_01 = 0;
-            var totalDeposit_01 = 0;
-            var totalBill_02 = 0;
-            var totalDeposit_02 = 0;
-            var totalBill_03 = 0;
-            var totalDeposit_03 = 0;
-            var totalBill_04 = 0;
-            var totalDeposit_04 = 0;
-            var totalBill_05 = 0;
-            var totalDeposit_05 = 0;
-            var totalBill_06 = 0;
-            var totalDeposit_06 = 0;
-            var totalBill_07 = 0;
-            var totalDeposit_07 = 0;
-            var totalBill_08 = 0;
-            var totalDeposit_08 = 0;
-            var totalBill_09 = 0;
-            var totalDeposit_09 = 0;
-            var totalBill_10 = 0;
-            var totalDeposit_10 = 0;
-            var totalBill_11 = 0;
-            var totalDeposit_11 = 0;
-            var totalBill_12 = 0;
-            var totalDeposit_12 = 0;
+            var totalBill_01 = 0; var totalBill2_01 = 0;
+            var totalDeposit_01 = 0; var totalDeposit2_01 = 0;
+            var totalBill_02 = 0; var totalBill2_02 = 0;
+            var totalDeposit_02 = 0; var totalDeposit2_02 = 0;
+            var totalBill_03 = 0; var totalBill2_03 = 0;
+            var totalDeposit_03 = 0; var totalDeposit2_03 = 0;
+            var totalBill_04 = 0; var totalBill2_04 = 0;
+            var totalDeposit_04 = 0; var totalDeposit2_04 = 0;
+            var totalBill_05 = 0; var totalBill2_05 = 0;
+            var totalDeposit_05 = 0; var totalDeposit2_05 = 0;
+            var totalBill_06 = 0; var totalBill2_06 = 0;
+            var totalDeposit_06 = 0; var totalDeposit2_06 = 0;
+            var totalBill_07 = 0; var totalBill2_07 = 0;
+            var totalDeposit_07 = 0; var totalDeposit2_07 = 0;
+            var totalBill_08 = 0; var totalBill2_08 = 0;
+            var totalDeposit_08 = 0; var totalDeposit2_08 = 0;
+            var totalBill_09 = 0; var totalBill2_09 = 0;
+            var totalDeposit_09 = 0; var totalDeposit2_09 = 0;
+            var totalBill_10 = 0; var totalBill2_10 = 0;
+            var totalDeposit_10 = 0; var totalDeposit2_10 = 0;
+            var totalBill_11 = 0; var totalBill2_11 = 0;
+            var totalDeposit_11 = 0; var totalDeposit2_11 = 0;
+            var totalBill_12 = 0; var totalBill2_12 = 0;
+            var totalDeposit_12 = 0; var totalDeposit2_12 = 0;
 
+            var year = document.getElementById('inputYear').value
 
-            var year = document.getElementById('inputYear').value;
-
-            let data = {'Year': year}
+            var data = {'Year': year}
 
             $.ajax({
                 type: "post",
@@ -505,16 +771,19 @@
                 success: function (data) {
                     var list = data.mainList;
                     var list2 = data.mainList2;
+                    var list3 = data.totalList;
                     $("#sheetTb").html("");
                     $("#sheetTb2").html("");
+                    $("#subTb").html("");
+                    $("#subTb2").html("");
 
                     for (var i = 0; i < list.length; i++) {
 
                         {# 미수/미지급금 계산 #}
-                        for(var j = 2; j < 26; j++){
-                            if(i % 2 == 0){
+                        for (var j = 2; j < 26; j++) {
+                            if (i % 2 == 0) {
                                 Bill += list[i][j]
-                            } else if(i % 2 == 1){
+                            } else if (i % 2 == 1) {
                                 Deposit += list[i][j]
                             }
                         }
@@ -522,40 +791,100 @@
 
                         $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list[i][1] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>매출</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][6]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][11]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][12]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][13]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][14]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][15]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][17]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][18]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][19]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][20]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][21]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][22]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][24]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][25]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bill) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Deposit) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bal) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem' >" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>매출</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit) + "</td>" +
+                            "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal) + "</td> " +
                             "</tr> ");
+
+                        totalBill_01 += list[i][2];
+                        totalDeposit_01 += list[i][3];
+                        totalBill_02 += list[i][4];
+                        totalDeposit_02 += list[i][5];
+                        totalBill_03 += list[i][6];
+                        totalDeposit_03 += list[i][7];
+                        totalBill_04 += list[i][8];
+                        totalDeposit_04 += list[i][9];
+                        totalBill_05 += list[i][10];
+                        totalDeposit_05 += list[i][11];
+                        totalBill_06 += list[i][12];
+                        totalDeposit_06 += list[i][13];
+                        totalBill_07 += list[i][14];
+                        totalDeposit_07 += list[i][15];
+                        totalBill_08 += list[i][16];
+                        totalDeposit_08 += list[i][17];
+                        totalBill_09 += list[i][18];
+                        totalDeposit_09 += list[i][19];
+                        totalBill_10 += list[i][20];
+                        totalDeposit_10 += list[i][21];
+                        totalBill_11 += list[i][22];
+                        totalDeposit_11 += list[i][23];
+                        totalBill_12 += list[i][24];
+                        totalDeposit_12 += list[i][25];
+                        totalBill += Bill;
+                        totalDeposit += Deposit;
+                        totalBal += Bal;
                     }
 
+                    $("#sheetTb").append(
+                        "<tr id='#totalTr' class='totalTr_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>입금 소계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_01) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_01) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_03) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_03) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_05) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_05) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_11) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_12) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_12) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit) + "</td>" +
+                        "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal) + "</td> " +
+                        "</tr> ");
 
                     for (var i = 0; i < list2.length; i++) {
 
@@ -571,39 +900,278 @@
 
                         $("#sheetTb2").append(
                             "<tr id='#sheetTr2' class='sheetTr2_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem' >" + list2[i][1] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>매입</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>당월</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][3]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][4]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][5]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][6]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][7]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][8]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][9]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][10]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][11]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][12]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][13]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][14]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][15]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][16]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][17]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][18]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][19]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][20]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][21]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][22]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][23]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][24]) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list2[i][25]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bill2) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Deposit2) + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(Bal2) + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem' >" + list2[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>매입</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][3]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][6]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][7]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][11]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][12]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][15]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][17]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][18]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][19]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][20]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][21]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][22]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][23]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][24]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(list2[i][25]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill2) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit2) + "</td>" +
+                            "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal2) + "</td> " +
                             "</tr> ");
+
+                        totalBill2_01 += list2[i][2];
+                        totalDeposit2_01 += list2[i][3];
+                        totalBill2_02 += list2[i][4];
+                        totalDeposit2_02 += list2[i][5];
+                        totalBill2_03 += list2[i][6];
+                        totalDeposit2_03 += list2[i][7];
+                        totalBill2_04 += list2[i][8];
+                        totalDeposit2_04 += list2[i][9];
+                        totalBill2_05 += list2[i][10];
+                        totalDeposit2_05 += list2[i][11];
+                        totalBill2_06 += list2[i][12];
+                        totalDeposit2_06 += list2[i][13];
+                        totalBill2_07 += list2[i][14];
+                        totalDeposit2_07 += list2[i][15];
+                        totalBill2_08 += list2[i][16];
+                        totalDeposit2_08 += list2[i][17];
+                        totalBill2_09 += list2[i][18];
+                        totalDeposit2_09 += list2[i][19];
+                        totalBill2_10 += list2[i][20];
+                        totalDeposit2_10 += list2[i][21];
+                        totalBill2_11 += list2[i][22];
+                        totalDeposit2_11 += list2[i][23];
+                        totalBill2_12 += list2[i][24];
+                        totalDeposit2_12 += list2[i][25];
+                        totalBill2 += Bill2;
+                        totalDeposit2 += Deposit2;
+                        totalBal2 += Bal2;
                     }
+                    $("#sheetTb2").append(
+                        "<tr id='#totalTr2' class='totalTr2_tr'>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>출금 소계</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_01) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_01) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_03) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_03) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_05) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_05) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_08) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_10) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_11) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_12) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_12) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'></td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bill2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Deposit2) + "</td>" +
+                        "<td class='text-danger text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal2) + "</td> " +
+                        "</tr> ");
+
+
+                    {# 집계 비교값 #}
+                    var monthTotal_1 = 0; var monthTotal_2 = 0; var monthTotal_3 = 0; var monthTotal_4 = 0; var monthTotal_5 = 0; var monthTotal_6 = 0;
+                    var monthTotal_7 = 0; var monthTotal_8 = 0; var monthTotal_9 = 0; var monthTotal_10 = 0; var monthTotal_11 = 0; var monthTotal_12 = 0;
+
+                    var gubun = '';
+                    var gubunName = '';
+                    var gbnTotal = 0;
+                    for (var i = 0; i < list3.length; i++) {
+                        var gubun = list3[i][0]
+                        var exception = list3[i][1]
+                        if (gubun == '1') {
+                            gubunName = "매입";
+                        }
+                        if (gubun == '2') {
+                            gubunName = "매출";
+                        }
+
+                        for (var t = 3; t < 15; t++) {
+                            gbnTotal += list3[i][t]
+                        }
+
+                        $("#subTb").append(
+                            "<tr id='#subTr' class='subTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem; max-width: 10rem; background-color: lightpink' >" + list3[i][2] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>" + gubunName + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>당월</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][3]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][4]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][5]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][6]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][7]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][8]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][9]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][10]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][11]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][12]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][13]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][14]) + "</td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 32rem'>" + addComma(gbnTotal) + "</td> " +
+                            "</tr> ");
+
+                        if(gubunName == '매입'){
+
+                            monthTotal_1 -= list3[i][3];
+                            monthTotal_2 -= list3[i][4];
+                            monthTotal_3 -= list3[i][5];
+                            monthTotal_4 -= list3[i][6];
+                            monthTotal_5 -= list3[i][7];
+                            monthTotal_6 -= list3[i][8];
+                            monthTotal_7 -= list3[i][9];
+                            monthTotal_8 -= list3[i][10];
+                            monthTotal_9 -= list3[i][11];
+                            monthTotal_10 -= list3[i][12];
+                            monthTotal_11 -= list3[i][13];
+                            monthTotal_12 -= list3[i][14];
+
+                        }
+                        if (gubunName == '매출') {
+                            monthTotal_1 += list3[i][3];
+                            monthTotal_2 += list3[i][4];
+                            monthTotal_3 += list3[i][5];
+                            monthTotal_4 += list3[i][6];
+                            monthTotal_5 += list3[i][7];
+                            monthTotal_6 += list3[i][8];
+                            monthTotal_7 += list3[i][9];
+                            monthTotal_8 += list3[i][10];
+                            monthTotal_9 += list3[i][11];
+                            monthTotal_10 += list3[i][12];
+                            monthTotal_11 += list3[i][13];
+                            monthTotal_12 += list3[i][14];
+                        }
+                    }
+                    {# 마지막 분석 집계 #}
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightblue'>통장잔액</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightblue'>월별집계 비교</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>매출계산서 - 매입계산서</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_01 - totalBill2_01) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_02 - totalBill2_02) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_03 - totalBill2_03) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_04 - totalBill2_04) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_05 - totalBill2_05) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_06 - totalBill2_06) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_07 - totalBill2_07) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_08 - totalBill2_08) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_09 - totalBill2_09) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_10 - totalBill2_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_11 - totalBill2_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_12 - totalBill2_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익(원)</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "</tr> ");
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익율</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10)/ totalDeposit_10).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12).toFixed(2)) + "</td>" +
+                        "</tr> ");
+
+
+                    {# *********************************************** #}
+                    var business = "";
+                    var name = "";
+                    var businessName = "";
+                    $("#subTb2").append(
+                        "<tr id='#subTr2' class='subTr2_Tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>" +
+                        "</tr> ");
+
+                    for (var d = 1; d < 13; d++) {
+                        business = ((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01
+                        if (business <= 0) {
+                            businessName = '부실경영'
+                        } else {
+                            businessName = '정상경영'
+                        }
+                        $(".subTr2_tr").eq(d).append(
+                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + businessName + "</td> ");
+                    }
+                    {# *********************************************** #}
+
+
                 }
             })
         });

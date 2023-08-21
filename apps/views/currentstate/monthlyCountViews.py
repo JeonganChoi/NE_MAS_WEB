@@ -24,17 +24,17 @@ def montlyCountViews_search(request):
 
     # 매입/매출
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.OPT, B.MCODENM FROM OSBILL A LEFT OUTER JOIN OSCODEM B ON A.OPT = B.MCODE "
+        cursor.execute(" SELECT A.OPT, B.MCODENM, B.GBN2 FROM OSBILL A LEFT OUTER JOIN OSCODEM B ON A.OPT = B.MCODE "
                        "    WHERE YEAR(BAL_DD) = '" + year + "' "
-                       "    GROUP BY A.OPT, B.MCODENM ")
+                       "    GROUP BY A.OPT, B.MCODENM, B.GBN2 ")
         headresult = cursor.fetchall()
         print(headresult)
 
     # 입금/출금
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.MCODE, B.MCODENM FROM SISACCTT A LEFT OUTER JOIN OSCODEM B ON A.MCODE = B.MCODE"
+        cursor.execute(" SELECT A.MCODE, B.MCODENM, B.GBN2 FROM SISACCTT A LEFT OUTER JOIN OSCODEM B ON A.MCODE = B.MCODE"
                        "    WHERE YEAR(ACDATE) = '" + year + "' "
-                       "    GROUP BY A.MCODE, B.MCODENM ")
+                       "    GROUP BY A.MCODE, B.MCODENM, B.GBN2 ")
         headresult2 = cursor.fetchall()
         print(headresult2)
 
@@ -44,9 +44,9 @@ def montlyCountViews_search(request):
                        "        , IFNULL(SUM(AA.MONTH04), 0) AS MONTH04, IFNULL(SUM(AA.MONTH05), 0) AS MONTH05, IFNULL(SUM(AA.MONTH06), 0) AS MONTH06 "
                        "        , IFNULL(SUM(AA.MONTH07), 0) AS MONTH07, IFNULL(SUM(AA.MONTH08), 0) AS MONTH08, IFNULL(SUM(AA.MONTH09), 0) AS MONTH09 "
                        "        , IFNULL(SUM(AA.MONTH10), 0) AS MONTH10, IFNULL(SUM(AA.MONTH11), 0) AS MONTH11, IFNULL(SUM(AA.MONTH12), 0) AS MONTH12"
-                       "        , AA.OPT, AA.MCODENM, AA.YEAR "
+                       "        , AA.OPT, AA.MCODENM, AA.GBN2, AA.YEAR "
                        " FROM "
-                       "     ( SELECT        A.OPT, B.MCODENM, YEAR(BAL_DD) AS YEAR "
+                       "     ( SELECT        A.OPT, B.MCODENM, B.GBN2, YEAR(BAL_DD) AS YEAR "
                        "                   , (CASE WHEN MONTH(BAL_DD) = '01' THEN SUM(AMTS) END) AS MONTH01 "
                        "                   , (CASE WHEN MONTH(BAL_DD) = '02' THEN SUM(AMTS) END) AS MONTH02 "
                        "                   , (CASE WHEN MONTH(BAL_DD) = '03' THEN SUM(AMTS) END) AS MONTH03 "
@@ -63,8 +63,8 @@ def montlyCountViews_search(request):
                        "              LEFT OUTER JOIN OSCODEM B "
                        "              ON A.OPT = B.MCODE "
                        "              WHERE YEAR(BAL_DD) = '" + year + "' "
-                       "              GROUP BY A.OPT, B.MCODENM, MONTH(A.BAL_DD), BAL_DD "
-                       "              ORDER BY MONTH(A.BAL_DD)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '2023' GROUP BY AA.OPT, AA.MCODENM, AA.YEAR ");
+                       "              GROUP BY A.OPT, B.MCODENM, B.GBN2, MONTH(A.BAL_DD), BAL_DD "
+                       "              ORDER BY MONTH(A.BAL_DD)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '" + year + "' GROUP BY AA.OPT, AA.MCODENM, AA.GBN2, AA.YEAR ");
         mainresult = cursor.fetchall()
         print(mainresult)
 
@@ -74,9 +74,9 @@ def montlyCountViews_search(request):
                        "           , IFNULL(SUM(AA.MONTH04), 0) AS MONTH04, IFNULL(SUM(AA.MONTH05), 0) AS MONTH05, IFNULL(SUM(AA.MONTH06), 0) AS MONTH06 "
                        "           , IFNULL(SUM(AA.MONTH07), 0) AS MONTH07, IFNULL(SUM(AA.MONTH08), 0) AS MONTH08, IFNULL(SUM(AA.MONTH09), 0) AS MONTH09 "
                        "           , IFNULL(SUM(AA.MONTH10), 0) AS MONTH10, IFNULL(SUM(AA.MONTH11), 0) AS MONTH11, IFNULL(SUM(AA.MONTH12), 0) AS MONTH12"
-                       "           , AA.MCODE, AA.MCODENM, AA.YEAR "
+                       "           , AA.MCODE, AA.MCODENM, AA.GBN2, AA.YEAR "
                        " FROM "
-                       "     ( SELECT        A.MCODE, B.MCODENM, YEAR(ACDATE) AS YEAR "
+                       "     ( SELECT        A.MCODE, B.MCODENM, B.GBN2, YEAR(ACDATE) AS YEAR "
                        "                   , (CASE WHEN MONTH(ACDATE) = '01' THEN SUM(ACAMTS) END) AS MONTH01 "
                        "                   , (CASE WHEN MONTH(ACDATE) = '02' THEN SUM(ACAMTS) END) AS MONTH02 "
                        "                   , (CASE WHEN MONTH(ACDATE) = '03' THEN SUM(ACAMTS) END) AS MONTH03 "
@@ -93,8 +93,8 @@ def montlyCountViews_search(request):
                        "              LEFT OUTER JOIN OSCODEM B "
                        "              ON A.MCODE = B.MCODE "
                        "              WHERE YEAR(ACDATE) = '" + year + "' "
-                       "              GROUP BY A.MCODE, B.MCODENM, MONTH(A.ACDATE), ACDATE "
-                       "              ORDER BY MONTH(A.ACDATE)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '2023' GROUP BY AA.MCODE, AA.MCODENM, AA.YEAR ");
+                       "              GROUP BY A.MCODE, B.MCODENM, B.GBN2, MONTH(A.ACDATE), ACDATE "
+                       "              ORDER BY MONTH(A.ACDATE)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '" + year + "' GROUP BY AA.MCODE, AA.MCODENM, AA.GBN2, AA.YEAR ");
 
         mainresult2 = cursor.fetchall()
         print(mainresult2)
