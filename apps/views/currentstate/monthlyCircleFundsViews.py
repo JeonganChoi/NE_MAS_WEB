@@ -17,6 +17,7 @@ def montlyCircleFundsViews(request):
 def montlyCircleFundsViews_search(request):
     year = request.POST.get('Year')
 
+    # 매출/ 입금
     with connection.cursor() as cursor:
         cursor.execute(" SELECT UP_CODE, CUST_NME "
                         "        , IFNULL(SUM(MONTH01), 0), IFNULL(SUM(MONTH01_IN), 0), IFNULL(SUM(MONTH02), 0), IFNULL(SUM(MONTH02_IN), 0) "
@@ -88,12 +89,12 @@ def montlyCircleFundsViews_search(request):
                         "    LEFT OUTER JOIN MIS1TB003 B "
                         "    ON A.ACCUST = B.CUST_NBR "
                         "    WHERE YEAR(A.ACDATE) = '" + year + "' "
-                        "    AND ACIOGB = '1' "
+                        "    AND ACIOGB = '2' "
                         "    AND ACGUBN = '2' "
                         "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE ) AA GROUP BY AA.UP_CODE, AA.CUST_NME ")
         mainresult = cursor.fetchall()
 
-
+    # 매입/출금
     with connection.cursor() as cursor:
         cursor.execute(" SELECT UP_CODE, CUST_NME "
                        "        , IFNULL(SUM(MONTH01), 0), IFNULL(SUM(MONTH01_IN), 0), IFNULL(SUM(MONTH02), 0), IFNULL(SUM(MONTH02_IN), 0) "
@@ -165,7 +166,7 @@ def montlyCircleFundsViews_search(request):
                        "    LEFT OUTER JOIN MIS1TB003 B "
                        "    ON A.ACCUST = B.CUST_NBR "
                        "    WHERE YEAR(A.ACDATE) = '" + year + "' "
-                       "    AND ACIOGB = '2' "
+                       "    AND ACIOGB = '1' "
                        "    AND ACGUBN = '2' "
                        "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE ) AA GROUP BY AA.UP_CODE, AA.CUST_NME ")
         mainresult2 = cursor.fetchall()

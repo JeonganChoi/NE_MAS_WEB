@@ -1,0 +1,198 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 내역별 잔액 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+    <style>
+        div#byCust table {
+            {#보더 부분에 왼쪽으로 스크롤 할 때 비쳤던거 방지#}
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(1), div#byCust table tr:nth-child(1) th:nth-child(2), div#byCust table td:nth-child(1), div#byCust table td:nth-child(2) {
+            position: sticky;
+            z-index: 4 !important;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(1), div#byCust table td:nth-child(1) {
+            min-width: 12rem;
+            left: 0;
+        }
+        div#byCust table tr:nth-child(1) th:nth-child(2), div#byCust table td:nth-child(2) {
+            left: 12rem;
+            min-width: 10rem;
+        }
+
+        div#byCust table tbody#custTb td {
+            background-color: white;
+        }
+        div#byCust table tbody#custTotalTb td {
+            background-color: #c9dae1;
+        }
+
+        div#byItem table {
+            {#보더 부분에 왼쪽으로 스크롤 할 때 비쳤던거 방지#}
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(1), div#byItem table tr:nth-child(1) th:nth-child(2), div#byItem table tr:nth-child(1) th:nth-child(3), div#byItem table tr:nth-child(1) th:nth-child(4), div#byItem table tr:nth-child(1) th:nth-child(5), div#byItem table tr:nth-child(1) th:nth-child(6),
+        div#byItem table td:nth-child(1), div#byItem table td:nth-child(2), div#byItem table td:nth-child(3), div#byItem table td:nth-child(4), div#byItem table td:nth-child(5), div#byItem table td:nth-child(6) {
+            position: sticky;
+            z-index: 4 !important;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(1), div#byItem table td:nth-child(1) {
+            min-width: 12rem;
+            left: 0;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(2), div#byItem table td:nth-child(2) {
+            left: 12rem;
+            min-width: 8rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(3), div#byItem table td:nth-child(3) {
+            min-width: 6rem;
+            left: 20rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(4), div#byItem table td:nth-child(4) {
+            left: 26rem;
+            min-width: 6rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(5), div#byItem table td:nth-child(5) {
+            min-width: 6rem;
+            left: 32rem;
+        }
+        div#byItem table tr:nth-child(1) th:nth-child(6), div#byItem table td:nth-child(6) {
+            left: 38rem;
+            min-width: 6rem;
+        }
+
+        div#byItem table tbody#itemTb td {
+            background-color: white;
+        }
+        div#byItem table tbody#itemTotalTb td {
+            background-color: #c9dae1;
+        }
+    </style>
+
+    <!--<div class="pt-6 pb-6 bg-cover height-100"
+         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>-->
+    <div class="px-5 py-4 container-fluid">
+        <div class="row mt-n1">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
+                    <div class="card-body">
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>내역별 잔액</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 col-1"></div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card">
+                    <div class="card-header border border-light border-top-0 border-end-0 border-start-0 pb-0">
+                        <div class="row">
+                            <div class="col-lg-4 col-4 text-start">
+                              <div class="input-group shadow-none">
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>년월</label>
+                                  <input class="form-control border border-light rounded-1 text-center me-2" type="month" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                              </div>
+                            </div>
+                            <div class="col-lg-1 col-1 text-end">
+                              <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-0 py-0 card-body">
+                        <div class="row">
+                            <div class="col-lg-9 col-9">
+                                <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>날짜별 내역서</h6>
+                                <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                    <table class="table mb-0 align-items-center justify-content-center">
+                                        <colgroup>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="15%"/>
+                                            <col width="8%"/>
+                                            <col width="6%"/>
+                                        </colgroup>
+                                        <thead class="bg-dark text-white font-weight-bolder">
+                                        <tr>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래일시</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">맡기신 금액</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">찾으신 금액</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">잔금</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래처</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">내역</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">처리</th>
+                                        </tr>
+                                        </thead>
+                                      <tbody id="sheetTb">
+                                        <tr id="#sheetTr" class="sheetTr_tr">
+
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table>
+                                        <colgroup>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="15%"/>
+                                            <col width="8%"/>
+                                            <col width="6%"/>
+                                        </colgroup>
+                                        <tbody class="text-dark" id="subTb">
+                                            <tr id="#subTr" class="subTr_tr">
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-3">
+                                <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>계정별 총액</h6>
+                                <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                    <table class="table mb-0 align-items-center justify-content-center">
+                                        <colgroup>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                        </colgroup>
+                                        <thead class="bg-dark text-white font-weight-bolder">
+                                        <tr>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">총 금액</th>
+                                        </tr>
+                                        </thead>
+                                      <tbody id="acTb">
+                                        <tr id="#acTr" class="acTr_tr">
+
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+    </script>
+{% endblock %}
