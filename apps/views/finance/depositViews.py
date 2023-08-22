@@ -228,8 +228,8 @@ def depositRegOutList_search(request):
             cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
                            "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
                            "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
-                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'')"
-                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
+                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'') "
+                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'') "
                            "    , IFNULL(A.ACDESC,''), IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
@@ -248,9 +248,9 @@ def depositRegOutList_search(request):
                            "    ON A.ACGUNO_BK = F.RESKEY "
                            "    AND F.RECODE = 'BNK' "
                            "    WHERE A.ACIOGB = '2' "
-                           "    AND A.ACCUST = '" + str(upCode) + "'"
-                           "    AND A.ACDATE = '" + str(date) + "'"
-                           "    AND A.ACSEQN = '" + str(seq) + "'")
+                           "    AND A.ACCUST = '" + str(upCode) + "' "
+                           "    AND A.ACDATE = '" + str(date) + "' "
+                           "    AND A.ACSEQN = '" + str(seq) + "' ")
             modalform = cursor.fetchall()
 
         # 거래처
@@ -332,7 +332,7 @@ def depositRegOutList_search(request):
                 cboAcnumber = cursor.fetchall()
 
             with connection.cursor() as cursor:
-                cursor.execute("SELECT  A.SERIAL_NUM, A.BAL_DD, A.OPT, B.MCODENM, A.AMTS, A.PASS_AMT FROM OSBILL A "
+                cursor.execute(" SELECT  A.SERIAL_NUM, A.BAL_DD, A.OPT, B.MCODENM, A.AMTS, A.PASS_AMT FROM OSBILL A "
                                "     LEFT OUTER JOIN OSCODEM B "
                                "     ON A.OPT = B.MCODE "
                                "     AND A.AMTS > A.PASS_AMT "

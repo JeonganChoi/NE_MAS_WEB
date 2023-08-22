@@ -434,10 +434,10 @@
                     for (var i = 0; i < list2.length; i++) {
 
                         {# 미수/미지급금 계산 #}
-                        for(var j = 2; j < 26; j++){
-                            if(i % 2 == 0){
+                        for (var j = 2; j < 26; j++) {
+                            if (i % 2 == 0) {
                                 Bill2 += list2[i][j]
-                            } else if(i % 2 == 1){
+                            } else if (i % 2 == 1) {
                                 Deposit2 += list2[i][j]
                             }
                         }
@@ -541,8 +541,18 @@
 
 
                     {# 집계 비교값 #}
-                    var monthTotal_1 = 0; var monthTotal_2 = 0; var monthTotal_3 = 0; var monthTotal_4 = 0; var monthTotal_5 = 0; var monthTotal_6 = 0;
-                    var monthTotal_7 = 0; var monthTotal_8 = 0; var monthTotal_9 = 0; var monthTotal_10 = 0; var monthTotal_11 = 0; var monthTotal_12 = 0;
+                    var monthTotal_1 = 0;
+                    var monthTotal_2 = 0;
+                    var monthTotal_3 = 0;
+                    var monthTotal_4 = 0;
+                    var monthTotal_5 = 0;
+                    var monthTotal_6 = 0;
+                    var monthTotal_7 = 0;
+                    var monthTotal_8 = 0;
+                    var monthTotal_9 = 0;
+                    var monthTotal_10 = 0;
+                    var monthTotal_11 = 0;
+                    var monthTotal_12 = 0;
 
                     var gubun = '';
                     var gubunName = '';
@@ -581,7 +591,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 32rem'>" + addComma(gbnTotal) + "</td> " +
                             "</tr> ");
 
-                        if(gubunName == '매입'){
+                        if (gubunName == '매입') {
 
                             monthTotal_1 -= list3[i][3];
                             monthTotal_2 -= list3[i][4];
@@ -689,9 +699,9 @@
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07).toFixed(2)) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08).toFixed(2)) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10)/ totalDeposit_10).toFixed(2)) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12).toFixed(2)) + "</td>" +
                         "</tr> ");
                     $("#subTb2").append(
                         `<tr id='#subTr2' class='subTr2_Tr'>
@@ -705,33 +715,10 @@
                             <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07) <= 0 ? '부실경영' : '정상경영'}</td>
                             <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08) <= 0 ? '부실경영' : '정상경영'}</td>
                             <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10)/ totalDeposit_10) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12) <= 0 ? '부실경영' : '정상경영'}</td>
                         </tr>`);
-
-                    {# *********************************************** #}
-                    {#var business = "";#}
-                    {#var name = "";#}
-                    {#var businessName = "";#}
-                    {#$("#subTb2").append(#}
-                    {#    "<tr id='#subTr2' class='subTr2_Tr'>" +#}
-                    {#    "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>" +#}
-                    {#    "</tr> ");#}
-                    {##}
-                    {#for (var d = 1; d < 13; d++) {#}
-                    {#    business = ((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01#}
-                    {#    if (business <= 0) {#}
-                    {#        businessName = '부실경영'#}
-                    {#    } else {#}
-                    {#        businessName = '정상경영'#}
-                    {#    }#}
-                    {#    $(".subTr2_tr").eq(d).append(#}
-                    {#        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + businessName + "</td> ");#}
-                    {#}#}
-                    {# *********************************************** #}
-
-
                 }
             })
         });
@@ -739,7 +726,7 @@
 
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
-            var Bill = 0; var Bill2 = 0;
+                        var Bill = 0; var Bill2 = 0;
             var Deposit = 0; var Deposit2 = 0;
             var Bal = 0; var Bal2 = 0;
             var totalBill = 0; var totalBill2 = 0;
@@ -771,7 +758,7 @@
             var totalBill_12 = 0; var totalBill2_12 = 0;
             var totalDeposit_12 = 0; var totalDeposit2_12 = 0;
 
-            var year = document.getElementById('inputYear').value
+            year = document.getElementById('inputYear').value
 
             var data = {'Year': year}
 
@@ -904,10 +891,10 @@
                     for (var i = 0; i < list2.length; i++) {
 
                         {# 미수/미지급금 계산 #}
-                        for(var j = 2; j < 26; j++){
-                            if(i % 2 == 0){
+                        for (var j = 2; j < 26; j++) {
+                            if (i % 2 == 0) {
                                 Bill2 += list2[i][j]
-                            } else if(i % 2 == 1){
+                            } else if (i % 2 == 1) {
                                 Deposit2 += list2[i][j]
                             }
                         }
@@ -1011,8 +998,18 @@
 
 
                     {# 집계 비교값 #}
-                    var monthTotal_1 = 0; var monthTotal_2 = 0; var monthTotal_3 = 0; var monthTotal_4 = 0; var monthTotal_5 = 0; var monthTotal_6 = 0;
-                    var monthTotal_7 = 0; var monthTotal_8 = 0; var monthTotal_9 = 0; var monthTotal_10 = 0; var monthTotal_11 = 0; var monthTotal_12 = 0;
+                    var monthTotal_1 = 0;
+                    var monthTotal_2 = 0;
+                    var monthTotal_3 = 0;
+                    var monthTotal_4 = 0;
+                    var monthTotal_5 = 0;
+                    var monthTotal_6 = 0;
+                    var monthTotal_7 = 0;
+                    var monthTotal_8 = 0;
+                    var monthTotal_9 = 0;
+                    var monthTotal_10 = 0;
+                    var monthTotal_11 = 0;
+                    var monthTotal_12 = 0;
 
                     var gubun = '';
                     var gubunName = '';
@@ -1051,7 +1048,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 32rem'>" + addComma(gbnTotal) + "</td> " +
                             "</tr> ");
 
-                        if(gubunName == '매입'){
+                        if (gubunName == '매입') {
 
                             monthTotal_1 -= list3[i][3];
                             monthTotal_2 -= list3[i][4];
@@ -1159,34 +1156,26 @@
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07).toFixed(2)) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08).toFixed(2)) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10)/ totalDeposit_10).toFixed(2)) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11)/ totalDeposit_11).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12)/ totalDeposit_12).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12).toFixed(2)) + "</td>" +
                         "</tr> ");
-
-
-                    {# *********************************************** #}
-                    var business = "";
-                    var name = "";
-                    var businessName = "";
                     $("#subTb2").append(
-                        "<tr id='#subTr2' class='subTr2_Tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>" +
-                        "</tr> ");
-
-                    for (var d = 1; d < 13; d++) {
-                        business = ((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01
-                        if (business <= 0) {
-                            businessName = '부실경영'
-                        } else {
-                            businessName = '정상경영'
-                        }
-                        $(".subTr2_tr").eq(d).append(
-                            "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + businessName + "</td> ");
-                    }
-                    {# *********************************************** #}
-
-
+                        `<tr id='#subTr2' class='subTr2_Tr'>
+                            <td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12) <= 0 ? '부실경영' : '정상경영'}</td>
+                        </tr>`);
                 }
             })
         });

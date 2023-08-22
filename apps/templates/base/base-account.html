@@ -17,7 +17,7 @@
                     <button type="button" class="mb-0 mb-2 btn btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                           <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
-                    <button type="submit" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                    <button type="button" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
                           <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
                     <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
@@ -113,7 +113,7 @@
                             </div>
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem">월 납입액</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="number" id="txtAmount" name="txtAmount"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" value="0" type="text" id="txtAmount" name="txtAmount"/>
                             </div>
                         </div>
                         <div class="row">
@@ -263,7 +263,12 @@
                         $("#txtRegDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtExpireDate").val(list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtActName").val(list[i][3])
-                        $("#txtAmount").val(list[i][6])
+                        if(list[i][6] == ''){
+                            $("#txtAmount").val(0)
+                        }
+                        else{
+                             $("#txtAmount").val(list[i][6])
+                        }
                         $("#txtRemark").val(list[i][7])
                         $("#txtUser").val(list[i][8])
                         bankType = list[i][0];
@@ -318,6 +323,7 @@
                 },
                 success: function (data) {
                     if(data.sucYn === 'Y'){
+                        alert('저장 되었습니다.')
                         location.href = "{% url 'base_account' %}";
                     }
                 }
@@ -358,6 +364,7 @@
                             'X-CSRFTOKEN': '{{ csrf_token }}'
                         },
                         success: function (data) {
+                            alert('삭제 되었습니다.')
                             location.href = "{% url 'base_account' %}";
                         }
 

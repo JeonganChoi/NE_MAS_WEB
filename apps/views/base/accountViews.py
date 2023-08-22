@@ -88,7 +88,6 @@ def accountViews_save(request):
     # inepno = request.session['userid']
     # utepno = request.session['userid']
     if inepno is None or inepno == '':
-        accPrc = 0
         with connection.cursor() as cursor:
             cursor.execute(" INSERT INTO ACNUMBER "
                            "   ("
@@ -109,9 +108,9 @@ def accountViews_save(request):
                            ",   '" + str(bankCode) + "' "
                            ",   '" + str(strDate) + "' "
                            ",   '" + str(endDate) + "' "
-                           ",   '" + int(accPrc) + "' "
+                           ",   '" + str(accPrc) + "' "
                            ",   '" + str(remark) + "' "
-                           ",   '" + str(inepno) + "' "
+                           ",   '101' "
                            ",   date_format(now(), '%Y%m%d') "
                            "    ) "
                            )
@@ -126,9 +125,9 @@ def accountViews_save(request):
                            ",    ACBKCD = '" + str(bankCode) + "' "
                            ",    ACINDTE = '" + str(strDate) + "' "
                            ",    ACENDTE = '" + str(endDate) + "' "
-                           ",    ACPAY = '" + int(accPrc) + "' "
+                           ",    ACPAY = '" + str(accPrc) + "' "
                            ",    ACDESC = '" + str(remark) + "' "
-                           ",    UEPNO = '" + str(user) + "' "
+                           ",    UEPNO = '" + str(inepno) + "' "
                            ",    UDATE = date_format(now(), '%Y%m%d') "
                            "     WHERE ACNUMBER = '" + str(accNum) + "' "
                            )
