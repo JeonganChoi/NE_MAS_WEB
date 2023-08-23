@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-        <form method="post" action="{% url 'base_emp_save' %}">
+        <form method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -174,6 +174,10 @@
                                 <label class="mt-4" style="font-size: 0.8rem">부 서</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDpt" id="cboDpt"></select>
                             </div>
+                            <div hidden class="col-2">
+                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>입력 사번</label>
+                                <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,8 +198,8 @@
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
-            document.getElementById('txtEmployDate').valueAsDate = new Date
-            document.getElementById('txtQuitDate').valueAsDate = new Date
+            {#document.getElementById('txtEmployDate').valueAsDate = new Date#}
+            {#document.getElementById('txtQuitDate').valueAsDate = new Date#}
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
@@ -452,8 +456,46 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            $('form').submit();
+            var empNo = $("#txtEmpNo").val()
+            var empNm = $("#txtEmpName").val()
+            var empPW = document.getElementById('txtEmpPw').value
+            var empDpt = document.getElementById('cboDpt').value
+            var empGroup = document.getElementById('cboGroup').value
+            var empCom = document.getElementById('cboCom').value
+            var empTel = document.getElementById('txtEmpTel').value
+            var empRDate = document.getElementById('txtEmployDate').value
+            var empQDate = document.getElementById('txtQuitDate').value
+            var inepno = document.getElementById('txtEmp').value
 
+            if(empNo == '')
+            {
+                alert("사번을 입력해주세요.")
+                return false
+            }
+            if(empPW == '')
+            {
+                alert("비밀번호를 입력해주세요.")
+                return false
+            }
+
+            let data = {'empNo': empNo,'empNm': empNm,'empPW': empPW
+            , 'empDpt': empDpt, 'empGroup': empGroup, 'empCom': empCom, 'empTel': empTel, 'empRDate': empRDate, 'empQDate': empQDate, 'inepno': inepno}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_emp_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'base_emp' %}";
+                    }
+                }
+            });
         });
 
         {#체크한 내용 삭제#}

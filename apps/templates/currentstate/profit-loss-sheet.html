@@ -30,7 +30,7 @@
                             <div class="col-lg-3 col-3 text-start">
                               <div class="input-group shadow-none">
                                   <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>년월</label>
-                                  <input class="form-control border border-light rounded-1 text-center me-2" type="month" name="inputStrDate" id="inputStrDate" style="max-width: 8rem;height: 2rem; font-size: 0.8rem">
+                                  <input class="form-control border border-light rounded-1 text-center me-2" type="month" name="inputYM" id="inputYM" style="max-width: 8rem;height: 2rem; font-size: 0.8rem">
                               </div>
                             </div>
                             <div class="col-lg-1 col-1 text-end">
@@ -82,5 +82,33 @@
 
 {% block javascripts %}
     <script>
+        $(document).ready(function () {
+
+            date = new Date();
+            var year = date.getFullYear().toString();
+            var month = (date.getMonth()+1).toString();
+            month = month.padStart(2, '0')
+            var fdate = year + month
+            document.getElementById("inputYM").value = fdate.replace(/(\d{4})(\d{2})/g, '$1-$2');
+
+            var ym = document.getElementById('inputYear').value
+
+            var data = {'ym': ym}
+
+            $.ajax({
+            type: "post",
+            data: data,
+            url: '{% url "monthly_profit_loss_search" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.headerList;
+
+            }
+            })
+        });
+
     </script>
 {% endblock %}

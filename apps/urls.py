@@ -3,7 +3,7 @@ from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews, financeSearchViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
-    , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews
+    , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
 
 urlpatterns = [
     path('', redirectToMain, name="redirectToMain"),
@@ -108,6 +108,10 @@ urlpatterns = [
          name='ym_account_search'),
 
     #  자금 현황
+    # 내역별 잔액
+    path('receipts_payments/', receiptPaymentViews.receiptPaymentViews, name='receipts_payments'),
+    path('receipts_payments_search/', receiptPaymentViews.receiptPaymentViews_search, name='receipts_payments_search'),
+
     # 은행 내역서
     path('receive_pay/', receivepayViews.receivepaySheetViews, name='receive_pay'),
     path('receive_pay_search/', receivepayViews.receivepaySheetViews_search, name='receive_pay_search'),
@@ -125,6 +129,7 @@ urlpatterns = [
 
     # 손익 계산서
     path('monthly_profit_loss/', monthlyProfitLossViews.montlyProfitLossViews, name='monthly_profit_loss'),
+    path('monthly_profit_loss_search/', monthlyProfitLossViews.montlyProfitLossViews_search, name='monthly_profit_loss_search'),
 
     # 내역별 잔액
     path('breakdown_balance/', breakdownBalanceViews.breakdownBalanceViews, name='breakdown_balance'),

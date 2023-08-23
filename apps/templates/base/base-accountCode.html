@@ -544,6 +544,7 @@
                 success: function (data) {
 
                     if(data.sucYn === 'Y'){
+                        alert('저장되었습니다.')
                         location.href = "{% url 'base_accountCode' %}";
                     }
                 }
@@ -594,6 +595,7 @@
                 },
                 success: function (data) {
                     if(data.sucYn === 'Y'){
+                        alert('저장되었습니다.')
                         location.href = "{% url 'base_accountCode' %}";
                     }
                 }

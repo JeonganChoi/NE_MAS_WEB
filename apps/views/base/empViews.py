@@ -233,80 +233,70 @@ def empViews_save(request):
         empTel = request.POST.get('txtEmpTel')
         empIpsa = request.POST.get('txtEmployDate').replace('-', '')
         empTesa = request.POST.get('txtQuitDate').replace('-', '')
-        empBom = request.POST.get('cboBom')
-        empBom1 = request.POST.get('cboBom1')
-        empBom2 = request.POST.get('cboBom2')
-        empBom3 = request.POST.get('cboBom3')
         inepno = '101'
         utepno = '101'
         # inepno = request.session['userid']
         # utepno = request.session['userid']
 
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO PIS1TB001 "
-                           "   ("
-                           "     EMP_NBR "
-                           ",    EMP_NME "
-                           ",    EMP_PASS "
-                           ",    EMP_DEPT "
-                           ",    EMP_GBN "
-                           ",    EMP_JO "
-                           ",    EMP_COM "
-                           ",    EMP_TEL "
-                           ",    EMP_IPSA "
-                           ",    EMP_TESA "
-                           ",    EMP_PRC "
-                           ",    EMP_PRC1 "
-                           ",    EMP_PRC2 "
-                           ",    EMP_PRC3 "
-                           ",    CRE_DT "
-                           ",    CRE_USER "
-                           ") "
-                           "    VALUES "
-                           "    ("
-                           "    '" + empNbr + "'"
-                           ",   '" + str(empNme) + "'"
-                           ",   '" + str(empPass) + "'"
-                           ",   '" + str(empDept) + "'"
-                           ",   '" + str(empGbn) + "'"
-                           ",   '" + str(empJo) + "'"
-                           ",   '" + str(empCom) + "'"
-                           ",   '" + str(empTel) + "'"
-                           ",   '" + str(empIpsa) + "'"
-                           ",   '" + str(empTesa) + "'"
-                           ",   '" + str(empBom) + "'"
-                           ",   '" + str(empBom1) + "'"
-                           ",   '" + str(empBom2) + "'"
-                           ",   '" + str(empBom3) + "'"
-                           ",   '" + str(inepno) + "'"
-                           ",   date_format(now(), '%Y%m%d')"
-                           "    ) "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
-                           "     EMP_NME  = '" + str(empNme) + "' "
-                           ",    EMP_PASS = '" + str(empPass) + "' "
-                           ",    EMP_DEPT = '" + str(empDept) + "' "
-                           ",    EMP_GBN  = '" + str(empGbn) + "' "
-                           ",    EMP_JO  = '" + str(empJo) + "' "
-                           ",    EMP_COM  = '" + str(empCom) + "' "
-                           ",    EMP_TEL  = '" + str(empTel) + "' "
-                           ",    EMP_IPSA = '" + str(empIpsa) + "' "
-                           ",    EMP_TESA = '" + str(empTesa) + "'  "
-                           ",    EMP_PRC  = '" + str(empBom) + "' "
-                           ",    EMP_PRC1  = '" + str(empBom1) + "' "
-                           ",    EMP_PRC2 = '" + str(empBom2) + "' "
-                           ",    EMP_PRC3 = '" + str(empBom3) + "'  "
-                           ",    UPD_DT = '" + str(utepno) + "' "
-                           ",    UPD_USER = date_format(now(), '%Y%m%d') "
-                           )
-            connection.commit()
+        if inepno is None or inepno == '':
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO PIS1TB001 "
+                               "   ("
+                               "     EMP_NBR "
+                               ",    EMP_NME "
+                               ",    EMP_PASS "
+                               ",    EMP_DEPT "
+                               ",    EMP_GBN "
+                               ",    EMP_JO "
+                               ",    EMP_COM "
+                               ",    EMP_TEL "
+                               ",    EMP_IPSA "
+                               ",    EMP_TESA "
+                               ",    CRE_DT "
+                               ",    CRE_USER "
+                               ") "
+                               "    VALUES "
+                               "    ("
+                               "    '" + empNbr + "'"
+                               ",   '" + str(empNme) + "'"
+                               ",   '" + str(empPass) + "'"
+                               ",   '" + str(empDept) + "'"
+                               ",   '" + str(empGbn) + "'"
+                               ",   '" + str(empJo) + "'"
+                               ",   '" + str(empCom) + "'"
+                               ",   '" + str(empTel) + "'"
+                               ",   '" + str(empIpsa) + "'"
+                               ",   '" + str(empTesa) + "'"
+                               ",   date_format(now(), '%Y%m%d')"
+                               ",   '" + str(inepno) + "'"
+                               "    ) "
+                               )
 
-            messages.success(request, '저장 되었습니다.')
-            return render(request, 'base/base-emp.html')
+                connection.commit()
 
-    else:
-        messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/base_emp')
+            return JsonResponse({'sucYn': "Y"})
+
+        elif inepno:
+            with connection.cursor() as cursor:
+                cursor.execute("    UPDATE PIS1TB001 SET"
+                               "     EMP_NME  = '" + str(empNme) + "' "
+                               ",    EMP_PASS = '" + str(empPass) + "' "
+                               ",    EMP_DEPT = '" + str(empDept) + "' "
+                               ",    EMP_GBN  = '" + str(empGbn) + "' "
+                               ",    EMP_JO  = '" + str(empJo) + "' "
+                               ",    EMP_COM  = '" + str(empCom) + "' "
+                               ",    EMP_TEL  = '" + str(empTel) + "' "
+                               ",    EMP_IPSA = '" + str(empIpsa) + "' "
+                               ",    EMP_TESA = '" + str(empTesa) + "'  "
+                               ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                               ",    UPD_USER = '" + str(utepno) + "' "
+                               "    WHERE EMP_NBR = '" + str(empNbr) + "' "
+                               )
+                connection.commit()
+
+                return JsonResponse({'sucYn': "Y"})
+
+        return render(request, 'base/base-emp.html')
 
 
 def empViews_dlt(request):
@@ -316,8 +306,7 @@ def empViews_dlt(request):
         for emp in dataList:
             acc_split_list = emp.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM PIS1TB001 WHERE EMP_NBR = '" + acc_split_list[0] + "' "
-                               "                        AND EMP_GBN = '" + acc_split_list[1] + "' ")
+                cursor.execute(" DELETE FROM PIS1TB001 WHERE EMP_NBR = '" + acc_split_list[0] + "' ")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

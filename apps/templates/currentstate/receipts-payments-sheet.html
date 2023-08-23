@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 통장 수불장 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="px-5 py-4 container-fluid">
+        <div class="row mt-n1">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
+                    <div class="card-body">
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>통장 수불장</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 col-1"></div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="card">
+                    <div class="card-header border border-light border-top-0 border-end-0 border-start-0 pb-0">
+                        <div class="row">
+                            <div class="col-lg-3 col-3 text-start">
+                              <div class="input-group shadow-none">
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>일자</label>
+                                  <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputDate" id="inputDate" style="max-width: 8rem;height: 2rem; font-size: 0.8rem">
+                              </div>
+                            </div>
+                            <div class="col-lg-3 col-3 text-start">
+                              <div class="input-group shadow-none">
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>거래처</label>
+                                  <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem; max-width: 12rem"></select>
+                              </div>
+                            </div>
+                            <div class="col-lg-3 col-3 text-start">
+                              <div class="input-group shadow-none">
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>통장명</label>
+                                  <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem; max-width: 15rem"></select>
+                              </div>
+                            </div>
+                            <div class="col-lg-1 col-1 text-end">
+                              <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-0 py-0 card-body">
+                        <div class="row">
+                            <div class="col-lg-9 col-9">
+                                <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                    <table class="table mb-0 align-items-center justify-content-center">
+                                        <colgroup>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                            <col width="8%"/>
+                                        </colgroup>
+                                        <thead class="bg-dark text-white font-weight-bolder">
+                                        <tr>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래 일시</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">맡기신 금액</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">찾으신 금액</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">잔금</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래처</th>
+                                            <th class="text-center p-2" style="font-size: 0.8rem;">통장명</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="sheetTb">
+                                          <tr id="#sheetTr" class="sheetTr_tr">
+
+                                          </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+
+            document.getElementById('inputDate').valueAsDate = new Date
+
+            var cust = "";
+            var act = "";
+            var custTxt = "<option value=''>:: 선택 ::</option>";
+            var actTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#inputCust").html("");
+            $("#inputAct").html("");
+
+            var date = document.getElementById('inputDate').value
+
+            let data = {'cust': cust, 'act': act, 'date': date}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "receipts_payments_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cust) {
+                            custTxt = custTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            custTxt = custTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboAct;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == act) {
+                            actTxt = actTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            actTxt = actTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#inputCust").append(custTxt);
+                    $("#inputAct").append(actTxt);
+
+                }
+            })
+
+        });
+
+    </script>
+{% endblock %}

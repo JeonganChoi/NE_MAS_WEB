@@ -13,3 +13,14 @@ from django.db import connection
 def montlyProfitLossViews(request):
 
     return render(request, "currentstate/profit-loss-sheet.html")
+
+
+def montlyProfitLossViews_search(request):
+    ym = request.POST.get('ym')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
+        headerresult = cursor.fetchall()
+        print(headerresult)
+
+    return JsonResponse({"headerList": headerresult})
