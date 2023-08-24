@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 
-
+# 출금
 def withRegViews(request):
 
     return render(request, "finance/withdrawal-reg.html")

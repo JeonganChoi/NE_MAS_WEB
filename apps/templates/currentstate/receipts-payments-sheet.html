@@ -27,10 +27,12 @@
                 <div class="card">
                     <div class="card-header border border-light border-top-0 border-end-0 border-start-0 pb-0">
                         <div class="row">
-                            <div class="col-lg-3 col-3 text-start">
+                            <div class="col-lg-4 col-4 text-start">
                               <div class="input-group shadow-none">
                                   <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>일자</label>
-                                  <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputDate" id="inputDate" style="max-width: 8rem;height: 2rem; font-size: 0.8rem">
+                                  <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                                  <span class="me-2">-</span>
+                                  <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                               </div>
                             </div>
                             <div class="col-lg-3 col-3 text-start">
@@ -56,7 +58,6 @@
                                 <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
-                                            <col width="8%"/>
                                             <col width="8%"/>
                                             <col width="8%"/>
                                             <col width="8%"/>
@@ -96,7 +97,8 @@
     <script>
         $(document).ready(function () {
 
-            document.getElementById('inputDate').valueAsDate = new Date
+            document.getElementById('inputStrDate').valueAsDate = new Date
+            document.getElementById('inputEndDate').valueAsDate = new Date
 
             var cust = "";
             var act = "";
@@ -106,9 +108,13 @@
             $("#inputCust").html("");
             $("#inputAct").html("");
 
-            var date = document.getElementById('inputDate').value
+            var sDate = document.getElementById('inputStrDate').value;
+            var eDate = document.getElementById('inputEndDate').value;
 
-            let data = {'cust': cust, 'act': act, 'date': date}
+            var strDate = sDate.replace(/\-/g, '')
+            var endDate = eDate.replace(/\-/g, '')
+
+            let data = {'cust': cust, 'act': act, 'strDate': strDate, 'endDate': endDate}
 
             $.ajax({
                 type: "post",
@@ -119,7 +125,22 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    var list = data.mainList;
+                    $("#sheetTb").html("");
 
+                    for (var i = 0; i < list.length; i++) {
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][1]) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>잔금</td> " +
+                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                        "</tr> ");
+                    }
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
@@ -147,5 +168,47 @@
 
         });
 
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+            var sDate = document.getElementById('inputStrDate').value;
+            var eDate = document.getElementById('inputEndDate').value;
+
+            var strDate = sDate.replace(/\-/g, '')
+            var endDate = eDate.replace(/\-/g, '')
+
+            var cust = document.getElementById('inputCust').value
+            var act = document.getElementById('inputAct').value
+
+            let data = {'cust': cust, 'act': act, 'strDate': strDate, 'endDate': endDate}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "receipts_payments_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    $("#sheetTb").html("");
+
+                    for (var i = 0; i < list.length; i++) {
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][1]) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>잔금</td> " +
+                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                        "</tr> ");
+                    }
+
+                }
+            })
+        });
     </script>
 {% endblock %}

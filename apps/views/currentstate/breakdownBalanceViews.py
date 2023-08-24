@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 
-# 월별 자금 유동 현황
+# 내역별
 def breakdownBalanceViews(request):
 
     return render(request, "currentstate/breakdown-sheet.html")

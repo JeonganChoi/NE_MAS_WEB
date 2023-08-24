@@ -156,12 +156,12 @@ def accountCodeViews_saveM(request):
     elif mSeq:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
-                           "     MCODENM = '" + str(mCodeNme) + "' "
+                           "     MCODE_M = '" + str(mCode_M) + "' "
+                           ",    MCODENM = '" + str(mCodeNme) + "' "
                            ",    MDESC = '" + str(mDesc) + "' "
                            ",    GBN = '" + str(gbn) + "' "
                            ",    GBN2 = '" + str(gbn2) + "' "
                            "     WHERE MCODE = '" + str(mCode) + "' "
-                           "     AND MCODE_M = '" + str(mCode_M) + "' "
                            "     AND MSEQ = '" + str(mSeq) + "' "
                            )
             connection.commit()
@@ -211,12 +211,12 @@ def accountCodeViews_saveA(request):
     elif aSeq:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE  OSCODEA SET"
-                           "     ACODENM = '" + str(aCodeNme) + "' "
+                           "     ACODE_M = '" + str(aCode_M) + "' "
+                           ",    ACODENM = '" + str(aCodeNme) + "' "
                            ",    ADESC = '" + str(aDesc) + "' "
                            ",    GBN = '" + str(gbn) + "' "
                            ",    GBN2 = '" + str(gbn2) + "' "
                            "     WHERE ACODE = '" + str(aCode) + "' "
-                           "     AND ACODE_M = '" + str(aCode_M) + "' "
                            "     AND ASEQ = '" + str(aSeq) + "' "
                            )
             connection.commit()
@@ -234,7 +234,6 @@ def accountCodeViews_dltM(request):
             acc_split_list = code.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM OSCODEM WHERE MCODE_M = '" + acc_split_list[0] + "'"
-                               "                       AND MCODE = '" + acc_split_list[1] + "' "
                                "                       AND MSEQ = '" + acc_split_list[2] + "'")
                 connection.commit()
 
@@ -251,7 +250,6 @@ def accountCodeViews_dltA(request):
             acc_split_list = code.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM OSCODEA WHERE ACODE_M = '" + acc_split_list[0] + "'"
-                               "                         AND ACODE = '" + acc_split_list[1] + "' "
                                "                         AND ASEQ = '" + acc_split_list[2] + "'")
                 connection.commit()
 

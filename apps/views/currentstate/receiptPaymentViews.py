@@ -15,9 +15,33 @@ def receiptPaymentViews(request):
     return render(request, "currentstate/receipts-payments-sheet.html")
 
 def receiptPaymentViews_search(request):
-    date = request.POST.get('date')
+    strDate = request.POST.get('strDate')
+    endDate = request.POST.get('endDate')
     act = request.POST.get('act')
     cust = request.POST.get('cust')
+
+    with connection.cursor() as cursor:
+        cursor.execute("  SELECT * FROM "
+                        " ( "
+                        "     SELECT A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     WHERE A.ACIOGB = '2' "
+                        "     UNION ALL "
+                        "     SELECT A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     WHERE A.ACIOGB = '1' "
+                        " ) AA "
+                        " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                        " ORDER BY AA.ACDATE ")
+    mainresult = cursor.fetchall()
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ORDER BY CUST_NBR ")
@@ -27,4 +51,4 @@ def receiptPaymentViews_search(request):
         cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ORDER BY ACNUMBER ")
     cboAct = cursor.fetchall()
 
-    return JsonResponse({'cboCust': cboCust, 'cboAct': cboAct})
+    return JsonResponse({'mainList': mainresult, 'cboCust': cboCust, 'cboAct': cboAct})
