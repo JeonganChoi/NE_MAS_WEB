@@ -113,20 +113,15 @@
                             <div class="col-lg-12 col-12">
                                 <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
                                     <table class="table mb-0 align-items-center justify-content-center">
-                                        <thead class="bg-dark text-white font-weight-bolder">
-                                        <tr>
-                                        </tr>
-                                        </thead>
-                                      <tbody id="sheetTb">
-                                        <tr id="#sheetTr" class="sheetTr_tr">
+                                        <thead class="bg-dark text-white font-weight-bolder" id="codeHead">
+                                        <tr id="#headTr" class="headTr_tr">
 
                                         </tr>
-                                      </tbody>
-                                    </table>
-                                    <table>
-                                        <tbody class="text-dark" id="subTb">
-                                            <tr id="#subTr" class="subTr_tr">
-                                            </tr>
+                                        </thead>
+                                        <tbody id="sheetTb">
+                                          <tr id="#sheetTr" class="sheetTr_tr">
+
+                                          </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -146,6 +141,57 @@
         $(document).ready(function () {
 
             document.getElementById('inputDate').valueAsDate = new Date
+
+            var sDate = document.getElementById('inputDate').value
+            var date = sDate.replace(/\-/g, '')
+
+            let data = {'date': date}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "breakdown_balance_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.headList;
+                    var list2 = data.mainList;
+
+                    $("#codeHead").html("");
+                    $("#sheetTb").html("");
+
+                    {# 헤더 #}
+                    $("#codeHead").append("<tr  id='#headTr' class='headTr_tr'>" + "</tr> ");
+                    $(".headTr_tr").append(
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>구분</td>");
+                    for (var i = 0; i < list.length; i++) {
+                        $(".headTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list[i][1] + "수불내역서</td>" );
+                    }
+                    $(".headTr_tr").append(
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>수불내역서 계</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>계정별내역서</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>월별집계</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>자금유동현황</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>평 균</td>" );
+
+                    {#  메인 데이터  #}
+                    {# 헤더 #}
+                    $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
+                    $(".sheetTr_tr").append(
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>잔액</td>");
+                    for (var i = 0; i < list2.length; i++) {
+                        if(list[i][0] == list2[i][0]){
+                            $(".sheetTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td>" );
+                        }
+                        {#if(){#}
+                        {#    $(".sheetTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>0</td>" );#}
+                        {#}#}
+                    }
+
+                }
+            })
 
         });
     </script>

@@ -133,4 +133,5 @@ urlpatterns = [
 
     # 내역별 잔액
     path('breakdown_balance/', breakdownBalanceViews.breakdownBalanceViews, name='breakdown_balance'),
+    path('breakdown_balance_search/', breakdownBalanceViews.breakdownBalanceViews_search, name='breakdown_balance_search'),
 ]

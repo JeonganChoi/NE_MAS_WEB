@@ -204,5 +204,4 @@ def montlyCircleFundsViews_search(request):
                        "     GROUP BY A.GUBUN, B.GBN2, C.RESNAM, BAL_DD, AMTS) AA GROUP BY GUBUN, GBN2, GBN_NAME ")
         totalresult = cursor.fetchall()
 
-
     return JsonResponse({"mainList": mainresult, 'mainList2': mainresult2, 'totalList': totalresult})

@@ -13,3 +13,37 @@ from django.db import connection
 def breakdownBalanceViews(request):
 
     return render(request, "currentstate/breakdown-sheet.html")
+
+def breakdownBalanceViews_search(request):
+    date = request.POST.get('date')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+        headresult = cursor.fetchall()
+        mainList = []
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT B.ACBKCD, IFNULL(SUM(A.ACAMTS), 0) "
+                       " FROM SISACCTT A "
+                       " LEFT OUTER JOIN ACNUMBER B "
+                       " ON A.ACACNUMBER = B.ACNUMBER "
+                       " WHERE A.ACDATE > '" + date + "' "
+                       " GROUP BY B.ACBKCD "
+                       " ORDER BY B.ACBKCD ASC ")
+        mainresult = cursor.fetchall()
+
+        # for i in range(len(headresult)):
+        #     bnkCode = headresult[i][0]
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" SELECT B.ACBKCD, IFNULL(SUM(A.ACAMTS), 0) "
+        #                        " FROM SISACCTT A "
+        #                        " LEFT OUTER JOIN ACNUMBER B "
+        #                        " ON A.ACACNUMBER = B.ACNUMBER "
+        #                        " WHERE B.ACBKCD = '" + bnkCode + "' "
+        #                        " AND A.ACDATE > '" + date + "' "
+        #                        " GROUP BY B.ACBKCD ")
+        #         mainresult = cursor.fetchall()
+        #         mainList += [mainresult]
+        #         print(mainList)
+
+        return JsonResponse({"headList": headresult, 'mainList': mainresult})
