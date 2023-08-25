@@ -102,6 +102,7 @@
 
             var cust = "";
             var act = "";
+            var bal = 0;
             var custTxt = "<option value=''>:: 선택 ::</option>";
             var actTxt = "<option value=''>:: 선택 ::</option>";
 
@@ -126,20 +127,56 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
+                    var list2 = data.balList;
                     $("#sheetTb").html("");
 
+                    for (var i = 0; i < list2.length; i++) {
+                        bal = list2[i][0]
+                        $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>이월 잔액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "</tr> ");
+                    };
+
                     for (var i = 0; i < list.length; i++) {
-                    $("#sheetTb").append(
-                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][1]) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>잔금</td> " +
-                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                        "</tr> ");
+                        if(list[i][0] == '2'){
+                            {# 입금 #}
+                            bal += list[i][2]
+                            $("#sheetTb").append(
+                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "</tr> ");
+                        }
+                        if(list[i][0] == '1'){
+                            {# 출금 #}
+                            bal -= list[i][2]
+                            $("#sheetTb").append(
+                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "</tr> ");
+                        }
+
                     }
 
                     var combolist = data.cboCust;
@@ -172,6 +209,7 @@
         $(document).on('click', '#btnSearch', function () {
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
+            var bal = 0;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
@@ -191,22 +229,56 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
+                    var list2 = data.balList;
                     $("#sheetTb").html("");
 
-                    for (var i = 0; i < list.length; i++) {
-                    $("#sheetTb").append(
-                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][1]) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>잔금</td> " +
-                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                        "</tr> ");
+                    for (var i = 0; i < list2.length; i++) {
+                        bal = list2[i][0]
+                        $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>이월 잔액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
+                            "</tr> ");
                     }
 
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] == '2'){
+                            {# 입금 #}
+                            bal += list[i][2]
+                            $("#sheetTb").append(
+                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "</tr> ");
+                        }
+                        if(list[i][0] == '1'){
+                            {# 출금 #}
+                            bal -= list[i][2]
+                            $("#sheetTb").append(
+                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "</tr> ");
+                        }
+                    }
                 }
             })
         });
