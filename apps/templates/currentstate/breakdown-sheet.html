@@ -144,8 +144,9 @@
 
             var sDate = document.getElementById('inputDate').value
             var date = sDate.replace(/\-/g, '')
+            var year = date.slice(0, 4)
 
-            let data = {'date': date}
+            let data = {'date': date, 'year': year}
 
             $.ajax({
                 type: "post",
@@ -158,6 +159,10 @@
                 success: function (data) {
                     var list = data.headList;
                     var list2 = data.mainList;
+                    var list3 = data.codeList;
+                    var list4 = data.codeList2;
+                    var list5 = data.monthList;
+                    var list6 = data.circleList;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
@@ -177,22 +182,155 @@
                         "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>평 균</td>" );
 
                     {#  메인 데이터  #}
-                    {# 헤더 #}
+                    var total = 0;
                     $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
                     $(".sheetTr_tr").append(
                         "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>잔액</td>");
                     for (var i = 0; i < list2.length; i++) {
                         if(list[i][0] == list2[i][0]){
-                            $(".sheetTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td>" );
+                            total += list2[i][1]
+                            $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list2[i][1]) + "</td>" );
                         }
-                        {#if(){#}
-                        {#    $(".sheetTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>0</td>" );#}
-                        {#}#}
+                    }
+                    for (var i = 0; i < list.length - list2.length; i++) {
+                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>0</td>" );
                     }
 
+                    {# 수불내역서 계 #}
+                    $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td>" );
+
+                    var codeTotal = 0;
+                    for (var i = 0; i < list3.length; i++) {
+                        codeTotal = list3[i][0]
+                    }
+
+                    for (var i = 0; i < list4.length; i++) {
+                        if(list4[i][0] == '1'){
+                            codeTotal -= list4[i][1]
+                        }
+                        if(list4[i][0] == '2'){
+                            codeTotal += list4[i][1]
+                        }
+                    }
+                    {# 계정별내역서 계 #}
+                    $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(codeTotal) + "</td>" );
+
+                    {# 월별 집계 계 #}
+                    var monthTotal = 0;
+                    for (var i = 0; i < 1; i++) {
+                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list5[i][5]) + "</td>");
+                        monthTotal = list5[i][5]
+                    }
+
+                    {# 자금 유동 현황 #}
+                    var circleTotal = 0;
+                    for (var i = 0; i < 1; i++) {
+                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list6[i][5]) + "</td>");
+                        circleTotal = list6[i][5]
+                    }
+
+                    {#  평균  #}
+                    var avg = (total + codeTotal + monthTotal + circleTotal) / 4
+                    $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(avg) + "</td>");
                 }
             })
+        });
 
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+
+            var sDate = document.getElementById('inputDate').value
+            var date = sDate.replace(/\-/g, '')
+            var year = date.slice(0, 4)
+
+            let data = {'date': date, 'year': year}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "breakdown_balance_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.headList;
+                    var list2 = data.mainList;
+                    var list3 = data.codeList;
+                    var list4 = data.codeList2;
+                    var list5 = data.monthList;
+                    var list6 = data.circleList;
+
+                    $("#codeHead").html("");
+                    $("#sheetTb").html("");
+
+                    {# 헤더 #}
+                    $("#codeHead").append("<tr  id='#headTr' class='headTr_tr'>" + "</tr> ");
+                    $(".headTr_tr").append(
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>구분</td>");
+                    for (var i = 0; i < list.length; i++) {
+                        $(".headTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list[i][1] + "수불내역서</td>" );
+                    }
+                    $(".headTr_tr").append(
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>수불내역서 계</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>계정별내역서</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>월별집계</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>자금유동현황</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>평 균</td>" );
+
+                    {#  메인 데이터  #}
+                    var total = 0;
+                    $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
+                    $(".sheetTr_tr").append(
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>잔액</td>");
+                    for (var i = 0; i < list2.length; i++) {
+                        if(list[i][0] == list2[i][0]){
+                            total += list2[i][1]
+                            $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list2[i][1]) + "</td>" );
+                        }
+                    }
+                    for (var i = 0; i < list.length - list2.length; i++) {
+                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>0</td>" );
+                    }
+
+                    {# 수불내역서 계 #}
+                    $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td>" );
+
+                    var codeTotal = 0;
+                    for (var i = 0; i < list3.length; i++) {
+                        codeTotal = list3[i][0]
+                    }
+
+                    for (var i = 0; i < list4.length; i++) {
+                        if(list4[i][0] == '1'){
+                            codeTotal -= list4[i][1]
+                        }
+                        if(list4[i][0] == '2'){
+                            codeTotal += list4[i][1]
+                        }
+                    }
+                    {# 계정별내역서 계 #}
+                    $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(codeTotal) + "</td>" );
+
+                    {# 월별 집계 계 #}
+                    var monthTotal = 0;
+                    for (var i = 0; i < 1; i++) {
+                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list5[i][5]) + "</td>");
+                        monthTotal = list5[i][5]
+                    }
+
+                    {# 자금 유동 현황 #}
+                    var circleTotal = 0;
+                    for (var i = 0; i < 1; i++) {
+                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list6[i][5]) + "</td>");
+                        circleTotal = list6[i][5]
+                    }
+
+                    {#  평균  #}
+                    var avg = (total + codeTotal + monthTotal + circleTotal) / 4
+                    $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(avg) + "</td>");
+                }
+            })
         });
     </script>
 {% endblock %}

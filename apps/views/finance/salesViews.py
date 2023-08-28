@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 
-
+# 매출
 def salesRegViews(request):
 
     return render(request, "finance/sales-reg.html")

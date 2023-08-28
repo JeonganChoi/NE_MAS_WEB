@@ -16,34 +16,88 @@ def breakdownBalanceViews(request):
 
 def breakdownBalanceViews_search(request):
     date = request.POST.get('date')
+    year = request.POST.get('year')
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
         headresult = cursor.fetchall()
-        mainList = []
+
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT B.ACBKCD, IFNULL(SUM(A.ACAMTS), 0) "
                        " FROM SISACCTT A "
                        " LEFT OUTER JOIN ACNUMBER B "
                        " ON A.ACACNUMBER = B.ACNUMBER "
-                       " WHERE A.ACDATE > '" + date + "' "
+                       " WHERE A.ACDATE < '" + date + "' "
                        " GROUP BY B.ACBKCD "
                        " ORDER BY B.ACBKCD ASC ")
         mainresult = cursor.fetchall()
 
-        # for i in range(len(headresult)):
-        #     bnkCode = headresult[i][0]
-        #     with connection.cursor() as cursor:
-        #         cursor.execute(" SELECT B.ACBKCD, IFNULL(SUM(A.ACAMTS), 0) "
-        #                        " FROM SISACCTT A "
-        #                        " LEFT OUTER JOIN ACNUMBER B "
-        #                        " ON A.ACACNUMBER = B.ACNUMBER "
-        #                        " WHERE B.ACBKCD = '" + bnkCode + "' "
-        #                        " AND A.ACDATE > '" + date + "' "
-        #                        " GROUP BY B.ACBKCD ")
-        #         mainresult = cursor.fetchall()
-        #         mainList += [mainresult]
-        #         print(mainList)
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT SUM(ACAMTS) FROM ACBALANCE WHERE ACDATE < '" + date + "' ")
+            coderesult = cursor.fetchall()
 
-        return JsonResponse({"headList": headresult, 'mainList': mainresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACIOGB, ACAMTS FROM SISACCTT WHERE ACDATE < '" + date + "' ")
+            coderesult2 = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(TOTAL), 0) AS TOTAL, IFNULL(SUM(DEPOSIT), 0) AS DEPOSIT, IFNULL(SUM(SALE), 0) AS SALE "
+                           "      , IFNULL(SUM(BUY), 0) AS BUY, IFNULL(SUM(WITHDROW), 0) AS WITHDROW"
+                           "      , IFNULL(SUM(TOTAL + DEPOSIT + SALE - BUY - WITHDROW), 0) AS CAL FROM "
+                           "     ( "
+                           "     SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT  "
+                           "     FROM ACBALANCE WHERE ACDATE < '" + date + "' "
+                           " UNION ALL "
+                           "     SELECT 0 AS TOTAL, IFNULL(SUM(AMTS), 0) AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT  "
+                           "     FROM OSBILL WHERE YEAR(BAL_DD) = '" + year + "' AND BAL_DD < '" + date + "' AND GUBUN = '1' "
+                           " UNION ALL "
+                           "     SELECT 0 AS TOTAL, 0 AS BUY, IFNULL(SUM(AMTS), 0) AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT  "
+                           "     FROM OSBILL WHERE YEAR(BAL_DD) = '" + year + "' AND BAL_DD < '" + date + "' AND GUBUN = '2' "
+                           " UNION ALL "
+                           "     SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, IFNULL(SUM(ACAMTS), 0) AS WITHDROW, 0 AS DEPOSIT  "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + year + "' AND ACDATE < '" + date + "' AND ACIOGB = '1' "
+                           " UNION ALL "
+                           "     SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, IFNULL(SUM(ACAMTS), 0) AS DEPOSIT  "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + year + "' AND ACDATE < '" + date + "' AND ACIOGB = '2' "
+                           " ) AA ")
+            monthresult = cursor.fetchall()
+
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(TOTAL), 0) AS TOTAL, IFNULL(SUM(DEPOSIT), 0) AS DEPOSIT, IFNULL(SUM(SALE), 0) AS SALE "
+                           "     , IFNULL(SUM(BUY), 0) AS BUY, IFNULL(SUM(WITHDROW), 0) AS WITHDROW, IFNULL(SUM(DEPOSIT - WITHDROW + (TOTAL + SALE) - BUY), 0) AS CAL FROM "
+                           "     ( "
+                           "     SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
+                           "     FROM ACBALANCE WHERE ACDATE < '" + date + "' "
+                           " UNION ALL "
+                           "    SELECT 0 AS TOTAL, IFNULL(SUM(AMTS), 0) AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
+                           "     FROM OSBILL WHERE YEAR(BAL_DD) = '" + year + "' AND BAL_DD < '" + date + "' AND GUBUN = '1' "
+                           " UNION ALL "
+                           "    SELECT 0 AS TOTAL, 0 AS BUY, IFNULL(SUM(AMTS), 0) AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
+                           "     FROM OSBILL WHERE YEAR(BAL_DD) = '" + year + "' AND BAL_DD < '" + date + "' AND GUBUN = '2' "
+                           " UNION ALL "
+                           "    SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, IFNULL(SUM(ACAMTS), 0) AS WITHDROW, 0 AS DEPOSIT "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + year + "' AND ACDATE < '" + date + "' AND ACIOGB = '1' "
+                           " UNION ALL "
+                           "    SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, IFNULL(SUM(ACAMTS), 0) AS DEPOSIT "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + year + "' AND ACDATE < '" + date + "' AND ACIOGB = '2' "
+                           " ) AA ")
+            circleresult = cursor.fetchall()
+
+        return JsonResponse({"headList": headresult, 'mainList': mainresult, 'codeList': coderesult
+                                , 'codeList2': coderesult2, 'monthList': monthresult, 'circleList': circleresult})
+
+    # for i in range(len(headresult)):
+    #     bnkCode = headresult[i][0]
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" SELECT B.ACBKCD, IFNULL(SUM(A.ACAMTS), 0) "
+    #                        " FROM SISACCTT A "
+    #                        " LEFT OUTER JOIN ACNUMBER B "
+    #                        " ON A.ACACNUMBER = B.ACNUMBER "
+    #                        " WHERE B.ACBKCD = '" + bnkCode + "' "
+    #                        " AND A.ACDATE > '" + date + "' "
+    #                        " GROUP BY B.ACBKCD ")
+    #         mainresult = cursor.fetchall()
+    #         mainList += [mainresult]
+    #         print(mainList)
