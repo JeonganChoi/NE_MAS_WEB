@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 
-
+# 매입
 def purchaseRegViews(request):
 
     return render(request, "finance/purchases-reg.html")
