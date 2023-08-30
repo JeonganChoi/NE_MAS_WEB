@@ -32,7 +32,9 @@ def montlyProfitLossViews_search(request):
         headresult = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT AA.MCODE_M, AA.RESNAM, AA.OPT, AA.MCODENM, SUM(AA.TOTAL), AVG(AA.AVG)  "
+        cursor.execute(" SELECT IFNULL(AA.MCODE_M, ''), IFNULL(AA.RESNAM, '')"
+                       "        , IFNULL(AA.OPT, ''), IFNULL(AA.MCODENM, '')"
+                       "        , IFNULL(SUM(AA.TOTAL), 0), IFNULL(AVG(AA.AVG), 0)  "
                        " FROM ( "
                        "     SELECT B.MCODE_M, C.RESNAM, A.OPT, B.MCODENM, SUM(A.AMTS) AS TOTAL, AVG(A.AMTS) AS AVG "
                        "     FROM OSBILL A "
@@ -80,5 +82,6 @@ def montlyProfitLossViews_search(request):
                        "    ) AA  "
                        " GROUP BY AA.MCODE_M, AA.RESNAM, AA.OPT, AA.MCODENM ")
         mainresult = cursor.fetchall()
+        print(mainresult)
 
     return JsonResponse({'mheadList': mheadresult, 'headList': headresult, 'mainList': mainresult})

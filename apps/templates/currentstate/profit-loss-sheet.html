@@ -48,9 +48,7 @@
                                             <col width="8%"/>
                                             <col width="8%"/>
                                             <col width="8%"/>
-                                            <col width="8%"/>
                                             <col width="15%"/>
-                                            <col width="6%"/>
                                         </colgroup>
                                         <thead id="headTb">
                                         <tr id="#headTr" class="headTr_tr">
@@ -110,7 +108,7 @@
                 $("#sheetTb").html("");
 
                 $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem' colspan='6'>" + month + "월</th> " +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem' colspan='6'>" + mm + "월</th> " +
                     "</tr> ");
 
                 $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" +
@@ -119,31 +117,109 @@
                     "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>매출 대비</th> " +
                     "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>일평균</th> " +
                     "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>비 고</th> " +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>분기점</th> " +
                     "</tr> ");
 
 
-                for (var i = 0; i < list.length; i++) {
+                for (var d = 0; d < list3.length; d++) {
 
-                    $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-start bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>" + list[i][1] + "</td> " +
-                        "</tr> ");
+                    if(list3[d][0] == list3[d][0]){
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
+                            "</tr> ");
 
-                    for (var j = 0; j < list2.length; j++) {
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][4] + "%</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                            "</tr> ");
+                    }
+                    if(list3[d][0] != list3[d][0]){
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
+                            "</tr> ");
 
-                        if (list[i][0] === list2[j][0]) {
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][4] + "%</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                            "</tr> ");
 
-                            $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-start bg-gray-700 border border-top text-white p-1 ps-3' style='font-size: 0.85rem; width: 3rem'>" + list2[i][3] + "</td> " +
-                                "</tr> ");
-                        }
                     }
                 }
-
-
-            }
+                }
             })
         });
 
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+            var input = document.getElementById('inputYM').value
+            var ym = input.replace(/\-/g, '')
+            var yyyy = ym.slice(0,4);
+            var mm = ym.slice(4,6);
+
+            var data = {'ym': ym, 'yyyy': yyyy, 'mm': mm}
+
+            $.ajax({
+            type: "post",
+            data: data,
+            url: '{% url "monthly_profit_loss_search" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.mheadList;
+                var list2 = data.headList;
+                var list3 = data.mainList;
+
+                $("#headTb").html("");
+                $("#sheetTb").html("");
+
+                $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem' colspan='6'>" + mm + "월</th> " +
+                    "</tr> ");
+
+                $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>항목</th> " +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>금액</th> " +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>매출 대비</th> " +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>일평균</th> " +
+                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>비 고</th> " +
+                    "</tr> ");
+
+
+                for (var d = 0; d < list3.length; d++) {
+
+                    $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
+                        "</tr> ");
+
+                    $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][4] + "%</td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                        "</tr> ");
+                }
+                }
+            })
+        });
     </script>
 {% endblock %}
