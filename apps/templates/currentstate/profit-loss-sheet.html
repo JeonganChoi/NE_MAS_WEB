@@ -88,6 +88,7 @@
             var ym = input.replace(/\-/g, '')
             var yyyy = ym.slice(0,4);
             var mm = ym.slice(4,6);
+            var dd = date.getDate()
 
             var data = {'ym': ym, 'yyyy': yyyy, 'mm': mm}
 
@@ -103,6 +104,7 @@
                 var list = data.mheadList;
                 var list2 = data.headList;
                 var list3 = data.mainList;
+                var sale = 0;
 
                 $("#headTb").html("");
                 $("#sheetTb").html("");
@@ -120,44 +122,45 @@
                     "</tr> ");
 
 
-                for (var d = 0; d < list3.length; d++) {
+                for (var i = 0; i < list.length; i++) {
+                    $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                        "</tr> ");
 
-                    if(list3[d][0] == list3[d][0]){
-                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
-                            "</tr> ");
+                    for (var d = 0; d < list3.length; d++) {
+                        if(list3[d][0] == '1'){
+                            sale += list3[d][4]
+                        }
 
-                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][4] + "%</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
-                            "</tr> ");
-                    }
-                    if(list3[d][0] != list3[d][0]){
-                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
-                            "</tr> ");
+                        if(list[i][0] == list3[d][0]){
 
-                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][4] + "%</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
-                            "</tr> ");
+                            var price = 0;
+                            price += list3[d][4]
+                            $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-start bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
+                                "<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(price) + "</td> " +
+                                "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + (Math.round((price / sale) * 100).toFixed(2)) + "%</td> " +
+                                "<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma((Math.round(price / dd))) + "</td>" +
+                                "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
+                                "</tr> ");
 
+                            $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-start bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
+                                "<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
+                                "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + (Math.round((list3[d][4] / sale) * 100).toFixed(2)) + "%</td> " +
+                                "<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
+                                "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
+                                "</tr> ");
+
+
+                        }
                     }
                 }
+
                 }
             })
         });
