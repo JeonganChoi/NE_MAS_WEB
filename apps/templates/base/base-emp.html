@@ -17,7 +17,7 @@
                     <button type="button" class="mb-0 mb-2 btn btn-sm btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                           <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
-                    <button type="submit" class="mb-0 btn btn-sm btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                    <button type="button" class="mb-0 btn btn-sm btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
                           <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
                     <button type="button" class="mb-0 btn btn-sm btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
@@ -149,11 +149,11 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem">입사 일자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtEmployDate" name="txtEmployDate"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtEmployDate" name="txtEmployDate"/>
                             </div>
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem">퇴사 일자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtQuitDate" name="txtQuitDate"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtQuitDate" name="txtQuitDate"/>
                             </div>
                         </div>
                         <div class="row">
@@ -230,8 +230,8 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkGbn[]' name='chkGbn[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
@@ -456,8 +456,8 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var empNo = $("#txtEmpNo").val()
-            var empNm = $("#txtEmpName").val()
+            var empNo = document.getElementById('txtEmpNo').value
+            var empNm = document.getElementById('txtEmpName').value
             var empPW = document.getElementById('txtEmpPw').value
             var empDpt = document.getElementById('cboDpt').value
             var empGroup = document.getElementById('cboGroup').value

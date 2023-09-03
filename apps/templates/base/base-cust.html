@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post" action="{% url 'base_cust_save' %}">
+    <form method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -17,7 +17,7 @@
                     <button type="button" class="mb-0 mb-2 btn btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                           <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
-                    <button type="submit" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                    <button type="button" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
                           <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
                     <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
@@ -104,15 +104,15 @@
                         <div class="row">
                             <div class="col-4">
                                 <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체명</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustName" name="txtCustName"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustName" name="txtCustName"/>
                             </div>
                             <div class="col-4">
                                 <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 코드</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustCode" name="txtCustCode"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustCode" name="txtCustCode"/>
                             </div>
                             <div class="col-4">
                                 <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>대표자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCeo" name="txtCeo"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCeo" name="txtCeo"/>
                             </div>
                         </div>
                         <div class="row">
@@ -132,21 +132,21 @@
                         <div class="row">
                             <div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem">우편 번호</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtPostCode" name="txtPostCode"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtPostCode" name="txtPostCode"/>
                             </div>
                             <div class="col-8">
                                 <label class="mt-4" style="font-size: 0.8rem">주 소</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtAddress" name="txtAddress"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtAddress" name="txtAddress"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem">전화 번호</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtTelePhone" name="txtTelePhone"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtTelePhone" name="txtTelePhone"/>
                             </div>
                             <div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem">FAX</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtFax" name="txtFax"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtFax" name="txtFax"/>
                             </div>
                             <div class="col-4">
                             </div>
@@ -154,25 +154,25 @@
                         <div class="row">
                             <div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem">담당자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmp" name="txtEmp"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtEmp" name="txtEmp"/>
                             </div>
                             <div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem">담당자 핸드폰</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPhone" name="txtEmpPhone"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtEmpPhone" name="txtEmpPhone"/>
                             </div>
                             <div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem">등록일</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem">e-Mail</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="email" id="txtEMail" name="txtEMail"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="email" id="txtEMail" name="txtEMail"/>
                             </div>
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem">홈페이지 주소</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtWebAddress" name="txtWebAddress"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtWebAddress" name="txtWebAddress"/>
                             </div>
                         </div>
                         <div class="row">
@@ -180,17 +180,13 @@
                                 <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 분류</label>
                                 <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType" id="cboCustType"></select>
                             </div>
-                            <div class="col-4">
+                            <!--<div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체군 분류</label>
                                 <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType2" id="cboCustType2"></select>
-                                <!--<div class="input-group mt-4">
-                                    <div class="input-group-text">
-                                        <span class="text-body" style="font-size: 1rem">업체군 분류</span>
-                                    </div>
-                                </div>-->
-                            </div>
-                            <div class="col-4">
-
+                            </div>-->
+                            <div hidden class="col-4">
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사용자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtUser" name="txtUser"/>
                             </div>
                         </div>
                     </div>
@@ -209,17 +205,14 @@
         var inputCustType = "";
         var inputYn = "";
         var cboCustType = "";
-        var cboCustType2 = "";
         var inputCustTypeTxt = "<option value=''>:: 전체 ::</option>";
-        var inputYnTxt = "<option value=''>:: 전체 ::</option>";
-        var cboCustTypeTxt = "<option value=''>:: 전체 ::</option>";
-        var cboCustType2Txt = "<option value=''>:: 전체 ::</option>";
+        var inputYnTxt = "<option value=''>:: 선택 ::</option>";
+        var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
 
         $("#inputCustType").html("");
         $("#inputYn").html("");
         $("#cboCustType").html("");
-        $("#cboCustType2").html("");
-        document.getElementById('txtRegDate').valueAsDate = new Date
+
 
         $.ajax({
             type: "post",
@@ -265,7 +258,7 @@
                     }
                 }
 
-                var combolist2 = data.cboCustType;
+                var combolist2 = data.inputCustType;
                 for (var i = 0; i < combolist2.length; i++) {
                     if (combolist2[i][0] == cboCustType) {
                         cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
@@ -274,19 +267,9 @@
                     }
                 }
 
-                var combolist3 = data.cboCustType2;
-                for (var i = 0; i < combolist3.length; i++) {
-                    if (combolist3[i][0] == cboCustType2) {
-                        cboCustType2Txt = cboCustType2Txt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                    } else {
-                        cboCustType2Txt = cboCustType2Txt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                    }
-                }
-
                 $("#inputCustType").append(inputCustTypeTxt);
                 $("#inputYn").append(inputYnTxt);
                 $("#cboCustType").append(cboCustTypeTxt);
-                $("#cbobankType2").append(cboCustType2Txt);
 
             }
         })
@@ -345,12 +328,9 @@
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#custMainTb .custMainTr_tr', function () {
             var cboCustType = "";
-            var cboCustType2 = "";
-            var cboCustTypeTxt = "<option value=''>:: 전체 ::</option>";
-            var cboCustType2Txt = "<option value=''>:: 전체 ::</option>";
+            var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboCustType").html("");
-            $("#cboCustType2").html("");
 
             let custCode = $(this).attr('main_code');
 
@@ -377,6 +357,7 @@
                         $("#txtCeo").val(list[i][2])
                         $("#txtRegNum").val(list[i][3])
                         $("#txtCustCat").val(list[i][4])
+                        {# 업종 #}
                         $("#txtCustType").val(list[i][5])
                         $("#txtPostCode").val(list[i][6])
                         $("#txtAddress").val(list[i][7])
@@ -384,11 +365,12 @@
                         $("#txtFax").val(list[i][9])
                         $("#txtEmp").val(list[i][10])
                         $("#txtEmpPhone").val(list[i][11])
-                        {#$("#txtRegDate").val(list[i][12].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))#}
+                        $("#txtRegDate").val(list[i][19].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtEMail").val(list[i][12])
                         $("#txtWebAddress").val(list[i][13])
+                        $("#txtUser").val(list[i][18])
+                        {# 업체 구분 #}
                         cboCustType = list[i][14];
-                        cboCustType2 = list[i][16];
                     }
 
                     var combolist2 = data.cboCustType;
@@ -400,17 +382,7 @@
                         }
                     }
 
-                    var combolist3 = data.cboCustType2;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == cboCustType2) {
-                            cboCustType2Txt = cboCustType2Txt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            cboCustType2Txt = cboCustType2Txt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
-
                     $("#cboCustType").append(cboCustTypeTxt);
-                    $("#cboCustType2").append(cboCustType2Txt);
                 }
             })
 
@@ -419,7 +391,50 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            $('form').submit();
+            var txtCustName = document.getElementById('txtCustName').value
+            var txtCustCode = document.getElementById('txtCustCode').value
+            var txtCeo = document.getElementById('txtCeo').value
+            var txtRegNum = document.getElementById('txtRegNum').value
+            var txtCustCat = document.getElementById('txtCustCat').value
+            var txtCustType = document.getElementById('txtCustType').value
+            var txtPostCode = document.getElementById('txtPostCode').value
+            var txtAddress = document.getElementById('txtAddress').value
+            var txtTelePhone = document.getElementById('txtTelePhone').value
+            var txtFax = document.getElementById('txtFax').value
+            var txtEmp = document.getElementById('txtEmp').value
+            var txtEmpPhone = document.getElementById('txtEmpPhone').value
+            var txtWebAddress = document.getElementById('txtWebAddress').value
+            var cboCustType = document.getElementById('cboCustType').value
+            var txtUser = document.getElementById('txtUser').value
+
+
+            if(txtCustCode == '')
+            {
+                alert("업체코드를 입력해주세요.")
+                return false
+            }
+
+            let data = {'txtCustName': txtCustName,'txtCustCode': txtCustCode,'txtCeo': txtCeo
+                , 'txtRegNum': txtRegNum, 'txtCustCat': txtCustCat, 'txtCustType': txtCustType, 'txtPostCode': txtPostCode
+                , 'txtAddress': txtAddress, 'txtTelePhone': txtTelePhone, 'txtFax': txtFax, 'txtEmp': txtEmp
+                , 'txtEmpPhone': txtEmpPhone, 'txtEMail': txtEMail, 'txtWebAddress': txtWebAddress, 'cboCustType': cboCustType
+                , 'txtUser': txtUser}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_cust_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'base_cust' %}";
+                    }
+                }
+            });
 
         });
 

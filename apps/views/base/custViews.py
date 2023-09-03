@@ -26,19 +26,19 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'CGB' "
+                "   AND D.RECODE = 'BGB' "
                 "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
                 "   OR A.CUST_NME LIKE '%" + custCode + "%'"
                 "   AND A.CUST_GBN = '" + custType + "'"
             )
             custresult = cursor.fetchall()
-            print(custresult)
 
         return JsonResponse({"custList": custresult})
+
     elif custCode is not None and custCode != '':
         with connection.cursor() as cursor:
             cursor.execute(
@@ -47,27 +47,28 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'CGB' "
+                "   AND D.RECODE = 'BGB' "
                 "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
                 "   OR A.CUST_NME LIKE '%" + custCode + "%' "
             )
             custresult = cursor.fetchall()
+            print(custresult)
 
             # 업체 분류 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' ")
             cboCustType = cursor.fetchall()
 
             # 업체군 분류 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
-            cboCustType2 = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+        #     cboCustType2 = cursor.fetchall()
 
-        return JsonResponse({"cboCustType": cboCustType, "cboCustType2": cboCustType2, "custList": custresult})
+        return JsonResponse({"cboCustType": cboCustType, "custList": custresult})
 
     elif custYn is not None and custYn != '':
         with connection.cursor() as cursor:
@@ -77,15 +78,15 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'CGB' "
+                "   AND D.RECODE = 'BGB' "
                 "   WHERE A.CUST_END_CHK LIKE '%" + custYn + "%' "
             )
             custresult = cursor.fetchall()
-            print(custresult)
+
 
         return JsonResponse({"custList": custresult})
 
@@ -97,15 +98,15 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'CGB' "
+                "   AND D.RECODE = 'BGB' "
                 "   WHERE A.CUST_GBN LIKE '%" + custType + "%' "
             )
             custresult = cursor.fetchall()
-            print(custresult)
+
 
         return JsonResponse({"custList": custresult})
 
@@ -121,7 +122,7 @@ def custViews_search(request):
 
         # 업체 구분 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' ")
             inputCustType = cursor.fetchall()
 
         # 사용여부 - 콤보박스
@@ -130,39 +131,37 @@ def custViews_search(request):
             cboCustYn = cursor.fetchall()
 
         # 업체 분류 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' ")
-            cboCustType = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' ")
+        #     cboCustType = cursor.fetchall()
 
         # 업체군 분류 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'POP' ")
-            cboCustType2 = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'POP' ")
+        #     cboCustType2 = cursor.fetchall()
 
-        return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "cboCustType": cboCustType
-                                , "cboCustType2": cboCustType2, "custList": custresult})
+        return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "custList": custresult})
 
 
 def custViews_save(request):
-    if 'btnSave' in request.POST:
-        custName = request.POST.get('txtCustName')
-        custCode = request.POST.get('txtCustCode')
-        custCeo = request.POST.get('txtCeo')
-        custRegNum = request.POST.get('txtRegNum')
-        custCat = request.POST.get('txtCustCat')
-        custType = request.POST.get('txtCustType')
-        custPostCode = request.POST.get('txtPostCode')
-        custAddress = request.POST.get('txtAddress')
-        custTelPhone = request.POST.get('txtTelePhone')
-        custFax = request.POST.get('txtFax')
-        custEmp = request.POST.get('txtEmp')
-        custEmpPhone = request.POST.get('txtEmpPhone')
-        # custRegDate = request.POST.get('txtRegDate').replace('-', '')
-        custEmail = request.POST.get('txtEMail')
-        custWeb = request.POST.get('txtWebAddress')
-        custType = request.POST.get('cboCustType')
-        custType2 = request.POST.get('cboCustType2')
+    custName = request.POST.get('txtCustName')
+    custCode = request.POST.get('txtCustCode')
+    custCeo = request.POST.get('txtCeo')
+    custRegNum = request.POST.get('txtRegNum')
+    custCat = request.POST.get('txtCustCat')
+    custPostCode = request.POST.get('txtPostCode')
+    custAddress = request.POST.get('txtAddress')
+    custTelPhone = request.POST.get('txtTelePhone')
+    custFax = request.POST.get('txtFax')
+    custEmp = request.POST.get('txtEmp')
+    custEmpPhone = request.POST.get('txtEmpPhone')
+    creDt = request.POST.get('txtRegDate').replace('-', '')
+    custEmail = request.POST.get('txtEMail')
+    custWeb = request.POST.get('txtWebAddress')
+    custType = request.POST.get('cboCustType')
+    creUser = request.POST.get('txtUser')
 
+    if creUser is None or creUser == '':
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO MIS1TB003 "
                            "   ("
@@ -181,6 +180,8 @@ def custViews_save(request):
                            ",    CUST_EMAIL "
                            ",    CUST_HOMEP "
                            ",    CUST_GBN "
+                           ",    CRE_DT "
+                           ",    CRE_USER "
                            ") "
                            "    VALUES "
                            "    ("
@@ -199,9 +200,18 @@ def custViews_save(request):
                            ",   '" + str(custEmail) + "'"
                            ",   '" + str(custWeb) + "'"
                            ",   '" + str(custType) + "'"
+                           ",   '" + str(creDt) + "'"
+                           ",   '101'"
                            "    ) "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
+                           )
+
+            connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    elif creUser:
+        with connection.cursor() as cursor:
+            cursor.execute(" UPDATE MIS1TB003 SET "
                            "     CUST_NME  = '" + str(custName) + "' "
                            ",    CUST_CEO_NME = '" + str(custCeo) + "' "
                            ",    CUST_ID_NBR = '" + str(custRegNum) + "' "
@@ -216,15 +226,14 @@ def custViews_save(request):
                            ",    CUST_EMAIL = '" + str(custEmail) + "' "
                            ",    CUST_HOMEP = '" + str(custWeb) + "'  "
                            ",    CUST_GBN = '" + str(custType) + "' "
+                           ",    UPD_DT = '" + str(creDt) + "' "
+                           ",    UPD_USER = '101' "
                            )
             connection.commit()
 
-            messages.success(request, '저장 되었습니다.')
-            return render(request, 'base/base-cust.html')
+            return JsonResponse({'sucYn': "Y"})
 
-    else:
-        messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/base_cust')
+        return render(request, 'base/base-cust.html')
 
 
 def custViews_dlt(request):
