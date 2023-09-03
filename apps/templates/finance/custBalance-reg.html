@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post" action="{% url 'custBalance_reg_save' %}">
+    <form method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -47,11 +47,11 @@
                                 <span class="input-group-text text-body bg-transparent border-0 shadow-none">
                                     <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>등록 일자</label>
                                 </span>
-                                <input style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center" type="date" id="inputStrDate" name="inputStrDate"/>
+                                <input style="height: 2rem; max-width: 12rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center" type="date" id="inputStrDate" name="inputStrDate"/>
                                 <span class="input-group-text text-body bg-transparent border-0 shadow-none">
                                     <label style="font-size: 0.8rem">-</label>
                                 </span>
-                                <input style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
+                                <input style="height: 2rem; max-width: 12rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center" type="date" id="inputEndDate" name="inputEndDate"/>
                               </div>
                           </div>
                           <div class="p-3 col-lg-4 mt-lg-0"></div>
@@ -116,6 +116,10 @@
                                 <label class="mt-4" style="font-size: 0.8rem">미지급 잔액</label>
                                 <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="number" value="0" id="txtNonPay" name="txtNonPay"/>
                             </div>
+                            <div hidden class="col-6">
+                                <label class="mt-4" style="font-size: 0.8rem">사용자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="text" value="" id="txtUser" name="txtUser"/>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -146,7 +150,6 @@
 
             document.getElementById('inputStrDate').valueAsDate = new Date
             document.getElementById('inputEndDate').valueAsDate = new Date
-            document.getElementById('txtRegDate').valueAsDate = new Date
 
             {#var empType = $('input[name=inputEmpCount]:checked').val();#}
             var strDate = document.getElementById('inputStrDate').value;
@@ -305,7 +308,37 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            $('form').submit();
+            var cboCustCode = document.getElementById('cboCustCode').value
+            var txtNonGet = document.getElementById('txtNonGet').value
+            var txtNonPay = document.getElementById('txtNonPay').value
+            var txtRemark = document.getElementById('txtRemark').value
+            var txtUser = document.getElementById('txtUser').value
+            var txtRegDate = document.getElementById('txtRegDate').value
+
+            if(cboCustCode == '')
+            {
+                alert("거래처를 선택해주세요.")
+                return false
+            }
+
+            let data = {'cboCustCode': cboCustCode,'txtNonGet': txtNonGet,'txtNonPay': txtNonPay
+            , 'txtRemark': txtRemark, 'txtUser': txtUser, 'txtRegDate': txtRegDate}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "custBalance_reg_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'base_emp' %}";
+                    }
+                }
+            });
 
         });
 

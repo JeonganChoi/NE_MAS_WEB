@@ -158,34 +158,49 @@ def cashBalRegAcNmSearchViews(request):
 
 def cashBalRegSaveViews(request):
     ActNum = request.POST.get("cboActNum")
-    RAcNum = ActNum[2:]
-    RegDate = request.POST.get("txtRegDate")
-    RRegDate = RegDate.replace("-", "")
+    # RAcNum = ActNum[2:]
+    RegDate = request.POST.get("txtRegDate").replace('-', '')
     Amount = request.POST.get("txtAmount")
     Bigo = request.POST.get("txtBigo")
 
     with connection.cursor() as cursor:
-        cursor.execute("INSERT INTO ACCASHP "
-                       "   ("
-                       "     ACNUMBER "
-                       ",    ACDATE "
-                       ",    ACAMTS "
-                       ",    ACDESC "
-                       ") "
-                       "    VALUES "
-                       "    ("
-                       "    '" + str(RAcNum) + "' "
-                       ",   '" + str(RRegDate) + "' "
-                       ",   '" + str(Amount) + "'"
-                       ",   '" + str(Bigo) + "'"
-                       "    ) "
-                       "    ON DUPLICATE KEY "
-                       "    UPDATE "
-                       "     ACAMTS = '" + str(Amount) + "' "
-                       ",    ACDESC = '" + str(Bigo) + "' "
-                       )
-        connection.commit()
-    messages.success(request, '저장 되었습니다.')
-    return redirect('/cashBalance_reg')
+        cursor.execute(" SELECT ACNUMBER FROM ACCASHP WHERE ACNUMBER = '" + ActNum + "' ")
+        chkresult = cursor.fetchall()
+        if chkresult:
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE ACCASHP SET "
+                               "     ACAMTS = '" + str(Amount) + "' "
+                               ",    ACDESC = '" + str(Bigo) + "' "
+                               ",    ACDATE = '" + str(RegDate) + "' "
+                               )
+                connection.commit()
+
+                return JsonResponse({'sucYn': "Y"})
+
+            return render(request, 'finance/cash-reg.html')
+
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO ACCASHP "
+                               "   ("
+                               "     ACNUMBER "
+                               ",    ACDATE "
+                               ",    ACAMTS "
+                               ",    ACDESC "
+                               ") "
+                               "    VALUES "
+                               "    ("
+                               "    '" + str(ActNum) + "' "
+                               ",   '" + str(RegDate) + "' "
+                               ",   '" + str(Amount) + "'"
+                               ",   '" + str(Bigo) + "'"
+                               "    ) "
+                               )
+
+                connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+
 
 

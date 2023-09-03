@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} accountBalance - 계좌 잔액 등록 {% endblock %}
+{% block title %} 은행 계좌 잔액 등록 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post" action="{% url 'actBalance_reg_save' %}">
+    <form method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -147,8 +147,6 @@
             $("#cboBankName").html("");
             $("#cboActNum").html("");
 
-            document.getElementById('txtDate').valueAsDate = new Date
-
             $.ajax({
                 type: "post",
                 url: '{% url "actBalance_reg_search" %}',
@@ -168,7 +166,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "</tr> ");
@@ -183,7 +181,7 @@
                         }
                     }
 
-                    var combolist3 = data.cboBankName;
+                    var combolist3 = data.inputBankType;
                     for (var i = 0; i < combolist3.length; i++) {
                         if (combolist3[i][0] == cboBankName) {
                             cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
@@ -234,7 +232,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "</tr> ");
@@ -380,7 +378,34 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            $('form').submit();
+            var cboActNum = document.getElementById('cboActNum').value
+            var txtDate = document.getElementById('txtDate').value
+            var txtBalance = document.getElementById('txtBalance').value
+            var txtRemark = document.getElementById('txtRemark').value
+
+            if(cboActNum == '')
+            {
+                alert("계좌번호를 선택해주세요.")
+                return false
+            }
+
+            let data = {'cboActNum': cboActNum,'txtDate': txtDate,'txtBalance': txtBalance, 'txtRemark': txtRemark}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "actBalance_reg_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'actBalance_reg' %}";
+                    }
+                }
+            });
 
         });
 

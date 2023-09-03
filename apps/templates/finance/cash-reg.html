@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post" action="{% url 'cashBalacne_save' %}" name="frm">
+    <form method="post" name="frm">
 {#    <form method="post">#}
         {% csrf_token %}
         <div class="row">
@@ -32,12 +32,12 @@
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
                     <div class="pb-0 pt-0 card-header border-bottom">
-                      <div class="p-2 col-lg-3 mt-lg-0">
+                      <div class="p-2 col-lg-4 col-4 mt-lg-0">
                         <div class="input-group shadow-none">
                             <span class="input-group-text text-body bg-transparent border-0">
                                 <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>은 행 명</label>
                             </span>
-                            <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
+                            <select style="height: 2rem; max-width: 12rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cbobankType" id="cbobankType">
                             </select>
                         </div>
                       </div>
@@ -289,19 +289,34 @@
 
         $("#btnSave").on('click', function () {
 
-            var bankcode = $("#cbobankType2").val()
-            var acname = $("#txtActName").val()
+            var cboActNum = document.getElementById('cboActNum').value
+            var txtRegDate = document.getElementById('txtRegDate').value
+            var txtAmount = document.getElementById('txtAmount').value
+            var txtBigo = document.getElementById('txtBigo').value
 
-            if(bankcode == '' || acname == '')
+            if(cboActNum == '')
             {
-                alert("은행명을 선택 해 주세요.")
+                alert("계좌번호를 선택해주세요.")
                 return false
             }
-            else
-            {
-                $('form').submit();
-            }
 
+            let data = {'cboActNum': cboActNum,'txtRegDate': txtRegDate,'txtAmount': txtAmount, 'txtBigo': txtBigo}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "cashBalacne_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'cashBalance_reg' %}";
+                    }
+                }
+            });
         });
 
 

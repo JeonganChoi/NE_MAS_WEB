@@ -85,50 +85,56 @@ def actBalRegViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
             inputBankType = cursor.fetchall()
 
-        # 은행명 - 콤보박스
+        # 계좌번호 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
-            cboBankName = cursor.fetchall()
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cboActNum = cursor.fetchall()
 
-        return JsonResponse({"inputBankType": inputBankType, "cboBankName": cboBankName, "actBalList": actBalresult})
+        return JsonResponse({"inputBankType": inputBankType, "actBalList": actBalresult, "cboActNum": cboActNum})
 
 
 def actBalRegViews_save(request):
-    if 'btnSave' in request.POST:
-        actNum = request.POST.get('cboActNum')
-        actDate = request.POST.get('txtDate').replace('-', '')
-        actAmts = request.POST.get('txtBalance')
-        actDesc = request.POST.get('txtRemark')
+    actNum = request.POST.get('cboActNum')
+    actDate = request.POST.get('txtDate').replace('-', '')
+    actAmts = request.POST.get('txtBalance')
+    actDesc = request.POST.get('txtRemark')
 
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO ACBALANCE "
-                           "   ("
-                           "     ACNUMBER "
-                           ",    ACDATE "
-                           ",    ACAMTS "
-                           ",    ACDESC "
-                           ") "
-                           "    VALUES "
-                           "    ("
-                           "    '" + actNum + "' "
-                           ",   date_format(now(), '%Y%m%d') "
-                           ",   '" + str(actAmts) + "' "
-                           ",   '" + str(actDesc) + "' "
-                           "    ) "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
-                           "     ACAMTS  = '" + str(actAmts) + "' "
-                           ",    ACDESC = '" + str(actDesc) + "' "
-                           )
-            connection.commit()
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' ")
+        chkresult = cursor.fetchall()
+        if chkresult:
+            with connection.cursor() as cursor:
+                cursor.execute("    UPDATE ACBALANCE SET "
+                               "     ACAMTS  = '" + str(actAmts) + "' "
+                               ",    ACDESC = '" + str(actDesc) + "' "
+                               "     WHERE ACNUMBER = '" + str(actNum) + "' "
+                               )
+                connection.commit()
 
-            messages.success(request, '저장 되었습니다.')
+                return JsonResponse({'sucYn': "Y"})
+
             return render(request, 'finance/accountBalance-reg.html')
 
-    else:
-        messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/actBalance_reg')
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO ACBALANCE "
+                               "   ("
+                               "     ACNUMBER "
+                               ",    ACDATE "
+                               ",    ACAMTS "
+                               ",    ACDESC "
+                               ") "
+                               "    VALUES "
+                               "    ("
+                               "    '" + actNum + "' "
+                               ",   '" + str(actDate) + "' "
+                               ",   '" + str(actAmts) + "' "
+                               ",   '" + str(actDesc) + "' "
+                               "    ) "
+                               )
+                connection.commit()
 
+            return JsonResponse({'sucYn': "Y"})
 
 
 def actBalRegViews_dlt(request):

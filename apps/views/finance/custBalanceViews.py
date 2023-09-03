@@ -72,46 +72,52 @@ def custBalRegViews_search(request):
 
 
 def custBalRegViews_save(request):
-    if 'btnSave' in request.POST:
-        moCust = request.POST.get('cboCustCode')
-        moDate = request.POST.get('txtRegDate').replace('-', '')
-        moIwol = request.POST.get('txtNonGet')
-        moIwol2 = request.POST.get('txtNonPay')
-        moDesc = request.POST.get('txtRemark')
-        # iUser = request.POST.get('txtDate')
-        # uUser = request.POST.get('txtBalance')
+    moCust = request.POST.get('cboCustCode')
+    moIwol = request.POST.get('txtNonGet')
+    moIwol2 = request.POST.get('txtNonPay')
+    moDesc = request.POST.get('txtRemark')
+    iUser = request.POST.get('txtUser')
+    regDt = request.POST.get('txtRegDate').replace('-', '')
 
+    if iUser is None and iUser == '':
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO ACBALANCE "
+            cursor.execute("INSERT INTO SIOMONTT "
                            "   ("
                            "     MOCUST "
                            ",    MOdate "
                            ",    MOIWOL "
                            ",    MOIWOL2 "
                            ",    MODESC "
+                           ",    IUSER "
                            ") "
                            "    VALUES "
                            "    ("
                            "    '" + moCust + "' "
-                           ",   date_format(now(), '%Y%m%d') "
+                           ",   '" + str(regDt) + "' "
                            ",   '" + str(moIwol) + "' "
                            ",   '" + str(moIwol2) + "' "
                            ",   '" + str(moDesc) + "' "
+                           ",   '101' "
                            "    ) "
-                           "    ON DUPLICATE  KEY "
-                           "    UPDATE "
-                           "     MOIWOL  = '" + str(moIwol) + "' "
-                           ",    MOIWOL2 = '" + str(moIwol2) + "' "
-                           ",    MODESC = '" + str(moDesc) + "' "
                            )
             connection.commit()
 
-            messages.success(request, '저장 되었습니다.')
-            return render(request, 'finance/custBalance-reg.html')
+        return JsonResponse({'sucYn': "Y"})
 
-    else:
-        messages.warning(request, '입력 하신 정보를 확인 해주세요.')
-        return redirect('/custBalance_reg')
+    elif iUser:
+        with connection.cursor() as cursor:
+            cursor.execute("   UPDATE SIOMONTT SET "
+                           "     MOIWOL  = '" + str(moIwol) + "' "
+                           ",    MOIWOL2 = '" + str(moIwol2) + "' "
+                           ",    MODESC = '" + str(moDesc) + "' "
+                           ",    MOdate = '" + str(regDt) + "' "
+                           ",    UUSER = '101' "
+                           )
+            connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+        return render(request, 'finance/custBalance-reg.html')
 
 
 
