@@ -14,6 +14,344 @@ def withRegViews(request):
 
     return render(request, "finance/withdrawal-reg.html")
 
+
+# 출금-수불장
+def withRegNewViews(request):
+
+    return render(request, "finance/withdraw-reg-sheet.html")
+
+def withRegNewViews_search(request):
+    strDate = request.POST.get('strDate')
+    endDate = request.POST.get('endDate')
+    acIogb = request.POST.get('acIogb')
+    acDate = request.POST.get('acDate').replace('-', '')
+    acNum = request.POST.get('acNum')
+    acCust = request.POST.get('acCust')
+    acMcode = request.POST.get('acMcode')
+
+    if strDate != '' and endDate != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE > '" + strDate + "' ")
+            balresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
+                           " ( "
+                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     FROM SISACCTT A "
+                           "     LEFT OUTER JOIN MIS1TB003 B "
+                           "     ON A.ACCUST = B.CUST_NBR "
+                           "     LEFT OUTER JOIN ACNUMBER C "
+                           "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     WHERE A.ACIOGB = '2' "
+                           "     UNION ALL "
+                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     FROM SISACCTT A "
+                           "     LEFT OUTER JOIN MIS1TB003 B "
+                           "     ON A.ACCUST = B.CUST_NBR "
+                           "     LEFT OUTER JOIN ACNUMBER C "
+                           "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     WHERE A.ACIOGB = '1' "
+                           " ) AA "
+                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " ORDER BY AA.ACDATE ")
+            mainresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            # 거래처구분/명/행/결제방법명/결제방법코드/입출금구분/계정/금액/순번/날짜/계좌번호
+            cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
+                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
+                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'') "
+                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
+                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, '') "
+                           "    FROM SISACCTT A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.ACCUST = B.CUST_NBR "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.ACGUBN = C.RESKEY "
+                           "    AND C.RECODE = 'OUB' "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.MCODE = D.MCODE "
+                           "    LEFT OUTER JOIN OSCODEA G "
+                           "    ON A.ACCODE = G.ACODE "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACIOGB = E.RESKEY "
+                           "    AND E.RECODE = 'OUA' "
+                           "    LEFT OUTER JOIN OSREFCP F "
+                           "    ON A.ACGUNO_BK = F.RESKEY "
+                           "    AND F.RECODE = 'BNK' "
+                           "    WHERE A.ACDATE = '" + endDate + "'"
+                           "    AND A.ACIOGB = '1' "
+                           "    ORDER BY A.ACSEQN ")
+            subresult = cursor.fetchall()
+
+            # 거래처
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ")
+                cboCust = cursor.fetchall()
+
+            # 입출금구분
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '1' ORDER BY RESNAM ")
+                cboGgn = cursor.fetchall()
+
+            # 관리계정
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
+                cboMCode = cursor.fetchall()
+
+            # 회계게정
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ACODE LIKE '5%'")
+                cboACode = cursor.fetchall()
+
+            # 결제방법
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
+                cboPay = cursor.fetchall()
+
+            # 계좌번호
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+                cboAcnumber = cursor.fetchall()
+
+        return JsonResponse({'balList': balresult, 'mainList': mainresult, 'subList': subresult, 'cboCust': cboCust, 'cboGgn': cboGgn
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+
+    elif acIogb:
+        with connection.cursor() as cursor:
+            # 거래처구분/명/행/결제방법명/결제방법코드/입출금구분/계정/금액/순번/날짜/계좌번호
+            cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
+                           "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
+                           "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
+                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'') "
+                           "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
+                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, '') "
+                           "    FROM SISACCTT A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.ACCUST = B.CUST_NBR "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.ACGUBN = C.RESKEY "
+                           "    AND C.RECODE = 'OUB' "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.MCODE = D.MCODE "
+                           "    LEFT OUTER JOIN OSCODEA G "
+                           "    ON A.ACCODE = G.ACODE "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACIOGB = E.RESKEY "
+                           "    AND E.RECODE = 'OUA' "
+                           "    LEFT OUTER JOIN OSREFCP F "
+                           "    ON A.ACGUNO_BK = F.RESKEY "
+                           "    AND F.RECODE = 'BNK' "
+                           "    WHERE A.ACDATE = '" + acDate + "' "
+                           "    AND A.ACIOGB = '" + acIogb + "' "
+                           "    AND A.ACACNUMBER = '" + acNum + "' "
+                           "    AND A.ACCUST = '" + acCust + "'"
+                           "    AND A.MCODE = '" + acMcode + "' ")
+            subresult = cursor.fetchall()
+
+            # 거래처
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ")
+                cboCust = cursor.fetchall()
+
+            # 입출금구분
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '1' ORDER BY RESNAM ")
+                cboGgn = cursor.fetchall()
+
+            # 관리계정
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
+                cboMCode = cursor.fetchall()
+
+            # 회계게정
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ACODE LIKE '5%'")
+                cboACode = cursor.fetchall()
+
+            # 결제방법
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
+                cboPay = cursor.fetchall()
+
+            # 계좌번호
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+                cboAcnumber = cursor.fetchall()
+
+        return JsonResponse({'subList': subresult, 'cboCust': cboCust, 'cboGgn': cboGgn
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+
+    else:
+        # 거래처
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN = '1' ")
+            cboCust = cursor.fetchall()
+
+        # 입출금구분
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND RESKEY = '1' ORDER BY RESNAM ")
+            cboGgn = cursor.fetchall()
+
+        # 관리계정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ")
+            cboMCode = cursor.fetchall()
+
+        # 회계게정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ACODE LIKE '5%'")
+            cboACode = cursor.fetchall()
+
+        # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
+            cboPay = cursor.fetchall()
+
+        # 계좌번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cboAcnumber = cursor.fetchall()
+
+    return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+
+
+def withRegNewViews_save(request):
+    acDate = request.POST.get("txtWitRegDate").replace('-', '')   # 등록일자
+    acSeqn = request.POST.get("txtWitSeq")               # 순번
+    acRecn = '1' # 행
+    acCust = request.POST.get("cboWitCust")     # 거래처
+    acIogb = '1'     # 구분(출금)
+    mCode = request.POST.get("cboAdminCode")  # 관리계정
+    acCode = request.POST.get("cboActCode")  # 회계계정
+    acAmts = request.POST.get("txtWitPrice")      # 금액
+    acAcnumber = request.POST.get("cboWitActNum")     # 계좌번호
+    acGubn = request.POST.get("cboWitMethod")     # 결제방법
+    acDesc = request.POST.get("txtWitRemark")     # 비고
+    acbunho = request.POST.get("txtWitCashNum")     # 어음번호
+    acguno_dt = request.POST.get("txtWitCashNum")     # 만기일자
+    gbn = request.POST.get('WitEmpCount')
+    acIuser = '101'
+    acIdate = acDate.replace('-', '')
+    acUuser = '101'
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
+        result = cursor.fetchall()  # 계좌 은행
+
+        bnk = result[0][0]
+
+    if acSeqn == '' or acSeqn is None:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO SISACCTT "
+                           "   (    "
+                           "     ACDATE "
+                           ",    ACSEQN "
+                           ",    ACIOGB "
+                           ",    ACCUST "
+                           ",    ACGUBN "
+                           ",    MCODE "
+                           ",    ACCODE "
+                           ",    ACAMTS "
+                           ",    ACACNUMBER "
+                           ",    ACRECN "
+                           ",    ACDESC "
+                           ",    IUSER "
+                           ",    IDATE "
+                           ",    ACBUNHO "
+                           ",    ACGUNO_DT "
+                           ",    ACGUNO_BK "
+                           ",    GBN "
+                           "    ) "
+                           "    VALUES "
+                           "    (   "
+                           "    '" + str(acDate).replace('-', '') + "'"
+                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "')"
+                           ",   '1'"
+                           ",   '" + str(acCust) + "'"
+                           ",   '" + str(acGubn) + "'"
+                           ",   '" + str(mCode) + "'"
+                           ",   '" + str(acCode) + "'"
+                           ",   '" + str(acAmts) + "'"
+                           ",   '" + str(acAcnumber) + "'"
+                           ",   '" + str(acRecn) + "'"
+                           ",   '" + str(acDesc) + "'"
+                           ",   '" + str(acIuser) + "'"
+                           ",   '" + str(acIdate) + "'"
+                           ",   '" + str(acbunho) + "'"
+                           ",   '" + str(acguno_dt) + "'"
+                           ",   '" + str(bnk) + "'"
+                           ",   '" + str(gbn) + "'"
+                           "    )   "
+                           )
+            connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    elif acSeqn:
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE  SISACCTT SET"
+                           "     ACGUBN = '" + str(acGubn) + "' "
+                           ",    MCODE = '" + str(mCode) + "' "
+                           ",    ACCODE = '" + str(acCode) + "' "
+                           ",    ACAMTS = '" + str(acAmts) + "' "
+                           ",    ACACNUMBER = '" + str(acAcnumber) + "' "
+                           ",    ACRECN = '" + str(acRecn) + "' "
+                           ",    ACDESC = '" + str(acDesc) + "' "
+                           ",    ACBUNHO = '" + str(acbunho) + "' "
+                           ",    ACGUNO_DT = '" + str(acguno_dt) + "' "
+                           ",    ACGUNO_BK = '" + str(bnk) + "' "
+                           ",    GBN = '" + str(gbn) + "' "
+                           ",    UUSER = '" + str(acUuser) + "' "
+                           ",    UDATE = date_format(now(), '%Y%m%d') "
+                           "     WHERE ACDATE = '" + str(acDate) + "' "
+                           "     AND ACIOGB = '" + str(acIogb) + "' "
+                           "     AND ACCUST = '" + str(acCust) + "' "
+                           )
+            connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+        return render(request, 'finance/withdraw-reg-sheet.html')
+
+
+def withRegNewViews_dlt(request):
+    if request.method == "POST":
+        dataList = json.loads(request.POST.get('arrList'))
+        print(dataList)
+        for cust in dataList:
+            acc_split_list = cust.split(',')
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + acc_split_list[0] + "'"
+                               "                      AND ACIOGB = '" + acc_split_list[1] + "' "
+                               "                      AND ACDATE = '" + acc_split_list[2] + "'"
+                               "                      AND ACACNUMBER = '" + acc_split_list[3] + "' "
+                               "                      AND ACCUST = '" + acc_split_list[4] + "' "
+                               "                      AND MCODE = '" + acc_split_list[5] + "' ")
+                connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    else:
+        return render(request, 'finance/withdraw-reg-sheet.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def withRegViews_search(request):
     date = request.POST.get('date')
     year = request.POST.get('inputYear')

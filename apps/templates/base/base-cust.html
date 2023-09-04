@@ -20,6 +20,9 @@
                     <button type="button" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
                           <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
+                    <button type="button" class="mb-0 btn btn-light btn-sm align-items-center me-2 text-dark" id="btnClear" name="btnClear">
+                          <i class="fas fa-plus me-2 fs-6"></i>초기화
+                    </button>
                     <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
                           <i class="fas fa-minus me-2 fs-6"></i>삭제
                     </button>
@@ -480,6 +483,64 @@
             }
         });
 
+        {# 초기화 버튼 #}
+        $(document).on('click', "#btnClear", function () {
+            var inputYn = "";
+            var cboCustType = "";
+            var inputYnTxt = "<option value=''>:: 선택 ::</option>";
+            var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
 
+            $("#inputYn").html("");
+            $("#cboCustType").html("");
+
+
+            $.ajax({
+                type: "post",
+                url: '{% url "base_cust_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#txtCustName").html("");
+                    $("#txtCustCode").html("");
+                    $("#txtCeo").html("");
+                    $("#txtRegNum").html("");
+                    $("#txtCustCat").html("");
+                    $("#txtCustType").html("");
+                    $("#txtPostCode").val("");
+                    $("#txtAddress").val("");
+                    $("#txtTelePhone").val("");
+                    $("#txtFax").val("");
+                    $("#txtEmp").val("");
+                    $("#txtEmpPhone").val("");
+                    $("#txtWebAddress").val("");
+                    $("#cboCustType").val("");
+                    $("#txtUser").val("");
+
+                    var combolist4 = data.cboCustYn;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == inputYn) {
+                            inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.inputCustType;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboCustType) {
+                            cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#inputYn").append(inputYnTxt);
+                    $("#cboCustType").append(cboCustTypeTxt);
+
+                }
+            })
+        });
     </script>
 {% endblock %}

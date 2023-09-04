@@ -92,6 +92,12 @@ urlpatterns = [
     path('with_reg_dlt/', withdrawalViews.withRegViews_dlt, name='with_reg_dlt'),
     path('with_reg_out/', withdrawalViews.withRegOutList_search, name='with_reg_out'),
 
+    # 출금관리-수불장
+    path('with_reg_sheet/', withdrawalViews.withRegNewViews, name='with_reg_sheet'),
+    path('with_reg_sheet_search/', withdrawalViews.withRegNewViews_search, name='with_reg_sheet_search'),
+    path('with_reg_sheet_save/', withdrawalViews.withRegNewViews_save, name='with_reg_sheet_save'),
+    path('with_reg_sheet_dlt/', withdrawalViews.withRegNewViews_dlt, name='with_reg_sheet_dlt'),
+
     # 거래처원장
     path('custLedger_report/', financeSearchViews.custLedgerViews, name='custLedger_report'),
     path('custLedger_report_search/', financeSearchViews.custLedgerViews_search, name='custLedger_report_search'),
