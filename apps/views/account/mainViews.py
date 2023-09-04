@@ -13,3 +13,11 @@ def index(request):
 def redirectToMain(request):
 
     return redirect("home")
+
+# def redirectToLogin(request):
+#
+#     return redirect("login")
+#
+# def login(request):
+#
+#     return render(request, "account/login.html")

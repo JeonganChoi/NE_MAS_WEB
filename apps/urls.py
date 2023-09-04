@@ -1,6 +1,6 @@
 from django.urls import path,re_path
 from apps.views.account.mainViews import *
-from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews
+from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews, financeSearchViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
@@ -8,6 +8,8 @@ from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews,
 urlpatterns = [
     path('', redirectToMain, name="redirectToMain"),
     path('main/', index, name='home'),
+    # path('', redirectToLogin, name="redirectToLogin"),
+    # path('login/', login, name='login'),
 
 
 #     기초정보
@@ -18,6 +20,8 @@ urlpatterns = [
     path('base_accountCode_saveA/', accountCodeViews.accountCodeViews_saveA, name='base_accountCode_saveA'),
     path('base_accountCode_dltM/', accountCodeViews.accountCodeViews_dltM, name='base_accountCode_dltM'),
     path('base_accountCode_dltA/', accountCodeViews.accountCodeViews_dltA, name='base_accountCode_dltA'),
+    # 계정코드관리
+    path('base_charge/', baseChargeViews.baseChargeViews, name='base_charge'),
     # 참조코드관리
     path('base_code/', baseCodeViews.baseCodeViews, name='base_code'),
     path('base_code_search/', baseCodeViews.baseCodeViews_search, name='base_code_search'),
