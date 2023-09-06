@@ -1,7 +1,8 @@
 from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews
-from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews, cashBalanceViews, financeSearchViews
+from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
+    , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
 
@@ -101,6 +102,11 @@ urlpatterns = [
     path('with_reg_sheet_search/', withdrawalViews.withRegNewViews_search, name='with_reg_sheet_search'),
     path('with_reg_sheet_save/', withdrawalViews.withRegNewViews_save, name='with_reg_sheet_save'),
     path('with_reg_sheet_dlt/', withdrawalViews.withRegNewViews_dlt, name='with_reg_sheet_dlt'),
+
+    # 감가상각비명세서
+    path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),
+    # 임금대장
+    path('payroll_reg/', payrollViews.payrollViews, name='payroll_reg'),
 
     # 거래처원장
     path('custLedger_report/', financeSearchViews.custLedgerViews, name='custLedger_report'),
