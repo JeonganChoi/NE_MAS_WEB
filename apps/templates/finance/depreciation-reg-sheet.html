@@ -21,7 +21,7 @@
                             <div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
                                 <button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>
-                                <!--<button type="button" class="btn btn-sm btn-light text-dark text-sm" id="btnDlt" name="btnDlt">삭제</button>-->
+                                <button type="button" class="btn btn-sm btn-light text-dark text-sm" id="btnDlt" name="btnDlt">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -35,58 +35,62 @@
                 <div class="card border border-white shadow-xs">
                     <div class="card-header pb-0">
                         <div class="row">
-                            <div class="col-lg-4 col-4">
+                            <div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label class="text-sm" style="width: 5rem"><i class="far fa-calendar me-2"></i>년도</label>
                                     <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="height: 2rem; max-width: 6rem">
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-5">
-                              <div class="input-group shadow-none">
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
                                   <label class="text-sm" style="width: 5rem"><i class="far fa-calendar me-2"></i>상각 기간</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="height: 2rem; max-width: 10rem">
                                   <label class="me-4" style="font-size: 1rem">-</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="height: 2rem; max-width: 10rem">
-                              </div>
+                                </div>
                             </div>
-                            <div class="col-lg-3 col-3"></div>
+                            <div class="col-lg-3 col-3">
+                                <button type="button" class="btn btn-sm btn-success text-white" id="btnSearch" name="btnSearch">조회</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive-sm height-500 overflow-auto border border-light">
                           <table class="table mb-0 align-items-center justify-content-center">
                               <colgroup>
-                                  <col width="8%">
-                                  <col width="10%">
-                                  <col width="10%">
-                                  <col width="10%">
-                                  <col width="8%">
-                                  <col width="8%">
-                                  <col width="10%">
+                                  <col width="4%">
                                   <col width="10%">
                                   <col width="10%">
                                   <col width="8%">
+                                  <col width="4%">
                                   <col width="8%">
-                                  <col width="10%">
-                                  <col width="10%">
-                                  <col width="10%">
+                                  <col width="6%">
+                                  <col width="8%">
+                                  <col width="8%">
+                                  <col width="8%">
+                                  <col width="8%">
+                                  <col width="8%">
+                                  <col width="8%">
+                                  <col width="8%">
+                                  <col width="8%">
                               </colgroup>
                             <thead class="text-white font-weight-bolder text-center bg-primary">
                               <tr>
-                                <th style="font-size: 0.85rem" class="p-2">거래일시</th>
-                                <th style="font-size: 0.85rem" class="p-2">맡기신 금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">찾으신 금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">잔금</th>
-                                <th style="font-size: 0.85rem" class="p-2">통장명</th>
-                                <th style="font-size: 0.85rem" class="p-2">거래일시</th>
-                                <th style="font-size: 0.85rem" class="p-2">맡기신 금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">찾으신 금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">잔금</th>
-                                <th style="font-size: 0.85rem" class="p-2">통장명</th>
-                                <th style="font-size: 0.85rem" class="p-2">거래일시</th>
-                                <th style="font-size: 0.85rem" class="p-2">맡기신 금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">찾으신 금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">잔금</th>
+                                <th style="font-size: 0.85rem" class="p-2">순번</th>
+                                <th style="font-size: 0.85rem" class="p-2">자산번호</th>
+                                <th style="font-size: 0.85rem" class="p-2">자산명칭</th>
+                                <th style="font-size: 0.85rem" class="p-2">규 격</th>
+                                <th style="font-size: 0.85rem" class="p-2">수 량</th>
+                                <th style="font-size: 0.85rem" class="p-2">취득일자</th>
+                                <th style="font-size: 0.85rem" class="p-2">내용년수</th>
+                                <th style="font-size: 0.85rem" class="p-2">취득금액</th>
+                                <th style="font-size: 0.85rem" class="p-2">자본적지출액</th>
+                                <th style="font-size: 0.85rem" class="p-2">전기삼각누계</th>
+                                <th style="font-size: 0.85rem" class="p-2">차감잔액</th>
+                                <th style="font-size: 0.85rem" class="p-2">일반삼각비</th>
+                                <th style="font-size: 0.85rem" class="p-2">삼각누계액</th>
+                                <th style="font-size: 0.85rem" class="p-2">미삼각잔액</th>
+                                <th style="font-size: 0.85rem" class="p-2">세무조정금액</th>
                               </tr>
                             </thead>
                             <tbody id="mainTb">
@@ -105,4 +109,141 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    <script>
+        $(document).ready(function () {
+            var date = new Date();
+            var year = date.getFullYear()
+            date.setMonth(date.getMonth() - 1);
+
+            document.getElementById("inputYear").value = year;
+            document.getElementById("inputStrDate").valueAsDate = date;
+            document.getElementById("inputEndDate").valueAsDate = new Date;
+
+            var yymm = document.getElementById("inputYear").value;
+
+            let data = {"yymm": yymm}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "dpt_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    var total = 0;
+                    var No = 0;
+
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+
+                        No += 1;
+
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + No + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixNo' name='txtFixNo' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][0] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][1] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][3] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][5] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][6]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][7]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][8]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][9]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+        {# 조회 버튼 누를시 #}
+        $(document).on('click', '#btnSearch', function () {
+            document.getElementById("inputYear").value = year;
+            document.getElementById("inputStrDate").valueAsDate = date;
+            document.getElementById("inputEndDate").valueAsDate = new Date;
+
+            var yymm = document.getElementById("inputYear").value;
+
+            let data = {"yymm": yymm}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "dpt_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+                    var total = 0;
+                    var No = 0;
+
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+
+                        No += 1;
+
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + No + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixNo' name='txtFixNo' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][0] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][1] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][3] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][5] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][6]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][7]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][8]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][9]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "</tr> ");
+                    }
+
+                    for (var i = 0; i < 10; i++) {
+
+                        No += 1;
+
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + No + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixNo' name='txtFixNo' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+        {# 저장 버튼 #}
+        $(document).on('click', "#btnSave", function () {
+
+        });
+    </script>
+
 {% endblock %}

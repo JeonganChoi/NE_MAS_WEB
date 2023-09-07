@@ -2,7 +2,7 @@ from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
-    , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews
+    , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
 
@@ -98,13 +98,15 @@ urlpatterns = [
     path('with_reg_out/', withdrawalViews.withRegOutList_search, name='with_reg_out'),
 
     # 출금관리-수불장
-    path('with_reg_sheet/', withdrawalViews.withRegNewViews, name='with_reg_sheet'),
-    path('with_reg_sheet_search/', withdrawalViews.withRegNewViews_search, name='with_reg_sheet_search'),
-    path('with_reg_sheet_save/', withdrawalViews.withRegNewViews_save, name='with_reg_sheet_save'),
-    path('with_reg_sheet_dlt/', withdrawalViews.withRegNewViews_dlt, name='with_reg_sheet_dlt'),
+    path('with_reg_sheet/', paymentViews.withRegNewViews, name='with_reg_sheet'),
+    path('receivePay_search/', paymentViews.receivePay_search, name='receivePay_search'),
+    path('payment_search/', paymentViews.paymentViews_search, name='payment_search'),
+    path('payment_save/', paymentViews.paymentViews_save, name='payment_save'),
+    path('payment_dlt/', paymentViews.paymentViews_dlt, name='payment_dlt'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),
+    path('dpt_search/', depreciationViews.dptViews_search, name='dpt_search'),
     # 임금대장
     path('payroll_reg/', payrollViews.payrollViews, name='payroll_reg'),
 

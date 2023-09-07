@@ -16,7 +16,7 @@
                     <div class="card-body pb-2">
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
-                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>출금 등록</h4>
+                                <h4 hidden class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>출금 등록</h4>
                             </div>
                             <div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
@@ -34,9 +34,10 @@
             <div class="col-lg-4 col-4">
                 <div class="card border border-white shadow-xs">
                     <div class="card-header pb-0">
-                        <div class="row">
-                            <div class="col-lg-8 col-8 text-start">
+                        <div class="row p-0">
+                            <div class="col-lg-8 col-8">
                               <div class="input-group shadow-none">
+                                  <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>일자</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="height: 2rem">
                                   <label class="mt-2 me-4" style="font-size: 1rem">-</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="height: 2rem">
@@ -44,6 +45,20 @@
                             </div>
                             <div class="col-lg-4 col-4 text-end">
                                  <button type="button" class="btn btn-sm bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            </div>
+                        </div>
+                        <div class="row p-0">
+                            <div class="col-lg-6 col-6">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>거래처</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-6">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>잔액</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-end me-2" type="number" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,112 +92,99 @@
                 </div>
             </div>
             <div class="col-lg-8 col-8 mb-md-0">
-                <div class="card border border-white shadow-xs">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm text-danger"><i class="far fa-edit me-2"></i>거래처</label>
-                                    <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
+                <div class="card border border-white shadow-xs height-600">
+                    <div class="row">
+                        <div class="col-lg-6 col-6">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금 구분</label>
+                                            <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitGbn" id="cboWitGbn" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
-                                    <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
-                                </div>
-                                <div hidden class="col-4">
-                                    <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
-                                    <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
-                                </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>구분</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitGbn" id="cboWitGbn" style="height: 2rem; font-size: 0.8rem"></select>
-                                </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>관리계정</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="fas fa-circle me-2"></i>금액</label>
-                                    <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
-                                </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="fas fa-circle me-2 text-xs"></i>계좌번호</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
-                                </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>결제방법</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
-                                </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="fas fa-box me-2"></i>발행처</label>
-                                    <select class="form-control border border-light rounded-1 text-center" name="cboWitIssueCust" id="cboWitIssueCust" style="height: 2rem; font-size: 0.8rem"></select>
-                                </div>
-                                <!--<div class="col-4">
-                                    <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
-                                    <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
-                                </div>-->
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="fas fa-circle me-2 text-xs"></i>어음번호</label>
-                                    <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
-                                </div>
-                                <div class="col-3">
-                                    <label class="mt-2 text-sm"><i class="fas fa-circle me-2 text-xs"></i>만기일자</label>
-                                    <input class="form-control text-center" type="date" id="txtWitDeadline" name="txtWitDeadline" style="height: 2rem; font-size: 0.8rem"/>
-                                </div>
-                                <div hidden class="col-4">
-                                    <label class="mt-4 text-sm font-weight-bolder me-4"><i class="fas fa-edit me-2"></i>처리</label>
-                                    <input type="radio" id="WitEmpCount" name="WitEmpCount" checked value="1"/>
-                                    <label class="mt-4 text-sm text-info me-4">현금</label>
-                                    <input type="radio" id="WitEmpCount" name="WitEmpCount" value="2"/>
-                                    <label class="mt-4 text-sm text-danger">계산서</label>
-                                </div>
-                                <div class="col-4">
-
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>비고</label>
-                                    <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
+                                <div class="form-group">
+                                    <div class="row mt-4">
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm text-danger"><i class="far fa-edit me-2"></i>거래처</label>
+                                            <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
+                                            <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div hidden class="col-4">
+                                            <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
+                                            <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>관리계정</label>
+                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>금액</label>
+                                            <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>계좌번호</label>
+                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>결제방법</label>
+                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>카드</label>
+                                            <select class="form-control border border-light rounded-1 text-center" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>
+                                        <!--<div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-box me-2"></i>발행처</label>
+                                            <select class="form-control border border-light rounded-1 text-center" name="cboWitIssueCust" id="cboWitIssueCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                        </div>-->
+                                        <!--<div class="col-4">
+                                            <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
+                                            <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
+                                        </div>-->
+                                    </div>
+                                    <div hidden class="row">
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>어음번호</label>
+                                            <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>만기일자</label>
+                                            <input class="form-control text-center" type="date" id="txtWitDeadline" name="txtWitDeadline" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
+                                            <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive-sm height-300 border border-light">
-                          <table class="table mb-0 align-items-center justify-content-center">
-                              <colgroup>
-                                  <col width="10%">
-                                  <col width="10%">
-                                  <col width="10%">
-                                  <col width="8%">
-                                  <col width="10%">
-                                  <col width="10%">
-                                  <col width="8%">
-                                  <col width="2%">
-                              </colgroup>
-                            <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
-                              <tr>
-                                <th style="font-size: 0.85rem" class="p-2">거래처명</th>
-                                <th style="font-size: 0.85rem" class="p-2">관리계정</th>
-                                <th style="font-size: 0.85rem" class="p-2">결재 방법</th>
-                                <th style="font-size: 0.85rem" class="p-2">금 액</th>
-                                <th style="font-size: 0.85rem" class="p-2">발행 은행</th>
-                                <th style="font-size: 0.85rem" class="p-2">어음 번호</th>
-                                <th style="font-size: 0.85rem" class="p-2">만기 일자</th>
-                                  <th style="font-size: 0.85rem" class="p-2"></th>
-                              </tr>
-                            </thead>
-                            <tbody id="withSubTb">
-                              <tr id="#withSubTr" class="withSubTr_tr">
-
-                              </tr>
-                            </tbody>
-                          </table>
+                        <div class="col-lg-6 col-6">
+                            <div class="card-body">
+                                <label class="mt-4 form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
+                                <form action="/file-upload" class="form-control dropzone" id="dropzone">
+                                  <div class="fallback">
+                                    <input name="file" id="file" type="file" multiple class="height-400"/>
+                                  </div>
+                                </form>
+                                <div class="form-group text-end mt-3">
+                                    <!--<a class="btn btn-linkedin btn-sm" type="button" id="btnImgSave">사진등록</a>-->
+                                    <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,26 +197,36 @@
 {% block javascripts %}
 
     <script>
+        Dropzone.autoDiscover = false;
+        var drop = document.getElementById('dropzone')
+        var myDropzone = new Dropzone(drop, {
+            url: "/file/post",
+            addRemoveLinks: true
+
+        });
+    </script>
+
+    <script>
         $(document).ready(function () {
+            var cboCust = "";
             var cboWitCust2 = "";
             var cboWitGbn = "";
             var cboAdminCode = "";
             var cboWitMethod = "";
             var cboWitActNum = "";
-            var cboWitIssueCust = "";
+            var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitGbnTxt = "";
+            var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitIssueCustTxt = "";
 
+            $("#inputCust").html("");
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
             $("#cboAdminCode").html("");
             $("#cboWitMethod").html("");
             $("#cboWitActNum").html("");
-            $("#cboWitIssueCust").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
@@ -231,21 +243,17 @@
 
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
+            var cboCust = document.getElementById('inputCust').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
-            var acIogb = "";
-            var acDate = "";
-            var acNum = "";
-            var acCust = "";
-            var acMcode = "";
 
-            let data = {"strDate": strDate, "endDate": endDate, "acIogb": acIogb, "acDate": acDate,"acNum": acNum, "acCust": acCust, "acMcode": acMcode}
+            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust}
 
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "with_reg_sheet_search" %}',
+                url: '{% url "receivePay_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
@@ -253,11 +261,10 @@
                 success: function (data) {
                     var list = data.mainList;
                     var list2 = data.balList;
-                    var list3 = data.subList;
                     var total = 0;
 
                     $("#withMainTb").html("");
-                    $("#withSubTb").html("");
+
                     for (var i = 0; i < list2.length; i++) {
 
                         total = list2[i][0]
@@ -276,11 +283,11 @@
                     for (var i = 0; i < list.length; i++) {
 
                         {# 입금 #}
-                        if(list[i][0] == '2'){
+                        if (list[i][0] == '2') {
                             total += list[i][2]
                         }
                         {# 출금 #}
-                        if(list[i][0] == '1'){
+                        if (list[i][0] == '1') {
                             total -= list[i][3]
                         }
 
@@ -295,95 +302,117 @@
                             "</tr> ");
                     }
 
-                    for (var j = 0; j < list3.length; j++) {
-
-                        $("#withSubTb").append(
-                            "<tr id='#withSubTr' class='withSubTr_tr'>" +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list3[j][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[j][2] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[j][9] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[j][5] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[j][10]) + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[j][14] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[j][15] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list3[j][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list3[j][0] + "," + list3[i][6] + "," + list3[j][11] + "," + list3[j][12] + "," + list3[j][1] + "," + list3[j][8] + "'/></div></td>" +
-                            "</tr> ");
-                    }
+                    document.getElementById("inputBal").value = total;
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboWitCust2) {
-                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        if (combolist[i][0] == cboCust) {
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                         } else {
-                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
+                    $("#inputCust").append(cboCustTxt);
 
-                    var combolist2 = data.cboGgn;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboWitGbn) {
-                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
+                    var acIogb = "";
+                    var acDate = "";
+                    var acNum = "";
+                    var acCust = "";
+                    var acMcode = "";
+
+                    let data2 = {
+                        "acIogb": acIogb,
+                        "acDate": acDate,
+                        "acNum": acNum,
+                        "acCust": acCust,
+                        "acMcode": acMcode
                     }
 
-                    var combolist3 = data.cboPay;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == cboWitMethod) {
-                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
+                    $.ajax({
+                        type: "post",
+                        data: data2,
+                        url: '{% url "payment_search" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
 
-                    var combolist4 = data.cboMCode;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboAdminCode) {
-                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
+                            var combolist = data.cboCust;
+                            for (var i = 0; i < combolist.length; i++) {
+                                if (combolist[i][0] == cboWitCust2) {
+                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                                } else {
+                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                                }
+                            }
 
-                    var combolist5 = data.cboAcnumber;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == cboWitActNum) {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
-                        } else {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
-                        }
-                    }
+                            var combolist2 = data.cboGgn;
+                            for (var i = 0; i < combolist2.length; i++) {
+                                if (combolist2[i][0] == cboWitGbn) {
+                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                                } else {
+                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                                }
+                            }
 
-                    $("#cboWitCust").append(cboWitCustTxt);
-                    $("#cboWitGbn").append(cboWitGbnTxt);
-                    $("#cboWitMethod").append(cboWitMethodTxt);
-                    $("#cboAdminCode").append(cboAdminCodeTxt);
-                    $("#cboWitActNum").append(cboWitActNumTxt);
+                            var combolist3 = data.cboPay;
+                            for (var i = 0; i < combolist3.length; i++) {
+                                if (combolist3[i][0] == cboWitMethod) {
+                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                                } else {
+                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                                }
+                            }
+
+                            var combolist4 = data.cboMCode;
+                            for (var i = 0; i < combolist4.length; i++) {
+                                if (combolist4[i][0] == cboAdminCode) {
+                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                                } else {
+                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                                }
+                            }
+
+                            var combolist5 = data.cboAcnumber;
+                            for (var i = 0; i < combolist5.length; i++) {
+                                if (combolist5[i][0] == cboWitActNum) {
+                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                                } else {
+                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                                }
+                            }
+
+                            $("#cboWitCust").append(cboWitCustTxt);
+                            $("#cboWitGbn").append(cboWitGbnTxt);
+                            $("#cboWitMethod").append(cboWitMethodTxt);
+                            $("#cboAdminCode").append(cboAdminCodeTxt);
+                            $("#cboWitActNum").append(cboWitActNumTxt);
+                        }
+                    })
                 }
-            })
+
+
+            });
+
+
         });
 
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
+            var cboCust = document.getElementById('inputCust').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
-            var acIogb = "";
-            var acDate = "";
-            var acNum = ""
-            var acCust = "";
-            var acMcode = "";
 
-            let data = {"strDate": strDate, "endDate": endDate, "acIogb": acIogb, "acDate": acDate, "acNum": acNum, "acCust": acCust, "acMcode": acMcode}
+            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust}
 
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "with_reg_sheet_search" %}',
+                url: '{% url "receivePay_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
@@ -394,7 +423,6 @@
                     var total = 0;
 
                     $("#withMainTb").html("");
-                    $("#withSubTb").html("");
                     for (var i = 0; i < list2.length; i++) {
 
                         total = list2[i][0]
@@ -444,20 +472,17 @@
             var cboAdminCode = "";
             var cboWitMethod = "";
             var cboWitActNum = "";
-            var cboWitIssueCust = "";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitGbnTxt = "";
+            var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitIssueCustTxt = "";
 
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
             $("#cboAdminCode").html("");
             $("#cboWitMethod").html("");
             $("#cboWitActNum").html("");
-            $("#cboWitIssueCust").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
@@ -472,16 +497,14 @@
             var acNum = split[2]
             var acCust = split[3]
             var acMcode= split[4]
-            var strDate = "";
-            var endDate = "";
 
 
-            let data = {'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, 'strDate': strDate, 'endDate': endDate}
+            let data = {'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode}
 
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "with_reg_sheet_search" %}',
+                url: '{% url "payment_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
@@ -505,22 +528,7 @@
                         cboWitMethod = list[i][4];
                         cboAdminCode = list[i][8];
                         cboWitActNum = list[i][12];
-
-                        $("#withSubTb").append(
-                            "<tr id='#withSubTr' class='withSubTr_tr'>" +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][10]) + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][6] + "," + list[i][11] + "," + list[i][12] + "," + list[i][1] + "," + list[i][8] + "'/></div></td>" +
-                            "</tr> ");
                     }
-
-
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
@@ -577,22 +585,43 @@
 
         });
 
+
+        $('#btnImgDlt').click(function() {
+            $('#fileNm').empty();
+            $('#file').val("");
+
+            var origin_img_url = $('#itemimage').data('origin');
+            $('#itemimage').attr('src', origin_img_url);
+        });
+
+        //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 이벤트
+        $('#file').change(function(event) {
+            var file = event.target.files[0]
+
+            $('#fileNm').text(file.name);
+
+            var reader = new FileReader(); //1
+
+            reader.onload = function(e) {
+                $('#itemimage').attr('src', e.target.result); //3
+            }
+
+            reader.readAsDataURL(file); //2
+        });
+
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
+            var cboWitGbn = document.getElementById('cboWitGbn').value
             var cboWitCust = document.getElementById('cboWitCust').value
             var txtWitRegDate = document.getElementById('txtWitRegDate').value
             var txtWitSeq = document.getElementById('txtWitSeq').value
             var txtWitRecn = document.getElementById('txtWitRecn').value
-            var cboWitGbn = document.getElementById('cboWitGbn').value
             var cboAdminCode = document.getElementById('cboAdminCode').value
             var txtWitPrice = document.getElementById('txtWitPrice').value
             var cboWitActNum = document.getElementById('cboWitActNum').value
             var cboWitMethod = document.getElementById('cboWitMethod').value
-            var cboWitIssueCust = document.getElementById('cboWitIssueCust').value
-            var txtWitCashNum = document.getElementById('txtWitCashNum').value
-            var txtWitDeadline = document.getElementById('txtWitDeadline').value
-            var WitEmpCount = document.getElementById('WitEmpCount').value
+            var cboWitCard = document.getElementById('cboWitCard').value
             var txtWitRemark = document.getElementById('txtWitRemark').value
 
 
@@ -604,14 +633,13 @@
 
             let data = {'cboWitCust': cboWitCust,'txtWitRegDate': txtWitRegDate,'txtWitSeq': txtWitSeq
                 , 'txtWitRecn': txtWitRecn, 'cboWitGbn': cboWitGbn, 'cboAdminCode': cboAdminCode, 'txtWitPrice': txtWitPrice
-                , 'cboWitActNum': cboWitActNum, 'cboWitMethod': cboWitMethod, 'cboWitIssueCust': cboWitIssueCust, 'txtWitCashNum': txtWitCashNum
-                , 'txtWitDeadline': txtWitDeadline, 'WitEmpCount': WitEmpCount, 'txtWitRemark': txtWitRemark}
+                , 'cboWitActNum': cboWitActNum, 'cboWitMethod': cboWitMethod, 'cboWitCard': cboWitCard, 'txtWitRemark': txtWitRemark}
 
             $.ajax({
                 type: "post",
                 data: data,
                 dataType: "json",
-                url: '{% url "with_reg_sheet_save" %}',
+                url: '{% url "payment_save" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
@@ -633,13 +661,11 @@
             var cboAdminCode = "";
             var cboWitMethod = "";
             var cboWitActNum = "";
-            var cboWitIssueCust = "";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitGbnTxt = "";
+            var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitIssueCustTxt = "";
 
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
@@ -655,26 +681,23 @@
             $("#txtWitRemark").val("");
 
             document.getElementById('txtWitRegDate').valueAsDate = new Date
-            var strDate = "";
-            var endDate = "";
             var acIogb = "";
             var acDate = "";
             var acNum = "";
             var acCust = "";
             var acMcode = "";
 
-            let data = {'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, 'strDate': strDate, 'endDate': endDate}
+            let data = {'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode}
 
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "with_reg_sheet_search" %}',
+                url: '{% url "payment_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $("#withSubTb").html("");
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
@@ -759,7 +782,7 @@
                             'arrList': JSON.stringify(chk_cust_id_arr),
                         },
                         dataType: "json",
-                        url: '{% url "with_reg_sheet_dlt" %}',
+                        url: '{% url "payment_dlt" %}',
                         headers: {
                             'X-CSRFTOKEN': '{{ csrf_token }}'
                         },
