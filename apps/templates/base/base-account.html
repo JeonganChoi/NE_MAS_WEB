@@ -37,9 +37,7 @@
                                 <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>은행명</label>
                                 </span>
-                                <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cbobankType" id="cbobankType" style="font-size: 0.85rem">
-
-                                </select>
+                                <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cbobankType" id="cbobankType"></select>
                             </div>
                           </div>
                           <div class="p-2 col-lg-9 mt-lg-0"></div>
@@ -50,6 +48,7 @@
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
                                 <col width="2%">
+                                <col width="6%">
                                 <col width="10%">
                                 <col width="15%">
                                 <col width="10%">
@@ -61,6 +60,7 @@
                           <thead class="bg-gray-100">
                             <tr>
                               <th class="text-center text-secondary text-center font-weight-bolder p-2"></th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">구분</th>
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">은행명</th>
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">계좌 번호</th>
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">통장명</th>
@@ -85,7 +85,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>은행명</label>
+                                <label class="text-danger" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>구 분</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboTop" id="cboTop"></select>
+                            </div>
+                            <div class="col-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>은행명</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="inputbankType" id="inputbankType"></select>
                             </div>
                             <div class="col-6"></div>
@@ -141,11 +148,16 @@
 
     <script>
         $(document).ready(function () {
+            var cboTop = "";
+            var cboBankType = "";
             var bankType = "";
-            var bankTypeTxt = "<option value=''>:: 전체 ::</option>";
+            var cboTopTxt = "<option value=''>:: 선택 ::</option>";
+            var cboBankTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var bankTypeTxt = "<option value=''>:: 선택 ::</option>";
             document.getElementById('txtRegDate').valueAsDate = new Date
             document.getElementById('txtExpireDate').valueAsDate = new Date
 
+            $("#cboTop").html("");
             $("#cbobankType").html("");
             $("#inputbankType").html("");
 
@@ -164,6 +176,7 @@
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
@@ -182,7 +195,26 @@
                             bankTypeTxt = bankTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
-                    $("#cbobankType").append(bankTypeTxt);
+
+                    var combolist3 = data.bankCombo;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboBankType) {
+                            cboBankTypeTxt = cboBankTypeTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboBankTypeTxt = cboBankTypeTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboTop;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboTop) {
+                            cboTopTxt = cboTopTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboTopTxt = cboTopTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+                    $("#cboTop").append(cboTopTxt);
+                    $("#cboBankType").append(cboBankTypeTxt);
                     $("#inputbankType").append(bankTypeTxt);
 
                 }
@@ -211,6 +243,7 @@
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][3].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
@@ -234,9 +267,12 @@
 
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#actMainTb .actMainTr_tr', function () {
+            var cboTop = "";
             var bankType = "";
-            var bankTypeTxt = "<option value=''>:: 전체 ::</option>";
+            var cboTopTxt = "<option value=''>:: 선택 ::</option>";
+            var bankTypeTxt = "<option value=''>:: 선택 ::</option>";
 
+            $("#cboTop").html("");
             $("#inputbankType").html("");
 
             let mainCode = $(this).attr('main_code');
@@ -272,6 +308,7 @@
                         $("#txtRemark").val(list[i][7])
                         $("#txtUser").val(list[i][8])
                         bankType = list[i][0];
+                        cboTop = list[i][12];
                     }
 
                     {# 콤보박스 #}
@@ -283,7 +320,17 @@
                             bankTypeTxt = bankTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
-                    console.log(bankTypeTxt);
+
+                    var combolist2 = data.cboTop;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboTop) {
+                            cboTopTxt = cboTopTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboTopTxt = cboTopTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboTop").append(cboTopTxt);
                     $("#inputbankType").append(bankTypeTxt);
                 }
             })
@@ -291,6 +338,7 @@
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
+            var cboTop = $("#cboTop").val()
             var bankcode = $("#inputbankType").val()
             var actCode = $("#txtActNum").val()
             var regDate = document.getElementById('txtRegDate').value
@@ -310,7 +358,7 @@
                 return false
             }
 
-            let data = {'bankcode': bankcode,'actCode': actCode,'regDate': regDate
+            let data = {'cboTop': cboTop, 'bankcode': bankcode,'actCode': actCode,'regDate': regDate
                         , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user}
 
             $.ajax({

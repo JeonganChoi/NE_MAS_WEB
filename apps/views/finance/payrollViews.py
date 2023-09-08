@@ -13,3 +13,28 @@ from django.db import connection
 def payrollViews(request):
 
     return render(request, "finance/payroll-reg-sheet.html")
+
+def payrollViews_search(request):
+    modal = request.POST.get('modal')
+
+    if modal:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ORDER BY ACNUMBER ")
+            cboAct = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ORDER BY MCODE ASC ")
+            cboMCode = cursor.fetchall()
+
+        return JsonResponse({"cboAct": cboAct, "cboMCode": cboMCode})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PNM' ORDER BY CAST(RESKEY AS UNSIGNED ) ASC ")
+            headresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT EMP_NBR, EMP_NME FROM PIS1TB001 WHERE EMP_TESA IS NULL OR EMP_TESA = ''; ")
+            empresult = cursor.fetchall()
+
+        return JsonResponse({"headList": headresult, "empList": empresult})

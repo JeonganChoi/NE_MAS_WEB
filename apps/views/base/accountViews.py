@@ -23,13 +23,16 @@ def accountViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM, A.ACNUMBER, IFNULL(A.ACNUM_NAME, ''), IFNULL(A.ACINDTE, '') "
                            "    , IFNULL(A.ACENDTE, ''), IFNULL(A.ACPAY, ''), IFNULL(A.ACDESC, '') "
-                           "    , IFNULL(A.INEPNO, ''), IFNULL(A.UEPNO, '') "
-                           "    , IFNULL(A.INDATE, ''), IFNULL(A.UDATE, '') "
+                           "    , IFNULL(A.CRE_USER, ''), IFNULL(A.UPD_USER, '') "
+                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, ''), IFNULL(A.ACGBN, ''), IFNULL(C.RESNAM, '') "
                            "    FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
-                           "    WHERE B.RECODE = 'BNK' "
-                           "    AND ACBKCD LIKE '%" + bankCode + "%'")
+                           "    AND B.RECODE = 'BNK' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.ACGBN = C.RESKEY "
+                           "    AND C.RECODE = 'TOP' "
+                           "    WHERE ACBKCD LIKE '%" + bankCode + "%'")
             accountresult = cursor.fetchall()
 
         return JsonResponse({"accountList": accountresult})
@@ -38,13 +41,16 @@ def accountViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM, A.ACNUMBER, IFNULL(A.ACNUM_NAME, ''), IFNULL(A.ACINDTE, '') "
                            "    , IFNULL(A.ACENDTE, ''), IFNULL(A.ACPAY, ''), IFNULL(A.ACDESC, '') "
-                           "    , IFNULL(A.INEPNO, ''), IFNULL(A.UEPNO, '') "
-                           "    , IFNULL(A.INDATE, ''), IFNULL(A.UDATE, '') "
+                           "    , IFNULL(A.CRE_USER, ''), IFNULL(A.UPD_USER, '') "
+                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, ''), IFNULL(A.ACGBN, ''), IFNULL(C.RESNAM, '') "
                            "    FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
-                           "    WHERE B.RECODE = 'BNK' "
-                           "    AND ACNUMBER LIKE '%" + actCode + "%'")
+                           "    AND B.RECODE = 'BNK' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.ACGBN = C.RESKEY "
+                           "    AND C.RECODE = 'TOP' "
+                           "    WHERE ACNUMBER LIKE '%" + actCode + "%'")
             accountresult = cursor.fetchall()
 
         # 은행명 - 콤보박스
@@ -52,19 +58,25 @@ def accountViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
             bankCombo = cursor.fetchall()
 
-        print(bankCombo, accountresult)
-        return JsonResponse({"bankCombo": bankCombo, "accountList": accountresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'TOP' ")
+            cboTop = cursor.fetchall()
+
+        return JsonResponse({"bankCombo": bankCombo, "cboTop": cboTop, "accountList": accountresult})
     # 테이블
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM, A.ACNUMBER, IFNULL(A.ACNUM_NAME, ''), IFNULL(A.ACINDTE, '') "
                            "    , IFNULL(A.ACENDTE, ''), IFNULL(A.ACPAY, ''), IFNULL(A.ACDESC, '') "
-                           "    , IFNULL(A.INEPNO, ''), IFNULL(A.UEPNO, '') "
-                           "    , IFNULL(A.INDATE, ''), IFNULL(A.UDATE, '') "
+                           "    , IFNULL(A.CRE_USER, ''), IFNULL(A.UPD_USER, '') "
+                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, ''), IFNULL(A.ACGBN, ''), IFNULL(C.RESNAM, '')  "
                            "    FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
-                           "    WHERE B.RECODE = 'BNK' ")
+                           "    AND B.RECODE = 'BNK' "
+                           "    LEFT OUTER JOIN OSREFCP C "
+                           "    ON A.ACGBN = C.RESKEY "
+                           "    AND C.RECODE = 'TOP' ")
             accountresult = cursor.fetchall()
 
         # 은행명 - 콤보박스
@@ -72,11 +84,16 @@ def accountViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
             bankCombo = cursor.fetchall()
 
-        return JsonResponse({"bankCombo": bankCombo, "accountList": accountresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'TOP' ")
+            cboTop = cursor.fetchall()
+
+        return JsonResponse({"bankCombo": bankCombo, "cboTop": cboTop, "accountList": accountresult})
 
 
 
 def accountViews_save(request):
+    acGbn = request.POST.get('cboTop')
     accNum = request.POST.get('actCode')
     accName = request.POST.get('actNme')
     bankCode = request.POST.get('bankcode')
@@ -93,18 +110,20 @@ def accountViews_save(request):
                            "   ("
                            "     ACNUMBER "
                            ",    ACNUM_NAME "
+                           ",    ACGBN "
                            ",    ACBKCD "
                            ",    ACINDTE "
                            ",    ACENDTE "
                            ",    ACPAY "
                            ",    ACDESC "
-                           ",    INEPNO "
-                           ",    INDATE "
+                           ",    CRE_USER "
+                           ",    CRE_DT "
                            "    ) "
                            "    VALUES "
                            "    ("
                            "    '" + accNum + "' "
                            ",   '" + str(accName) + "' "
+                           ",   '" + str(acGbn) + "' "
                            ",   '" + str(bankCode) + "' "
                            ",   '" + str(strDate) + "' "
                            ",   '" + str(endDate) + "' "
@@ -122,13 +141,14 @@ def accountViews_save(request):
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE ACNUMBER SET"
                            "     ACNUM_NAME = '" + str(accName) + "' "
+                           ",    ACGBN = '" + str(acGbn) + "' "
                            ",    ACBKCD = '" + str(bankCode) + "' "
                            ",    ACINDTE = '" + str(strDate) + "' "
                            ",    ACENDTE = '" + str(endDate) + "' "
                            ",    ACPAY = '" + str(accPrc) + "' "
                            ",    ACDESC = '" + str(remark) + "' "
-                           ",    UEPNO = '" + str(inepno) + "' "
-                           ",    UDATE = date_format(now(), '%Y%m%d') "
+                           ",    UPD_USER = '" + str(inepno) + "' "
+                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE ACNUMBER = '" + str(accNum) + "' "
                            )
             connection.commit()

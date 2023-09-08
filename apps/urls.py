@@ -2,7 +2,7 @@ from django.urls import path,re_path
 from apps.views.account.mainViews import *
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
-    , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews
+    , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
 
@@ -83,6 +83,9 @@ urlpatterns = [
     path('sales_report/', financeSearchViews.saleTransSearchViews, name='sales_report'),
     path('sales_report_search/', financeSearchViews.saleTransSearchViews_search, name='sales_report_search'),
 
+    # 결재결의서
+    path('approval_reg/', approvalViews.approvalViews, name='approval_reg'),
+
     # 입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),
     path('deposit_reg_search/', depositViews.depositRegViews_search, name='deposit_reg_search'),
@@ -109,6 +112,7 @@ urlpatterns = [
     path('dpt_search/', depreciationViews.dptViews_search, name='dpt_search'),
     # 임금대장
     path('payroll_reg/', payrollViews.payrollViews, name='payroll_reg'),
+    path('payroll_search/', payrollViews.payrollViews_search, name='payroll_search'),
 
     # 거래처원장
     path('custLedger_report/', financeSearchViews.custLedgerViews, name='custLedger_report'),
