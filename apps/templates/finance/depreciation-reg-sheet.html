@@ -56,10 +56,9 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive-sm height-500 overflow-auto border border-light">
-                          <table class="table mb-0 align-items-center justify-content-center">
+                          <table class="table mb-0 align-items-center justify-content-center" id="grid">
                               <colgroup>
-                                  <col width="4%">
-                                  <col width="10%">
+                                  <col width="6%">
                                   <col width="10%">
                                   <col width="8%">
                                   <col width="4%">
@@ -77,7 +76,6 @@
                             <thead class="text-white font-weight-bolder text-center bg-primary">
                               <tr>
                                 <th style="font-size: 0.85rem" class="p-2">순번</th>
-                                <th style="font-size: 0.85rem" class="p-2">자산번호</th>
                                 <th style="font-size: 0.85rem" class="p-2">자산명칭</th>
                                 <th style="font-size: 0.85rem" class="p-2">규 격</th>
                                 <th style="font-size: 0.85rem" class="p-2">수 량</th>
@@ -134,31 +132,48 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
-                    var total = 0;
-                    var No = 0;
 
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
 
-                        No += 1;
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td readonly class='text-center p-1' style='font-size: 0.85rem'><input readonly id='txtFixNo_" + i + "' name='txtFixNo' class='form-control bg-transparent border-0 text-dark text-center shadow-none' type='text' value='" + list[i][0] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme_" + i + "' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][1] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd_" + i + "' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty_" + i + "' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][3] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt_" + i + "' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY_" + i + "' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][5] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts_" + i + "' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][6] + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund_" + i + "' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][7] + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay_" + i + "' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][8] + "' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc_" + i + "' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][9] + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "</tr> ");
+                    }
+                    var len = list.length
+
+                    for (var i = 0; i < 10; i++) {
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + No + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixNo' name='txtFixNo' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][0] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][1] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][3] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][5] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][6]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][7]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td readonly class='text-center p-1' style='font-size: 0.85rem'><input readonly id='txtFixNo_" + (len + i) + "' name='txtFixNo' class='form-control bg-transparent border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme_" + (len + i) + "' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd_" + (len + i) + "' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty_" + (len + i) + "' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt_" + (len + i) + "' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY_" + (len + i) + "' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts_" + (len + i) + "' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund_" + (len + i) + "' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][8]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay_" + (len + i) + "' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][9]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc_" + (len + i) + "' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "</tr> ");
                     }
                 }
@@ -185,56 +200,50 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
-                    var total = 0;
-                    var No = 0;
 
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
 
-                        No += 1;
-
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + No + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixNo' name='txtFixNo' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][0] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][1] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][3] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][5] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][6]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][7]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td readonly class='text-center p-1' style='font-size: 0.85rem'><input readonly id='txtFixNo_" + i + "' name='txtFixNo' class='form-control bg-transparent border-0 text-dark text-center shadow-none' type='text' value='" + list[i][0] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme_" + i + "' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][1] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd_" + i + "' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='" + list[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty_" + i + "' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][3] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt_" + i + "' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY_" + i + "' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][5] + "' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts_" + i + "' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][6] + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund_" + i + "' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][7] + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][8]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay_" + i + "' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][8] + "' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + addComma(list[i][9]) + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc_" + i + "' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list[i][9] + "' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "</tr> ");
                     }
+                    var len = list.length
 
-                    for (var i = 0; i < 10; i++) {
-
-                        No += 1;
+                    for (var i = 1; i < 11; i++) {
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + No + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixNo' name='txtFixNo' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td readonly class='text-center p-1' style='font-size: 0.85rem'><input readonly id='txtFixNo_" + (len + i) + "' name='txtFixNo' class='form-control bg-transparent border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme_" + (len + i) + "' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd_" + (len + i) + "' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixQty_" + (len + i) + "' name='txtFixQty' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGDt_" + (len + i) + "' name='txtFixGDt' class='form-control border-0 text-dark text-center shadow-none' type='date' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixYYYY_" + (len + i) + "' name='txtFixYYYY' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixGAmts_" + (len + i) + "' name='txtFixGAmts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixFund_" + (len + i) + "' name='txtFixFund' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixRepay_" + (len + i) + "' name='txtFixRepay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'><input class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'><input id='txtFixTaxc_" + (len + i) + "' name='txtFixTaxc' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem'/></td> " +
                             "</tr> ");
+
                     }
                 }
             })
@@ -242,7 +251,71 @@
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
+            var saveresult = confirm("저장 하시겠습니까? 입력한 정보가 맞다면 확인 버튼을 눌러주세요.")
 
+            if (saveresult == true) {
+
+                var mainTableCount = 0;
+                $("#grid tr td input[name='txtFixNme']").each(function (index, ele) {
+                    var ele_val = $(ele).val();
+
+                    if(ele_val){
+                        mainTableCount += 1;
+                    }
+                });
+
+                {#let mainTable = document.getElementById('grid')#}
+                {#var mainTableCount = mainTable.rows.length#}
+                {#var mainRowList = mainTable.rows;#}
+
+                var fixArr = [];
+                for (var i = 0; i < mainTableCount; i++) {
+
+                    var fixCode = $('#txtFixNo_' + i).val();
+                    var fixNme = $('#txtFixNme_' + i).val();
+                    var fixGrd = $('#txtFixGrd_' + i).val();
+                    var fixQty = $('#txtFixQty_' + i).val();
+                    var fixGdt = $('#txtFixGDt_' + i).val();
+                    var fixYYYY = $('#txtFixYYYY_' + i).val();
+                    var fixAmts = $('#txtFixGAmts_' + i).val();
+                    var fixFund = $('#txtFixFund_' + i).val();
+                    var fixRepay = $('#txtFixRepay_' + i).val();
+                    var fixTaxc = $('#txtFixTaxc_' + i).val();
+
+                    let data = {
+                        'fixCode': fixCode,
+                        'fixNme': fixNme,
+                        'fixGrd': fixGrd,
+                        'fixQty': fixQty,
+                        'fixGdt': fixGdt,
+                        'fixYYYY': fixYYYY,
+                        'fixAmts': fixAmts,
+                        'fixFund': fixFund,
+                        'fixRepay': fixRepay,
+                        'fixTaxc': fixTaxc
+                    };
+                    fixArr.push(data);
+                }
+
+                $.ajax({
+                method: "POST",
+                async: false,
+                dataType: "json",
+                data: {
+                    'fixArrList': JSON.stringify(fixArr),
+                },
+                url: "{% url 'dpt_save' %}",
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.arrList === "Y") {
+                        alert("저장되었습니다.")
+                        location.href = "{% url 'depreciation_reg' %}";
+                    }
+                }
+            });
+            }
         });
     </script>
 

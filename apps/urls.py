@@ -110,6 +110,7 @@ urlpatterns = [
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),
     path('dpt_search/', depreciationViews.dptViews_search, name='dpt_search'),
+    path('dpt_save/', depreciationViews.dptViews_save, name='dpt_save'),
     # 임금대장
     path('payroll_reg/', payrollViews.payrollViews, name='payroll_reg'),
     path('payroll_search/', payrollViews.payrollViews_search, name='payroll_search'),
