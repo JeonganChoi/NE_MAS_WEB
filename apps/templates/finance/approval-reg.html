@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} 지출결의서 및 결제 {% endblock %}
+{% block title %} 지출결의서 및 결재 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -16,7 +16,7 @@
                     <div class="card-body pb-2">
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
-                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>지출결의서 및 결제</h4>
+                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>지출결의서 및 결재</h4>
                             </div>
                             <div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
@@ -145,14 +145,52 @@
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                                       <tr>
-                                        <th style="font-size: 0.85rem" class="p-2">항 목</th>
-                                        <th style="font-size: 0.85rem" class="p-2">금 액</th>
-                                        <th style="font-size: 0.85rem" class="p-2">비 고</th>
+                                        <th style="font-size: 0.85rem" class="p-0">항 목</th>
+                                        <th style="font-size: 0.85rem" class="p-0">금 액</th>
+                                        <th style="font-size: 0.85rem" class="p-0">비 고</th>
                                       </tr>
                                     </thead>
                                     <tbody id="mainTb">
                                       <tr id="#mainTr" class="mainTr_tr">
 
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="form-group mt-2 mb-0">
+                                    <div class="row">
+                                        <div class="col-12 text-start">
+                                            <button class="btn btn-sm btn-dark" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#sendModal'>결재선 지정</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive-sm overflow-auto border border-light">
+                                  <table class="table mb-0 align-items-center justify-content-center">
+                                      <colgroup>
+                                          <col width="8%">
+                                          <col width="8%">
+                                          <col width="8%">
+                                          <col width="8%">
+                                          <col width="8%">
+                                      </colgroup>
+                                    <thead class="text-white font-weight-bolder text-center bg-warning">
+                                      <tr>
+                                        <th style="font-size: 0.85rem" class="p-0">이순신</th>
+                                        <th style="font-size: 0.85rem" class="p-0">강감찬</th>
+                                        <th style="font-size: 0.85rem" class="p-0">정몽주</th>
+                                        <th style="font-size: 0.85rem" class="p-0">김좌진</th>
+                                        <th style="font-size: 0.85rem" class="p-0">홍범도</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="mainTb">
+                                      <tr id="#mainTr" class="mainTr_tr">
+                                          <td class="border border-end border-light" style="height: 5vh">
+                                              <button class="btn btn-sm btn-dark" id="btnDecide" name="btnDecide" data-bs-toggle='modal' data-bs-target='#DecisionModal'><i class="ni ni-diamond"></i></button>
+                                          </td>
+                                          <td class="border border-end border-light" style="height: 5vh"></td>
+                                          <td class="border border-end border-light" style="height: 5vh"></td>
+                                          <td class="border border-end border-light" style="height: 5vh"></td>
+                                          <td class="border border-end border-light" style="height: 5vh"></td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -179,7 +217,129 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="sendModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 40vw">
+            <div class="modal-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-header bg-dark text-end" style="height: 5vh">
+                        <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row p-3">
+                            <div class="col-6">
+                                <h6>결재선 지정</h6>
+                                <div class="table-responsive-sm overflow-auto border border-light height-300">
+                                  <table class="table mb-0 align-items-center justify-content-center">
+                                      <colgroup>
+                                          <col width="3%">
+                                          <col width="10%">
+                                          <col width="10%">
+                                          <col width="10%">
+                                      </colgroup>
+                                    <thead class="text-white font-weight-bolder text-center bg-primary">
+                                      <tr>
+                                        <th style="font-size: 0.85rem" class="p-2">선 택</th>
+                                        <th style="font-size: 0.85rem" class="p-2">부 서</th>
+                                        <th style="font-size: 0.85rem" class="p-2">직 책</th>
+                                        <th style="font-size: 0.85rem" class="p-2">이 름</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="mainTb">
+                                      <tr id="#mainTr" class="mainTr_tr">
+
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h6>결재 라인</h6>
+                                <div class="table-responsive-sm overflow-auto border border-light height-300">
+                                  <table class="table mb-0 align-items-center justify-content-center">
+                                      <colgroup>
+                                          <col width="10%">
+                                          <col width="10%">
+                                          <col hidden width="10%">
+                                      </colgroup>
+                                    <thead class="text-white font-weight-bolder text-center bg-secondary">
+                                      <tr>
+                                        <th style="font-size: 0.85rem" class="p-2">Seg</th>
+                                        <th style="font-size: 0.85rem" class="p-2">이 름</th>
+                                        <th hidden style="font-size: 0.85rem" class="p-2">사 번</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="mainTb">
+                                      <tr id="#mainTr" class="mainTr_tr">
+
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-end border-0">
+                        <button class="btn btn-sm btn-success text-white">저 장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="DecisionModal" tabindex="-1" role="dialog" aria-labelledby="DecisionModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 30vw">
+            <div class="modal-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-header bg-dark text-end" style="height: 5vh">
+                        <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row p-0">
+                                <div class="col-4 text-start">
+                                    <button class="btn btn-sm btn-primary" id="btnDst" name="btnDst"><i class="ni ni-bold-down pe-3"></i>결 재</button>
+                                </div>
+                            </div>
+                            <div class="row p-0">
+                                <div class="col-4 text-start">
+                                    <button class="btn btn-sm btn-primary" id="btnDst" name="btnDst"><i class="ni ni-bold-down pe-3"></i>전 결</button>
+                                </div>
+                            </div>
+                            <div class="row p-0">
+                                <div class="col-4 text-start">
+                                    <button class="btn btn-sm btn-primary" id="btnDst" name="btnDst"><i class="ni ni-bold-down pe-3"></i>반 려</button>
+                                </div>
+                            </div>
+                            <div class="row p-0">
+                                <div class="col-12 text-start">
+                                    <label class="mt-2 text-sm">사 유</label>
+                                    <input class="form-control" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        $(document).on('click', '#btnDst', function () {
+
+            $('#sendModal').show();
+        });
+
+        $(document).on('click', '#btnDecide', function () {
+
+            $('#DecisionModal').show();
+        });
+    </script>
 {% endblock %}

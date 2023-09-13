@@ -115,12 +115,13 @@ def dptViews_save(request):
                             " ,'" + fixArrayLists[data]["fixYYYY"] + "' "
                             " ,'" + str(fixArrayLists[data]["fixAmts"]) + "' "
                             " ,'101' "
-                            " ,'20230910' "
+                            " ,date_format(now(), '%Y%m%d') "
                             " ,'101' "
                             " ) "
                     )
                     connection.commit()
 
+                    print(fixArrayLists[data]["fixYYMM"] + '00')
                     cursor.execute(
                             " INSERT INTO OSREPAY_D "
                             " ( "
@@ -133,7 +134,7 @@ def dptViews_save(request):
                             "  VALUES "
                             " ( "
                             "  (SELECT IFNULL (LPAD(MAX(A.FIX_NO + 1), '4', '0'), 0001) AS COUNTED FROM OSREPAY_D A) "
-                            " ,'" + (fixArrayLists[data]["fixYYYY"] + '00') + "' "
+                            " ,'" + str(fixArrayLists[data]["fixYYMM"]) + "' "
                             " ,'" + str(fixArrayLists[data]["fixFund"]) + "' "
                             " ,'" + str(fixArrayLists[data]["fixRepay"]) + "' "
                             " ,'" + str(fixArrayLists[data]["fixTaxc"]) + "' "

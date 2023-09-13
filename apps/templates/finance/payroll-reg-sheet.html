@@ -13,16 +13,17 @@
         <div class="row mt-n7">
             <div class="col-lg-12">
                 <div class="card blur border border-white rounded-2 shadow-xs">
-                    <div class="card-body pb-2">
+                    <div class="card-body pb-1">
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
                                 <div class="input-group shadow-none">
-                                    <input readonly class="form-control border-0 bg-transparent rounded-1 text-center text-dark text-lg font-weight-bolder" type="number" name="inputMonth" id="inputMonth" style="height: 2rem; max-width: 4rem">
-                                    <label class="text-lg">월 임금대장: 연봉직</label>
+                                    <input readonly class="form-control border-0 bg-transparent rounded-1 text-center text-dark text-lg font-weight-bolder" type="month" name="inputMonth" id="inputMonth" style="height: 2rem; max-width: 8rem">
+                                    <h4 class="text-lg mt-1">임금대장</h4>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-light text-primary text-sm" id="btnTrsf" name="btnTrsf">불러오기</button>
+                                <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSearch" name="btnSearch">조 회</button>
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
                                 <button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">계 산</button>
                                 <button type="button" class="btn btn-sm btn-light text-success text-sm" id="btnExcel" name="btnExcel">엑셀</button>
@@ -42,7 +43,7 @@
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label class="text-sm" style="width: 5rem"><i class="far fa-calendar me-2"></i>년월</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2" type="month" name="inputYYYYMM" id="inputYYYYMM" style="height: 2rem; max-width: 6rem">
+                                    <input class="form-control border border-light rounded-1 text-center me-2" type="month" name="inputYM" id="inputYM" style="height: 2rem; max-width: 10rem">
                                 </div>
                             </div>
                             <div class="col-lg-8 col-8 text-end">
@@ -52,8 +53,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive-sm height-500 overflow-auto border border-light">
-                          <table class="table mb-0 align-items-center justify-content-center">
-                            <thead class="text-white font-weight-bolder text-center bg-primary" id="mainHd">
+                          <table class="table mb-0 align-items-center justify-content-center" id="grid">
+                            <thead class="text-white font-weight-bolder text-center" id="mainHd" style="background-color: rgb(0, 92, 151);">
                               <tr id="#mainTh" class="mainTh_tr">
 
                               </tr>
@@ -130,16 +131,20 @@
 
     <script>
         $(document).ready(function () {
-            var date = new Date();
-            var yyyy = date.getFullYear()
-            var mm = date.getMonth();
+            var date = new Date().toISOString().slice(0,7);
 
             {#document.getElementById("inputYYYYMM").valueAsDate = yyyy;#}
-            document.getElementById("inputMonth").value = mm;
+            document.getElementById("inputMonth").value = date;
+            document.getElementById("inputYM").value = date;
 
-            {# 헤더 그려주기 #}
+            var yyyymm = document.getElementById("inputYM").value;
+            yyyymm = yyyymm.replace("-", "")
+
+            let data = {"yyyymm": yyyymm}
+
             $.ajax({
                 type: "post",
+                data: data,
                 url: '{% url "payroll_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -148,68 +153,622 @@
                 success: function (data) {
                     var list = data.headList;
                     var list2 = data.empList;
+                    var list3 = data.mainList;
+                    $("#mainHd").html("");
+                    $("#mainTb").html("");
 
-
+                    {# 헤더 그려주기 #}
                     $("#mainHd").append(
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>성 명</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>기본 시급</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>기본 입금</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>기본 시간</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>기본급</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>연장시간</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>휴게시간</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>휴일시간</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>휴일연장</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>심야시간</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>연장근로수당</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>휴게수당</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>휴일수당</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>휴일연장수당</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>야간심야수당</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>주차시간</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>주차수당</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>유급시간</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>유급수당</th>");
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>성 명</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본 시급</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본 입금</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본 시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본급</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>연장시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴게시간</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일연장</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>심야시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>연장근로수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴게수당</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일연장수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>야간심야수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>주차시간</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>주차수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>유급시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>유급수당</th>");
 
                     for (var i = 0; i < list.length; i++) {
                         if(list[i][0] < 10) {
                             $("#mainHd").append(
-                                "<th class='text-center bg-dark border border-top text-danger p-2' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
+                                "<th class='text-center border border-top text-danger p-1' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
                         }
                     }
 
                     $("#mainHd").append(
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>총액</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>국민연금</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>의료보험</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>갑근세</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>주민세</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>고용보험</th>");
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>총액</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>국민연금</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>의료보험</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>갑근세</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>주민세</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>고용보험</th>");
 
                     for (var i = 0; i < list.length; i++) {
                         if (list[i][0] > 10 && list[i][0] < 20) {
                             $("#mainHd").append(
-                                "<th class='text-center bg-dark border border-top text-danger p-2' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
+                                "<th class='text-center border border-top text-danger p-1' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
                         }
                     }
 
                     $("#mainHd").append(
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>공재금액</th>" +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center bg-dark border border-top text-white p-2' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>공재금액</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>실지급액</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>선택</th> ");
 
 
-                {#    직원정보  #}
-                    $("#mainTb").html("");
+                    {# 메인 데이터 그려주기 #}
                     for (var i = 0; i < list2.length; i++) {
+                        {# 새로운줄 #}
+                        $("#mainTb").append("<tr id='#mainTr' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[i][1] + "</td>" +
-                            "</tr> ");
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list2[i][1] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>");
+
+                        let bool = true;
+                        if(list3){
+                            for (var j = 0; j < list3.length; j++) {
+                                if(list2[i][0] == list3[j][2]){
+                                    $(".mainTr_tr").append(
+                                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list2[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list2[i][1] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][5] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][6] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][7] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBon_" + i + "' name='txtPmKBon' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][8] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtm_" + i + "' name='txtPmOtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][9] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOto_" + i + "' name='txtPmOto' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][10] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHom_" + i + "' name='txtPmHom' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][11] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHtm_" + i + "' name='txtPmHtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][12] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmStm_" + i + "' name='txtPmStm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][13] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOpy_" + i + "' name='txtPmOpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][14] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtpy_" + i + "' name='txtPmOtpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][15] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHopy_" + i + "' name='txtPmHopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][16] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHoopy_" + i + "' name='txtPmHoopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][17] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmSypy_" + i + "' name='txtPmSypy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][18] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWtm_" + i + "' name='txtPmWtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][19] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWpy_" + i + "' name='txtPmWpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][20] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYtm_" + i + "' name='txtPmYtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][21] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYpy_" + i + "' name='txtPmYpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][22] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                                    {#23-27#}
+                                    for (var i = 0; i < list.length; i++) {
+                                        if (list[i][0] < 10) {
+                                            var len = 23 + i
+                                            $(".mainTr_tr").append(
+                                                 "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][len] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                        }
+                                    }
+
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][28] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][29] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][30] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm1Tax_" + i + "' name='txtPm1Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][31] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm3Tax_" + i + "' name='txtPm3Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][32] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGops_" + i + "' name='txtPmGops' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][33] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                                    {#33-35#}
+                                    for (var i = 0; i < list.length; i++) {
+                                        if (list[i][0] > 10 && list[i][0] < 20) {
+                                            var len = 34 + i
+                                            $(".mainTr_tr").append(
+                                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][len] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                        }
+                                    }
+
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> ");
+
+                                    bool = false;
+                                }
+                            }
+                        }
+                        else if(list3 && bool){
+                            alert('들어옴')
+                            $(".mainTr_tr").append(
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBon_" + i + "' name='txtPmKBon' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtm_" + i + "' name='txtPmOtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOto_" + i + "' name='txtPmOto' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHom_" + i + "' name='txtPmHom' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHtm_" + i + "' name='txtPmHtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmStm_" + i + "' name='txtPmStm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOpy_" + i + "' name='txtPmOpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtpy_" + i + "' name='txtPmOtpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHopy_" + i + "' name='txtPmHopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHoopy_" + i + "' name='txtPmHoopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmSypy_" + i + "' name='txtPmSypy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWtm_" + i + "' name='txtPmWtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWpy_" + i + "' name='txtPmWpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYtm_" + i + "' name='txtPmYtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYpy_" + i + "' name='txtPmYpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                            {#22-26#}
+                            for (var i = 0; i < list.length; i++) {
+                                if (list[i][0] < 10) {
+                                    var len = 22 + i
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                }
+                            }
+
+                            $(".mainTr_tr").append(
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm1Tax_" + i + "' name='txtPm1Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm3Tax_" + i + "' name='txtPm3Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGops_" + i + "' name='txtPmGops' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                            {#33-35#}
+                            for (var i = 0; i < list.length; i++) {
+                                if (list[i][0] > 10 && list[i][0] < 20) {
+                                    var len = 33 + i
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                }
+                            }
+
+                            $(".mainTr_tr").append(
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> ");
+
+                        }
+
+                        else if(bool){
+                            alert('들어옴')
+                            $(".mainTr_tr").append(
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBon_" + i + "' name='txtPmKBon' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtm_" + i + "' name='txtPmOtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOto_" + i + "' name='txtPmOto' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHom_" + i + "' name='txtPmHom' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHtm_" + i + "' name='txtPmHtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmStm_" + i + "' name='txtPmStm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOpy_" + i + "' name='txtPmOpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtpy_" + i + "' name='txtPmOtpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHopy_" + i + "' name='txtPmHopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHoopy_" + i + "' name='txtPmHoopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmSypy_" + i + "' name='txtPmSypy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWtm_" + i + "' name='txtPmWtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWpy_" + i + "' name='txtPmWpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYtm_" + i + "' name='txtPmYtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYpy_" + i + "' name='txtPmYpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");{#22-26#}for (var i = 0; i < list.length; i++) {
+                            if (list[i][0] < 10) {
+                                var len = 22 + i
+                                $(".mainTr_tr").append(
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                            }
+                        }$(".mainTr_tr").append(
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm1Tax_" + i + "' name='txtPm1Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm3Tax_" + i + "' name='txtPm3Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGops_" + i + "' name='txtPmGops' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");{#33-35#}for (var i = 0; i < list.length; i++) {
+                            if (list[i][0] > 10 && list[i][0] < 20) {
+                                var len = 33 + i
+                                $(".mainTr_tr").append(
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                            }
+                        }$(".mainTr_tr").append(
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> ");}
+
                     }
                 }
             })
+        });
 
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnSearch", function () {
+            var yyyymm = document.getElementById("inputYM").value;
+            yyyymm = yyyymm.replace("-", "")
+
+            let data = {"yyyymm": yyyymm}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "payroll_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.headList;
+                    var list2 = data.empList;
+                    var list3 = data.mainList;
+                    $("#mainHd").html("");
+                    $("#mainTb").html("");
+
+                    {# 헤더 그려주기 #}
+                    $("#mainHd").append(
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>성 명</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본 시급</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본 입금</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본 시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>기본급</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>연장시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴게시간</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일연장</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>심야시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>연장근로수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴게수당</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>휴일연장수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>야간심야수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>주차시간</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>주차수당</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>유급시간</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>유급수당</th>");
+
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] < 10) {
+                            $("#mainHd").append(
+                                "<th class='text-center border border-top text-danger p-1' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
+                        }
+                    }
+
+                    $("#mainHd").append(
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>총액</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>국민연금</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>의료보험</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>갑근세</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>주민세</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>고용보험</th>");
+
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i][0] > 10 && list[i][0] < 20) {
+                            $("#mainHd").append(
+                                "<th class='text-center border border-top text-danger p-1' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
+                        }
+                    }
+
+                    $("#mainHd").append(
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>공재금액</th>" +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>실지급액</th> " +
+                        "<th class='text-center border border-top text-white p-1' style='font-size: 0.85rem'>선택</th> ");
+
+
+
+                    {# 메인 데이터 그려주기 #}
+                    for (var i = 0; i < list2.length; i++) {
+                        {# 새로운줄 #}
+                        $("#mainTb").append("<tr id='#mainTr' class='mainTr_tr'>" + "</tr> ");
+                        $(".mainTr_tr").append(
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list2[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list2[i][1] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>");
+
+
+                        let bool = true;
+                        if(list3){
+                            for (var j = 0; j < list3.length; j++) {
+                                if(list2[i][0] == list3[j][2]){
+                                    $(".mainTr_tr").append(
+                                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][5] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][6] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][7] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBon_" + i + "' name='txtPmKBon' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][8] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtm_" + i + "' name='txtPmOtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][9] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOto_" + i + "' name='txtPmOto' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][10] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHom_" + i + "' name='txtPmHom' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][11] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHtm_" + i + "' name='txtPmHtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][12] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmStm_" + i + "' name='txtPmStm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][13] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOpy_" + i + "' name='txtPmOpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][14] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtpy_" + i + "' name='txtPmOtpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][15] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHopy_" + i + "' name='txtPmHopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][16] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHoopy_" + i + "' name='txtPmHoopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][17] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmSypy_" + i + "' name='txtPmSypy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][18] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWtm_" + i + "' name='txtPmWtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][19] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWpy_" + i + "' name='txtPmWpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][20] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYtm_" + i + "' name='txtPmYtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][21] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYpy_" + i + "' name='txtPmYpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][22] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                                    {#23-27#}
+                                    for (var i = 0; i < list.length; i++) {
+                                        if (list[i][0] < 10) {
+                                            var len = 23 + i
+                                            $(".mainTr_tr").append(
+                                                 "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][len] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                        }
+                                    }
+
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][28] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][29] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][30] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm1Tax_" + i + "' name='txtPm1Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][31] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm3Tax_" + i + "' name='txtPm3Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][32] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGops_" + i + "' name='txtPmGops' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][33] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                                    {#34-36#}
+                                    for (var i = 0; i < list.length; i++) {
+                                        if (list[i][0] > 10 && list[i][0] < 20) {
+                                            var len = 34 + i
+                                            $(".mainTr_tr").append(
+                                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][len] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                        }
+                                    }
+
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem' /></td> ");
+
+                                }
+                                bool = false;
+                            }
+                        }
+                        else if(list3 && bool){
+
+                            $(".mainTr_tr").append(
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBon_" + i + "' name='txtPmKBon' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtm_" + i + "' name='txtPmOtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOto_" + i + "' name='txtPmOto' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHom_" + i + "' name='txtPmHom' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHtm_" + i + "' name='txtPmHtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmStm_" + i + "' name='txtPmStm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOpy_" + i + "' name='txtPmOpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtpy_" + i + "' name='txtPmOtpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHopy_" + i + "' name='txtPmHopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHoopy_" + i + "' name='txtPmHoopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmSypy_" + i + "' name='txtPmSypy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWtm_" + i + "' name='txtPmWtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWpy_" + i + "' name='txtPmWpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYtm_" + i + "' name='txtPmYtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYpy_" + i + "' name='txtPmYpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                            {#22-26#}
+                            for (var i = 0; i < list.length; i++) {
+                                if (list[i][0] < 10) {
+                                    var len = 22 + i
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                }
+                            }
+
+                            $(".mainTr_tr").append(
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm1Tax_" + i + "' name='txtPm1Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm3Tax_" + i + "' name='txtPm3Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGops_" + i + "' name='txtPmGops' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                            {#33-35#}
+                            for (var i = 0; i < list.length; i++) {
+                                if (list[i][0] > 10 && list[i][0] < 20) {
+                                    var len = 33 + i
+                                    $(".mainTr_tr").append(
+                                        "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                                }
+                            }
+
+                            $(".mainTr_tr").append(
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> ");
+
+                        }
+                    }
+                    if(bool){
+                        $(".mainTr_tr").append(
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKBon_" + i + "' name='txtPmKBon' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtm_" + i + "' name='txtPmOtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOto_" + i + "' name='txtPmOto' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHom_" + i + "' name='txtPmHom' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHtm_" + i + "' name='txtPmHtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmStm_" + i + "' name='txtPmStm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOpy_" + i + "' name='txtPmOpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmOtpy_" + i + "' name='txtPmOtpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHopy_" + i + "' name='txtPmHopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmHoopy_" + i + "' name='txtPmHoopy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmSypy_" + i + "' name='txtPmSypy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWtm_" + i + "' name='txtPmWtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmWpy_" + i + "' name='txtPmWpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYtm_" + i + "' name='txtPmYtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmYpy_" + i + "' name='txtPmYpy' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                        {#22-26#}
+                        for (var i = 0; i < list.length; i++) {
+                            if (list[i][0] < 10) {
+                                var len = 22 + i
+                                $(".mainTr_tr").append(
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                            }
+                        }
+
+                        $(".mainTr_tr").append(
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm1Tax_" + i + "' name='txtPm1Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPm3Tax_" + i + "' name='txtPm3Tax' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGops_" + i + "' name='txtPmGops' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+
+                        {#33-35#}
+                        for (var i = 0; i < list.length; i++) {
+                            if (list[i][0] > 10 && list[i][0] < 20) {
+                                var len = 33 + i
+                                $(".mainTr_tr").append(
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>");
+                            }
+                        }
+
+                        $(".mainTr_tr").append(
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='' style='height: 1.5rem; font-size: 0.85rem; width: 6rem' /></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> ");
+
+                        }
+                    }
+            })
+        });
+
+
+        {# 저장 버튼 #}
+        $(document).on('click', "#btnSave", function () {
+
+            var saveresult = confirm("저장 하시겠습니까? 입력한 정보가 맞다면 확인 버튼을 눌러주세요.")
+
+            if (saveresult == true) {
+                var mainTableCount = 0;
+                $("#grid tr td input[name='txtPmEmp']").each(function (index, ele) {
+                    var ele_val = $(ele).val();
+
+                    if(ele_val){
+                        mainTableCount += 1;
+                    }
+                });
+
+                {#let mainTable = document.getElementById('grid')#}
+                {#var mainTableCount = mainTable.rows.length#}
+                {#var mainRowList = mainTable.rows;#}
+
+                var payArr = [];
+                for (var i = 0; i < mainTableCount; i++) {
+
+                    var pmYymm = $('#txtPmDate_' + i).val();
+                    var pmEmpNbr = $('#txtPmEmp_' + i).val();
+                    var pmEmpNme = $('#txtPmNme_' + i).val();
+                    var pmGrad = 0;
+                    var pmTpay = $('#txtPmTPay_' + i).val();
+                    var pmDpay = $('#txtPmDPay_' + i).val();
+                    var pmKbtm = $('#txtPmKBtm_' + i).val();
+                    var pmKbon = $('#txtPmKBon_' + i).val();
+                    var pmOttm = $('#txtPmOtm_' + i).val();
+                    var pmPtptm = $('#txtPmOto_' + i).val();
+                    var pmHotm = $('#txtPmHom_' + i).val();
+                    var pmHootm = $('#txtPmHtm_' + i).val();
+                    var pmSytm = $('#txtPmStm_' + i).val();
+                    var pmOtpy = $('#txtPmOpy_' + i).val();
+                    var pmOtopy = $('#txtPmOtpy_' + i).val();
+                    var pmHopy = $('#txtPmHopy_' + i).val();
+                    var pmHoopy = $('#txtPmHoopy_' + i).val();
+                    var pmSypy = $('#txtPmSypy_' + i).val();
+                    var pmWwtm = $('#txtPmWtm_' + i).val();
+                    var pmWwpy = $('#txtPmWpy_' + i).val();
+                    var pmYutm = $('#txtPmYtm_' + i).val();
+                    var pmYupy = $('#txtPmYpy_' + i).val();
+                    var pmGsu1 = $('#txtPmGsu_' + '1').val();
+                    var pmGsu2 = $('#txtPmGsu_' + '2').val();
+                    var pmGsu3 = $('#txtPmGsu_' + '3').val();
+                    var pmGsu4 = $('#txtPmGsu_' + '4').val();
+                    var pmGsu5 = $('#txtPmGsu_' + '5').val();
+                    var pmPytt = $('#txtPmPytt_' + i).val();
+                    var pmKups = $('#txtPmKups_' + i).val();
+                    var pmMeps = $('#txtPmMeps_' + i).val();
+                    var pmTax1 = $('#txtPm1Tax_' + i).val();
+                    var pmTax3 = $('#txtPm3Tax_' + i).val();
+                    var pmGops = $('#txtPmGops_' + i).val();
+                    var pmGtg1 = $('#txtPmGts_' + '1').val();
+                    var pmGtg2 = $('#txtPmGts_' + '2').val();
+                    var pmGtg3 = $('#txtPmGts_' + '3').val();
+                    var pmGott = $('#txtPmGott_' + i).val();
+                    var pmJitt = $('#txtPmJitt_' + i).val();
+
+                    if(pmYymm == null || pmYymm == ''){
+                        var date = new Date();
+                        var year = date.getFullYear();
+                        pmYymm = year + '00';
+                    }
+
+
+                    let data = {
+                        'pmYymm': pmYymm,
+                        'pmEmpNbr': pmEmpNbr,
+                        'pmEmpNme': pmEmpNme,
+                        "pmTpay": pmTpay,
+                        "pmDpay": pmDpay,
+                        'pmGrad': pmGrad,
+                        'pmKbon': pmKbon,
+                        'pmKbtm': pmKbtm,
+                        'pmOttm': pmOttm,
+                        'pmPtptm': pmPtptm,
+                        'pmHotm': pmHotm,
+                        'pmHootm': pmHootm,
+                        'pmWwtm': pmWwtm,
+                        'pmYutm': pmYutm,
+                        'pmSytm': pmSytm,
+                        'pmOtpy': pmOtpy,
+                        'pmOtopy': pmOtopy,
+                        'pmHopy': pmHopy,
+                        'pmHoopy': pmHoopy,
+                        'pmSypy': pmSypy,
+                        'pmWwpy': pmWwpy,
+                        'pmYupy': pmYupy,
+                        'pmGsu1': pmGsu1,
+                        'pmGsu2': pmGsu2,
+                        'pmGsu3': pmGsu3,
+                        'pmGsu4': pmGsu4,
+                        'pmGsu5': pmGsu5,
+                        'pmPytt': pmPytt,
+                        'pmKups': pmKups,
+                        'pmMeps': pmMeps,
+                        'pmTax1': pmTax1,
+                        'pmTax3': pmTax3,
+                        'pmGops': pmGops,
+                        'pmGtg1': pmGtg1,
+                        'pmGtg2': pmGtg2,
+                        'pmGtg3': pmGtg3,
+                        'pmGott': pmGott,
+                        'pmJitt': pmJitt
+                    };
+                    payArr.push(data);
+                }
+
+
+                $.ajax({
+                method: "POST",
+                async: false,
+                dataType: "json",
+                data: {
+                    'payArrList': JSON.stringify(payArr),
+                },
+                url: "{% url 'payroll_save' %}",
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.arrList === "Y") {
+                        alert("저장되었습니다.")
+                        location.href = "{% url 'payroll_reg' %}";
+                    }
+                }
+            });
+            }
 
         });
 

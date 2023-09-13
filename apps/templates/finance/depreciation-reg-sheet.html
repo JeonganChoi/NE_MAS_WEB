@@ -41,7 +41,7 @@
                                     <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="height: 2rem; max-width: 6rem">
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-4">
+                            <div hidden class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                   <label class="text-sm" style="width: 5rem"><i class="far fa-calendar me-2"></i>상각 기간</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="height: 2rem; max-width: 10rem">
@@ -73,7 +73,7 @@
                                   <col width="8%">
                                   <col width="8%">
                               </colgroup>
-                            <thead class="text-white font-weight-bolder text-center bg-primary">
+                            <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                               <tr>
                                 <th style="font-size: 0.85rem" class="p-2">순번</th>
                                 <th style="font-size: 0.85rem" class="p-2">자산명칭</th>
@@ -115,8 +115,6 @@
             date.setMonth(date.getMonth() - 1);
 
             document.getElementById("inputYear").value = year;
-            document.getElementById("inputStrDate").valueAsDate = date;
-            document.getElementById("inputEndDate").valueAsDate = new Date;
 
             var yymm = document.getElementById("inputYear").value;
 
@@ -183,8 +181,6 @@
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
             document.getElementById("inputYear").value = year;
-            document.getElementById("inputStrDate").valueAsDate = date;
-            document.getElementById("inputEndDate").valueAsDate = new Date;
 
             var yymm = document.getElementById("inputYear").value;
 
@@ -282,6 +278,10 @@
                     var fixRepay = $('#txtFixRepay_' + i).val();
                     var fixTaxc = $('#txtFixTaxc_' + i).val();
 
+                    var date = new Date();
+                    var year = date.getFullYear();
+                    var fixYYMM = year + '00';
+
                     let data = {
                         'fixCode': fixCode,
                         'fixNme': fixNme,
@@ -292,7 +292,8 @@
                         'fixAmts': fixAmts,
                         'fixFund': fixFund,
                         'fixRepay': fixRepay,
-                        'fixTaxc': fixTaxc
+                        'fixTaxc': fixTaxc,
+                        'fixYYMM': fixYYMM
                     };
                     fixArr.push(data);
                 }
