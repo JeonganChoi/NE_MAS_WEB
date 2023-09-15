@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} 지출결의서 및 결재 {% endblock %}
+{% block title %} 결재 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -16,7 +16,7 @@
                     <div class="card-body pb-2">
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
-                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>지출결의서 및 결재</h4>
+                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>결재 등록</h4>
                             </div>
                             <div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
@@ -31,11 +31,11 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4 col-4">
-                <div class="card border border-white shadow-xs">
+            <div class="col-lg-12 col-12">
+                <div class="card border border-white shadow-xs height-600">
                     <div class="card-header pb-0">
                         <div class="row p-0">
-                            <div class="col-lg-8 col-8">
+                            <div class="col-lg-3 col-3">
                               <div class="input-group shadow-none">
                                   <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>일자</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="height: 2rem">
@@ -43,18 +43,13 @@
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="height: 2rem">
                               </div>
                             </div>
-                            <div class="col-lg-4 col-4 text-end">
-                                 <button type="button" class="btn btn-sm bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
-                            </div>
-                        </div>
-                        <div class="row p-0">
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>결재자</label>
                                     <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEpno" id="inputEpno" style="height: 2rem">
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>구분</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputGbn" id="inputGbn" style="font-size: 0.8rem; height: 2rem">
@@ -64,187 +59,32 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-lg-5 col-5 text-start">
+                                 <button type="button" class="btn btn-sm bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive-sm height-500 overflow-auto border border-light">
-                          <table class="table mb-0 align-items-center justify-content-center">
-                              <colgroup>
-                                  <col width="8%">
-                                  <col width="15%">
-                                  <col width="10%">
-                                  <col width="6%">
-                                  <col width="4%">
-                                  <col width="4%">
-                              </colgroup>
-                            <thead class="text-white font-weight-bolder text-center bg-primary">
-                              <tr>
-                                <th style="font-size: 0.85rem" class="p-2">작성일자</th>
-                                <th style="font-size: 0.85rem" class="p-2">제 목</th>
-                                <th style="font-size: 0.85rem" class="p-2">지출금액</th>
-                                <th style="font-size: 0.85rem" class="p-2">작성자</th>
-                                <th style="font-size: 0.85rem" class="p-2">결재</th>
-                                <th style="font-size: 0.85rem" class="p-2">승인</th>
-                              </tr>
-                            </thead>
-                            <tbody id="withMainTb">
-                              <tr id="withMainTr" class="withMainTr_tr">
-
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8 col-8 mb-md-0">
-                <div class="card border border-white shadow-xs">
-                    <div class="row p-0">
-                        <div class="col-lg-6 col-6">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>제 목</label>
-                                            <input class="form-control text-end" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>작성 일자</label>
-                                            <input class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>결재 일자</label>
-                                            <input class="form-control text-center" type="date" id="txtApvDate" name="txtApvDate" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>지출 금액</label>
-                                            <input class="form-control text-center" type="number" id="txtRegDate" name="txtRegDate" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>작성자</label>
-                                            <input readonly class="form-control text-center bg-transparent" type="text" id="txtApvDate" name="txtApvDate" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>결재계좌</label>
-                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive-sm overflow-auto border border-light height-200">
+                        <div class="row">
+                            <div class="col-lg-6 col-6">
+                                <div class="table-responsive-sm height-400 overflow-auto border border-light">
                                   <table class="table mb-0 align-items-center justify-content-center">
                                       <colgroup>
-                                          <col width="12%">
                                           <col width="8%">
                                           <col width="15%">
-                                      </colgroup>
-                                    <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
-                                      <tr>
-                                        <th style="font-size: 0.85rem" class="p-0">항 목</th>
-                                        <th style="font-size: 0.85rem" class="p-0">금 액</th>
-                                        <th style="font-size: 0.85rem" class="p-0">비 고</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="mainTb">
-                                      <tr id="#mainTr" class="mainTr_tr">
-
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                                <div class="form-group mt-2 mb-0">
-                                    <div class="row">
-                                        <div class="col-12 text-start">
-                                            <button class="btn btn-sm btn-dark" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#sendModal'>결재선 지정</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive-sm overflow-auto border border-light">
-                                  <table class="table mb-0 align-items-center justify-content-center">
-                                      <colgroup>
-                                          <col width="8%">
-                                          <col width="8%">
-                                          <col width="8%">
-                                          <col width="8%">
-                                          <col width="8%">
-                                      </colgroup>
-                                    <thead class="text-white font-weight-bolder text-center bg-warning">
-                                      <tr>
-                                        <th style="font-size: 0.85rem" class="p-0">이순신</th>
-                                        <th style="font-size: 0.85rem" class="p-0">강감찬</th>
-                                        <th style="font-size: 0.85rem" class="p-0">정몽주</th>
-                                        <th style="font-size: 0.85rem" class="p-0">김좌진</th>
-                                        <th style="font-size: 0.85rem" class="p-0">홍범도</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="mainTb">
-                                      <tr id="#mainTr" class="mainTr_tr">
-                                          <td class="border border-end border-light" style="height: 5vh">
-                                              <button class="btn btn-sm btn-dark" id="btnDecide" name="btnDecide" data-bs-toggle='modal' data-bs-target='#DecisionModal'><i class="ni ni-diamond"></i></button>
-                                          </td>
-                                          <td class="border border-end border-light" style="height: 5vh"></td>
-                                          <td class="border border-end border-light" style="height: 5vh"></td>
-                                          <td class="border border-end border-light" style="height: 5vh"></td>
-                                          <td class="border border-end border-light" style="height: 5vh"></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-6">
-                            <div class="card-body">
-                                <label class="mt-2 form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                <form action="/file-upload" class="form-control dropzone" id="dropzone">
-                                  <div class="fallback">
-                                    <input name="file" id="file" type="file" multiple class="height-500"/>
-                                  </div>
-                                </form>
-                                <div class="form-group text-end mt-3">
-                                    <!--<a class="btn btn-linkedin btn-sm" type="button" id="btnImgSave">사진등록</a>-->
-                                    <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="sendModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 40vw">
-            <div class="modal-content">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="modal-header bg-dark text-end" style="height: 5vh">
-                        <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row p-3">
-                            <div class="col-6">
-                                <h6>결재선 지정</h6>
-                                <div class="table-responsive-sm overflow-auto border border-light height-300">
-                                  <table class="table mb-0 align-items-center justify-content-center">
-                                      <colgroup>
-                                          <col width="3%">
                                           <col width="10%">
-                                          <col width="10%">
-                                          <col width="10%">
+                                          <col width="6%">
+                                          <col width="4%">
+                                          <col width="4%">
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center bg-primary">
                                       <tr>
-                                        <th style="font-size: 0.85rem" class="p-2">선 택</th>
-                                        <th style="font-size: 0.85rem" class="p-2">부 서</th>
-                                        <th style="font-size: 0.85rem" class="p-2">직 책</th>
-                                        <th style="font-size: 0.85rem" class="p-2">이 름</th>
+                                        <th style="font-size: 0.85rem" class="p-0">작성일자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">제 목</th>
+                                        <th style="font-size: 0.85rem" class="p-0">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-0">작성자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">결재</th>
+                                        <th style="font-size: 0.85rem" class="p-0">승인</th>
                                       </tr>
                                     </thead>
                                     <tbody id="mainTb">
@@ -255,36 +95,43 @@
                                   </table>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <h6>결재 라인</h6>
-                                <div class="table-responsive-sm overflow-auto border border-light height-300">
-                                  <table class="table mb-0 align-items-center justify-content-center">
-                                      <colgroup>
-                                          <col width="10%">
-                                          <col width="10%">
-                                          <col hidden width="10%">
-                                      </colgroup>
-                                    <thead class="text-white font-weight-bolder text-center bg-secondary">
-                                      <tr>
-                                        <th style="font-size: 0.85rem" class="p-2">Seg</th>
-                                        <th style="font-size: 0.85rem" class="p-2">이 름</th>
-                                        <th hidden style="font-size: 0.85rem" class="p-2">사 번</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="mainTb">
-                                      <tr id="#mainTr" class="mainTr_tr">
-
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                            <div class="col-lg-1 col-1"></div>
+                            <div class="col-lg-4 col-4">
+                                <div class="table-responsive-sm overflow-auto border border-light">
+                                    <table class="table mb-0 align-items-center justify-content-center">
+                                        <colgroup>
+                                            <col width="8%">
+                                            <col width="8%">
+                                            <col width="8%">
+                                            <col width="8%">
+                                            <col width="8%">
+                                        </colgroup>
+                                      <thead class="text-white font-weight-bolder text-center bg-warning">
+                                        <tr>
+                                          <th style="font-size: 0.85rem" class="p-0">이순신</th>
+                                          <th style="font-size: 0.85rem" class="p-0">강감찬</th>
+                                          <th style="font-size: 0.85rem" class="p-0">정몽주</th>
+                                          <th style="font-size: 0.85rem" class="p-0">김좌진</th>
+                                          <th style="font-size: 0.85rem" class="p-0">홍범도</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody id="subTb">
+                                        <tr id="#subTr" class="subTr_tr">
+                                            <td class="border border-end border-light" style="height: 5vh">
+                                                <button class="btn btn-sm btn-dark" id="btnDecide" name="btnDecide" data-bs-toggle='modal' data-bs-target='#DecisionModal'><i class="ni ni-diamond"></i></button>
+                                            </td>
+                                            <td class="border border-end border-light" style="height: 5vh"></td>
+                                            <td class="border border-end border-light" style="height: 5vh"></td>
+                                            <td class="border border-end border-light" style="height: 5vh"></td>
+                                            <td class="border border-end border-light" style="height: 5vh"></td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer text-end border-0">
-                        <button class="btn btn-sm btn-success text-white">저 장</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -296,30 +143,33 @@
             <div class="modal-content">
                 <form method="post">
                     {% csrf_token %}
-                    <div class="modal-header bg-dark text-end" style="height: 5vh">
+                    <div class="modal-header bg-dark" style="height: 5vh">
+                        <h6 class="text-white font-weight-bold mt-2"><i class="fas fa-credit-card fas-4 me-3"></i>결재 승인</h6>
                         <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="row p-0">
                                 <div class="col-4 text-start">
-                                    <button class="btn btn-sm btn-primary" id="btnDst" name="btnDst"><i class="ni ni-bold-down pe-3"></i>결 재</button>
+                                    <button class="btn btn-sm btn-primary" id="btnApv" name="btnApv"><i class="ni ni-bold-down pe-3"></i>결 재</button>
                                 </div>
                             </div>
                             <div class="row p-0">
                                 <div class="col-4 text-start">
-                                    <button class="btn btn-sm btn-primary" id="btnDst" name="btnDst"><i class="ni ni-bold-down pe-3"></i>전 결</button>
+                                    <button class="btn btn-sm btn-primary" id="btnAbt" name="btnAbt"><i class="ni ni-bold-down pe-3"></i>전 결</button>
                                 </div>
                             </div>
                             <div class="row p-0">
                                 <div class="col-4 text-start">
-                                    <button class="btn btn-sm btn-primary" id="btnDst" name="btnDst"><i class="ni ni-bold-down pe-3"></i>반 려</button>
+                                    <button class="btn btn-sm btn-primary" id="btnReturn" name="btnReturn"><i class="ni ni-bold-down pe-3"></i>반 려</button>
                                 </div>
                             </div>
                             <div class="row p-0">
                                 <div class="col-12 text-start">
-                                    <label class="mt-2 text-sm">사 유</label>
-                                    <input class="form-control" type="text"/>
+                                    <div class="form-group">
+                                        <label class="mt-2 text-sm">반려 사유</label>
+                                        <input class="form-control" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -328,18 +178,102 @@
             </div>
         </div>
     </div>
+
+    <!--<div class="col-lg-8 col-8 mb-md-0">
+        <div class="card border border-white shadow-xs">
+            <div class="row p-0">
+                <div class="col-lg-6 col-6">
+                    <div class="card-body">
+                        <label class="mt-2 form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
+                        <form action="/file-upload" class="form-control dropzone" id="dropzone">
+                          <div class="fallback">
+                            <input name="file" id="file" type="file" multiple class="height-500"/>
+                          </div>
+                        </form>
+                        <div class="form-group text-end mt-3">
+                            <a class="btn btn-linkedin btn-sm" type="button" id="btnImgSave">사진등록</a>
+                            <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!--<div class="form-group">
+    <div class="row">
+        <div class="col-12">
+            <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>제 목</label>
+            <input class="form-control text-end" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>작성 일자</label>
+            <input class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate" style="height: 2rem; font-size: 0.8rem"/>
+        </div>
+        <div class="col-6">
+            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>결재 일자</label>
+            <input class="form-control text-center" type="date" id="txtApvDate" name="txtApvDate" style="height: 2rem; font-size: 0.8rem"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>지출 금액</label>
+            <input class="form-control text-center" type="number" id="txtRegDate" name="txtRegDate" style="height: 2rem; font-size: 0.8rem"/>
+        </div>
+        <div class="col-6">
+            <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>작성자</label>
+            <input readonly class="form-control text-center bg-transparent" type="text" id="txtApvDate" name="txtApvDate" style="height: 2rem; font-size: 0.8rem"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>결재계좌</label>
+            <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
+        </div>
+    </div>
+</div>
+<div class="table-responsive-sm overflow-auto border border-light height-200">
+  <table class="table mb-0 align-items-center justify-content-center">
+      <colgroup>
+          <col width="12%">
+          <col width="8%">
+          <col width="15%">
+      </colgroup>
+    <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
+      <tr>
+        <th style="font-size: 0.85rem" class="p-0">항 목</th>
+        <th style="font-size: 0.85rem" class="p-0">금 액</th>
+        <th style="font-size: 0.85rem" class="p-0">비 고</th>
+      </tr>
+    </thead>
+    <tbody id="mainTb">
+      <tr id="#mainTr" class="mainTr_tr">
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="form-group mt-2 mb-0">
+    <div class="row">
+        <div class="col-12 text-start">
+            <button class="btn btn-sm btn-dark" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#sendModal'>결재선 지정</button>
+        </div>
+    </div>
+</div>-->
+
+
+
+
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        $(document).on('click', '#btnDst', function () {
-
-            $('#sendModal').show();
-        });
-
         $(document).on('click', '#btnDecide', function () {
 
             $('#DecisionModal').show();
         });
+
     </script>
 {% endblock %}

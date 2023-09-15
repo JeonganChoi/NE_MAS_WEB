@@ -190,7 +190,7 @@
                   </li>-->
               </ul>
           </li>
-          <li class="nav-item dropdown px-3 py-3 border-radius-sm d-flex align-items-center">
+          <!--<li class="nav-item dropdown px-3 py-3 border-radius-sm d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white  dropdown-toggle  nav-item" id="dropdownWithDeposits" data-bs-toggle="dropdown" aria-expanded="false">
               매입/ 매출
             </a>
@@ -207,25 +207,25 @@
               <li class="mb-2">
                 <a href="{% url 'sales_report' %}" class="dropdown-item border-radius-md">매출 거래 내역서</a>
               </li>
-              <!--<li class="mb-2">
+              <li class="mb-2">
                 <a href="#" class="dropdown-item border-radius-md">매입/ 매출 이관 관리</a>
-              </li>-->
+              </li>
             </ul>
-          </li>
+          </li>-->
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white  dropdown-toggle  nav-item" id="dropdownInOuts" data-bs-toggle="dropdown" aria-expanded="false">
               입금/ 출금
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownInOuts">
               <li class="mb-2">
-                <a href="{% url 'approval_reg' %}" class="dropdown-item border-radius-md">지출결의서</a>
+                <a href="{% url 'with_reg_sheet' %}" class="dropdown-item border-radius-md">입/출금 등록</a>
               </li>
-              <li class="mb-2">
+                <li class="mb-2">
+                <a href="{% url 'approval_reg' %}" class="dropdown-item border-radius-md">결재 등록</a>
+              </li>
+              <!--<li class="mb-2">
                 <a href="{% url 'deposit_reg' %}" class="dropdown-item border-radius-md">입금 등록</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'with_reg_sheet' %}" class="dropdown-item border-radius-md">출금 등록</a>
-              </li>
+              </li>-->
               <li class="mb-2">
                 <a href="{% url 'depreciation_reg' %}" class="dropdown-item border-radius-md">감가 상각비 명세서</a>
               </li>

@@ -90,12 +90,64 @@ def receivePay_search(request):
 
         return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
+def apvLine_modal_search(request):
+    empList = json.loads(request.POST.get('empList'))
+    cboDpt = request.POST.get('cboDpt')
+
+    if empList:
+        for emp in empList:
+            acc_split_list = emp.split(',')
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT EMP_DEPT, EMP_GBN, EMP_NBR, EMP_NME "
+                               " FROM PIS1TB001 "
+                               " WHERE EMP_DEPT = '" + acc_split_list[0] + "' AND EMP_GBN = '" + acc_split_list[1] + "' AND EMP_NBR = '" + acc_split_list[2] + "' ")
+                subresult = cursor.fetchall()
+
+                return JsonResponse({'subList': subresult})
+
+    if cboDpt:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.EMP_DEPT, B.RESNAM, A.EMP_GBN, C.RESNAM, A.EMP_NBR, A.EMP_NME "
+                           " FROM PIS1TB001 A "
+                           " LEFT OUTER JOIN OSREFCP B "
+                           " ON A.EMP_DEPT = B.RESKEY "
+                           " AND B.RECODE = 'DPT' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.EMP_GBN = C.RESKEY "
+                           " AND C.RECODE = 'JJO' "
+                           " WHERE C.RESKEY LIKE '3%' "
+                           " AND A.EMP_DEPT = '" + cboDpt + "' ")
+            mainresult = cursor.fetchall()
+
+            return JsonResponse({'mainList': mainresult})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.EMP_DEPT, B.RESNAM, A.EMP_GBN, C.RESNAM, A.EMP_NBR, A.EMP_NME "
+                           " FROM PIS1TB001 A "
+                           " LEFT OUTER JOIN OSREFCP B "
+                           " ON A.EMP_DEPT = B.RESKEY "
+                           " AND B.RECODE = 'DPT' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.EMP_GBN = C.RESKEY "
+                           " AND C.RECODE = 'JJO' "
+                           " WHERE C.RESKEY LIKE '3%' ")
+            mainresult = cursor.fetchall()
+
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' ORDER BY RESKEY ")
+                cboDpt = cursor.fetchall()
+
+            return JsonResponse({'mainList': mainresult, "cboDpt": cboDpt})
+
+
 def paymentViews_search(request):
     acIogb = request.POST.get('acIogb')
     acDate = request.POST.get('acDate').replace('-', '')
     acNum = request.POST.get('acNum')
     acCust = request.POST.get('acCust')
     acMcode = request.POST.get('acMcode')
+    cboGbn = request.POST.get('cboGbn')
 
     if acIogb:
         with connection.cursor() as cursor:
@@ -162,10 +214,11 @@ def paymentViews_search(request):
         return JsonResponse({'subList': subresult, 'cboCust': cboCust, 'cboGgn': cboGgn
                                 , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
 
-    else:
+    # 출금
+    if cboGbn == '1':
         # 거래처
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN LIKE '1' AND '3'")
             cboCust = cursor.fetchall()
 
         # 입출금구분
@@ -175,7 +228,7 @@ def paymentViews_search(request):
 
         # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ORDER BY MCODE ASC ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' ORDER BY MCODE ASC ")
             cboMCode = cursor.fetchall()
 
         # 회계게정
@@ -193,7 +246,42 @@ def paymentViews_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAcnumber = cursor.fetchall()
 
-    return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+        return JsonResponse(
+            {'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+
+    # 입금
+    else:
+        # 거래처
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN LIKE '2' AND '3' ")
+            cboCust = cursor.fetchall()
+
+        # 입출금구분
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' ORDER BY RESKEY ")
+            cboGgn = cursor.fetchall()
+
+        # 관리계정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '4%' ORDER BY MCODE ASC ")
+            cboMCode = cursor.fetchall()
+
+        # 회계게정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA ORDER BY ACODE ASC ")
+            cboACode = cursor.fetchall()
+
+        # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
+            cboPay = cursor.fetchall()
+
+        # 계좌번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cboAcnumber = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
 
 
 def paymentViews_save(request):

@@ -106,6 +106,7 @@ urlpatterns = [
     path('payment_search/', paymentViews.paymentViews_search, name='payment_search'),
     path('payment_save/', paymentViews.paymentViews_save, name='payment_save'),
     path('payment_dlt/', paymentViews.paymentViews_dlt, name='payment_dlt'),
+    path('apvLine_modal/', paymentViews.apvLine_modal_search, name='apvLine_modal'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),
