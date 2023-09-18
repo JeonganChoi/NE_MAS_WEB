@@ -205,7 +205,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
-                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, '') "
+                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,'') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -334,7 +334,8 @@ def paymentViews_search(request):
 
 def paymentViews_save(request):
     empArray = json.loads(request.POST.get('empArrList'))
-    ioDate = request.POST.get("txtWitRegDate").replace('-', '')   # 등록일자
+    ioDate = request.POST.get("txtWitRegDate").replace('-', '') # 등록일자
+    exDate = request.POST.get("txtExDate").replace('-', '')
     acSeqn = request.POST.get("txtWitSeq")               # 순번
     acRecn = request.POST.get("txtWitRecn")
     acCust = request.POST.get("cboWitCust")     # 거래처
@@ -375,6 +376,9 @@ def paymentViews_save(request):
 
         bnk = result[0][0]
 
+    if exDate == '' or exDate is None:
+        exDate = ioDate
+
     if acSeqn == '' or acSeqn is None:
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO SISACCTT "
@@ -395,10 +399,11 @@ def paymentViews_save(request):
                            ",    ICUST "
                            ",    ACGUNO_BK "
                            ",    ACFOLDER "
+                           ",    EXDATE "
                            "    ) "
                            "    VALUES "
                            "    (   "
-                           "    '" + str(ioDate).replace('-', '') + "'"
+                           "    '" + str(ioDate) + "'"
                            ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "') "
                            ",   '" + str(acIogb) + "'"
                            ",   '" + str(acCust) + "'"
@@ -414,6 +419,7 @@ def paymentViews_save(request):
                            ",   '" + str(regCust) + "'"
                            ",   '" + str(bnk) + "'"
                            ",   '" + str(Rfilenameloc) + "'"
+                           "    '" + str(exDate) + "'"
                            "    )   "
                            )
             connection.commit()
@@ -425,7 +431,7 @@ def paymentViews_save(request):
                 seq = result2[0][0]
 
             # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
-            opt = 'Y'
+            opt = 'N'
             empArrayLists = list(filter(len, empArray))
             for data in range(len(empArrayLists)):
                 with connection.cursor() as cursor:
@@ -441,7 +447,7 @@ def paymentViews_save(request):
                                    "    ) "
                                    "    VALUES "
                                    "    ( "
-                                   "     '" + str(ioDate) + "' "
+                                   "     '" + str(exDate) + "' "
                                    "     , '" + str(seq) + "' "
                                    "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
                                    "     , '" + empArrayLists[data]["empNbr"] + "' "
@@ -465,6 +471,7 @@ def paymentViews_save(request):
                            ",    ACDESC = '" + str(acDesc) + "' "
                            ",    ACGUNO_BK = '" + str(bnk) + "' "
                            ",    ACFOLDER = '" + str(Rfilenameloc) + "' "
+                           ",    EXDATE = '" + str(exDate) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE IODATE = '" + str(ioDate) + "' "

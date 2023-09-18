@@ -15,7 +15,15 @@ def approvalViews(request):
     return render(request, "finance/approval-reg.html")
 
 def approvalViews_search(request):
+    empNbr = request.POST.get('empNbr')
     gbn = request.POST.get('gbn')
+    iCust = request.POST.get('iCust')
+    ioDate = request.POST.get('ioDate')
+    acSeqn = request.POST.get('acSeqn')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT EMP_NBR, EMP_NME, ICUST FROM PIS1TB001 WHERE EMP_NBR = '" + empNbr + "' AND ICUST = '" + iCust + "' ")
+        empresult = cursor.fetchall()
 
     if gbn:
         with connection.cursor() as cursor:
@@ -39,3 +47,15 @@ def approvalViews_search(request):
 
         return JsonResponse({"mainList": mainresult})
 
+    if ioDate and acSeqn:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER "
+                           " FROM OSSIGN A "
+                           " LEFT OUTER JOIN PIS1TB001 B "
+                           " ON A.EMP_NBR = B.EMP_NBR "
+                           " WHERE A.ACDATE = '" + str(ioDate) + "' "
+                           " AND A.ACSEQN = '" + str(acSeqn) + "' "
+                           " ORDER BY SEQ ASC ")
+            subresult = cursor.fetchall()
+
+        return JsonResponse({"subList": subresult})

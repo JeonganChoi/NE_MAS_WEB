@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} depositWithdrawal - 출금등록 {% endblock %}
+{% block title %} 입/출금 등록 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -127,6 +127,10 @@
                                             <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>관리계정</label>
                                             <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                         </div>
+                                        <div class="col-6">
+                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>예정일자</label>
+                                            <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6">
@@ -160,10 +164,6 @@
                                         <div class="col-6">
                                             <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>어음번호</label>
                                             <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>만기일자</label>
-                                            <input class="form-control text-center" type="date" id="txtWitDeadline" name="txtWitDeadline" style="height: 2rem; font-size: 0.8rem"/>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -788,6 +788,7 @@
                         $("#txtWitSeq").val(list[i][0])
                         $("#txtWitRecn").val(list[i][3])
                         $("#txtWitRegDate").val(list[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtExDate").val(list[i][20].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtWitPrice").val(list[i][10])
                         $("#txtWitCashNum").val(list[i][15])
                         $("#txtWitRemark").val(list[i][19])
@@ -954,7 +955,7 @@
             var reader = new FileReader(); //1
 
             reader.onload = function(e) {
-                $('#itemimage').attr('src', e.target.result); //3
+                $('#file').attr('src', e.target.result); //3
             }
 
             reader.readAsDataURL(file); //2
@@ -966,6 +967,7 @@
             var cboWitGbn = document.getElementById('cboWitGbn').value
             var cboWitCust = document.getElementById('cboWitCust').value
             var txtWitRegDate = document.getElementById('txtWitRegDate').value
+            var txtExDate = document.getElementById('txtExDate').value
             var txtWitSeq = document.getElementById('txtWitSeq').value
             var txtWitRecn = document.getElementById('txtWitRecn').value
             var cboAdminCode = document.getElementById('cboAdminCode').value
@@ -1004,6 +1006,7 @@
                 data: {
                     'cboWitCust': cboWitCust,
                     'txtWitRegDate': txtWitRegDate,
+                    'txtExDate': txtExDate,
                     'txtWitSeq': txtWitSeq,
                     'txtWitRecn': txtWitRecn,
                     'cboWitGbn': cboWitGbn,

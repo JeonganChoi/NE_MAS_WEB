@@ -18,11 +18,11 @@
                             <div class="col-lg-6 col-6 text-start">
                                 <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>결재 및 승인 등록</h4>
                             </div>
-                            <div class="col-lg-6 col-6 text-end">
+                            <!--<div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
                                 <button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>
                                 <button type="button" class="btn btn-sm btn-light text-dark text-sm" id="btnDlt" name="btnDlt">삭제</button>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,13 @@
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>결재자</label>
-                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEpno" id="inputEpno" style="height: 2rem">
+                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" style="height: 2rem">
+                                </div>
+                            </div>
+                            <div hidden class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>결재자</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputiCust" id="inputiCust" style="height: 2rem">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
@@ -59,14 +65,27 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--<div class="col-lg-5 col-5 text-start">
-                                 <button type="button" class="btn btn-sm bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
-                            </div>-->
+                            <div class="col-lg-2 col-2"></div>
+                            <div class="col-lg-2 col-2 w-15">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 6rem"><i class="ni ni-calendar-grid-58 me-2"></i>승인일자</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEmp" id="inputEmp" style="height: 2rem; max-width: 8rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2 w-15">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 6rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" style="height: 2rem; max-width: 8rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2 text-start">
+                                 <button type="button" class="btn text-white font-weight-bolder" style="background-color: darkgreen" id="btnSearch" name="btnSearch"><i class="fas fa-file-signature me-2"></i>승인</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-5 col-5">
                                 <div class="table-responsive-sm height-400 overflow-auto border border-light">
                                   <table class="table mb-0 align-items-center justify-content-center">
                                       <colgroup>
@@ -79,7 +98,7 @@
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center bg-primary">
                                       <tr>
-                                        <th style="font-size: 0.85rem" class="p-0">작성일자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">등록일자</th>
                                         <th style="font-size: 0.85rem" class="p-0">제 목</th>
                                         <th style="font-size: 0.85rem" class="p-0">지출금액</th>
                                         <th style="font-size: 0.85rem" class="p-0">작성자</th>
@@ -94,7 +113,7 @@
                                     </tbody>
                                   </table>
                                 </div>
-                                <div class="table-responsive-sm overflow-auto border border-light">
+                                <div class="table-responsive-sm overflow-auto border border-light mt-3">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
                                             <col width="8%">
@@ -124,8 +143,31 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-1 col-1"></div>
+                            <div class="col-lg-5 col-5">
+                                <div class="table-responsive-sm height-400 overflow-auto border border-light">
+                                  <table class="table mb-0 align-items-center justify-content-center">
+                                      <colgroup>
+                                          <col width="8%">
+                                          <col width="15%">
+                                          <col width="10%">
+                                          <col width="6%">
+                                      </colgroup>
+                                    <thead class="text-white font-weight-bolder text-center" style="background-color: darkgreen">
+                                      <tr>
+                                        <th style="font-size: 0.85rem" class="p-0">등록일자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">제 목</th>
+                                        <th style="font-size: 0.85rem" class="p-0">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-0">작성자</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="apvTb">
+                                      <tr id="#apvTr" class="apvTr_tr">
 
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -270,9 +312,51 @@
     <script>
         $(document).ready(function () {
 
+            var empNbr = document.getElementById('inputEmp').value
+            var iCust = document.getElementById('inputiCust').value
             var gbn = document.getElementById('inputGbn').value
 
-            let data = {'gbn': gbn}
+            let data = {'empNbr': empNbr, 'iCust': iCust, 'gbn': gbn}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "approval_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+
+                    {# 순번, 입.출금구분, 날짜 #}
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + ",," + list[i][2] + "'>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>미결재</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+
+        });
+
+        {# 구분 콤보박스 클릭시 #}
+        $('#inputGbn').change(function () {
+
+            var empNbr = document.getElementById('inputEmp').value
+            var iCust = document.getElementById('inputiCust').value
+            var gbn = document.getElementById('inputGbn').value
+
+            let data = {'empNbr': empNbr, 'iCust': iCust, 'gbn': gbn}
 
             $.ajax({
                 type: "post",
@@ -288,13 +372,15 @@
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + ",," + list[i][2] + "'>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>미결재</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></div></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'/></div></td> " +
                             "</tr> ");
                     }
                 }
@@ -302,8 +388,12 @@
 
         });
 
-        {# 구분 콤보박스 클릭시 #}
-        $('#inputGbn').change(function () {
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#mainTb .mainTr_tr', function () {
+
+            let mainCode = $(this).attr('main_code');
+
+            let data = {'mainCode': mainCode}
 
         });
 
