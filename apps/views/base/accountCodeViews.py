@@ -11,18 +11,17 @@ from django.db import connection
 
 def accountCodeViews(request):
 
-    return render(request, "base/base-accountCode.html")
+    return render(request, "base/base-actCode-reg.html")
 
 def accountCodeViews_search(request):
     mainCode = request.POST.get('mainCode')
-    mainCode2 = request.POST.get('mainCode2')
     codeType = request.POST.get('cboCodeType')
-    codeType2 = request.POST.get('cboCodeType2')
 
-    if mainCode != '' and mainCode is not None:
+    if mainCode:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEM A "
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '') "
+                           "    FROM OSCODEM A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.GBN = B.RESKEY "
                            "    AND B.RECODE = 'CGB' "
@@ -32,33 +31,19 @@ def accountCodeViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP D "
                            "    ON A.MCODE_M = D.RESKEY "
                            "    AND D.RECODE = 'MCD' "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACODE = E.RESKEY "
+                           "    AND E.RECODE = 'ACD' "
                            "    WHERE MCODE = '" + mainCode + "' ")
             mresult = cursor.fetchall()
 
         return JsonResponse({"subMList": mresult})
 
-    elif mainCode2 != '' and mainCode2 is not None:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.ACODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(A.ACODENM, ''), IFNULL(A.ADESC, ''), IFNULL(A.ASEQ, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEA A "
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.GBN = B.RESKEY "
-                           "    AND B.RECODE = 'CGB' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.GBN2 = C.RESKEY "
-                           "    AND C.RECODE = 'AGB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.ACODE_M = D.RESKEY "
-                           "    AND D.RECODE = 'MCD' "
-                           "    WHERE ACODE = '" + mainCode2 + "' ")
-            aresult = cursor.fetchall()
-
-        return JsonResponse({'subAList': aresult})
-
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEM A "
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '') "
+                           "    FROM OSCODEM A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.GBN = B.RESKEY "
                            "    AND B.RECODE = 'CGB' "
@@ -68,28 +53,22 @@ def accountCodeViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP D "
                            "    ON A.MCODE_M = D.RESKEY "
                            "    AND D.RECODE = 'MCD' "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACODE = E.RESKEY "
+                           "    AND E.RECODE = 'ACD' "
                            "    WHERE MCODE LIKE '" + str(codeType) + "%' ORDER BY MCODE ")
             mresult = cursor.fetchall()
-
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.ACODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(A.ACODENM, ''), IFNULL(A.ASEQ, ''), IFNULL(A.ADESC, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, '') FROM OSCODEA A "
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.GBN = B.RESKEY "
-                           "    AND B.RECODE = 'CGB' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.GBN2 = C.RESKEY "
-                           "    AND C.RECODE = 'AGB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.ACODE_M = D.RESKEY "
-                           "    AND D.RECODE = 'MCD' "
-                           "    WHERE ACODE LIKE '" + str(codeType2) + "%' ORDER BY ACODE ")
-            aresult = cursor.fetchall()
+            print(mresult)
 
         # 상위계정과목
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' ")
             cboMCode = cursor.fetchall()
+
+        # 회계계정과목
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' ")
+            cboACode = cursor.fetchall()
 
         # 구분1
         with connection.cursor() as cursor:
@@ -101,11 +80,12 @@ def accountCodeViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
             gbn2result = cursor.fetchall()
 
-        return JsonResponse({"mList": mresult, 'aList': aresult, 'cboMCode': cboMCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
+        return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
 
 def accountCodeViews_saveM(request):
     codeType = request.POST.get("cboCodeType")
     mCode_M = request.POST.get("mCode_M")
+    mCode_A = request.POST.get("mCode_A")
     mCode = request.POST.get("txtCode_M")
     mCodeNme = request.POST.get("txtCodeNme_M")
     mSeq = request.POST.get("txtSeq_M")
@@ -132,6 +112,7 @@ def accountCodeViews_saveM(request):
                              "   (    "
                              "     MCODE "
                              ",    MCODE_M "
+                             ",    ACODE "
                              ",    MSEQ "
                              ",    MCODENM "
                              ",    MDESC "
@@ -142,6 +123,7 @@ def accountCodeViews_saveM(request):
                              "    (   "
                              "    '" + str(mCode) + "'"
                              ",   '" + str(mCode_M) + "'"
+                             ",   '" + str(mCode_A) + "'"
                              ",   (SELECT IFNULL(MAX(A.MSEQ) + 1, 1) AS COUNTED FROM OSCODEM A)"
                              ",   '" + str(mCodeNme) + "'"
                              ",   '" + str(mDesc) + "'"
@@ -157,6 +139,7 @@ def accountCodeViews_saveM(request):
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODE_M = '" + str(mCode_M) + "' "
+                           ",    ACODE = '" + str(mCode_A) + "' "
                            ",    MCODENM = '" + str(mCodeNme) + "' "
                            ",    MDESC = '" + str(mDesc) + "' "
                            ",    GBN = '" + str(gbn) + "' "
@@ -168,7 +151,7 @@ def accountCodeViews_saveM(request):
 
             return JsonResponse({'sucYn': "Y"})
 
-    return render(request, 'base/base-accountCode.html')
+    return render(request, 'base/base-actCode-reg.html')
 
 
 def accountCodeViews_saveA(request):
@@ -223,7 +206,7 @@ def accountCodeViews_saveA(request):
 
             return JsonResponse({'sucYn': "Y"})
 
-    return render(request, 'base/base-accountCode.html')
+    return render(request, 'base/base-actCode-reg.html')
 
 
 def accountCodeViews_dltM(request):
@@ -240,7 +223,7 @@ def accountCodeViews_dltM(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-        return render(request, 'base/base-accountCode.html')
+        return render(request, 'base/base-actCode-reg.html')
 
 def accountCodeViews_dltA(request):
     if request.method == "POST":
@@ -256,4 +239,4 @@ def accountCodeViews_dltA(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-        return render(request, 'base/base-accountCode.html')
+        return render(request, 'base/base-actCode-reg.html')

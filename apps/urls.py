@@ -1,5 +1,5 @@
 from django.urls import path,re_path
-from apps.views.account.mainViews import *
+from apps.views.account import mainViews
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews
@@ -7,10 +7,17 @@ from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews,
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
 
 urlpatterns = [
-    path('', redirectToMain, name="redirectToMain"),
-    path('main/', index, name='home'),
+    # path('', redirectToMain, name="redirectToMain"),
+    # path('main/', index, name='home'),
     # path('', redirectToLogin, name="redirectToLogin"),
     # path('login/', login, name='login'),
+
+    # 로그인/로그아웃 관리
+    path('', mainViews.loginView, name="login"),
+    path('logout/', mainViews.logoutViews, name="logout"),
+    path('main/', mainViews.index, name="index"),
+    path('signup/', mainViews.signupView, name="signup"),
+    path('page-404/', mainViews.page404, name="page-404"),
 
 
 #     기초정보
@@ -83,8 +90,9 @@ urlpatterns = [
     path('sales_report/', financeSearchViews.saleTransSearchViews, name='sales_report'),
     path('sales_report_search/', financeSearchViews.saleTransSearchViews_search, name='sales_report_search'),
 
-    # 결재결의서
+    # 결재및승인등록
     path('approval_reg/', approvalViews.approvalViews, name='approval_reg'),
+    path('approval_reg_search/', approvalViews.approvalViews_search, name='approval_reg_search'),
 
     # 입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),

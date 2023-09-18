@@ -1,0 +1,478 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} base_accountCode {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="px-5 py-4 container-fluid">
+    <form method="post" type="form">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4 col-sm-4">
+                <div class="mx-2 mb-2 d-md-flex align-items-center">
+                    <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>계정 과목 관리</h5>
+                </div>
+            </div>
+            <div class="col-lg-8 col-sm-8 text-end">
+                <button type="button" class="mb-0 btn btn-info btn-sm text-sm align-items-center" id="btnSave" name="btnSave">
+                        <i class="fas fa-plus me-2 fs-6"></i>저장
+                </button>
+                <button type="button" class="mb-0 btn btn-dark btn-sm text-sm align-items-center" id="btnDlt" name="btnDlt">
+                       <i class="fas fa-minus me-2 fs-6"></i>삭제
+                </button>
+                <button type="button" class="mb-0 btn btn-light btn-sm text-sm align-items-center" id="btnClear" name="btnClear">
+                       <i class="fas fa-eraser me-2 fs-6"></i>초기화
+                </button>
+            </div>
+        </div>
+        <hr class="my-3">
+        <div class="row mt-3">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-10 col-10">
+                <div class="container-fluid">
+                  <div class="card border shadow-xs">
+                    <div class="px-0 py-0 card-body">
+                        <div class="row">
+                            <div class="col-lg-7 col-7">
+                                <div class="row">
+                                    <div class="col-lg-8 col-8 text-start">
+                                       <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>관리 계정 리스트</h6>
+                                    </div>
+                                    <div class="col-lg-4 col-4 text-end">
+                                        <select class="mx-4 my-3 form-control bg-warning text-white text-center w-60 p-0" style="height: 2rem; font-size: 0.8rem" name="cboCodeType" id="cboCodeType">
+                                            <option selected value="4">수익</option>
+                                            <option value="5">비용</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="m-4 mt-0 table-responsive-sm overflow-auto border border-light" style="height: 50vh">
+                                    <table class="table mb-0 align-items-center justify-content-center">
+                                        <colgroup>
+                                            <col width="3%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="20%">
+                                        </colgroup>
+                                      <thead class="bg-gray-100">
+                                        <tr>
+                                          <th class="text-center text-dark text-center font-weight-bolder p-2"></th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">상위 계정과목</th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">하위 계정과목</th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">계정명</th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">회계 계정명</th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">구분</th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">구분2</th>
+                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">비 고</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody id="adminMainTb">
+                                        <tr id="adminMainTr" class="adminMainTr_tr">
+
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-5">
+                                <div class="form-group m-4">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fas fa-bookmark me-2 text-info text-sm"></i>상위 계정과목</label>
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboMCode_M" id="cboMCode_M"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fas fa-bookmark me-2 text-info text-sm"></i>하위 계정과목</label>
+                                            <input maxlength="6" style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fa fa-bookmark-o me-2 text-info text-sm"></i>계정명</label>
+                                            <input style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
+                                        </div>
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fa fa-bookmark-o me-2 text-info text-sm"></i>회계 계정명</label>
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboMCode_A" id="cboMCode_A"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>구 분</label>
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn_M" id="cboGbn_M"></select>
+                                        </div>
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>구 분2</label>
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn2_M" id="cboGbn2_M"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12">
+                                            <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>비  고</label>
+                                            <input style="font-size: 0.85rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtDesc_M" name="txtDesc_M"/>
+                                        </div>
+                                    </div>
+                                    <div hidden class="row">
+                                        <div class="col-lg-12 col-12">
+                                            <label hidden class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>순번</label>
+                                            <input hidden class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtSeq_M" name="txtSeq_M"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-1 col-1"></div>
+        </div>
+    </form>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            var cboMCode_M = "";
+            var cboGbn_M = "";
+            var cboGbn2_M = "";
+            var cboMCode_A = "";
+            var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
+            var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
+            $("#cboMCode_M").html("");
+            $("#cboGbn_M").html("");
+            $("#cboGbn2_M").html("");
+            $("#cboMCode_A").html("");
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            var mainCode = "";
+            let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "base_accountCode_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mList;
+
+                    $("#adminMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#adminMainTb").append(
+                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    var combolist6 = data.cboMCode;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboMCode_M) {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist = data.cboGbn;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboGbn_M) {
+                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboGbn2;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboGbn2_M) {
+                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist5 = data.cboACode;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboMCode_A) {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboMCode_M").append(cboMCodeTxt_M);
+                    $("#cboGbn_M").append(cboGbnTxt_M);
+                    $("#cboGbn2_M").append(cboGbn2Txt_M);
+                    $("#cboMCode_A").append(cboMCodeTxt_A);
+                }
+            })
+        });
+
+        {# 조회 콤보박스 클릭시 #}
+        $('#cboCodeType').change(function () {
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            var mainCode = "";
+            let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "base_accountCode_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mList;
+
+                    $("#adminMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#adminMainTb").append(
+                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></div></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#adminMainTb .adminMainTr_tr', function () {
+
+            var cboMCode_M = "";
+            var cboGbn_M = "";
+            var cboGbn2_M = "";
+            var cboMCode_A = "";
+            var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
+            var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
+            $("#cboMCode_M").html("");
+            $("#cboGbn_M").html("");
+            $("#cboGbn2_M").html("");
+            $("#cboMCode_A").html("");
+
+            let mainCode = $(this).attr('main_code');
+            var cboCodeType = "";
+
+            let data = {'mainCode': mainCode, 'cboCodeType': cboCodeType}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "base_accountCode_search" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.subMList;
+
+                    for (var i = 0; i < list.length; i++) {
+                        $("#txtCode_M").val(list[i][2])
+                        $("#txtCodeNme_M").val(list[i][3])
+                        $("#txtDesc_M").val(list[i][4])
+                        $("#txtSeq_M").val(list[i][5])
+                        cboMCode_M = list[i][0];
+                        cboGbn_M = list[i][6];
+                        cboGbn2_M = list[i][8];
+                        cboMCode_A = list[i][10]
+                    }
+
+                    var combolist3 = data.cboMCode;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboMCode_M) {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboACode;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboMCode_A) {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist = data.cboGbn;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboGbn_M) {
+                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboGbn2;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist[i][0] == cboGbn2_M) {
+                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboMCode_M").append(cboMCodeTxt_M);
+                    $("#cboGbn_M").append(cboGbnTxt_M);
+                    $("#cboGbn2_M").append(cboGbn2Txt_M);
+                    $("#cboMCode_A").append(cboMCodeTxt_A);
+
+                }
+            })
+
+        });
+
+
+
+        {# 저장 클릭 시 #}
+        $(document).on('click', "#btnSave", function () {
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            let mCode_M = document.getElementById('cboMCode_M').value;
+            let mCode_A = document.getElementById('cboMCode_A').value;
+            let mCode = document.getElementById('txtCode_M').value;
+            let mCodeNme = document.getElementById('txtCodeNme_M').value;
+            let mSeq = document.getElementById('txtSeq_M').value;
+            let mDesc = document.getElementById('txtDesc_M').value;
+            let cboGbn_M = document.getElementById('cboGbn_M').value;
+            let cboGbn2_M = document.getElementById('cboGbn2_M').value;
+
+            if (mCode_M == '') {
+                alert('상위 계정과목을 선택해주세요.')
+                return false
+            }
+            if (mCode == '') {
+                alert('하위 계정과목을 입력해주세요.')
+                return false
+            }
+            if(mCode.substring(0, 1) != mCodeType){
+                if(mCodeType == '4'){
+                    alert('수익에 관한 계정과목은 앞자리 숫자 4로 시작한 6자리로 입력해주세요. 예시) 4XXXXX')
+                    return false
+                }
+                else if(mCodeType == '5') {
+                    alert('비용에 관한 계정과목은 앞자리 숫자 5로 시작한 6자리로 입력해주세요. 예시) 5XXXXX')
+                    return false
+                }
+            }
+            if(mCodeNme == ''){
+                alert('계정명을 입력해주세요.')
+                return false
+            }
+
+            let data = {'cboCodeType': mCodeType, 'mCode_M':mCode_M, "mCode_A": mCode_A, 'txtCode_M': mCode,'txtCodeNme_M': mCodeNme
+                        , 'txtSeq_M': mSeq, 'txtDesc_M': mDesc, 'cboGbn_M': cboGbn_M, 'cboGbn2_M': cboGbn2_M}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_accountCode_saveM" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+
+                    if(data.sucYn === 'Y'){
+                        alert('저장되었습니다.')
+                        location.href = "{% url 'base_accountCode' %}";
+                    }
+                }
+
+            });
+        });
+
+
+        {#체크한 내용 삭제#}
+        $(document).on('click', "#btnDlt", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="chkM[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='chkM[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('삭제하실 직원을 체크 해주세요.');
+                return false;
+            }
+
+            //체크 한 거래처 삭제
+            var result = confirm("삭제하시겠습니까?")
+
+            if (result) {
+                if (chk_cust_id_arr.length > 0)
+
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        data: {
+                            'arrList': JSON.stringify(chk_cust_id_arr),
+                        },
+                        dataType: "json",
+                        url: '{% url "base_accountCode_dltM" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            location.href = "{% url 'base_accountCode' %}";
+                        }
+
+                    });
+            } else {
+
+            }
+        });
+
+
+        {#입력란 내용 삭제#}
+        $(document).on('click', "#btnClear", function () {
+
+            document.getElementById("cboMCode_M").value = "";
+            document.getElementById("txtCode_M").value = "";
+            document.getElementById("cboMCode_A").value = "";
+            document.getElementById("txtCodeNme_M").value = "";
+            document.getElementById("txtDesc_M").value = "";
+            document.getElementById("txtSeq_M").value = "";
+            document.getElementById("cboGbn_M").value = "";
+            document.getElementById("cboGbn2_M").value = "";
+
+        });
+
+    </script>
+{% endblock %}

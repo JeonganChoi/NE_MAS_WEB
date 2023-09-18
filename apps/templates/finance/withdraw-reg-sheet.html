@@ -70,6 +70,8 @@
                                   <col width="10%">
                                   <col width="10%">
                                   <col width="8%">
+                                  <col width="4%">
+                                  <col width="4%">
                               </colgroup>
                             <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                               <tr>
@@ -78,6 +80,8 @@
                                 <th style="font-size: 0.85rem" class="p-1">찾으신 금액</th>
                                 <th style="font-size: 0.85rem" class="p-1">잔금</th>
                                 <th style="font-size: 0.85rem" class="p-1">통장명</th>
+                                <th style="font-size: 0.85rem" class="p-1">결재</th>
+                                <th style="font-size: 0.85rem" class="p-1">승인</th>
                               </tr>
                             </thead>
                             <tbody id="withMainTb">
@@ -175,18 +179,17 @@
                                             <button class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>결재선 지정</button>
                                         </div>
                                     </div>
-                                    <div class="table-responsive-sm overflow-auto border border-light">
-                                    <table class="table mb-0 align-items-center justify-content-center" id="signTb">
-                                      <thead class="text-white font-weight-bolder text-center bg-warning" id="signTh">
-                                        <tr id="#signThTr" class="signThTr_tr">
-                                        </tr>
-                                      </thead>
-{#                                      <tbody id="signTd">#}
-{#                                        <tr id="#signTdTr" class="signThTr_tr">#}
-{#                                        </tr>#}
-{#                                      </tbody>#}
-                                    </table>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-6 text-start">
+                                            <div class="table-responsive-sm overflow-auto border border-light">
+                                                <table class="table mb-0 align-items-center justify-content-center" id="signTb">
+                                                  <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
+
+                                                  </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -211,8 +214,7 @@
     </div>
 
 <!-- Modal -->
-    <div class="modal fade" id="DecisionModal" tabindex="-1" role="dialog" aria-labelledby="DecisionModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="DecisionModal" tabindex="-1" role="dialog" aria-labelledby="DecisionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 40vw">
             <div class="modal-content">
                 <form method="post">
@@ -233,7 +235,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive-sm overflow-auto border border-light height-300">
-                                  <table class="table mb-0 align-items-center justify-content-center">
+                                  <table class="table mb-0 align-items-center justify-content-center" id="modalMainTb">
                                       <colgroup>
                                           <col width="3%">
                                           <col width="10%">
@@ -248,7 +250,7 @@
                                         <th style="font-size: 0.8rem" class="p-1">이 름</th>
                                       </tr>
                                     </thead>
-                                    <tbody id="modalMainTb">
+                                    <tbody id="modalMainTd">
                                       <tr id="#modalMainTr" class="modalMainTr_tr">
 
                                       </tr>
@@ -256,35 +258,28 @@
                                   </table>
                                 </div>
                             </div>
-                            <div class="col-2 justify-content-center align-content-center">
-                                <div class="form-group h-25"></div>
-                                <div class="form-group text-center">
-                                    <a class="btn btn-dark btn-sm text-white font-weight-bolder" id="btnPlus"><i class="ni ni-bold-right ni-2x"></i></a>
-                                </div>
-                                <div class="form-group text-center">
-                                    <a class="btn btn-dark btn-sm text-white font-weight-bolder" id="btnMinus"><i class="ni ni-bold-left ni-2x"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-4">
+                            <div class="col-1"></div>
+                            <div class="col-5">
                                 <h6 class="text-sm"><i class="fas fa-file-signature me-2"></i>결재 라인</h6>
                                 <div class="table-responsive-sm overflow-auto border border-light height-300 mt-4">
-                                  <table class="table mb-0 align-items-center justify-content-center">
+                                  <table class="table mb-0 align-items-center justify-content-center" id="modalSubTb">
                                       <colgroup>
-                                          <col width="10%">
-                                          <col width="10%">
                                           <col hidden width="10%">
+                                          <col hidden width="10%">
+                                          <col hidden width="10%">
+                                          <col width="10%">
+                                          <col width="10%">
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center bg-gray-700">
                                       <tr>
+                                        <th hidden style="font-size: 0.8rem" class="p-1">부 서</th>
+                                        <th hidden style="font-size: 0.8rem" class="p-1">직 책</th>
+                                        <th hidden style="font-size: 0.8rem" class="p-1">사 번</th>
                                         <th style="font-size: 0.8rem" class="p-1">Seg</th>
                                         <th style="font-size: 0.8rem" class="p-1">이 름</th>
-                                        <th hidden style="font-size: 0.8rem" class="p-1">사 번</th>
                                       </tr>
                                     </thead>
-                                    <tbody id="modalSubTb">
-                                      <tr id="#modalSubTr" class="modalSubTr_tr">
-
-                                      </tr>
+                                    <tbody id="modalSubTd">
                                     </tbody>
                                   </table>
                                 </div>
@@ -292,7 +287,7 @@
                         </div>
                     </div>
                     <div class="modal-footer text-end border-0">
-                        <button class="btn btn-sm btn-warning text-white" style="width: 10vw">저 장</button>
+                        <button type="button" class="btn btn-sm btn-warning text-white font-weight-bolder" id="btnSave2" name="btnSave2" style="width: 10vw">확 인</button>
                     </div>
                 </form>
             </div>
@@ -336,15 +331,18 @@
                 success: function (data) {
                     var list = data.mainList;
 
-                    $("#modalMainTb").html("");
+                    $("#modalMainTd").html("");
 
                     for (var i = 0; i < list.length; i++) {
 
-                        $("#modalMainTb").append(
+                        $("#modalMainTd").append(
                             "<tr id='#modalMainTr' class='modalMainTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
@@ -385,15 +383,18 @@
                 success: function (data) {
                     var list = data.mainList;
 
-                    $("#modalMainTb").html("");
+                    $("#modalMainTd").html("");
 
                     for (var i = 0; i < list.length; i++) {
 
-                        $("#modalMainTb").append(
+                        $("#modalMainTd").append(
                             "<tr id='#modalMainTr' class='modalMainTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
@@ -402,45 +403,73 @@
 
         });
 
-        $(document).on('click', '#btnPlus', function () {
+        $(document).on('change', '#modalMainTb tbody tr td:first-child input[type=checkbox]', function() {
+            var tr = $(this).parent().parent();
+            var empDpt = tr.children().eq(1).text()
+            var empGbn = tr.children().eq(3).text()
+            var empNbr = tr.children().eq(5).text()
+            var empNme = tr.children().eq(6).text()
 
-            var chk_cust_id_arr = [];
-            $('input[name="chkEmp[]"]:checked').each(function (i) {
-                chk_cust_id_arr.push($(this).val());
-            })
-            var cboDpt = "";
+            if($(this).is(':checked')) {
+                if($('#modalSubTr' + empNbr).length == 0) {
 
-            $.ajax({
-                type: "post",
-                data: {
-                    'empList': JSON.stringify(chk_cust_id_arr),
-                    "cboDpt": cboDpt,
-                },
-                url: '{% url "apvLine_modal" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    var list2 = data.subList;
+                    var sub_tr_cnt = $('#modalSubTb tbody tr').length;
 
-                    $("#modalSubTb").html("");
-
-                    for (var j = 0; j < list2.length; j++) {
-
-                        $("#modalSubTb").append(
-                            "<tr id='#modalSubTr' class='modalSubTr_tr' >" +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list2[j][2] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[j][1] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list2[j][3] + "</td> " +
-                            "</tr> ");
-                    }
+                    $("#modalSubTd").append(
+                        "<tr id='modalSubTr" + empNbr + "' class='modalSubTr_tr'>" +
+                        "<td hidden class='text-start p-1' id='empDpt_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empDpt + "</td>" +
+                        "<td hidden class='text-start p-1' id='empGbn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empGbn + "</td> " +
+                        "<td hidden class='text-start p-1' name='empNbr' id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
+                        "<td class='text-start p-1'  id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
+                        "<td class='text-start p-1' id='empNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNme + "</td> " +
+                        "</tr> ");
 
                 }
-            })
+            } else {
+                $('#modalSubTr' + empNbr).remove();
+            }
         });
 
+        {# 확인 버튼 클릭시 #}
+        $(document).on('click', '#btnSave2', function () {
 
+            {#var saveresult = confirm("결재라인을 지정하시겠습니까?")#}
+
+            const tbRow = $('#modalSubTd tr').length;
+
+
+            var empArr = [];
+            for (var i = 0; i < tbRow; i++) {
+
+                var empDpt = $('#empDpt_' + i).text();
+                var empGbn = $('#empGbn_' + i).text();
+                var empNbr = $('#empNbr_' + i).text();
+                var empNme = $('#empNme_' + i).text();
+
+                let data = {
+                    'empDpt': empDpt,
+                    'empGbn': empGbn,
+                    'empNbr': empNbr,
+                    'empNme': empNme
+                };
+                empArr.push(data);
+            }
+
+            $("#signTd").html("");
+            for (var i = 0; i < empArr.length; i++) {
+                $("#signTd").append(
+                    "<tr id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'>" +
+                    "<td hidden class='text-center p-1' id='subSeq_" + i + "' style='font-size: 0.8rem'>" + i + "</td>" +
+                    "<td hidden class='text-center p-1' id='subEmpDpt_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empDpt + "</td>" +
+                    "<td hidden class='text-center p-1' id='subEmpGbn_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empGbn + "</td>" +
+                    "<td hidden class='text-center p-1' id='subEmpNbr_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNbr + "</td>" +
+                    "<td class='text-start p-1 border border-white' id='subEmpNme_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNme + "</td>" +
+                    "</tr> ");
+            }
+
+            $('#DecisionModal').modal('hide');
+
+        });
 
     </script>
 
@@ -946,20 +975,46 @@
             var cboWitCard = document.getElementById('cboWitCard').value
             var txtWitRemark = document.getElementById('txtWitRemark').value
 
-
-            if(cboWitCust == '')
-            {
+            if (cboWitCust == '') {
                 alert("거래처를 입력해주세요.")
                 return false
             }
 
-            let data = {'cboWitCust': cboWitCust,'txtWitRegDate': txtWitRegDate,'txtWitSeq': txtWitSeq
-                , 'txtWitRecn': txtWitRecn, 'cboWitGbn': cboWitGbn, 'cboAdminCode': cboAdminCode, 'txtWitPrice': txtWitPrice
-                , 'cboWitActNum': cboWitActNum, 'cboWitMethod': cboWitMethod, 'cboWitCard': cboWitCard, 'txtWitRemark': txtWitRemark}
+            if (txtWitPrice == '') {
+                alert("금액을 입력해주세요.")
+                return false
+            }
+
+            {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
+            const subCount = $('#signTd tr').length;
+
+            var empArr = [];
+            for (var i = 0; i < subCount; i++) {
+
+                var empNbr = $('#subEmpNbr_' + i).text();
+
+                let data = {
+                    'empNbr': empNbr
+                };
+                empArr.push(data);
+            }
 
             $.ajax({
                 type: "post",
-                data: data,
+                data: {
+                    'cboWitCust': cboWitCust,
+                    'txtWitRegDate': txtWitRegDate,
+                    'txtWitSeq': txtWitSeq,
+                    'txtWitRecn': txtWitRecn,
+                    'cboWitGbn': cboWitGbn,
+                    'cboAdminCode': cboAdminCode,
+                    'txtWitPrice': txtWitPrice,
+                    'cboWitActNum': cboWitActNum,
+                    'cboWitMethod': cboWitMethod,
+                    'cboWitCard': cboWitCard,
+                    'txtWitRemark': txtWitRemark,
+                    'empArrList': JSON.stringify(empArr)
+                },
                 dataType: "json",
                 url: '{% url "payment_save" %}',
                 headers: {

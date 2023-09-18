@@ -52,10 +52,10 @@
                 </svg>설정
               </a>
             </li>
-            <li class="px-3 nav-item d-flex align-items-center">
-              <a href="#" class="p-0 text-white nav-link">
-                <span class="text-sm"><i class="fas fa-user pe-3"></i>로그아웃</span>
-              </a>
+            <li class="px-3 nav-item d-flex align-items-center text-white">
+                <a href="#" class="btnLogout p-0 text-white nav-link">
+                    <span><i class="fas fa-user pe-3"></i>로그아웃</span>
+                </a>
             </li>
             <!--<li class="nav-item dropdown pe-2 d-flex align-items-center">
               <a href="javascript:;" class="p-0 text-white nav-link" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -148,7 +148,7 @@
       <div class="container pt-1 pb-1">
         <ul class="navbar-nav d-none d-xl-flex">
           <li class="px-3 nav-item d-flex align-items-center">
-            <a href="{% url 'home' %}" class="p-0 text-xl text-white nav-item">HOME</a>
+            <a href="{% url 'index' %}" class="p-0 text-xl text-white nav-item">HOME</a>
           </li>
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownBase" data-bs-toggle="dropdown" aria-expanded="false">
@@ -221,7 +221,7 @@
                 <a href="{% url 'with_reg_sheet' %}" class="dropdown-item border-radius-md">입/출금 등록</a>
               </li>
                 <li class="mb-2">
-                <a href="{% url 'approval_reg' %}" class="dropdown-item border-radius-md">결재 등록</a>
+                <a href="{% url 'approval_reg' %}" class="dropdown-item border-radius-md">결재 및 승인</a>
               </li>
               <!--<li class="mb-2">
                 <a href="{% url 'deposit_reg' %}" class="dropdown-item border-radius-md">입금 등록</a>
@@ -460,3 +460,34 @@
       </div>
     </nav>
 {#  </div>#}
+
+<script>
+        $(function () {
+        $(() => {
+            $(document).on('click', '.btnLogout', (e) => {
+                var result = confirm("로그아웃 하시겠습니까?")
+
+                if (result) {
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        dataType: "json",
+                        url: "{% url 'logout' %}",
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            if (data.logout == "Y") {
+                                location.href = '{% url "login" %}'
+                            }
+                        }
+                    });
+                } else {
+                    location.href = '{% url "page-404" %}'
+
+                }
+
+            });
+        });
+    })
+</script>

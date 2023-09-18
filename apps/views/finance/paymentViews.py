@@ -140,6 +140,54 @@ def apvLine_modal_search(request):
 
             return JsonResponse({'mainList': mainresult, "cboDpt": cboDpt})
 
+# def apvLine_modal_save(request):
+#     empArray = json.loads(request.POST.get('empArrList'))
+#
+#     empArrayLists = list(filter(len, empArray))
+#     for data in range(len(empArrayLists)):
+#         with connection.cursor() as cursor:
+#             cursor.execute("SELECT SEQ FROM tmpsign WHERE EMP_GBN = '" + empArrayLists[data]["fixCode"] + "' AND EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' ")
+#             empresult = cursor.fetchall()
+#
+#             if empresult:
+#                 seq = empresult[0][0]
+#
+#                 with connection.cursor() as cursor:
+#                     cursor.execute(" UPDATE tmpsign SET "
+#                                     "   EMP_DPT = '" + empArrayLists[data]["empDpt"] + "' "
+#                                     " , EMP_GBN = '" + empArrayLists[data]["empGbn"] + "' "
+#                                     " , EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' "
+#                                     " , EMP_NME = '" + empArrayLists[data]["empNme"] + "' "
+#                                     " WHERE SEQ = '" + seq + "' ")
+#                     connection.commit()
+#
+#             else:
+#                 with connection.cursor() as cursor:
+#                     cursor.execute(" INSERT INTO tmpsign "
+#                                   " ( "
+#                                   "   SEQ "
+#                                   " , EMP_DPT "
+#                                   " , EMP_GBN "
+#                                   " , EMP_NBR "
+#                                   " , EMP_NME "
+#                                   " ) "
+#                                   "  VALUES "
+#                                   " ( "
+#                                   "  (SELECT IFNULL (LPAD(MAX(A.SEQ + 1), '4', '0'), 0001) AS COUNTED FROM tmpsign A) "
+#                                   " ,'" + empArrayLists[data]["empDpt"] + "' "
+#                                   " ,'" + empArrayLists[data]["empGbn"] + "' "
+#                                   " ,'" + empArrayLists[data]["empNbr"] + "' "
+#                                   " ,'" + empArrayLists[data]["empNme"] + "' "
+#                                   " ) "
+#                                   )
+#                     connection.commit()
+#
+#     with connection.cursor() as cursor:
+#         cursor.execute("SELECT SEQ, EMP_DPT, EMP_GBN, EMP_NBR, EMP_NME FROM tmpsign ORDER BY SEQ ASC ")
+#         empresult = cursor.fetchall()
+#
+#     return JsonResponse({'arrList': "Y", 'empList': empresult})
+
 
 def paymentViews_search(request):
     acIogb = request.POST.get('acIogb')
@@ -155,7 +203,7 @@ def paymentViews_search(request):
             cursor.execute(" SELECT IFNULL(A.ACSEQN,''), IFNULL(A.ACCUST, ''), IFNULL(B.CUST_NME, '') "
                            "    , IFNULL(A.ACRECN,''), IFNULL(A.ACGUBN,''), IFNULL(C.RESNAM,'') "
                            "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
-                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.ACDATE,''), IFNULL(A.ACACNUMBER,'') "
+                           "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, '') "
                            "    FROM SISACCTT A "
@@ -285,7 +333,8 @@ def paymentViews_search(request):
 
 
 def paymentViews_save(request):
-    acDate = request.POST.get("txtWitRegDate").replace('-', '')   # 등록일자
+    empArray = json.loads(request.POST.get('empArrList'))
+    ioDate = request.POST.get("txtWitRegDate").replace('-', '')   # 등록일자
     acSeqn = request.POST.get("txtWitSeq")               # 순번
     acRecn = request.POST.get("txtWitRecn")
     acCust = request.POST.get("cboWitCust")     # 거래처
@@ -300,7 +349,7 @@ def paymentViews_save(request):
     # acguno_dt = request.POST.get("txtWitCashNum")     # 만기일자
     # gbn = request.POST.get('WitEmpCount')
     creUser = '101'
-    creDate = acDate
+    creDate = ioDate
     regCust = '111'
 
     file = request.FILES.get('file')
@@ -319,6 +368,7 @@ def paymentViews_save(request):
         else:
             Rfilenameloc = file
 
+
     with connection.cursor() as cursor:
         cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
         result = cursor.fetchall()  # 계좌 은행
@@ -329,7 +379,7 @@ def paymentViews_save(request):
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO SISACCTT "
                            "   (    "
-                           "     ACDATE "
+                           "     IODATE "
                            ",    ACSEQN "
                            ",    ACIOGB "
                            ",    ACCUST "
@@ -348,7 +398,7 @@ def paymentViews_save(request):
                            "    ) "
                            "    VALUES "
                            "    (   "
-                           "    '" + str(acDate).replace('-', '') + "'"
+                           "    '" + str(ioDate).replace('-', '') + "'"
                            ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "') "
                            ",   '" + str(acIogb) + "'"
                            ",   '" + str(acCust) + "'"
@@ -368,6 +418,40 @@ def paymentViews_save(request):
                            )
             connection.commit()
 
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate).replace('-', '') + "' AND ACIOGB = '" + str(acIogb) + "' ")
+                result2 = cursor.fetchall()  # 계좌 은행
+
+                seq = result2[0][0]
+
+            # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
+            opt = 'Y'
+            empArrayLists = list(filter(len, empArray))
+            for data in range(len(empArrayLists)):
+                with connection.cursor() as cursor:
+                    cursor.execute(" INSERT INTO OSSIGN "
+                                   "    ( "
+                                   "     ACDATE "
+                                   "   , ACSEQN "
+                                   "   , SEQ "
+                                   "   , EMP_NBR "
+                                   "   , OPT "
+                                   "   , ACIOGB "
+                                   "   , ICUST "                                                    
+                                   "    ) "
+                                   "    VALUES "
+                                   "    ( "
+                                   "     '" + str(ioDate) + "' "
+                                   "     , '" + str(seq) + "' "
+                                   "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
+                                   "     , '" + empArrayLists[data]["empNbr"] + "' "
+                                   "     , '" + opt + "' "
+                                   "     , '" + str(acIogb) + "' "
+                                   "     , '" + str(regCust) + "' "
+                                   "     ) "
+                    )
+                    connection.commit()
+
         return JsonResponse({'sucYn': "Y"})
 
     elif acSeqn:
@@ -383,18 +467,18 @@ def paymentViews_save(request):
                            ",    ACFOLDER = '" + str(Rfilenameloc) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           "     WHERE ACDATE = '" + str(acDate) + "' "
+                           "     WHERE IODATE = '" + str(ioDate) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ACCUST = '" + str(acCust) + "' "
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
-                           "     AND ACRECN = '" + str(acRecn) + "' "
                            "     AND ICUST = '" + str(regCust) + "' "
                            )
             connection.commit()
 
-            return JsonResponse({'sucYn': "Y"})
+        return JsonResponse({'sucYn': "Y"})
 
-        return render(request, 'finance/withdraw-reg-sheet.html')
+#
+# return render(request, 'finance/withdraw-reg-sheet.html')
 
 
 def paymentViews_dlt(request):
@@ -406,7 +490,7 @@ def paymentViews_dlt(request):
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + acc_split_list[0] + "'"
                                "                      AND ACIOGB = '" + acc_split_list[1] + "' "
-                               "                      AND ACDATE = '" + acc_split_list[2] + "'"
+                               "                      AND IODATE = '" + acc_split_list[2] + "'"
                                "                      AND ACACNUMBER = '" + acc_split_list[3] + "' "
                                "                      AND ACCUST = '" + acc_split_list[4] + "' "
                                "                      AND MCODE = '" + acc_split_list[5] + "' ")

@@ -131,7 +131,7 @@ def salesRegViews_save(request):
                                ",    PAY_DATE "
                                "    ) "
                                "    VALUES "
-                               "    (   "
+                               "    (   " 
                                "    '" + str(gubun) + "'"
                                ",   (SELECT IFNULL(MAX(SERIAL_NUM) + 1, 1) AS SERIAL_NUM FROM OSBILL A WHERE SERIAL_NUM = (SELECT A.SERIAL_NUM FROM OSBILL A ORDER BY A.SERIAL_NUM DESC LIMIT 1))"
                                ",   '" + str(bal_dd) + "'"

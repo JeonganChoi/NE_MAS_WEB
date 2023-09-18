@@ -1,14 +1,86 @@
 from django.shortcuts import render, redirect
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.db import connection
 from django.urls import reverse
+
+
+def loginView(request):
+    userId = request.POST.get('userId')
+    userPw = request.POST.get('userPw')
+    msg = None
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT EMP_NBR, EMP_NME, EMP_DEPT, EMP_GBN, ICUST "
+                       "    FROM pis1tb001 "
+                       "    WHERE EMP_NBR = '" + str(userId) + "' AND EMP_PASS = '" + str(userPw) + "' ")
+        result = cursor.fetchall()
+
+        if len(result) == 0:
+            # if len(result) == 0:
+            msg = '아이디 또는 비밀번호가 일치 하지 않습니다.'
+            return render(request, "account/login.html", {"msg": msg})
+        else:
+            USER_NM = result[0][1]
+            USER_GBN = result[0][3]
+            USER_ICUST = result[0][4]
+            request.session['userId'] = userId
+            request.session['USER_NM'] = USER_NM
+            request.session['USER_GBN'] = USER_GBN
+            request.session['USER_ICUST'] = USER_ICUST
+
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO LOG_RECODE "
+                               "(LOG_SEQ"
+                               ", USER_ID"
+                               ", USER_NM"
+                               ", LOGIN_DT"
+                               ", ICUST"
+                               ") "
+                               "VALUES"
+                               "("
+                               "(SELECT IFNULL(MAX(LOG_SEQ) + 1, 1) AS LOG_SEQ FROM LOG_RECODE A) "
+                               ", '" + userId + "'"
+                               ", '" + USER_NM + "'"
+                               ", NOW() "
+                               ", '" + USER_ICUST + "'"
+                               ")"
+                               )
+                connection.commit()
+
+        # return render(request, "home/index.html")
+        return redirect('/main/')
+
+    return render(request, "home/index.html", {"msg": msg})
+
+
+
+
+def logoutViews(request):
+
+    if request.method == "POST":
+
+        request.session.clear()
+        return JsonResponse({'logout': "Y"})
+
+
+
+def signupView(request):
+
+    return render(request, "account/signup.html")
+
 
 
 def index(request):
 
     return render(request, "home/index.html")
+
+
+def page404(request):
+
+    return render(request, "account/page-404.html")
 
 def redirectToMain(request):
 
