@@ -43,16 +43,36 @@ def payrollViews_search(request):
         # 심야시간/연장근로수당/휴계수당/휴일수당/휴일연장수당/심야수당/주차수당/유급수당/기타수당1,2,3,4,5/지급총액
         # 국민연급/의료보험/갑근세/주민세/고용보험/공제1,2,3/공제총액/실지급액
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT PMYYMM, ICUST, EMP_NBR, EMP_NME "
-                           "      , IFNULL(PMGRAD, ''), IFNULL(PMTPAY, ''), IFNULL(PMDPAY, ''), IFNULL(PMKBTM, ''), IFNULL(PMKBON, '') "
-                           "      , IFNULL(PMOTTM, ''),  IFNULL(PMOTOTM, ''),  IFNULL(PMHOTM, ''), IFNULL(PMHOOTM, '') "
-                           "      , IFNULL(PMSYTM, ''), IFNULL(PMOTPY, ''), IFNULL(PMOTOPY, ''),  IFNULL(PMHOPY, '') "
-                           "      , IFNULL(PMHOOPY, ''), IFNULL(PMSYPY, ''), IFNULL(PMWWTM, ''), IFNULL(PMWWPY, ''), IFNULL(PMYUTM, ''), IFNULL(PMYUPY, '') "
-                           "      , IFNULL(PMGSU1, ''), IFNULL(PMGSU2, ''), IFNULL(PMGSU3, ''),  IFNULL(PMGSU4, ''),  IFNULL(PMGSU5, '') "
-                           "      , IFNULL(PMPYTT, ''), IFNULL(PMKUPS, ''), IFNULL(PMMEPS, ''), IFNULL(PMTAX1, ''), IFNULL(PMTAX3, '') "
-                           "      , IFNULL(PMGOPS, ''),  IFNULL(PMGTG1, ''),  IFNULL(PMGTG2, ''),  IFNULL(PMGTG3, ''),  IFNULL(PMGOTT, ''),  IFNULL(PMJITT, '') "
-                           " FROM OSMONTHP "
-                           " WHERE PMYYMM = '" + str(yyyymm) + "' ")
+            cursor.execute(" SELECT "
+                           "     A.EMP_NBR, A.EMP_NME, IFNULL(B.PMYYMM,'') AS PMYYMM, IFNULL(B.ICUST,'') AS ICUST "
+                           "    ,IFNULL(B.PMGRAD, '') AS PMGRAD, IFNULL(B.PMTPAY, '') AS PMTPAY, IFNULL(B.PMDPAY, '') AS PMDPAY "
+                           "     , IFNULL(B.PMKBTM, '') AS PMKBTM, IFNULL(PMKBON, '') AS PMKBON "
+                           "    ,IFNULL(B.PMOTTM, '') AS PMOTTM, IFNULL(B.PMOTOTM, '') AS PMOTOTM,IFNULL(B.PMHOTM, '') AS PMHOTM "
+                           "     , IFNULL(B.PMHOOTM, '') AS PMHOOTM,IFNULL(B.PMOTOPY, '') AS PMOTOPY "
+                           "    ,IFNULL(B.PMOTOPY,'') AS PMOTOPY,IFNULL(B.PMHOPY, '') AS PMHOPY,IFNULL(B.PMHOOPY, '') AS PMHOOPY "
+                           "     , IFNULL(B.PMSYPY, '') AS PMSYPY, IFNULL(B.PMWWTM, '') AS PMWWTM "
+                           "    ,IFNULL(B.PMWWPY, '') AS PMWWPY, IFNULL(PMYUTM, '') AS PMYUTM, IFNULL(PMYUPY, '') AS PMYUPY "
+                           "     , IFNULL(B.PMGSU1, '') AS PMGSU1, IFNULL(B.PMGSU2, '') AS PMGSU2 "
+                           "    ,IFNULL(B.PMGSU3, '') AS PMGSU3, IFNULL(B.PMGSU4, '') AS PMGSU4,  IFNULL(PMGSU5, '') AS PMGSU5 "
+                           "     , IFNULL(B.PMPYTT, '') AS PMPYTT, IFNULL(B.PMKUPS, '') AS PMKUPS "
+                           "    ,IFNULL(B.PMMEPS, '') AS PMMEPS, IFNULL(B.PMTAX1, '') AS PMTAX1, IFNULL(PMTAX3, '') AS PMTAX3 "
+                           "     , IFNULL(B.PMGOPS, '') AS PMGOPS, IFNULL(B.PMGTG1, '') AS PMGTG1 "
+                           "    ,IFNULL(B.PMGTG2, '') AS PMGTG2 , IFNULL(B.PMGTG3, '') AS PMGTG3 ,  IFNULL(PMGOTT, '') AS PMGOTT "
+                           "     ,  IFNULL(PMJITT, '') AS PMJITT "
+                           " FROM pis1tb001 A "
+                           " LEFT OUTER JOIN "
+                           "    ( "
+                           "        SELECT "
+                           "         PMYYMM, ICUST, PMGRAD, PMTPAY, PMDPAY, PMKBTM, PMKBON "
+                           "        ,PMOTTM ,PMOTOTM ,PMHOTM ,PMHOOTM, PMSYTM ,PMOTPY ,PMOTOPY ,PMHOPY "
+                           "        ,PMHOOPY, PMSYPY,PMWWTM,PMWWPY, PMYUTM,PMYUPY,PMGSU1, PMGSU2 "
+                           "        ,PMGSU3,  PMGSU4, PMGSU5,PMPYTT, PMKUPS,PMMEPS, PMTAX1, PMTAX3 "
+                           "        ,PMGOPS,  PMGTG1,  PMGTG2,  PMGTG3, PMGOTT, PMJITT, EMP_NBR "
+                           "        FROM OSMONTHP "
+                           "        WHERE PMYYMM = '" + str(yyyymm) + "' "
+                           "    ) B "
+                           " ON A.EMP_NBR = B.EMP_NBR "
+                           " AND A.ICUST = B.ICUST ")
 
             mainresult = cursor.fetchall()
             print(mainresult)

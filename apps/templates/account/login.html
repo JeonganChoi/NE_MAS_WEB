@@ -83,6 +83,16 @@
             })
 
         });
+
+        {#비밀번호 엔터 클릭시 조회 버튼 클릭 #}
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'userPw') {
+                    $("#btnLogin").trigger('click');
+                }
+            }
+        });
     </script>
 
 {% endblock %}
