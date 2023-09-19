@@ -51,7 +51,7 @@ def loginView(request):
                 connection.commit()
 
         # return render(request, "home/index.html")
-        return redirect('/main/')
+    return JsonResponse({'login': "Y"})
 
     return render(request, "home/index.html", {"msg": msg})
 
