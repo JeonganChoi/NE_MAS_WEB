@@ -152,7 +152,6 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.headList;
-                    var list2 = data.empList;
                     var list3 = data.mainList;
                     $("#mainHd").html("");
                     $("#mainTb").html("");
@@ -207,14 +206,17 @@
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>선택</th> ");
 
 
+
+
+
                     {# 메인 데이터 그려주기 #}
                     for (var i = 0; i < list3.length; i++) {
                         {# 새로운줄 #}
-                        $("#mainTb").append("<tr id='#mainTr' class='mainTr_tr'>" + "</tr> ");
-                        $(".mainTr_tr").append(
+                        $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
+                        $("#mainTr_" + i).append(
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
-                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][5] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][6] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][7] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
@@ -238,12 +240,12 @@
                             for (var j = 0; j < list.length; j++) {
                                 if (list[j][0] < 10) {
                                     var len = 23 + j
-                                    $(".mainTr_tr").append(
+                                    $("#mainTr_" + i).append(
                                          "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGsu_" + i + "' name='txtPmGsu' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][len] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>");
                                 }
                             }
 
-                            $(".mainTr_tr").append(
+                            $("#mainTr_" + i).append(
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmPytt_" + i + "' name='txtPmPytt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][28] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmKups_" + i + "' name='txtPmKups' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][29] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>" +
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmMeps_" + i + "' name='txtPmMeps' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][30] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
@@ -255,12 +257,12 @@
                             for (var j = 0; j < list.length; j++) {
                                 if (list[j][0] > 10 && list[j][0] < 20) {
                                     var len = 34 + j
-                                    $(".mainTr_tr").append(
+                                    $("#mainTr_" + i).append(
                                         "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGts_" + i + "' name='txtPmGts' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][len] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>");
                                 }
                             }
 
-                            $(".mainTr_tr").append(
+                            $("#mainTr_" + i).append(
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>" +
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
@@ -355,7 +357,7 @@
                         $(".mainTr_tr").append(
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
-                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][5] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][6] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][7] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
@@ -491,7 +493,7 @@
                         $(".mainTr_tr").append(
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
-                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][5] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmDPay_" + i + "' name='txtPmDPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][6] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmKBtm_" + i + "' name='txtPmKBtm' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][7] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
@@ -603,9 +605,9 @@
                     var pmTax1 = $('#txtPm1Tax_' + i).val();
                     var pmTax3 = $('#txtPm3Tax_' + i).val();
                     var pmGops = $('#txtPmGops_' + i).val();
-                    var pmGtg1 = $('#txtPmGts_' + '1').val();
-                    var pmGtg2 = $('#txtPmGts_' + '2').val();
-                    var pmGtg3 = $('#txtPmGts_' + '3').val();
+                    {#var pmGtg1 = $('#txtPmGts_' + '1').val();#}
+                    {#var pmGtg2 = $('#txtPmGts_' + '2').val();#}
+                    {#var pmGtg3 = $('#txtPmGts_' + '3').val();#}
                     var pmGott = $('#txtPmGott_' + i).val();
                     var pmJitt = $('#txtPmJitt_' + i).val();
 
@@ -639,20 +641,20 @@
                         'pmSypy': pmSypy,
                         'pmWwpy': pmWwpy,
                         'pmYupy': pmYupy,
-                        'pmGsu1': pmGsu1,
-                        'pmGsu2': pmGsu2,
-                        'pmGsu3': pmGsu3,
-                        'pmGsu4': pmGsu4,
-                        'pmGsu5': pmGsu5,
+                        {#'pmGsu1': pmGsu1,#}
+                        {#'pmGsu2': pmGsu2,#}
+                        {#'pmGsu3': pmGsu3,#}
+                        {#'pmGsu4': pmGsu4,#}
+                        {#'pmGsu5': pmGsu5,#}
                         'pmPytt': pmPytt,
                         'pmKups': pmKups,
                         'pmMeps': pmMeps,
                         'pmTax1': pmTax1,
                         'pmTax3': pmTax3,
                         'pmGops': pmGops,
-                        'pmGtg1': pmGtg1,
-                        'pmGtg2': pmGtg2,
-                        'pmGtg3': pmGtg3,
+                        {#'pmGtg1': pmGtg1,#}
+                        {#'pmGtg2': pmGtg2,#}
+                        {#'pmGtg3': pmGtg3,#}
                         'pmGott': pmGott,
                         'pmJitt': pmJitt
                     };
