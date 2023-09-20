@@ -20,7 +20,7 @@ def accountCodeViews_search(request):
     if mainCode:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '') "
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, ''), IFNULL(A.OPT, '') "
                            "    FROM OSCODEM A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.GBN = B.RESKEY "
@@ -42,7 +42,7 @@ def accountCodeViews_search(request):
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '') "
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, ''), IFNULL(A.OPT, '') "
                            "    FROM OSCODEM A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.GBN = B.RESKEY "
@@ -92,6 +92,10 @@ def accountCodeViews_saveM(request):
     mDesc = request.POST.get("txtDesc_M")
     gbn = request.POST.get("cboGbn_M")
     gbn2 = request.POST.get("cboGbn2_M")
+    opt = request.POST.get("cboOpt")
+    iCust = request.session.get("USER_ICUST")
+    user = request.session.get("userId")
+
     # 수익4/ 비용5
 
 
@@ -118,17 +122,25 @@ def accountCodeViews_saveM(request):
                              ",    MDESC "
                              ",    GBN "
                              ",    GBN2 "
+                             ",    OPT "
+                             ",    ICUST "
+                             ",    CRE_USER "
+                             ",    CRE_DT "
                              "    ) "
                              "    VALUES "
                              "    (   "
-                             "    '" + str(mCode) + "'"
-                             ",   '" + str(mCode_M) + "'"
-                             ",   '" + str(mCode_A) + "'"
-                             ",   (SELECT IFNULL(MAX(A.MSEQ) + 1, 1) AS COUNTED FROM OSCODEM A)"
-                             ",   '" + str(mCodeNme) + "'"
-                             ",   '" + str(mDesc) + "'"
-                             ",   '" + str(gbn) + "'"
-                             ",   '" + str(gbn2) + "'"
+                             "    '" + str(mCode) + "' "
+                             ",   '" + str(mCode_M) + "' "
+                             ",   '" + str(mCode_A) + "' "
+                             ",   (SELECT IFNULL(MAX(A.MSEQ) + 1, 1) AS COUNTED FROM OSCODEM A) "
+                             ",   '" + str(mCodeNme) + "' "
+                             ",   '" + str(mDesc) + "' "
+                             ",   '" + str(gbn) + "' "
+                             ",   '" + str(gbn2) + "' "
+                             ",   '" + str(opt) + "' "
+                             ",   '" + str(iCust) + "' "
+                             ",   '" + str(user) + "' "
+                             ",   date_format(now(), '%Y%m%d') "
                              "    )   "
                              )
               connection.commit()
@@ -144,63 +156,11 @@ def accountCodeViews_saveM(request):
                            ",    MDESC = '" + str(mDesc) + "' "
                            ",    GBN = '" + str(gbn) + "' "
                            ",    GBN2 = '" + str(gbn2) + "' "
+                           ",    OPT = '" + str(opt) + "' "
+                           ",    UPD_USER = '" + str(user) + "' "
+                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE MCODE = '" + str(mCode) + "' "
                            "     AND MSEQ = '" + str(mSeq) + "' "
-                           )
-            connection.commit()
-
-            return JsonResponse({'sucYn': "Y"})
-
-    return render(request, 'base/base-actCode-reg.html')
-
-
-def accountCodeViews_saveA(request):
-    codeType2 = request.POST.get("cboCodeType2")
-    aCode_M = request.POST.get("aCode_M")
-    aCode = request.POST.get("txtCode_A")
-    aCodeNme = request.POST.get("txtCodeNme_A")
-    aDesc = request.POST.get("txtDesc_A")
-    aSeq = request.POST.get("txtSeq_A")
-    gbn = request.POST.get("cboGbn_A")
-    gbn2 = request.POST.get("cboGbn2_A")
-
-    if aSeq is None or aSeq == '':
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO OSCODEA "
-                           "   (    "
-                           "     ACODE "
-                           ",    ACODE_M "
-                           ",    ASEQ "
-                           ",    ACODENM "
-                           ",    ADESC "
-                           ",    GBN "
-                           ",    GBN2 "
-                           "    ) "
-                           "    VALUES "
-                           "    (   "
-                           "    '" + str(aCode) + "'"
-                           ",   '" + str(aCode_M) + "'"
-                           ",   (SELECT IFNULL (MAX(A.ASEQ) + 1,1) AS COUNTED FROM OSCODEA A)"
-                           ",   '" + str(aCodeNme) + "'"
-                           ",   '" + str(aDesc) + "'"
-                           ",   '" + str(gbn) + "'"
-                           ",   '" + str(gbn2) + "'"
-                           "    )   "
-                           )
-            connection.commit()
-
-            return JsonResponse({'sucYn': "Y"})
-
-    elif aSeq:
-        with connection.cursor() as cursor:
-            cursor.execute("    UPDATE  OSCODEA SET"
-                           "     ACODE_M = '" + str(aCode_M) + "' "
-                           ",    ACODENM = '" + str(aCodeNme) + "' "
-                           ",    ADESC = '" + str(aDesc) + "' "
-                           ",    GBN = '" + str(gbn) + "' "
-                           ",    GBN2 = '" + str(gbn2) + "' "
-                           "     WHERE ACODE = '" + str(aCode) + "' "
-                           "     AND ASEQ = '" + str(aSeq) + "' "
                            )
             connection.commit()
 
@@ -218,22 +178,6 @@ def accountCodeViews_dltM(request):
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM OSCODEM WHERE MCODE_M = '" + acc_split_list[0] + "'"
                                "                       AND MSEQ = '" + acc_split_list[2] + "'")
-                connection.commit()
-
-        return JsonResponse({'sucYn': "Y"})
-
-    else:
-        return render(request, 'base/base-actCode-reg.html')
-
-def accountCodeViews_dltA(request):
-    if request.method == "POST":
-        dataList = json.loads(request.POST.get('arrList'))
-        print(dataList)
-        for code in dataList:
-            acc_split_list = code.split(',')
-            with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSCODEA WHERE ACODE_M = '" + acc_split_list[0] + "'"
-                               "                         AND ASEQ = '" + acc_split_list[2] + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

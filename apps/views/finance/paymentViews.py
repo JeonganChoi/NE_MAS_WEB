@@ -205,7 +205,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
-                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,'') "
+                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -228,6 +228,7 @@ def paymentViews_search(request):
                            "    AND A.ACCUST = '" + acCust + "'"
                            "    AND A.MCODE = '" + acMcode + "' ")
             subresult = cursor.fetchall()
+            print(subresult)
 
             # 거래처
             with connection.cursor() as cursor:
@@ -337,6 +338,7 @@ def paymentViews_save(request):
     ioDate = request.POST.get("txtWitRegDate").replace('-', '') # 등록일자
     exDate = request.POST.get("txtExDate").replace('-', '')
     acSeqn = request.POST.get("txtWitSeq")               # 순번
+    acTitle = request.POST.get("txtTitle")
     acRecn = request.POST.get("txtWitRecn")
     acCust = request.POST.get("cboWitCust")     # 거래처
     acIogb = request.POST.get("cboWitGbn")  # 구분(입금/출금)
@@ -346,12 +348,8 @@ def paymentViews_save(request):
     acAcnumber = request.POST.get("cboWitActNum")     # 계좌번호
     acGubn = request.POST.get("cboWitMethod")     # 결제방법
     acDesc = request.POST.get("txtWitRemark")     # 비고
-    # acbunho = request.POST.get("txtWitCashNum")     # 어음번호
-    # acguno_dt = request.POST.get("txtWitCashNum")     # 만기일자
-    # gbn = request.POST.get('WitEmpCount')
-    creUser = '101'
-    creDate = ioDate
-    regCust = '111'
+    creUser = request.POST.get("userId")
+    iCust = request.POST.get("USER_ICUST")
 
     file = request.FILES.get('file')
 
@@ -386,6 +384,7 @@ def paymentViews_save(request):
                            "     IODATE "
                            ",    ACSEQN "
                            ",    ACIOGB "
+                           ",    ACTITLE "
                            ",    ACCUST "
                            ",    ACGUBN "
                            ",    MCODE "
@@ -406,6 +405,7 @@ def paymentViews_save(request):
                            "    '" + str(ioDate) + "'"
                            ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "') "
                            ",   '" + str(acIogb) + "'"
+                           ",   '" + str(acTitle) + "'"
                            ",   '" + str(acCust) + "'"
                            ",   '" + str(acGubn) + "'"
                            ",   '" + str(mCode) + "'"
@@ -415,8 +415,8 @@ def paymentViews_save(request):
                            ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "' AND ACSEQN = '" + acSeqn + "' ) "
                            ",   '" + str(acDesc) + "'"
                            ",   '" + str(creUser) + "'"
-                           ",   '" + str(creDate) + "'"
-                           ",   '" + str(regCust) + "'"
+                           ",   date_format(now(), '%Y%m%d') "
+                           ",   '" + str(iCust) + "'"
                            ",   '" + str(bnk) + "'"
                            ",   '" + str(Rfilenameloc) + "'"
                            "    '" + str(exDate) + "'"
@@ -453,7 +453,7 @@ def paymentViews_save(request):
                                    "     , '" + empArrayLists[data]["empNbr"] + "' "
                                    "     , '" + opt + "' "
                                    "     , '" + str(acIogb) + "' "
-                                   "     , '" + str(regCust) + "' "
+                                   "     , '" + str(iCust) + "' "
                                    "     ) "
                     )
                     connection.commit()
@@ -466,6 +466,7 @@ def paymentViews_save(request):
                            "     ACGUBN = '" + str(acGubn) + "' "
                            ",    MCODE = '" + str(mCode) + "' "
                            ",    ACCODE = '" + str(acCode) + "' "
+                           ",    ACTITLE = '" + str(acTitle) + "' "
                            ",    ACAMTS = '" + str(acAmts) + "' "
                            ",    ACACNUMBER = '" + str(acAcnumber) + "' "
                            ",    ACDESC = '" + str(acDesc) + "' "
@@ -478,7 +479,7 @@ def paymentViews_save(request):
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ACCUST = '" + str(acCust) + "' "
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
-                           "     AND ICUST = '" + str(regCust) + "' "
+                           "     AND ICUST = '" + str(iCust) + "' "
                            )
             connection.commit()
 

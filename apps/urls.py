@@ -25,9 +25,7 @@ urlpatterns = [
     path('base_accountCode/', accountCodeViews.accountCodeViews, name='base_accountCode'),
     path('base_accountCode_search/', accountCodeViews.accountCodeViews_search, name='base_accountCode_search'),
     path('base_accountCode_saveM/', accountCodeViews.accountCodeViews_saveM, name='base_accountCode_saveM'),
-    path('base_accountCode_saveA/', accountCodeViews.accountCodeViews_saveA, name='base_accountCode_saveA'),
     path('base_accountCode_dltM/', accountCodeViews.accountCodeViews_dltM, name='base_accountCode_dltM'),
-    path('base_accountCode_dltA/', accountCodeViews.accountCodeViews_dltA, name='base_accountCode_dltA'),
     # 계정코드관리
     path('base_charge/', baseChargeViews.baseChargeViews, name='base_charge'),
     # 참조코드관리
