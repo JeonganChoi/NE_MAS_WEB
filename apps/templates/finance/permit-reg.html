@@ -1,0 +1,243 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 실행 관리 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
+    <div class="height-100"
+         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
+    <div class="container-fluid py-1 my-2">
+        <div class="row mt-n7">
+            <div class="col-lg-12">
+                <div class="card blur border border-white rounded-2 shadow-xs">
+                    <div class="card-body pb-2">
+                        <div class="row">
+                            <div class="col-lg-6 col-6 text-start">
+                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>시행 관리</h4>
+                            </div>
+                            <!--<div class="col-lg-6 col-6 text-end">
+                                <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
+                                <button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>
+                                <button type="button" class="btn btn-sm btn-light text-dark text-sm" id="btnDlt" name="btnDlt">삭제</button>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card border border-white shadow-xs">
+                    <div class="card-header pb-0">
+                        <div class="row p-0">
+                            <div class="col-lg-2 col-2 w-20">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 6rem"><i class="ni ni-calendar-grid-58 me-2"></i>승인일자</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2 w-20">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 6rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputPrice" id="inputPrice" style="height: 2rem; width: 10rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-7 text-end">
+                                <button type="button" class="btn text-white font-weight-bolder"
+                                        style="background-color: darkgreen" id="btnPermit" name="btnPermit"><i
+                                        class="fas fa-file-signature me-2"></i>승인
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-6">
+                                <div class="table-responsive-sm height-400 overflow-auto border border-light">
+                                  <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
+                                      <colgroup>
+                                          <col width="8%">
+                                          <col width="15%">
+                                          <col width="10%">
+                                          <col hidden width="6%">
+                                          <col width="6%">
+                                          <col hidden width="6%">
+                                          <col hidden width="6%">
+                                          <col width="3%">
+                                      </colgroup>
+                                    <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue">
+                                      <tr>
+                                        <th style="font-size: 0.85rem" class="p-0">등록일자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">제 목</th>
+                                        <th style="font-size: 0.85rem" class="p-0">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-0">작성자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">승인</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="mainTb">
+                                      <tr id="#mainTr" class="mainTr_tr">
+
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-6">
+                                <div class="table-responsive-sm height-400 overflow-auto border border-light">
+                                  <table class="table mb-0 align-items-center justify-content-center" id="chkTb">
+                                      <colgroup>
+                                          <col width="8%">
+                                          <col width="15%">
+                                          <col width="10%">
+                                          <col width="6%">
+                                      </colgroup>
+                                    <thead class="text-white font-weight-bolder text-center" style="background-color: darkgreen">
+                                      <tr>
+                                        <th style="font-size: 0.85rem" class="p-0">등록일자</th>
+                                        <th style="font-size: 0.85rem" class="p-0">제 목</th>
+                                        <th style="font-size: 0.85rem" class="p-0">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-0">작성자</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="subTb">
+                                      <tr>
+
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+
+            document.getElementById('inputDate').valueAsDate = new Date
+
+            var pDate = document.getElementById('inputDate').value
+            var perDate = pDate.replace(/\-/g, '')
+
+            let data = {'perDate': perDate}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "permit_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+
+                    {# 순번, 입.출금구분, 날짜 #}
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></div></td> " +
+                            "</tr> ");
+                    }
+                }
+            })
+        });
+
+
+        $(document).on('change', '#selectTb tbody tr td:last-child input[type=checkbox]', function() {
+            var tr = $(this).parent().parent();
+            var ioDate = tr.children().eq(0).text()
+            var acTitle = tr.children().eq(1).text()
+            var acAmts = tr.children().eq(2).text()
+            var acEmp = tr.children().eq(3).text()
+            var acNme = tr.children().eq(4).text()
+            var acSeqn = tr.children().eq(5).text()
+            var acIogb = tr.children().eq(6).text()
+            alert(ioDate)
+
+            if($(this).is(':checked')) {
+                if($('#subTr' + acEmp).length == 0) {
+
+                    var sub_tr_cnt = $('#chkTb tbody tr').length;
+
+                    $("#subTb").append(
+                        "<tr id='subTr" + acEmp + "' class='subTr_tr'>" +
+                        "<td class='text-start p-1' name='ioDate'   id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
+                        "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
+                        "<td class='text-start p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
+                        "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
+                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
+                        "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
+                        "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                        "</tr> ");
+
+                }
+            } else {
+                $('#subTr' + acEmp).remove();
+            }
+        });
+
+        {# 승인 버튼 #}
+        $(document).on('click', "#btnPermit", function () {
+            {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
+            const subCount = $('#subTb tr').length;
+
+            var pmtArr = [];
+            for (var i = 0; i < subCount; i++) {
+
+                var ioDate = $('#ioDate_' + i).text();
+                var acEmp = $('#acEmp_' + i).text();
+                var acSeqn = $('#acSeqn_' + i).text();
+                var acIogb = $('#acIogb_' + i).text();
+
+                let data = {
+                    'ioDate': ioDate,
+                    'acEmp': acEmp,
+                    'acSeqn': acSeqn,
+                    'acIogb': acIogb
+                };
+                pmtArr.push(data);
+            }
+
+            $.ajax({
+                type: "post",
+                data: {
+                    'pmtArrList': JSON.stringify(pmtArr)
+                },
+                dataType: "json",
+                url: '{% url "permit_reg_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'permit_reg' %}";
+                    }
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

@@ -81,7 +81,8 @@ def payrollViews_search(request):
 
 def payrollViews_save(request):
     payArray = json.loads(request.POST.get('payArrList'))
-    print(payArray)
+    user = request.session.get('userId')
+
 
     payArrayLists = list(filter(len, payArray))
     for data in range(len(payArrayLists)):
@@ -125,16 +126,6 @@ def payrollViews_save(request):
                 payArrayLists[data]["pmWwpy"] = 0
             if (payArrayLists[data]["pmYupy"] == ''):
                 payArrayLists[data]["pmYupy"] = 0
-            # if (payArrayLists[data]["pmGsu1"] == ''):
-            #     payArrayLists[data]["pmGsu1"] = 0
-            # if (payArrayLists[data]["pmGsu2"] == ''):
-            #     payArrayLists[data]["pmGsu2"] = 0
-            # if (payArrayLists[data]["pmGsu3"] == ''):
-            #     payArrayLists[data]["pmGsu3"] = 0
-            # if (payArrayLists[data]["pmGsu4"] == ''):
-            #     payArrayLists[data]["pmGsu4"] = 0
-            # if (payArrayLists[data]["pmGsu5"] == ''):
-            #     payArrayLists[data]["pmGsu5"] = 0
             if (payArrayLists[data]["pmPytt"] == ''):
                 payArrayLists[data]["pmPytt"] = 0
             if (payArrayLists[data]["pmKups"] == ''):
@@ -147,12 +138,6 @@ def payrollViews_save(request):
                 payArrayLists[data]["pmTax3"] = 0
             if (payArrayLists[data]["pmGops"] == ''):
                 payArrayLists[data]["pmGops"] = 0
-            # if (payArrayLists[data]["pmGtg1"] == ''):
-            #     payArrayLists[data]["pmGtg1"] = 0
-            # if (payArrayLists[data]["pmGtg2"] == ''):
-            #     payArrayLists[data]["pmGtg2"] = 0
-            # if (payArrayLists[data]["pmGtg3"] == ''):
-            #     payArrayLists[data]["pmGtg3"] = 0
             if (payArrayLists[data]["pmGott"] == ''):
                 payArrayLists[data]["pmGott"] = 0
             if (payArrayLists[data]["pmJitt"] == ''):
@@ -211,7 +196,7 @@ def payrollViews_save(request):
                                     " , PMGTG3 = '" + str(pmGtg_list[2]) + "' "
                                     " , PMGOTT = '" + str(payArrayLists[data]["pmGott"]) + "' "
                                     " , PMJITT = '" + str(payArrayLists[data]["pmJitt"]) + "' "
-                                    " , UPD_USER = '101' "
+                                    " , UPD_USER = '" + user + "' "
                                     " , UPD_DT = date_format(now(), '%Y%m%d') "
                                     " WHERE PMYYMM = '" + yyyymm + "' "
                                     "   AND EMP_NBR = '" + empCode + "' "
@@ -305,7 +290,7 @@ def payrollViews_save(request):
                                     " ,'" + str(pmGtg_list[2]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmGott"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmJitt"]) + "' "
-                                    " ,'101' "
+                                    " ,'" + user + "' "
                                     " ,date_format(now(), '%Y%m%d') "
                                     " ) "
                     )

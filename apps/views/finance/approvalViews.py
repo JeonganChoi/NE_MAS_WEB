@@ -15,37 +15,12 @@ def approvalViews(request):
     return render(request, "finance/approval-reg.html")
 
 def approvalViews_search(request):
-    empNbr = request.POST.get('empNbr')
+    empNbr = request.session.get('userId')
     gbn = request.POST.get('gbn')
-    iCust = request.POST.get('iCust')
+    iCust = request.session.get('USER_ICUST')
     ioDate = request.POST.get('ioDate')
     acSeqn = request.POST.get('acSeqn')
-
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT EMP_NBR, EMP_NME, ICUST FROM PIS1TB001 WHERE EMP_NBR = '" + empNbr + "' AND ICUST = '" + iCust + "' ")
-        empresult = cursor.fetchall()
-
-    if gbn:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '') "
-                           "    FROM OSCODEM A "
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.GBN = B.RESKEY "
-                           "    AND B.RECODE = 'CGB' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.GBN2 = C.RESKEY "
-                           "    AND C.RECODE = 'AGB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.MCODE_M = D.RESKEY "
-                           "    AND D.RECODE = 'MCD' "
-                           "    LEFT OUTER JOIN OSREFCP E "
-                           "    ON A.ACODE = E.RESKEY "
-                           "    AND E.RECODE = 'ACD' "
-                           "    WHERE MCODE = '" + gbn + "' ")
-            mainresult = cursor.fetchall()
-
-        return JsonResponse({"mainList": mainresult})
+    acIogb = request.POST.get('acIogb')
 
     if ioDate and acSeqn:
         with connection.cursor() as cursor:
@@ -55,7 +30,60 @@ def approvalViews_search(request):
                            " ON A.EMP_NBR = B.EMP_NBR "
                            " WHERE A.ACDATE = '" + str(ioDate) + "' "
                            " AND A.ACSEQN = '" + str(acSeqn) + "' "
+                           " AND A.ACIOGB = '" + str(acIogb) + "' "
                            " ORDER BY SEQ ASC ")
             subresult = cursor.fetchall()
 
-        return JsonResponse({"subList": subresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.ACIOGB, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACCUST, ''), IFNULL(A.IODATE, ''), IFNULL(A.MCODE, '') "
+                           "        , IFNULL(A.EXDATE, ''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACCARD, '') "
+                           "        , IFNULL(A.ACDESC, ''), IFNULL(A.ACSEQN, '') "
+                           " FROM SISACCTT A "
+                           " WHERE A.IODATE = '" + str(ioDate) + "' "
+                           " AND A.ACSEQN = '" + str(acSeqn) + "' "
+                           " AND A.ACIOGB = '" + str(acIogb) + "' ")
+            mainresult = cursor.fetchall()
+
+            # 거래처
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ")
+            cboCust = cursor.fetchall()
+
+            # 입출금구분
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' ORDER BY RESKEY ")
+            cboGgn = cursor.fetchall()
+
+            # 관리계정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ORDER BY MCODE ASC ")
+            cboMCode = cursor.fetchall()
+
+            # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
+            cboPay = cursor.fetchall()
+
+            # 계좌번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cboAcnumber = cursor.fetchall()
+
+        return JsonResponse({"subList": subresult, "mainList": mainresult, "cboCust": cboCust, "cboGgn": cboGgn, "cboMCode": cboMCode, "cboPay": cboPay, "cboAcnumber": cboAcnumber})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                           "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
+                           " FROM SISACCTT A "
+                           " LEFT OUTER JOIN OSSIGN B "
+                           " ON A.IODATE = B.ACDATE "
+                           " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ICUST = B.ICUST "
+                           " LEFT OUTER JOIN PIS1TB001 C "
+                           " ON A.CRE_USER = C.EMP_NBR "
+                           " WHERE B.EMP_NBR = '" + empNbr + "' "
+                           " AND B.ACDATE <= '" + str(ioDate) + "' ")
+            mainresult = cursor.fetchall()
+
+        return JsonResponse({"mainList": mainresult})
