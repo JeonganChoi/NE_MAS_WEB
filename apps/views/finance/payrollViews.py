@@ -158,10 +158,21 @@ def payrollViews_save(request):
             if (payArrayLists[data]["pmJitt"] == ''):
                 payArrayLists[data]["pmJitt"] = 0
 
+            pmGsu_data = payArrayLists[data]["pmGsu"]
+            pmGsu_list = [0 for i in range(5)]
+            for u in range(len(pmGsu_data)):
+                pmGsu_list[u] = pmGsu_data[u]
+
+            pmGtg_data = payArrayLists[data]["pmGtg"]
+            pmGtg_list = [0 for j in range(3)]
+            for g in range(len(pmGtg_data)):
+                pmGtg_list[g] = pmGtg_data[g]
+
             if payresult:
 
                 yyyymm = payresult[0][0]
                 empCode = payresult[0][1]
+
 
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE OSMONTHP SET "
@@ -184,20 +195,20 @@ def payrollViews_save(request):
                                     " , PMSYPY = '" + str(payArrayLists[data]["pmSypy"]) + "' "
                                     " , PMWWPY = '" + str(payArrayLists[data]["pmWwpy"]) + "' "
                                     " , PMYUPY = '" + str(payArrayLists[data]["pmYupy"]) + "' "
-                                    # " , PMGSU1 = '" + str(payArrayLists[data]["pmGsu1"]) + "' "
-                                    # " , PMGSU2 = '" + str(payArrayLists[data]["pmGsu2"]) + "' "
-                                    # " , PMGSU3 = '" + str(payArrayLists[data]["pmGsu3"]) + "' "
-                                    # " , PMGSU4 = '" + str(payArrayLists[data]["pmGsu4"]) + "' "
-                                    # " , PMGSU5 = '" + str(payArrayLists[data]["pmGsu5"]) + "' "
+                                    " , PMGSU1 = '" + str(pmGsu_list[0]) + "' "                                                              
+                                    " , PMGSU2 = '" + str(pmGsu_list[1]) + "' "
+                                    " , PMGSU3 = '" + str(pmGsu_list[2]) + "' "
+                                    " , PMGSU4 = '" + str(pmGsu_list[3]) + "' "
+                                    " , PMGSU5 = '" + str(pmGsu_list[4]) + "' "
                                     " , PMPYTT = '" + str(payArrayLists[data]["pmPytt"]) + "' "
                                     " , PMKUPS = '" + str(payArrayLists[data]["pmKups"]) + "' "
                                     " , PMMEPS = '" + str(payArrayLists[data]["pmMeps"]) + "' "
                                     " , PMTAX1 = '" + str(payArrayLists[data]["pmTax1"]) + "' "
                                     " , PMTAX3 = '" + str(payArrayLists[data]["pmTax3"]) + "' "
                                     " , PMGOPS = '" + str(payArrayLists[data]["pmGops"]) + "' "
-                                    # " , PMGTG1 = '" + str(payArrayLists[data]["pmGtg1"]) + "' "
-                                    # " , PMGTG2 = '" + str(payArrayLists[data]["pmGtg2"]) + "' "
-                                    # " , PMGTG3 = '" + str(payArrayLists[data]["pmGtg3"]) + "' "
+                                    " , PMGTG1 = '" + str(pmGtg_list[0]) + "' "
+                                    " , PMGTG2 = '" + str(pmGtg_list[1]) + "' "
+                                    " , PMGTG3 = '" + str(pmGtg_list[2]) + "' "
                                     " , PMGOTT = '" + str(payArrayLists[data]["pmGott"]) + "' "
                                     " , PMJITT = '" + str(payArrayLists[data]["pmJitt"]) + "' "
                                     " , UPD_USER = '101' "
@@ -234,20 +245,20 @@ def payrollViews_save(request):
                                     " , PMSYPY "
                                     " , PMWWPY "
                                     " , PMYUPY "
-                                    # " , PMGSU1 "
-                                    # " , PMGSU2 "
-                                    # " , PMGSU3 "
-                                    # " , PMGSU4 "
-                                    # " , PMGSU5 "
+                                    " , PMGSU1 "
+                                    " , PMGSU2 "
+                                    " , PMGSU3 "
+                                    " , PMGSU4 "
+                                    " , PMGSU5 "
                                     " , PMPYTT "
                                     " , PMKUPS "
                                     " , PMMEPS "
                                     " , PMTAX1 "
                                     " , PMTAX3 "
                                     " , PMGOPS "
-                                    # " , PMGTG1 "
-                                    # " , PMGTG2 "
-                                    # " , PMGTG3 "
+                                    " , PMGTG1 "
+                                    " , PMGTG2 "
+                                    " , PMGTG3 "
                                     " , PMGOTT "
                                     " , PMJITT "
                                     " , CRE_USER "
@@ -278,20 +289,20 @@ def payrollViews_save(request):
                                     " ,'" + str(payArrayLists[data]["pmSypy"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmWwpy"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmYupy"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGsu1"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGsu2"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGsu3"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGsu4"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGsu5"]) + "' "
+                                    " ,'" + str(pmGsu_list[0]) + "' "
+                                    " ,'" + str(pmGsu_list[1]) + "' "
+                                    " ,'" + str(pmGsu_list[2]) + "' "
+                                    " ,'" + str(pmGsu_list[3]) + "' "
+                                    " ,'" + str(pmGsu_list[4]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmPytt"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmKups"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmMeps"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmTax1"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmTax3"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmGops"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGtg1"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGtg2"]) + "' "
-                                    # " ,'" + str(payArrayLists[data]["pmGtg3"]) + "' "
+                                    " ,'" + str(pmGtg_list[0]) + "' "
+                                    " ,'" + str(pmGtg_list[1]) + "' "
+                                    " ,'" + str(pmGtg_list[2]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmGott"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmJitt"]) + "' "
                                     " ,'101' "

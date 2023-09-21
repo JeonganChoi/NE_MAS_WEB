@@ -183,15 +183,7 @@
 
                     $("#adminMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        var YN = "";
-                        if(list[i][12] == 'Y'){
-                            YN = '사용'
-                        }
-                       else{
-                           YN = '미사용'
-                        }
-                        {# 예시 #}
-                        {#${list[i][12] === 'Y ? '사용' : '미사용'}#}
+                        {#var YN = list[i][12] === 'Y' ? '사용' : '미사용';#}
 
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
@@ -202,7 +194,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + YN + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
@@ -271,13 +263,13 @@
 
                     $("#adminMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        var YN = "";
-                        if(list[i][12] == 'Y'){
-                            YN = '사용'
-                        }
-                       else{
-                           YN = '미사용'
-                        }
+                       {# var YN = "";#}
+                       {# if(list[i][12] == 'Y'){#}
+                       {#     YN = '사용'#}
+                       {# }#}
+                       {#else{#}
+                       {#    YN = '미사용'#}
+                       {# }#}
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></div></td>" +
@@ -287,7 +279,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + YN + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
@@ -311,7 +303,7 @@
             $("#cboGbn_M").html("");
             $("#cboGbn2_M").html("");
             $("#cboMCode_A").html("");
-            $("#cboOpt").html("");
+            {#$("#cboOpt").html("");#}
 
             let mainCode = $(this).attr('main_code');
             var cboCodeType = "";
@@ -339,7 +331,7 @@
                         cboGbn2_M = list[i][8];
                         cboMCode_A = list[i][10]
                     {#    결제여부 값 콤보박스#}
-                        $("#cboOpt").val(list[i][12])
+                        $("#cboOpt").val(list[i][12] === 'Y' ? 'Y' : 'N');
                     }
 
                     var combolist3 = data.cboMCode;

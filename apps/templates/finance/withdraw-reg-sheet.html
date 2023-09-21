@@ -202,7 +202,8 @@
                                 <label class="mt-4 form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
                                 <form action="/file-upload" class="form-control dropzone" id="dropzone">
                                   <div class="fallback">
-                                    <input name="file" id="file" type="file" multiple class="height-400"/>
+                                    <input name="file" id="file" type="file" multiple class=""/>
+                                      <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid border-radius-sm shadow-sm" style="height: 30vh; width: 30vw">
                                   </div>
                                 </form>
                                 <div class="form-group text-end mt-3">
@@ -313,6 +314,20 @@
     </script>
 
     <script>
+
+        //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 이벤트
+        $('#file').change(function(event) {
+            var file = event.target.files[0]
+
+            var reader = new FileReader(); //1
+
+            reader.onload = function(e) {
+                $('#itemimage').attr('src', e.target.result); //3
+            }
+
+            reader.readAsDataURL(file); //2
+        });
+
         $(document).on('click', '#btnDst', function () {
 
             var chk_cust_id_arr = [];

@@ -34,7 +34,9 @@ def accountCodeViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP E "
                            "    ON A.ACODE = E.RESKEY "
                            "    AND E.RECODE = 'ACD' "
-                           "    WHERE MCODE = '" + mainCode + "' ")
+                           "    WHERE MCODE = '400001' "
+                           # "    WHERE MCODE = '" + mainCode + "' "
+                           )
             mresult = cursor.fetchall()
 
         return JsonResponse({"subMList": mresult})
