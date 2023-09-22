@@ -24,7 +24,7 @@ def approvalViews_search(request):
 
     if ioDate and acSeqn:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER "
+            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER, A.ACDATE, A.ACSEQN, A.ACIOGB "
                            " FROM OSSIGN A "
                            " LEFT OUTER JOIN PIS1TB001 B "
                            " ON A.EMP_NBR = B.EMP_NBR "
@@ -87,3 +87,64 @@ def approvalViews_search(request):
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
+
+def approvalViews_save(request):
+    seq = request.POST.get("seq")
+    empNbr = request.POST.get("empNbr")
+    folder = request.POST.get("folder")
+    reason = request.POST.get("reason")
+    ioDate = request.POST.get("empNbr")
+    acSeqn = request.POST.get("acSeqn")
+    acIogb = request.POST.get("acIogb")
+    iCust = request.session.get('USER_ICUST')
+    gbn = request.POST.get('gbn')
+    opt = 'Y'
+
+    if gbn == '1':
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE OSSIGN SET "
+                               "     OPT = '" + str(opt) + "' "
+                               "   , GBN = '" + str(gbn) + "' "
+                               "     WHERE ACDATE = '" + str(ioDate) + "' "
+                               "     AND ACSEQN = '" + str(acSeqn) + "' "
+                               "     AND SEQ = '" + str(seq) + "' "
+                               "     AND EMP_NBR = '" + str(empNbr) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
+                               )
+            connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    elif gbn == '2':
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE OSSIGN SET "
+                               "     OPT = '" + str(opt) + "' "
+                               "   , GBN = '" + str(gbn) + "' "
+                               "     WHERE ACDATE = '" + str(ioDate) + "' "
+                               "     AND ACSEQN = '" + str(acSeqn) + "' "
+                               "     AND SEQ = '" + str(seq) + "' "
+                               "     AND EMP_NBR = '" + str(empNbr) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
+                               )
+            connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    elif gbn == '3':
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE OSSIGN SET "
+                               "     RETURN = '" + str(reason) + "' "
+                               "   , OPT = '" + str(opt) + "' "
+                               "   , GBN = '" + str(gbn) + "' "
+                               "     WHERE ACDATE = '" + str(ioDate) + "' "
+                               "     AND ACSEQN = '" + str(acSeqn) + "' "
+                               "     AND SEQ = '" + str(seq) + "' "
+                               "     AND EMP_NBR = '" + str(empNbr) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
+                               )
+            connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})

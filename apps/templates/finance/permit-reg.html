@@ -145,12 +145,13 @@
                 success: function (data) {
                     var list = data.mainList;
 
+                    var total = 0;
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
@@ -159,7 +160,10 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></div></td> " +
                             "</tr> ");
+
+                        total += Number(list[i][2])
                     }
+                    document.getElementById('inputPrice').value = addComma(total)
                 }
             })
         });
@@ -232,7 +236,7 @@
                 },
                 success: function (data) {
                     if (data.sucYn === 'Y') {
-                        alert('저장 되었습니다.')
+                        alert('승인 되었습니다.')
                         location.href = "{% url 'permit_reg' %}";
                     }
                 }

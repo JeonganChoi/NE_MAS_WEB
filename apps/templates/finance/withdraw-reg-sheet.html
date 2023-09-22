@@ -200,7 +200,8 @@
                         <div class="col-lg-6 col-6">
                             <div class="card-body">
                                 <label class="mt-4 form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                <form action="/file-upload" class="form-control dropzone" id="dropzone">
+                                <form class="form-control dropzone" id="dropzone" enctype="multipart/form-data">
+{#                                <form action="{% url 'payment_save' %}" class="form-control dropzone" id="dropzone" enctype="multipart/form-data">#}
                                   <div class="fallback">
                                     <input name="file" id="file" type="file" multiple class=""/>
                                       <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid border-radius-sm shadow-sm" style="height: 30vh; width: 30vw">
@@ -997,6 +998,7 @@
             var cboWitMethod = document.getElementById('cboWitMethod').value
             var cboWitCard = document.getElementById('cboWitCard').value
             var txtWitRemark = document.getElementById('txtWitRemark').value
+            var file = document.getElementById('file').value
 
             if (cboWitCust == '') {
                 alert("거래처를 입력해주세요.")
@@ -1038,6 +1040,7 @@
                     'cboWitMethod': cboWitMethod,
                     'cboWitCard': cboWitCard,
                     'txtWitRemark': txtWitRemark,
+                    "file": file,
                     'empArrList': JSON.stringify(empArr)
                 },
                 dataType: "json",

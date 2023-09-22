@@ -192,11 +192,51 @@
                                     <button class="btn btn-sm btn-primary" id="btnReturn" name="btnReturn"><i class="ni ni-bold-down pe-3"></i>반 려</button>
                                 </div>
                             </div>
+                            <div hidden class="row p-0">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="text-sm">순번</label>
+                                        <input class="form-control" id="modalSeq" name="modalSeq" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="text-sm">직원코드</label>
+                                        <input class="form-control" id="modalEmp" name="modalEmp" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="text-sm">폴더</label>
+                                        <input class="form-control" id="modalFolder" name="modalFolder" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div hidden class="row p-0">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="text-sm">날짜</label>
+                                        <input class="form-control" id="modalDate" name="modalDate" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="text-sm">총순번</label>
+                                        <input class="form-control" id="modalSeqn" name="modalSeqn" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="text-sm">구분</label>
+                                        <input class="form-control" id="modalIogb" name="modalIogb" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row p-0">
                                 <div class="col-12 text-start">
                                     <div class="form-group">
                                         <label class="mt-2 text-sm">반려 사유</label>
-                                        <input class="form-control" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                        <input class="form-control" id="modalReason" name="modalReason" type="text" style="height: 2rem; font-size: 0.85rem"/>
                                     </div>
                                 </div>
                             </div>
@@ -347,7 +387,7 @@
                     $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
                         $("#subTb").append(
-                            "<td class='border border-end border-light' id='btnChoice " + i + "' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
+                            "<td class='border border-end border-light' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
                     }
 
                     for (var i = 0; i < list2.length; i++) {
@@ -411,9 +451,151 @@
     </script>
 
     <script>
-        $(document).on('click', '#btnDecide', function () {
+        $(document).on('click', '#btnChoice', function () {
+
+            $("#modalSeq").val("");
+            $("#modalEmp").val("");
+            $("#modalFolder").val("");
+
+            let serials = $(this).attr('sub_code');
+            var split = serials.split(',');
+            var seq = split[0]
+            var empNbr = split[1]
+            var folder = split[2]
+            var acDate = split[3]
+            var acSeqn = split[4]
+            var acIogb = split[5]
+
+            document.getElementById('modalSeq').value = seq
+            document.getElementById('modalEmp').value = empNbr
+            document.getElementById('modalFolder').value = folder
+            document.getElementById('modalDate').value = acDate
+            document.getElementById('modalSeqn').value = acSeqn
+            document.getElementById('modalIogb').value = acIogb
 
             $('#DecisionModal').show();
+        });
+
+        {# 결재 버튼 클릭시 #}
+        $(document).on('click', '#btnApv', function () {
+
+            var seq = document.getElementById('modalSeq').value
+            var empNbr = document.getElementById('modalEmp').value
+            var folder = document.getElementById('modalFolder').value
+            var reason = document.getElementById('modalReason').value
+            var ioDate = document.getElementById('modalDate').value
+            var acSeqn = document.getElementById('modalSeqn').value
+            var acIogb = document.getElementById('modalIogb').value
+            var gbn = '1'
+
+            $.ajax({
+                type: "post",
+                data: {
+                    'seq': seq,
+                    'empNbr': empNbr,
+                    'folder': folder,
+                    'reason': reason,
+                    'ioDate': ioDate,
+                    'acSeqn': acSeqn,
+                    'acIogb': acIogb,
+                    'gbn': gbn
+                },
+                dataType: "json",
+                url: '{% url "approval_reg_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('반려 되었습니다.')
+                        location.href = "{% url 'approval_reg' %}";
+                    }
+                }
+            });
+
+            {# 선택된 특정위치에 이미지를 뿌려줘야함. #}
+            $("#subTb").append(
+                "<td class='border border-end border-light' style='height: 5vh'><img src='folder' width='100%' height='100%'/></td> ");
+
+        });
+
+        {# 전결 버튼 클릭시 #}
+        $(document).on('click', '#btnAbt', function () {
+
+            var seq = document.getElementById('modalSeq').value
+            var empNbr = document.getElementById('modalEmp').value
+            var folder = document.getElementById('modalFolder').value
+            var reason = document.getElementById('modalReason').value
+            var ioDate = document.getElementById('modalDate').value
+            var acSeqn = document.getElementById('modalSeqn').value
+            var acIogb = document.getElementById('modalIogb').value
+            var gbn = '2'
+
+            $.ajax({
+                type: "post",
+                data: {
+                    'seq': seq,
+                    'empNbr': empNbr,
+                    'folder': folder,
+                    'reason': reason,
+                    'ioDate': ioDate,
+                    'acSeqn': acSeqn,
+                    'acIogb': acIogb,
+                    'gbn': gbn
+                },
+                dataType: "json",
+                url: '{% url "approval_reg_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('반려 되었습니다.')
+                        location.href = "{% url 'approval_reg' %}";
+                    }
+                }
+            });
+
+        });
+
+        {# 반려 버튼 클릭시 #}
+        $(document).on('click', '#btnReturn', function () {
+
+            var seq = document.getElementById('modalSeq').value
+            var empNbr = document.getElementById('modalEmp').value
+            var folder = document.getElementById('modalFolder').value
+            var reason = document.getElementById('modalReason').value
+            var ioDate = document.getElementById('modalDate').value
+            var acSeqn = document.getElementById('modalSeqn').value
+            var acIogb = document.getElementById('modalIogb').value
+            var gbn = '3'
+
+
+            $.ajax({
+                type: "post",
+                data: {
+                    'seq': seq,
+                    'empNbr': empNbr,
+                    'folder': folder,
+                    'reason': reason,
+                    'ioDate': ioDate,
+                    'acSeqn': acSeqn,
+                    'acIogb': acIogb,
+                    'gbn': gbn
+                },
+                dataType: "json",
+                url: '{% url "approval_reg_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.sucYn === 'Y') {
+                        alert('반려 되었습니다.')
+                        location.href = "{% url 'approval_reg' %}";
+                    }
+                }
+            });
+
         });
     </script>
 {% endblock %}

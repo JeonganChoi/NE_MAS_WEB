@@ -360,7 +360,7 @@ def paymentViews_save(request):
 
     if file is None or not None:
         if len(request.FILES) != 0:
-            myfile = request.FILES['file']
+            myfile = request.FILES['files']
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             Rfilenameloc = url + filename
