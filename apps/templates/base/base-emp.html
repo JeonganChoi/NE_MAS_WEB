@@ -136,11 +136,11 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비밀 번호</label>
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비밀 번호</label>
                                 <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem">전화 번호</label>
+                                <label class="" style="font-size: 0.8rem">전화 번호</label>
                                 <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
                             </div>
                             <!--<div class="col-2">
@@ -151,17 +151,17 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem">입사 일자</label>
+                                <label class="" style="font-size: 0.8rem">입사 일자</label>
                                 <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtEmployDate" name="txtEmployDate"/>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem">퇴사 일자</label>
+                                <label class="" style="font-size: 0.8rem">퇴사 일자</label>
                                 <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtQuitDate" name="txtQuitDate"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사업장</label>
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사업장</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
                             </div>
                             <div class="col-6">
@@ -170,16 +170,33 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem">근무조</label>
+                                <label class="" style="font-size: 0.8rem">근무조</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboGroup" id="cboGroup"></select>
                             </div>
                             <div class="col-6">
-                                <label class="mt-4" style="font-size: 0.8rem">부 서</label>
+                                <label class="" style="font-size: 0.8rem">부 서</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDpt" id="cboDpt"></select>
                             </div>
                             <div hidden class="col-2">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>입력 사번</label>
+                                <label class="" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>입력 사번</label>
                                 <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class="mt-4 form-label"><i class="fas fa-image me-2"></i>Signature 등록</label>
+                                    <form class="form-control dropzone" id="dropzone" enctype="multipart/form-data">
+    {#                                <form action="{% url 'payment_save' %}" class="form-control dropzone" id="dropzone" enctype="multipart/form-data">#}
+                                      <div class="fallback">
+                                          <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid shadow-sm" style="height: 10vh; width: 10vw">
+                                      </div>
+                                    </form>
+                                    <div class="form-group text-end mt-3">
+                                        <a class="btn btn-linkedin btn-sm" type="button" id="btnImgSave">등록</a>
+                                        <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">초기화</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,6 +227,7 @@
             $("#inputEmpNum").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
+            alert(empType)
 
             let data = {'empType': empType}
 

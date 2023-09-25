@@ -93,7 +93,7 @@ def approvalViews_save(request):
     empNbr = request.POST.get("empNbr")
     folder = request.POST.get("folder")
     reason = request.POST.get("reason")
-    ioDate = request.POST.get("empNbr")
+    ioDate = request.POST.get("ioDate")
     acSeqn = request.POST.get("acSeqn")
     acIogb = request.POST.get("acIogb")
     iCust = request.session.get('USER_ICUST')
@@ -102,16 +102,16 @@ def approvalViews_save(request):
 
     if gbn == '1':
         with connection.cursor() as cursor:
-            cursor.execute("    UPDATE OSSIGN SET "
-                               "     OPT = '" + str(opt) + "' "
-                               "   , GBN = '" + str(gbn) + "' "
-                               "     WHERE ACDATE = '" + str(ioDate) + "' "
-                               "     AND ACSEQN = '" + str(acSeqn) + "' "
-                               "     AND SEQ = '" + str(seq) + "' "
-                               "     AND EMP_NBR = '" + str(empNbr) + "' "
-                               "     AND ACIOGB = '" + str(acIogb) + "' "
-                               "     AND ICUST = '" + str(iCust) + "'"
-                               )
+            cursor.execute(" UPDATE OSSIGN SET "
+                           "     OPT = '" + str(opt) + "' "
+                           "   , GBN = '" + str(gbn) + "' "
+                           "     WHERE ACDATE = '" + str(ioDate) + "' "
+                           "     AND ACSEQN = '" + str(acSeqn) + "' "
+                           "     AND SEQ = '" + str(seq) + "' "
+                           "     AND EMP_NBR = '" + str(empNbr) + "' "
+                           "     AND ACIOGB = '" + str(acIogb) + "' "
+                           "     AND ICUST = '" + str(iCust) + "'"
+                           )
             connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

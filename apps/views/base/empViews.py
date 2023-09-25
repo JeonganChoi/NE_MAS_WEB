@@ -33,14 +33,6 @@ def empViews_search(request):
                             "     , IFNULL(A.EMP_DEPT, '') "
                             "     , IFNULL(B.RESNAM, '') "
                             "     , IFNULL(A.EMP_TEL, '') "
-                            "     , IFNULL(A.EMP_PRC, '') "
-                            "     , IFNULL(D.RESNAM, '') "
-                            "     , IFNULL(A.EMP_PRC1, '') "
-                            "     , IFNULL(E.RESNAM, '') "
-                            "     , IFNULL(A.EMP_PRC2, '') "
-                            "     , IFNULL(F.RESNAM, '') "
-                            "     , IFNULL(A.EMP_PRC3, '') "
-                            "     , IFNULL(G.RESNAM, '') "
                             "     , IFNULL(A.EMP_COM, '') "
                             "     , IFNULL(H.RESNAM, '') "
                             "   FROM pis1tb001 A "
@@ -50,18 +42,6 @@ def empViews_search(request):
                             "   LEFT OUTER JOIN osrefcp C "
                             "   ON C.RECODE = 'JJO' "
                             "   AND A.EMP_JO = C.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp D "
-                            "   ON D.RECODE = 'POP' "
-                            "   AND A.EMP_PRC = D.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp E "
-                            "   ON E.RECODE = 'POP' "
-                            "   AND A.EMP_PRC1 = E.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp F "
-                            "   ON F.RECODE = 'POP' "
-                            "   AND A.EMP_PRC2 = F.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp G "
-                            "   ON G.RECODE = 'POP' "
-                            "   AND A.EMP_PRC3 = G.RESKEY "
                             "   LEFT OUTER JOIN osrefcp H "
                             "   ON H.RECODE = 'COM' "
                             "   AND A.EMP_COM = H.RESKEY "
@@ -85,14 +65,6 @@ def empViews_search(request):
                 "     , IFNULL(A.EMP_DEPT, '') "
                 "     , IFNULL(B.RESNAM, '') "
                 "     , IFNULL(A.EMP_TEL, '') "
-                "     , IFNULL(A.EMP_PRC, '') "
-                "     , IFNULL(D.RESNAM, '') "
-                "     , IFNULL(A.EMP_PRC1, '') "
-                "     , IFNULL(E.RESNAM, '') "
-                "     , IFNULL(A.EMP_PRC2, '') "
-                "     , IFNULL(F.RESNAM, '') "
-                "     , IFNULL(A.EMP_PRC3, '') "
-                "     , IFNULL(G.RESNAM, '') "
                 "     , IFNULL(A.EMP_COM, '') "
                 "     , IFNULL(H.RESNAM, '')"
                 "   FROM pis1tb001 A "
@@ -102,18 +74,6 @@ def empViews_search(request):
                 "   LEFT OUTER JOIN osrefcp C "
                 "   ON C.RECODE = 'JJO' "
                 "   AND A.EMP_JO = C.RESKEY "
-                "   LEFT OUTER JOIN osrefcp D "
-                "   ON D.RECODE = 'POP' "
-                "   AND A.EMP_PRC = D.RESKEY "
-                "   LEFT OUTER JOIN osrefcp E "
-                "   ON E.RECODE = 'POP' "
-                "   AND A.EMP_PRC1 = E.RESKEY "
-                "   LEFT OUTER JOIN osrefcp F "
-                "   ON F.RECODE = 'POP' "
-                "   AND A.EMP_PRC2 = F.RESKEY "
-                "   LEFT OUTER JOIN osrefcp G "
-                "   ON G.RECODE = 'POP' "
-                "   AND A.EMP_PRC3 = G.RESKEY "
                 "   LEFT OUTER JOIN osrefcp H "
                 "   ON H.RECODE = 'COM' "
                 "   AND A.EMP_COM = H.RESKEY "
@@ -143,13 +103,12 @@ def empViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' ")
             comCombo = cursor.fetchall()
 
-        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo
-                                , "empList": empresult})
+        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "empList": empresult})
 
     else:
         with connection.cursor() as cursor:
             cursor.execute(
-                            "SELECT "
+                            " SELECT "
                             "       A.EMP_NBR "
                             "     , IFNULL(A.EMP_GBN, '') "
                             "     , IFNULL(A.EMP_NME, '') "
@@ -161,14 +120,6 @@ def empViews_search(request):
                             "     , IFNULL(A.EMP_DEPT, '') "
                             "     , IFNULL(B.RESNAM, '') "
                             "     , IFNULL(A.EMP_TEL, '') "
-                            "     , IFNULL(A.EMP_PRC, '') "
-                            "     , IFNULL(D.RESNAM, '') "
-                            "     , IFNULL(A.EMP_PRC1, '') "
-                            "     , IFNULL(E.RESNAM, '') "
-                            "     , IFNULL(A.EMP_PRC2, '') "
-                            "     , IFNULL(F.RESNAM, '') "
-                            "     , IFNULL(A.EMP_PRC3, '') "
-                            "     , IFNULL(G.RESNAM, '') "
                             "     , IFNULL(A.EMP_COM, '') "
                             "     , IFNULL(H.RESNAM, '')"
                             "   FROM pis1tb001 A "
@@ -178,22 +129,10 @@ def empViews_search(request):
                             "   LEFT OUTER JOIN osrefcp C "
                             "   ON C.RECODE = 'JJO' "
                             "   AND A.EMP_JO = C.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp D "
-                            "   ON D.RECODE = 'POP' "
-                            "   AND A.EMP_PRC = D.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp E "
-                            "   ON E.RECODE = 'POP' "
-                            "   AND A.EMP_PRC1 = E.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp F "
-                            "   ON F.RECODE = 'POP' "
-                            "   AND A.EMP_PRC2 = F.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp G "
-                            "   ON G.RECODE = 'POP' "
-                            "   AND A.EMP_PRC3 = G.RESKEY "
                             "   LEFT OUTER JOIN osrefcp H "
                             "   ON H.RECODE = 'COM' "
                             "   AND A.EMP_COM = H.RESKEY "
-                            "   WHERE A.EMP_GBN LIKE '%" + empType + "%' "
+                            "   WHERE A.EMP_TESA IS NULL or A.EMP_TESA = '' "
                            )
             empresult = cursor.fetchall()
 
@@ -217,8 +156,7 @@ def empViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' ")
             comCombo = cursor.fetchall()
 
-        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo
-                                , "empList": empresult})
+        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "empList": empresult})
 
 
 def empViews_save(request):
