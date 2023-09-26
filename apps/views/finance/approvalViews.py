@@ -16,8 +16,8 @@ def approvalViews(request):
 
 def approvalViews_search(request):
     empNbr = request.session.get('userId')
-    gbn = request.POST.get('gbn')
     iCust = request.session.get('USER_ICUST')
+    gbn = request.POST.get('gbn')
     ioDate = request.POST.get('ioDate')
     acSeqn = request.POST.get('acSeqn')
     acIogb = request.POST.get('acIogb')

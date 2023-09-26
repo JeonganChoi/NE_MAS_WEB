@@ -35,6 +35,7 @@ def empViews_search(request):
                             "     , IFNULL(A.EMP_TEL, '') "
                             "     , IFNULL(A.EMP_COM, '') "
                             "     , IFNULL(H.RESNAM, '') "
+                            "     , IFNULL(A.ICUST, '')"
                             "   FROM pis1tb001 A "
                             "   LEFT OUTER JOIN osrefcp B "
                             "   ON B.RECODE = 'DPT' "
@@ -67,6 +68,7 @@ def empViews_search(request):
                 "     , IFNULL(A.EMP_TEL, '') "
                 "     , IFNULL(A.EMP_COM, '') "
                 "     , IFNULL(H.RESNAM, '')"
+                "     , IFNULL(A.ICUST, '')"
                 "   FROM pis1tb001 A "
                 "   LEFT OUTER JOIN osrefcp B "
                 "   ON B.RECODE = 'DPT' "
@@ -122,6 +124,7 @@ def empViews_search(request):
                             "     , IFNULL(A.EMP_TEL, '') "
                             "     , IFNULL(A.EMP_COM, '') "
                             "     , IFNULL(H.RESNAM, '')"
+                            "     , IFNULL(A.ICUST, '')"
                             "   FROM pis1tb001 A "
                             "   LEFT OUTER JOIN osrefcp B "
                             "   ON B.RECODE = 'DPT' "
@@ -168,12 +171,13 @@ def empViews_save(request):
     empJo = request.POST.get('empGroup')
     empCom = request.POST.get('empCom')
     empTel = request.POST.get('empTel')
+    limit = request.POST.get('limit')
     empIpsa = request.POST.get('empRDate').replace('-', '')
     empTesa = request.POST.get('empQDate').replace('-', '')
-    inepno = request.POST.get('inepno')
-    utepno = '101'
-    # inepno = request.session['userid']
-    # utepno = request.session['userid']
+    inepno = request.session.get('userId')
+    utepno = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
 
     if inepno is None or inepno == '':
         with connection.cursor() as cursor:
@@ -191,21 +195,23 @@ def empViews_save(request):
                            ",    EMP_TESA "
                            ",    CRE_DT "
                            ",    CRE_USER "
+                           ",    ICUST "
                            ") "
                            "    VALUES "
                            "    ("
-                           "    '" + empNbr + "'"
-                           ",   '" + str(empNme) + "'"
-                           ",   '" + str(empPass) + "'"
-                           ",   '" + str(empDept) + "'"
-                           ",   '" + str(empGbn) + "'"
-                           ",   '" + str(empJo) + "'"
-                           ",   '" + str(empCom) + "'"
-                           ",   '" + str(empTel) + "'"
-                           ",   '" + str(empIpsa) + "'"
-                           ",   '" + str(empTesa) + "'"
-                           ",   date_format(now(), '%Y%m%d')"
-                           ",   '101'"
+                           "    '" + empNbr + "' "
+                           ",   '" + str(empNme) + "' "
+                           ",   '" + str(empPass) + "' "
+                           ",   '" + str(empDept) + "' "
+                           ",   '" + str(empGbn) + "' "
+                           ",   '" + str(empJo) + "' "
+                           ",   '" + str(empCom) + "' "
+                           ",   '" + str(empTel) + "' "
+                           ",   '" + str(empIpsa) + "' "
+                           ",   '" + str(empTesa) + "' "
+                           ",   date_format(now(), '%Y%m%d') "
+                           ",   '" + str(inepno) + "' "
+                           ",   '" + str(iCust) + "' "
                            "    ) "
                            )
 
@@ -226,7 +232,8 @@ def empViews_save(request):
                            ",    EMP_IPSA = '" + str(empIpsa) + "' "
                            ",    EMP_TESA = '" + str(empTesa) + "'  "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           ",    UPD_USER = '101' "
+                           ",    UPD_USER = '" + str(utepno) + "' "
+                           ",    ICUST = '" + str(iCust) + "' "
                            "    WHERE EMP_NBR = '" + str(empNbr) + "' "
                            )
             connection.commit()
@@ -243,7 +250,7 @@ def empViews_dlt(request):
         for emp in dataList:
             acc_split_list = emp.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM PIS1TB001 WHERE EMP_NBR = '" + acc_split_list[0] + "' ")
+                cursor.execute(" DELETE FROM PIS1TB001 WHERE EMP_NBR = '" + acc_split_list[0] + "' AND ICUST = '" + acc_split_list[1] + "' ")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

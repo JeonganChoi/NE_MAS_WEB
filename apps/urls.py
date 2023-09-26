@@ -97,6 +97,7 @@ urlpatterns = [
     path('permit_reg/', permitViews.permitViews, name='permit_reg'),
     path('permit_reg_search/', permitViews.permitViews_search, name='permit_reg_search'),
     path('permit_reg_save/', permitViews.permitViews_save, name='permit_reg_save'),
+    path('permit_cbo_search/', permitViews.cboActNum_search, name='permit_cbo_search'),
 
     # 입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),
@@ -119,6 +120,7 @@ urlpatterns = [
     path('payment_save/', paymentViews.paymentViews_save, name='payment_save'),
     path('payment_dlt/', paymentViews.paymentViews_dlt, name='payment_dlt'),
     path('apvLine_modal/', paymentViews.apvLine_modal_search, name='apvLine_modal'),
+    path('checkLimit/', paymentViews.checkLimit_search, name='checkLimit'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),

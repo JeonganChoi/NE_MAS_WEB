@@ -165,7 +165,8 @@
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
                             </div>
                             <div class="col-6">
-
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>전결금액</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="number" id="txtLimit" name="txtLimit"/>
                             </div>
                         </div>
                         <div class="row">
@@ -227,7 +228,6 @@
             $("#inputEmpNum").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
-            alert(empType)
 
             let data = {'empType': empType}
 
@@ -335,7 +335,7 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#empMainTb").append(
                             "<tr id='#empMainTr' class='empMainTr_tr' main_code='" + list[i][0] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][14] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -434,6 +434,7 @@
                         $("#txtEmpTel").val(list[i][10])
                         $("#txtEmployDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtQuitDate").val(list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtLimit").val(list[i][13])
                         group = list[i][6];
                         dpt = list[i][8];
                         com = list[i][19];
@@ -487,6 +488,7 @@
             var empRDate = document.getElementById('txtEmployDate').value
             var empQDate = document.getElementById('txtQuitDate').value
             var inepno = document.getElementById('txtEmp').value
+            var limit = document.getElementById('txtLimit').value
 
             if(empNo == '')
             {
@@ -499,8 +501,9 @@
                 return false
             }
 
+
             let data = {'empNo': empNo,'empNm': empNm,'empPW': empPW
-            , 'empDpt': empDpt, 'empGroup': empGroup, 'empCom': empCom, 'empTel': empTel, 'empRDate': empRDate, 'empQDate': empQDate, 'inepno': inepno}
+            , 'empDpt': empDpt, 'empGroup': empGroup, 'empCom': empCom, 'empTel': empTel, 'empRDate': empRDate, 'empQDate': empQDate, 'inepno': inepno, 'limit': limit}
 
             $.ajax({
                 type: "post",
@@ -598,6 +601,7 @@
                     $("#txtEmployDate").val("");
                     $("#txtQuitDate").val("");
                     $("#txtEmp").val("");
+                    $("#txtLimit").val("");
 
                     var combolist = data.jjoCombo;
                     for (var i = 0; i < combolist.length; i++) {

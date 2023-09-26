@@ -96,124 +96,127 @@
             </div>
             <div class="col-lg-8 col-8 mb-md-0">
                 <div class="card border border-white shadow-xs">
-                    <div class="row">
-                        <div class="col-lg-6 col-6">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금 구분</label>
-                                            <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitGbn" id="cboWitGbn" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>제 목</label>
-                                            <input class="form-control text-start" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row mt-4">
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="far fa-edit me-2"></i>거래처</label>
-                                            <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
-                                            <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                    <form class="form-control border-0 dropzone" id="dropzone" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6 col-6">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="mt-2 text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금 구분</label>
+                                                <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitGbn" id="cboWitGbn" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>제 목</label>
+                                                <input class="form-control text-start" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div hidden class="col-4">
-                                            <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
-                                            <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
+                                    <div class="form-group">
+                                        <div class="row mt-4">
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="far fa-edit me-2"></i>거래처</label>
+                                                <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
+                                                <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                                            </div>
                                         </div>
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>관리계정</label>
-                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
+                                        <div class="row">
+                                            <div hidden class="col-4">
+                                                <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
+                                                <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>관리계정</label>
+                                                <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>예정일자</label>
+                                                <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
+                                            </div>
                                         </div>
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>예정일자</label>
-                                            <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>금액</label>
+                                                <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>계좌번호</label>
+                                                <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>결제방법</label>
+                                                <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>카드</label>
+                                                <select class="form-control border border-light rounded-1 text-center" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>
+                                            <!--<div class="col-6">
+                                                <label class="mt-2 text-sm"><i class="fas fa-box me-2"></i>발행처</label>
+                                                <select class="form-control border border-light rounded-1 text-center" name="cboWitIssueCust" id="cboWitIssueCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                            </div>-->
+                                            <!--<div class="col-4">
+                                                <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
+                                                <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
+                                            </div>-->
+                                        </div>
+                                        <div hidden class="row">
+                                            <div class="col-6">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>어음번호</label>
+                                                <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>내용</label>
+                                                <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>금액</label>
-                                            <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
+                                    <div class="form-group mt-2 mb-0">
+                                        <div class="row">
+                                            <div class="col-6 text-start">
+                                                <button class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>결재선 지정</button>
+                                            </div>
+                                            <div class="col-6 text-start">
+                                                <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
+                                            </div>
                                         </div>
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>계좌번호</label>
-                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>결제방법</label>
-                                            <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>카드</label>
-                                            <select class="form-control border border-light rounded-1 text-center" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>
-                                        <!--<div class="col-6">
-                                            <label class="mt-2 text-sm"><i class="fas fa-box me-2"></i>발행처</label>
-                                            <select class="form-control border border-light rounded-1 text-center" name="cboWitIssueCust" id="cboWitIssueCust" style="height: 2rem; font-size: 0.8rem"></select>
-                                        </div>-->
-                                        <!--<div class="col-4">
-                                            <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
-                                            <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
-                                        </div>-->
-                                    </div>
-                                    <div hidden class="row">
-                                        <div class="col-6">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>어음번호</label>
-                                            <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>내용</label>
-                                            <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group mt-2 mb-0">
-                                    <div class="row">
-                                        <div class="col-12 text-start">
-                                            <button class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>결재선 지정</button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6 text-start">
-                                            <div class="table-responsive-sm overflow-auto border border-light">
-                                                <table class="table mb-0 align-items-center justify-content-center" id="signTb">
-                                                  <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
+                                        <div class="row">
+                                            <div class="col-6 text-start">
+                                                <div class="table-responsive-sm overflow-auto">
+                                                    <table class="table mb-0 align-items-center justify-content-center" id="signTb">
+                                                      <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
 
-                                                  </tbody>
-                                                </table>
+                                                      </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 col-6">
-                            <div class="card-body">
-                                <label class="mt-4 form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                <form class="form-control dropzone" id="dropzone" enctype="multipart/form-data">
-{#                                <form action="{% url 'payment_save' %}" class="form-control dropzone" id="dropzone" enctype="multipart/form-data">#}
-                                  <div class="fallback">
-                                    <input name="file" id="file" type="file" multiple class=""/>
-                                      <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid border-radius-sm shadow-sm" style="height: 30vh; width: 30vw">
-                                  </div>
-                                </form>
-                                <div class="form-group text-end mt-3">
-                                    <!--<a class="btn btn-linkedin btn-sm" type="button" id="btnImgSave">사진등록</a>-->
-                                    <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
+                            <div class="col-lg-6 col-6">
+                                <div class="card-body">
+                                    <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
+                                      <div class="fallback">
+                                        <input name="file" id="file" type="file" multiple class=""/>
+                                          <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid border-radius-sm shadow-sm" style="height: 50vh; width: 30vw">
+                                      </div>
+
+                                    <div class="form-group text-end mt-3">
+                                        <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -780,14 +783,14 @@
             let search = $(this).attr('main_code');
             var split = search.split(',');
             var acIogb = split[0]
-            var acDate = split[1]
+            var ioDate = split[1]
             var acNum = split[2]
             var acCust = split[3]
             var acMcode= split[4]
             var cboGbn = "";
 
 
-            let data = {'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn}
+            let data = {'acIogb': acIogb, 'ioDate': ioDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn}
 
             $.ajax({
                 type: "post",
@@ -985,20 +988,22 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var cboWitGbn = document.getElementById('cboWitGbn').value
-            var txtTitle = document.getElementById('txtTitle').value
-            var cboWitCust = document.getElementById('cboWitCust').value
-            var txtWitRegDate = document.getElementById('txtWitRegDate').value
-            var txtExDate = document.getElementById('txtExDate').value
-            var txtWitSeq = document.getElementById('txtWitSeq').value
-            var txtWitRecn = document.getElementById('txtWitRecn').value
-            var cboAdminCode = document.getElementById('cboAdminCode').value
-            var txtWitPrice = document.getElementById('txtWitPrice').value
-            var cboWitActNum = document.getElementById('cboWitActNum').value
-            var cboWitMethod = document.getElementById('cboWitMethod').value
-            var cboWitCard = document.getElementById('cboWitCard').value
-            var txtWitRemark = document.getElementById('txtWitRemark').value
-            var file = document.getElementById('file').value
+            var formData = new FormData($('#dropzone')[0]);
+
+            {#var cboWitGbn = document.getElementById('cboWitGbn').value#}
+            {#var txtTitle = document.getElementById('txtTitle').value#}
+            {#var cboWitCust = document.getElementById('cboWitCust').value#}
+            {#var txtWitRegDate = document.getElementById('txtWitRegDate').value#}
+            {#var txtExDate = document.getElementById('txtExDate').value#}
+            {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
+            {#var txtWitRecn = document.getElementById('txtWitRecn').value#}
+            {#var cboAdminCode = document.getElementById('cboAdminCode').value#}
+            {#var txtWitPrice = document.getElementById('txtWitPrice').value#}
+            {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
+            {#var cboWitMethod = document.getElementById('cboWitMethod').value#}
+            {#var cboWitCard = document.getElementById('cboWitCard').value#}
+            {#var txtWitRemark = document.getElementById('txtWitRemark').value#}
+            {#var file = document.getElementById('file').value#}
 
             if (cboWitCust == '') {
                 alert("거래처를 입력해주세요.")
@@ -1024,25 +1029,14 @@
                 empArr.push(data);
             }
 
+            formData.append('empArrList', JSON.stringify(empArr))
+
             $.ajax({
                 type: "post",
-                data: {
-                    'cboWitCust': cboWitCust,
-                    'txtWitRegDate': txtWitRegDate,
-                    'txtExDate': txtExDate,
-                    'txtWitSeq': txtWitSeq,
-                    'txtTitle': txtTitle,
-                    'txtWitRecn': txtWitRecn,
-                    'cboWitGbn': cboWitGbn,
-                    'cboAdminCode': cboAdminCode,
-                    'txtWitPrice': txtWitPrice,
-                    'cboWitActNum': cboWitActNum,
-                    'cboWitMethod': cboWitMethod,
-                    'cboWitCard': cboWitCard,
-                    'txtWitRemark': txtWitRemark,
-                    "file": file,
-                    'empArrList': JSON.stringify(empArr)
-                },
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
                 dataType: "json",
                 url: '{% url "payment_save" %}',
                 headers: {
@@ -1201,6 +1195,41 @@
 
             }
         });
+
+        {# 만기일자 앤터시 input으로 이동 #}
+        $('input[type="number"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtWitPrice') {
+
+                var price = document.getElementById('txtWitPrice').value;
+                var sDate = document.getElementById('txtWitRegDate').value;
+                var date = sDate.replace(/\-/g, '')
+
+                let data = {'price': price, 'date': date}
+
+                $.ajax({
+                    type: "post",
+                    data: data,
+                    url: '{% url "checkLimit" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.YN === 'N') {
+                            document.getElementById('warning').value = '결제 금액이 많습니다.'
+                        }
+                        else{
+
+                        }
+
+                    }
+                })
+                }
+            }
+        });
+
     </script>
 
 {% endblock %}

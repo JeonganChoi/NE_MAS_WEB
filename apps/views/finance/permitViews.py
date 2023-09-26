@@ -38,6 +38,15 @@ def permitViews_search(request):
 
     return JsonResponse({"mainList": mainresult})
 
+
+def cboActNum_search(request):
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER, ACNUM_NAME FROM ACNUMBER ORDER BY ACNUMBER ")
+        cboActNum = cursor.fetchall()
+
+        return JsonResponse({'cboActNum': cboActNum})
+
 def permitViews_save(request):
     pmtArray = json.loads(request.POST.get('pmtArrList'))
     iCust = request.session.get('USER_ICUST')
@@ -49,7 +58,8 @@ def permitViews_save(request):
         with connection.cursor() as cursor:
             cursor.execute(" UPDATE SISACCTT SET "
                            "    ACDATE = '" + pmtArrayLists[data]["ioDate"] + "'"
-                           "  , FIN_OPT = '" + permit + "'"
+                           "  , FIN_OPT = '" + permit + "' "
+                           "  , ACACNUMBER = '" + pmtArrayLists[data]["acNum"] + "' "
                            "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
                            "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                            "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "

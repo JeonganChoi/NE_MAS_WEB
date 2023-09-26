@@ -1,4 +1,5 @@
 import json
+import os
 from django.shortcuts import render, redirect
 from django import template
 from django.contrib.auth.decorators import login_required
@@ -26,13 +27,13 @@ def receivePay_search(request):
 
     if strDate != '' and endDate != '' and cboCust == '':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE > '" + strDate + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE IODATE > '" + strDate + "' ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
+            cursor.execute("  SELECT ACIOGB, IODATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -40,7 +41,7 @@ def receivePay_search(request):
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '2' "
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -48,8 +49,8 @@ def receivePay_search(request):
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '1' "
                            " ) AA "
-                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           " ORDER BY AA.ACDATE ")
+                           " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " ORDER BY AA.IODATE ")
             mainresult = cursor.fetchall()
 
             # 거래처
@@ -61,13 +62,13 @@ def receivePay_search(request):
 
     elif cboCust:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE > '" + strDate + "' AND ACCUST = '" + cboCust + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE IODATE > '" + strDate + "' AND ACCUST = '" + cboCust + "' ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
+            cursor.execute("  SELECT ACIOGB, IODATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -75,7 +76,7 @@ def receivePay_search(request):
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '2' "
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -83,9 +84,9 @@ def receivePay_search(request):
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '1' "
                            " ) AA "
-                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
                            " AND AA.ACCUST = '" + cboCust + "' "
-                           " ORDER BY AA.ACDATE ")
+                           " ORDER BY AA.IODATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({'balList': balresult, 'mainList': mainresult})
@@ -191,7 +192,7 @@ def apvLine_modal_search(request):
 
 def paymentViews_search(request):
     acIogb = request.POST.get('acIogb')
-    acDate = request.POST.get('acDate').replace('-', '')
+    ioDate = request.POST.get('ioDate')
     acNum = request.POST.get('acNum')
     acCust = request.POST.get('acCust')
     acMcode = request.POST.get('acMcode')
@@ -205,7 +206,8 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACIOGB,''), IFNULL(E.RESNAM, ''), IFNULL(A.MCODE,''), IFNULL(D.MCODENM, '') "
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
-                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'') "
+                           "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
+                           "    , IFNULL(A.ACFOLDER,'') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -222,7 +224,7 @@ def paymentViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP F "
                            "    ON A.ACGUNO_BK = F.RESKEY "
                            "    AND F.RECODE = 'BNK' "
-                           "    WHERE A.ACDATE = '" + acDate + "' "
+                           "    WHERE A.IODATE = '" + ioDate + "' "
                            "    AND A.ACIOGB = '" + acIogb + "' "
                            "    AND A.ACACNUMBER = '" + acNum + "' "
                            "    AND A.ACCUST = '" + acCust + "'"
@@ -341,7 +343,7 @@ def paymentViews_save(request):
     acTitle = request.POST.get("txtTitle")
     acRecn = request.POST.get("txtWitRecn")
     acCust = request.POST.get("cboWitCust")     # 거래처
-    acIogb = request.POST.get("cboWitGbn")  # 구분(입금/출금)
+    acIogb = request.POST.get("cboWitGbn")  # 구분(입금2/출금1)
     mCode = request.POST.get("cboAdminCode")  # 관리계정
     acCode = request.POST.get("cboActCode")  # 회계계정
     acAmts = request.POST.get("txtWitPrice")      # 금액
@@ -360,7 +362,7 @@ def paymentViews_save(request):
 
     if file is None or not None:
         if len(request.FILES) != 0:
-            myfile = request.FILES['files']
+            myfile = request.FILES['file']
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             Rfilenameloc = url + filename
@@ -404,7 +406,7 @@ def paymentViews_save(request):
                            "    VALUES "
                            "    (   "
                            "    '" + str(ioDate) + "'"
-                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "') "
+                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "') "
                            ",   '" + str(acIogb) + "'"
                            ",   '" + str(acTitle) + "'"
                            ",   '" + str(acCust) + "'"
@@ -413,7 +415,7 @@ def paymentViews_save(request):
                            ",   '" + str(acCode) + "'"
                            ",   '" + str(acAmts) + "'"
                            ",   '" + str(acAcnumber) + "'"
-                           ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + acDate + "' AND ACIOGB = '" + acIogb + "' AND ACSEQN = '" + acSeqn + "' ) "
+                           ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "' AND ACSEQN = '" + acSeqn + "' ) "
                            ",   '" + str(acDesc) + "'"
                            ",   '" + str(creUser) + "'"
                            ",   date_format(now(), '%Y%m%d') "
@@ -476,11 +478,11 @@ def paymentViews_save(request):
                            ",    EXDATE = '" + str(exDate) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           "     WHERE IODATE = '" + str(ioDate) + "' "
+                           "     WHERE acdate = '" + str(ioDate) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ACCUST = '" + str(acCust) + "' "
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
-                           "     AND ICUST = '" + str(iCust) + "' "
+                           # "     AND ICUST = '" + str(iCust) + "' "
                            )
             connection.commit()
 
@@ -509,3 +511,32 @@ def paymentViews_dlt(request):
 
     else:
         return render(request, 'finance/withdraw-reg-sheet.html')
+
+
+def checkLimit_search(request):
+    price = request.POST.get('price')
+    date = request.POST.get('date')
+    userId = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT EMP_LIMIT FROM PIS1TB001 WHERE EMP_NBR = '" + userId + "' AND ICUST = '" + iCust + "' ")
+        result = cursor.fetchall()
+
+        limit = result[0][0]
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE CRE_USER = '" + userId + "' AND SUBSTRING(IODATE, 0, 6) = '" + date + "' AND ACIOGB = '1' AND ICUST = '" + iCust + "' ")
+        result2 = cursor.fetchall()
+
+        spent = result2[0][0]
+
+        if limit >= price + spent:
+            YN = 'Y'
+            print(price + spent)
+
+        elif limit < price + spent:
+            YN = 'N'
+            print(price + spent)
+
+        return JsonResponse({'YN': YN})
