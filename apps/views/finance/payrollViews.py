@@ -82,6 +82,7 @@ def payrollViews_search(request):
 def payrollViews_save(request):
     payArray = json.loads(request.POST.get('payArrList'))
     user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
 
     payArrayLists = list(filter(len, payArray))

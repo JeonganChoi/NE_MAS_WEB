@@ -18,6 +18,8 @@ def accountViews(request):
 def accountViews_search(request):
     bankCode = request.POST.get('bankCode')
     actCode = request.POST.get('actCode')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     if bankCode != '' and bankCode is not None:
         with connection.cursor() as cursor:
@@ -32,7 +34,8 @@ def accountViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP C "
                            "    ON A.ACGBN = C.RESKEY "
                            "    AND C.RECODE = 'TOP' "
-                           "    WHERE ACBKCD LIKE '%" + bankCode + "%'")
+                           "    WHERE A.ACBKCD LIKE '%" + bankCode + "%'"
+                           "      AND A.ICUST = '" + iCust + "' ")
             accountresult = cursor.fetchall()
 
         return JsonResponse({"accountList": accountresult})
@@ -50,7 +53,8 @@ def accountViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP C "
                            "    ON A.ACGBN = C.RESKEY "
                            "    AND C.RECODE = 'TOP' "
-                           "    WHERE ACNUMBER LIKE '%" + actCode + "%'")
+                           "    WHERE A.ACNUMBER LIKE '%" + actCode + "%'"
+                           "      AND A.ICUST = '" + iCust + "' ")
             accountresult = cursor.fetchall()
 
         # 은행명 - 콤보박스
@@ -76,7 +80,8 @@ def accountViews_search(request):
                            "    AND B.RECODE = 'BNK' "
                            "    LEFT OUTER JOIN OSREFCP C "
                            "    ON A.ACGBN = C.RESKEY "
-                           "    AND C.RECODE = 'TOP' ")
+                           "    AND C.RECODE = 'TOP' "
+                           "    WHERE A.ICUST = '" + iCust + "'")
             accountresult = cursor.fetchall()
 
         # 은행명 - 콤보박스
@@ -102,8 +107,9 @@ def accountViews_save(request):
     accPrc = request.POST.get('amts')
     remark = request.POST.get('remark')
     inepno = request.POST.get('user')
-    # inepno = request.session['userid']
-    # utepno = request.session['userid']
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
     if inepno is None or inepno == '':
         with connection.cursor() as cursor:
             cursor.execute(" INSERT INTO ACNUMBER "
@@ -118,6 +124,7 @@ def accountViews_save(request):
                            ",    ACDESC "
                            ",    CRE_USER "
                            ",    CRE_DT "
+                           ",    ICUST "
                            "    ) "
                            "    VALUES "
                            "    ("
@@ -129,8 +136,9 @@ def accountViews_save(request):
                            ",   '" + str(endDate) + "' "
                            ",   '" + str(accPrc) + "' "
                            ",   '" + str(remark) + "' "
-                           ",   '101' "
+                           ",   '" + user + "' "
                            ",   date_format(now(), '%Y%m%d') "
+                           ",   '" + iCust + "' "
                            "    ) "
                            )
             connection.commit()
@@ -147,9 +155,10 @@ def accountViews_save(request):
                            ",    ACENDTE = '" + str(endDate) + "' "
                            ",    ACPAY = '" + str(accPrc) + "' "
                            ",    ACDESC = '" + str(remark) + "' "
-                           ",    UPD_USER = '" + str(inepno) + "' "
+                           ",    UPD_USER = '" + user + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE ACNUMBER = '" + str(accNum) + "' "
+                           "       AND ICUST = '" + iCust + "' "
                            )
             connection.commit()
 
@@ -159,6 +168,8 @@ def accountViews_save(request):
 
 
 def accountViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
+
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
@@ -166,7 +177,8 @@ def accountViews_dlt(request):
             acc_split_list = act.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM ACNUMBER WHERE ACBKCD = '" + acc_split_list[0] + "' "
-                               "                        AND ACNUMBER = '" + acc_split_list[1] + "' ")
+                               "                        AND ACNUMBER = '" + acc_split_list[1] + "' "
+                               "                        AND ICUST = '" + iCust + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

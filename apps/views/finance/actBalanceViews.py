@@ -18,6 +18,8 @@ def actBalRegViews_search(request):
     actCode = request.POST.get('actCode')
     actNum = request.POST.get('actNum')
     bankCode = request.POST.get('bankCode')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     if actNum is not None and actNum != '' and bankCode is not None and bankCode != '':
         with connection.cursor() as cursor:
@@ -31,7 +33,8 @@ def actBalRegViews_search(request):
                 "       ON B.ACBKCD = C.RESKEY "
                 "       AND C.RECODE = 'BNK' "
                 "       WHERE A.ACNUMBER LIKE '%" + actNum + "%'"
-                "       AND B.ACBKCD LIKE '%" + bankCode + "%'"
+                "       AND B.ACBKCD LIKE '%" + bankCode + "%' "
+                "       AND A.ICUST = '" + str(iCust) + "' "
                 "       ORDER BY A.ACDATE"
             )
             actBalresult = cursor.fetchall()
@@ -52,12 +55,13 @@ def actBalRegViews_search(request):
     elif actCode is not None and actCode != '' or bankCode is not None and bankCode != '':
         # 계좌명 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER, ACNUM_NAME, ACBKCD, B.RESNAM FROM ACNUMBER A "
+            cursor.execute(" SELECT A.ACNUMBER, A.ACNUM_NAME, A.ACBKCD, B.RESNAM FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
                            "    AND B.RECODE = 'BNK' "
-                           "    WHERE ACNUMBER LIKE '%" + actCode + "%' "
-                           "    AND ACBKCD LIKE '%" + bankCode + "%' ")
+                           "    WHERE A.ACNUMBER LIKE '%" + actCode + "%' "
+                           "    AND A.ACBKCD LIKE '%" + bankCode + "%' "
+                           "    AND A.ICUST = '" + str(iCust) + "' ")
             actResult = cursor.fetchall()
             print(actResult)
 
@@ -74,6 +78,7 @@ def actBalRegViews_search(request):
                 "       LEFT OUTER JOIN OSREFCP C "
                 "       ON B.ACBKCD = C.RESKEY "
                 "       AND C.RECODE = 'BNK' "
+                "       WHERE A.ICUST = '" + str(iCust) + "'"
                 "       ORDER BY A.ACDATE"
             )
             actBalresult = cursor.fetchall()
@@ -98,6 +103,8 @@ def actBalRegViews_save(request):
     actDate = request.POST.get('txtDate').replace('-', '')
     actAmts = request.POST.get('txtBalance')
     actDesc = request.POST.get('txtRemark')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT ACNUMBER FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' ")
@@ -107,7 +114,10 @@ def actBalRegViews_save(request):
                 cursor.execute("    UPDATE ACBALANCE SET "
                                "     ACAMTS  = '" + str(actAmts) + "' "
                                ",    ACDESC = '" + str(actDesc) + "' "
+                               ",    UPD_USER = '" + str(user) + "' "
+                               ",    UPD_DT = date_format(now(), '%Y%m%d') "
                                "     WHERE ACNUMBER = '" + str(actNum) + "' "
+                               "       AND ICUST = '" + iCust + "'"
                                )
                 connection.commit()
 
@@ -123,6 +133,8 @@ def actBalRegViews_save(request):
                                ",    ACDATE "
                                ",    ACAMTS "
                                ",    ACDESC "
+                               ",    CRE_USER "
+                               ",    CRE_DT "
                                ") "
                                "    VALUES "
                                "    ("
@@ -130,6 +142,8 @@ def actBalRegViews_save(request):
                                ",   '" + str(actDate) + "' "
                                ",   '" + str(actAmts) + "' "
                                ",   '" + str(actDesc) + "' "
+                               ",   '" + str(user) + "' "
+                               ",   date_format(now(), '%Y%m%d') "
                                "    ) "
                                )
                 connection.commit()
@@ -138,6 +152,8 @@ def actBalRegViews_save(request):
 
 
 def actBalRegViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
+
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
@@ -145,7 +161,8 @@ def actBalRegViews_dlt(request):
             acc_split_list = act.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM ACBALANCE WHERE ACNUMBER = '" + acc_split_list[0] + "' "
-                               "                        AND ACDATE = '" + acc_split_list[1] + "' ")
+                               "                        AND ACDATE = '" + acc_split_list[1] + "' "
+                               "                        AND ICUST = '" + str(iCust) + "' ")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

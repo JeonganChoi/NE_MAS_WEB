@@ -188,7 +188,7 @@
             var cboActNum = "";
             var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
 
-            $(".cboActNum").html("");
+            $("#cboActNum").html("");
 
 
             $.ajax({
@@ -209,7 +209,7 @@
                         }
                     }
 
-                    $(".cboActNum").append(cboActNumTxt);
+                    $("#cboActNum").append(cboActNumTxt);
 
                 }
             })
@@ -229,7 +229,7 @@
                         "<td class='text-start p-2' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-2' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-2' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
-                        "<td class='text-center p-2'><select class='border border-light rounded-2 text-center' id='cboActNum_" + (sub_tr_cnt) + "' name='cboActNum' style='width: 12rem; height: 2rem; font-size: 0.8rem'></select></td> " +
+                        "<td class='text-center p-2'><select class='border border-light rounded-2 text-center' id='cboActNum' name='cboActNum' style='width: 12rem; height: 2rem; font-size: 0.8rem'></select></td> " +
                         "</tr> ");
 
                 }

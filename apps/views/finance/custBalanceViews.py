@@ -21,6 +21,8 @@ def custBalRegViews_search(request):
     endDate = request.POST.get('endDate')
     regDate = request.POST.get('regDate')
     custCode = request.POST.get('custCode')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     if regDate is not None and regDate != '' and custCode is not None and custCode != '':
         with connection.cursor() as cursor:
@@ -78,6 +80,8 @@ def custBalRegViews_save(request):
     moDesc = request.POST.get('txtRemark')
     iUser = request.POST.get('txtUser')
     regDt = request.POST.get('txtRegDate').replace('-', '')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     if iUser is None and iUser == '':
         with connection.cursor() as cursor:
@@ -88,7 +92,9 @@ def custBalRegViews_save(request):
                            ",    MOIWOL "
                            ",    MOIWOL2 "
                            ",    MODESC "
-                           ",    IUSER "
+                           ",    CRE_USER "
+                           ",    CRE_DT "
+                           ",    ICUST "
                            ") "
                            "    VALUES "
                            "    ("
@@ -97,7 +103,9 @@ def custBalRegViews_save(request):
                            ",   '" + str(moIwol) + "' "
                            ",   '" + str(moIwol2) + "' "
                            ",   '" + str(moDesc) + "' "
-                           ",   '101' "
+                           ",   '" + str(user) + "' "
+                           ",   date_format(now(), '%Y%m%d') "
+                           ",   '" + str(iCust) + "' "
                            "    ) "
                            )
             connection.commit()
@@ -111,7 +119,9 @@ def custBalRegViews_save(request):
                            ",    MOIWOL2 = '" + str(moIwol2) + "' "
                            ",    MODESC = '" + str(moDesc) + "' "
                            ",    MOdate = '" + str(regDt) + "' "
-                           ",    UUSER = '101' "
+                           ",    UPD_USER = '" + str(user) + "' "
+                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                           "     AND ICUST = '" + str(iCust) + "'"
                            )
             connection.commit()
 
@@ -122,6 +132,8 @@ def custBalRegViews_save(request):
 
 
 def custBalRegViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
+
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
@@ -129,7 +141,8 @@ def custBalRegViews_dlt(request):
             acc_split_list = cust.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM SIOMONTT WHERE MOdate = '" + acc_split_list[0] + "' "
-                               "                        AND MOCUST = '" + acc_split_list[1] + "' ")
+                               "                        AND MOCUST = '" + acc_split_list[1] + "' "
+                               "                        AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

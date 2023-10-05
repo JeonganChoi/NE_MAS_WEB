@@ -10,6 +10,7 @@ def targetIndexViews(request):
 
 def targetIndexSearchViews(request):
     year = request.POST.get('Year')
+    iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
         cursor.execute("  SELECT "
@@ -48,6 +49,7 @@ def targetIndexSearchViews(request):
                        "      , yymm AS YYMM "
                        "     FROM MIS1TB051 "
                        "     WHERE YYMM = '" + year + "' "
+                       "       AND ICUST = '" + str(iCust) + "' "
                        " )B "
                        " ON A.RESKEY = B.ENTYPE "
                        " WHERE A.RECODE = 'EMD' ")
@@ -71,6 +73,8 @@ def targetIndexSaveViews(request):
         month10_list = request.POST.getlist('month10')
         month11_list = request.POST.getlist('month11')
         month12_list = request.POST.getlist('month12')
+        user = request.session.get('userId')
+        iCust = request.session.get('USER_ICUST')
 
         targetindexlist2 = []
 
@@ -99,6 +103,9 @@ def targetIndexSaveViews(request):
                                   ",    DATA10 = '" + str(targetindexlist2[i][10]) + "' "
                                   ",    DATA11 = '" + str(targetindexlist2[i][11]) + "' "
                                   ",    DATA12 = '" + str(targetindexlist2[i][12]) + "' "
+                                  ",    UPD_USER = '" + str(user) + "' "
+                                  ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                                  "     WHERE ICUST = '" + str(iCust) + "' "
                           )
                     connection.commit()
                 messages.success(request, '저장 되었습니다.')
@@ -124,6 +131,9 @@ def targetIndexSaveViews(request):
                               ",    DATA12 "
                               ",    ENTYPE "
                               ",    COMP "
+                              ",    CRE_USER "
+                              ",    CRE_DT "
+                              ",    ICUST "
                               "    )   "
                               "    VALUES "
                               "    (   "
@@ -142,6 +152,9 @@ def targetIndexSaveViews(request):
                               ",   '" + str(targetindexlist2[i][12]) + "'"
                               ",   '" + str(targetindexlist2[i][13]) + "'"
                               ",   '1'"
+                              ",   '" + str(user) + "'"
+                              ",   date_format(now(), '%Y%m%d') "
+                              ",   '" + str(iCust) + "'"
                               "    )   "
                     )
                     connection.commit()

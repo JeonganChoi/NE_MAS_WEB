@@ -17,11 +17,11 @@ def empViews(request):
 def empViews_search(request):
     empCode = request.POST.get('empCode')
     empType = request.POST.get('empType')
+    iCust = request.session.get('USER_ICUST')
 
     if empType == '0':
         with connection.cursor() as cursor:
-            cursor.execute(
-                            "SELECT "
+            cursor.execute(" SELECT "
                             "       A.EMP_NBR "
                             "     , IFNULL(A.EMP_GBN, '') "
                             "     , IFNULL(A.EMP_NME, '') "
@@ -46,6 +46,7 @@ def empViews_search(request):
                             "   LEFT OUTER JOIN osrefcp H "
                             "   ON H.RECODE = 'COM' "
                             "   AND A.EMP_COM = H.RESKEY "
+                            "   WHERE A.ICUST = '" + str(iCust) + "' "
                            )
             empresult = cursor.fetchall()
 
@@ -82,6 +83,7 @@ def empViews_search(request):
                 "   WHERE A.EMP_NBR LIKE '%" + empCode + "%' "
                 "   OR A.EMP_NME LIKE '%" + empCode + "%' "
                 "   AND A.EMP_GBN LIKE '%" + empType + "%' "
+                "   AND A.ICUST = '" + str(iCust) + "' "
             )
             empresult = cursor.fetchall()
 
@@ -109,33 +111,32 @@ def empViews_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(
-                            " SELECT "
-                            "       A.EMP_NBR "
-                            "     , IFNULL(A.EMP_GBN, '') "
-                            "     , IFNULL(A.EMP_NME, '') "
-                            "     , IFNULL(A.EMP_PASS, '') "
-                            "     , IFNULL(A.EMP_IPSA, '') "
-                            "     , IFNULL(A.EMP_TESA, '') "
-                            "     , IFNULL(A.EMP_JO, '') "
-                            "     , IFNULL(C.RESNAM, '') "
-                            "     , IFNULL(A.EMP_DEPT, '') "
-                            "     , IFNULL(B.RESNAM, '') "
-                            "     , IFNULL(A.EMP_TEL, '') "
-                            "     , IFNULL(A.EMP_COM, '') "
-                            "     , IFNULL(H.RESNAM, '')"
-                            "     , IFNULL(A.ICUST, '')"
-                            "   FROM pis1tb001 A "
-                            "   LEFT OUTER JOIN osrefcp B "
-                            "   ON B.RECODE = 'DPT' "
-                            "   AND A.EMP_DEPT = B.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp C "
-                            "   ON C.RECODE = 'JJO' "
-                            "   AND A.EMP_JO = C.RESKEY "
-                            "   LEFT OUTER JOIN osrefcp H "
-                            "   ON H.RECODE = 'COM' "
-                            "   AND A.EMP_COM = H.RESKEY "
-                            "   WHERE A.EMP_TESA IS NULL or A.EMP_TESA = '' "
+            cursor.execute(" SELECT "
+                           "       A.EMP_NBR "
+                           "     , IFNULL(A.EMP_GBN, '') "
+                           "     , IFNULL(A.EMP_NME, '') "
+                           "     , IFNULL(A.EMP_PASS, '') "
+                           "     , IFNULL(A.EMP_IPSA, '') "
+                           "     , IFNULL(A.EMP_TESA, '') "
+                           "     , IFNULL(A.EMP_JO, '') "
+                           "     , IFNULL(C.RESNAM, '') "
+                           "     , IFNULL(A.EMP_DEPT, '') "
+                           "     , IFNULL(B.RESNAM, '') "
+                           "     , IFNULL(A.EMP_TEL, '') "
+                           "     , IFNULL(A.EMP_COM, '') "
+                           "     , IFNULL(H.RESNAM, '')"
+                           "     , IFNULL(A.ICUST, '')"
+                           "   FROM pis1tb001 A "
+                           "   LEFT OUTER JOIN osrefcp B "
+                           "   ON B.RECODE = 'DPT' "
+                           "   AND A.EMP_DEPT = B.RESKEY "
+                           "   LEFT OUTER JOIN osrefcp C "
+                           "   ON C.RECODE = 'JJO' "
+                           "   AND A.EMP_JO = C.RESKEY "
+                           "   LEFT OUTER JOIN osrefcp H "
+                           "   ON H.RECODE = 'COM' "
+                           "   AND A.EMP_COM = H.RESKEY "
+                           "   WHERE A.EMP_TESA IS NULL or A.EMP_TESA = '' AND A.ICUST = '" + str(iCust) + "'"
                            )
             empresult = cursor.fetchall()
 
@@ -233,8 +234,8 @@ def empViews_save(request):
                            ",    EMP_TESA = '" + str(empTesa) + "'  "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            ",    UPD_USER = '" + str(utepno) + "' "
-                           ",    ICUST = '" + str(iCust) + "' "
                            "    WHERE EMP_NBR = '" + str(empNbr) + "' "
+                           "      AND ICUST = '" + str(iCust) + "' "
                            )
             connection.commit()
 
@@ -244,13 +245,15 @@ def empViews_save(request):
 
 
 def empViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
+
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
         for emp in dataList:
             acc_split_list = emp.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM PIS1TB001 WHERE EMP_NBR = '" + acc_split_list[0] + "' AND ICUST = '" + acc_split_list[1] + "' ")
+                cursor.execute(" DELETE FROM PIS1TB001 WHERE EMP_NBR = '" + acc_split_list[0] + "' AND ICUST = '" + str(iCust) + "' ")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

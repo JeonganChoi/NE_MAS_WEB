@@ -33,7 +33,7 @@ def receivePay_search(request):
         with connection.cursor() as cursor:
             cursor.execute("  SELECT ACIOGB, IODATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -41,7 +41,7 @@ def receivePay_search(request):
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '2' "
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -531,12 +531,10 @@ def checkLimit_search(request):
 
         spent = result2[0][0]
 
-        if limit >= price + spent:
+        if int(limit) >= int(price) + int(spent):
             YN = 'Y'
-            print(price + spent)
 
-        elif limit < price + spent:
+        elif int(limit) < int(price) + int(spent):
             YN = 'N'
-            print(price + spent)
 
         return JsonResponse({'YN': YN})

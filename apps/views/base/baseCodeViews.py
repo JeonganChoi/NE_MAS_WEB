@@ -16,18 +16,19 @@ def baseCodeViews(request):
 
 def baseCodeViews_search(request):
     mainCode = request.POST.get('mainCode')
+    iCust = request.session.get('USER_ICUST')
 
     if mainCode is not None and mainCode != '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RECODE, RECNAM, RESKEY, RESNAM FROM OSREFCP "
-                           "        WHERE RECODE LIKE '%" + mainCode + "%'")
+                           "        WHERE RECODE LIKE '%" + mainCode + "%' AND ICUST = '" + str(iCust) + "' ")
             subresult = cursor.fetchall()
 
         return JsonResponse({"subList": subresult})
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RECODE, RECNAM FROM OSREFCP "
+            cursor.execute(" SELECT RECODE, RECNAM FROM OSREFCP WHERE ICUST = '" + str(iCust) + "' "
                            "        GROUP BY RECODE, RECNAM "
                            "        ORDER BY RECODE ")
             mainresult = cursor.fetchall()
@@ -36,6 +37,7 @@ def baseCodeViews_search(request):
 
 # 저장 및 업데이트
 def baseCodeViews_save(request):
+    iCust = request.session.get('USER_ICUST')
 
     print(request.POST.getlist('subCode'))
     reskey_list = request.POST.getlist('subCode')
@@ -56,6 +58,7 @@ def baseCodeViews_save(request):
                            "    , RECODE"
                            "    , RECNAM"
                            "    , RESNAM"
+                           "    , ICUST"
                            ") "
                            "VALUES"
                            "("
@@ -63,6 +66,7 @@ def baseCodeViews_save(request):
                            "    , '" + str(RECODE) + "'"
                            "    , '" + str(RECNAM) + "'"
                            "    , '" + str(RESNAM) + "'"
+                           "    , '" + str(iCust) + "'"
                            ")"
                            " ON DUPLICATE KEY UPDATE "
                            "     RECNAM = '" + str(RECNAM) + "'"
@@ -74,14 +78,17 @@ def baseCodeViews_save(request):
 
 
 def baseCodeViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
+
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
         for code in dataList:
             acc_split_list = code.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSREFCP WHERE RECODE = '" + acc_split_list[0] + "'"
-                           "                         AND RESKEY = '" + acc_split_list[1] + "' ")
+                cursor.execute(" DELETE FROM OSREFCP WHERE RECODE = '" + acc_split_list[0] + "' "
+                               "                         AND RESKEY = '" + acc_split_list[1] + "' "
+                               "                         AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

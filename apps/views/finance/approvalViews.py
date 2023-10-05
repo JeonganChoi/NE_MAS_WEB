@@ -31,6 +31,7 @@ def approvalViews_search(request):
                            " WHERE A.ACDATE = '" + str(ioDate) + "' "
                            " AND A.ACSEQN = '" + str(acSeqn) + "' "
                            " AND A.ACIOGB = '" + str(acIogb) + "' "
+                           " AND A.ICUST = '" + str(iCust) + "'"
                            " ORDER BY SEQ ASC ")
             subresult = cursor.fetchall()
 
@@ -41,7 +42,8 @@ def approvalViews_search(request):
                            " FROM SISACCTT A "
                            " WHERE A.IODATE = '" + str(ioDate) + "' "
                            " AND A.ACSEQN = '" + str(acSeqn) + "' "
-                           " AND A.ACIOGB = '" + str(acIogb) + "' ")
+                           " AND A.ACIOGB = '" + str(acIogb) + "' "
+                           " AND A.ICUST = '" + str(iCust) + "' ")
             mainresult = cursor.fetchall()
 
             # 거래처
@@ -83,7 +85,8 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON A.CRE_USER = C.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + empNbr + "' "
-                           " AND B.ACDATE <= '" + str(ioDate) + "' ")
+                           " AND B.ACDATE <= '" + str(ioDate) + "' "
+                           " AND B.ICUST = '" + str(iCust) + "'")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})

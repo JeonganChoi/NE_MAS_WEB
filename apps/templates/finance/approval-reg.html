@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive-sm overflow-auto border border-light mt-5">
+                                <div class="table-responsive-sm overflow-auto mt-5">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                       <tbody id="subTb">
                                         <tr id="#subTr" class="subTr_tr">
@@ -171,21 +171,27 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <div class="row p-0">
-                                <div class="col-4 text-start">
-                                    <button class="btn btn-sm btn-primary" id="btnApv" name="btnApv"><i class="ni ni-bold-down pe-3"></i>결 재</button>
+                            <div class="row px-4 py-2">
+                                <div class="col-3 text-start">
+                                    <button class="btn btn-sm btn-success" id="btnApv" name="btnApv"><i class="fas fa-file-signature pe-3"></i>결 재</button>
+                                </div>
+                                <div class="col-3 text-start">
+                                    <button class="btn btn-sm btn-instagram" id="btnAbt" name="btnAbt"><i class="fas fa-file-signature pe-3"></i>전 결</button>
+                                </div>
+                                <div class="col-3 text-start">
+                                    <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fas fa-file-signature pe-3"></i>반 려</button>
                                 </div>
                             </div>
-                            <div class="row p-0">
+                            <!--<div class="row p-0">
                                 <div class="col-4 text-start">
                                     <button class="btn btn-sm btn-primary" id="btnAbt" name="btnAbt"><i class="ni ni-bold-down pe-3"></i>전 결</button>
                                 </div>
-                            </div>
-                            <div class="row p-0">
+                            </div>-->
+                            <!--<div class="row p-0">
                                 <div class="col-4 text-start">
                                     <button class="btn btn-sm btn-primary" id="btnReturn" name="btnReturn"><i class="ni ni-bold-down pe-3"></i>반 려</button>
                                 </div>
-                            </div>
+                            </div>-->
                             <div hidden class="row p-0">
                                 <div class="col-4">
                                     <div class="form-group">
@@ -381,7 +387,7 @@
                     $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
                         $("#subTb").append(
-                            "<td class='border-end' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
+                            "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
                     }
 
                     for (var i = 0; i < list2.length; i++) {

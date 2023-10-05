@@ -263,13 +263,7 @@
 
                     $("#adminMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                       {# var YN = "";#}
-                       {# if(list[i][12] == 'Y'){#}
-                       {#     YN = '사용'#}
-                       {# }#}
-                       {#else{#}
-                       {#    YN = '미사용'#}
-                       {# }#}
+
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></div></td>" +
@@ -404,41 +398,70 @@
                 alert('하위 계정과목을 입력해주세요.')
                 return false
             }
-            if(mCode.substring(0, 1) != mCodeType){
-                if(mCodeType == '4'){
-                    alert('수익에 관한 계정과목은 앞자리 숫자 4로 시작한 6자리로 입력해주세요. 예시) 4XXXXX')
-                    return false
-                }
-                else if(mCodeType == '5') {
-                    alert('비용에 관한 계정과목은 앞자리 숫자 5로 시작한 6자리로 입력해주세요. 예시) 5XXXXX')
-                    return false
-                }
-            }
-            if(mCodeNme == ''){
-                alert('계정명을 입력해주세요.')
-                return false
-            }
-
-            let data = {'cboCodeType': mCodeType, 'mCode_M':mCode_M, "mCode_A": mCode_A, 'txtCode_M': mCode,'txtCodeNme_M': mCodeNme
-                        , 'txtSeq_M': mSeq, 'txtDesc_M': mDesc, 'cboGbn_M': cboGbn_M, 'cboGbn2_M': cboGbn2_M, 'cboOpt': mOpt}
 
             $.ajax({
                 type: "post",
                 data: data,
-                dataType: "json",
-                url: '{% url "base_accountCode_saveM" %}',
+                url: '{% url "base_chk_code" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
+                dataType: 'json',
                 success: function (data) {
+                    if(data.key != '' || data.key != null){
+                        alert('존재 하는 계정 과목 코드 입니다.')
+                    }
+                    else{
 
-                    if(data.sucYn === 'Y'){
-                        alert('저장되었습니다.')
-                        location.href = "{% url 'base_accountCode' %}";
+                        if (mCode.substring(0, 1) != mCodeType) {
+                            if (mCodeType == '4') {
+                                alert('수익에 관한 계정과목은 앞자리 숫자 4로 시작한 6자리로 입력해주세요. 예시) 4XXXXX')
+                                return false
+                            } else if (mCodeType == '5') {
+                                alert('비용에 관한 계정과목은 앞자리 숫자 5로 시작한 6자리로 입력해주세요. 예시) 5XXXXX')
+                                return false
+                            }
+                        }
+                        if (mCodeNme == '') {
+                            alert('계정명을 입력해주세요.')
+                            return false
+                        }
+
+                        let data = {
+                            'cboCodeType': mCodeType,
+                            'mCode_M': mCode_M,
+                            "mCode_A": mCode_A,
+                            'txtCode_M': mCode,
+                            'txtCodeNme_M': mCodeNme
+                            ,
+                            'txtSeq_M': mSeq,
+                            'txtDesc_M': mDesc,
+                            'cboGbn_M': cboGbn_M,
+                            'cboGbn2_M': cboGbn2_M,
+                            'cboOpt': mOpt
+                        }
+
+                        $.ajax({
+                            type: "post",
+                            data: data,
+                            dataType: "json",
+                            url: '{% url "base_accountCode_saveM" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+
+                                if (data.sucYn === 'Y') {
+                                    alert('저장되었습니다.')
+                                    location.href = "{% url 'base_accountCode' %}";
+                                }
+                            }
+
+                        });
+
                     }
                 }
-
-            });
+            })
         });
 
 

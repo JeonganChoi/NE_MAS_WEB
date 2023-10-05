@@ -56,7 +56,7 @@
                             <div class="col-lg-6 col-6">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>잔액</label>
-                                    <input readonly class="form-control border border-light rounded-1 text-end me-2" type="number" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem">
+                                    <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem">
                                 </div>
                             </div>
                         </div>
@@ -206,10 +206,9 @@
                                 <div class="card-body">
                                     <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
                                       <div class="fallback">
-                                        <input name="file" id="file" type="file" multiple class=""/>
+                                          <input name="file" id="file" type="file" multiple class=""/>
                                           <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid border-radius-sm shadow-sm" style="height: 50vh; width: 30vw">
                                       </div>
-
                                     <div class="form-group text-end mt-3">
                                         <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
                                     </div>
@@ -567,6 +566,8 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }
 
@@ -589,9 +590,12 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }
 
+                    total = addComma(total)
                     document.getElementById("inputBal").value = total;
 
                     var combolist = data.cboCust;
@@ -725,6 +729,8 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }
 
@@ -747,6 +753,8 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }
 
@@ -1218,12 +1226,11 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data.YN === 'N') {
-                            document.getElementById('warning').value = '결제 금액이 많습니다.'
+                            document.getElementById('warning').value = '요청하신 결제 금액이 많습니다.'
                         }
                         else{
 
                         }
-
                     }
                 })
                 }

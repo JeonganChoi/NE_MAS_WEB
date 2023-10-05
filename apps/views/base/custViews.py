@@ -17,6 +17,7 @@ def custViews_search(request):
     custType = request.POST.get('custType')
     custCode = request.POST.get('custCode')
     custYn = request.POST.get('custYn')
+    iCust = request.session.get('USER_ICUST')
 
     if custCode is not None and custCode != '' and custType is not None and custType != '':
         with connection.cursor() as cursor:
@@ -32,8 +33,9 @@ def custViews_search(request):
                 "   ON A.CUST_GBN = D.RESKEY "
                 "   AND D.RECODE = 'BGB' "
                 "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
-                "   OR A.CUST_NME LIKE '%" + custCode + "%'"
-                "   AND A.CUST_GBN = '" + custType + "'"
+                "   OR A.CUST_NME LIKE '%" + custCode + "%' "
+                "   AND A.CUST_GBN = '" + custType + "' "
+                "   AND A.ICUST = '" + str(iCust) + "'"
             )
             custresult = cursor.fetchall()
 
@@ -54,6 +56,7 @@ def custViews_search(request):
                 "   AND D.RECODE = 'BGB' "
                 "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
                 "   OR A.CUST_NME LIKE '%" + custCode + "%' "
+                "   AND A.ICUST = '" + str(iCust) + "' "
             )
             custresult = cursor.fetchall()
             print(custresult)
@@ -83,7 +86,7 @@ def custViews_search(request):
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
                 "   AND D.RECODE = 'BGB' "
-                "   WHERE A.CUST_END_CHK LIKE '%" + custYn + "%' "
+                "   WHERE A.CUST_END_CHK LIKE '%" + custYn + "%' AND A.ICUST = '" + str(iCust) + "' "
             )
             custresult = cursor.fetchall()
 
@@ -103,7 +106,7 @@ def custViews_search(request):
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
                 "   AND D.RECODE = 'BGB' "
-                "   WHERE A.CUST_GBN LIKE '%" + custType + "%' "
+                "   WHERE A.CUST_GBN LIKE '%" + custType + "%' AND A.ICUST = '" + str(iCust) + "'"
             )
             custresult = cursor.fetchall()
 
@@ -116,7 +119,7 @@ def custViews_search(request):
                 " SELECT IFNULL(CUST_NME, ''), IFNULL(CUST_NBR, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ADDR, '') "
                 "   , IFNULL(CUST_ID_NBR, ''), IFNULL(CUST_POST_NBR, ''), IFNULL(CUST_TEL_NBR, '')"
                 "   , IFNULL(CUST_GBN, ''), IFNULL(CUST_END_CHK, 'Y') "
-                "   FROM MIS1TB003"
+                "   FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'"
             )
             custresult = cursor.fetchall()
 
@@ -160,6 +163,8 @@ def custViews_save(request):
     custWeb = request.POST.get('txtWebAddress')
     custType = request.POST.get('cboCustType')
     creUser = request.POST.get('txtUser')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     if creUser is None or creUser == '':
         with connection.cursor() as cursor:
@@ -182,6 +187,7 @@ def custViews_save(request):
                            ",    CUST_GBN "
                            ",    CRE_DT "
                            ",    CRE_USER "
+                           ",    CRE_USER "
                            ") "
                            "    VALUES "
                            "    ("
@@ -201,7 +207,8 @@ def custViews_save(request):
                            ",   '" + str(custWeb) + "'"
                            ",   '" + str(custType) + "'"
                            ",   '" + str(creDt) + "'"
-                           ",   '101'"
+                           ",   '" + str(user) + "'"
+                           ",   '" + str(iCust) + "'"
                            "    ) "
                            )
 
@@ -212,22 +219,24 @@ def custViews_save(request):
     elif creUser:
         with connection.cursor() as cursor:
             cursor.execute(" UPDATE MIS1TB003 SET "
-                           "     CUST_NME  = '" + str(custName) + "' "
-                           ",    CUST_CEO_NME = '" + str(custCeo) + "' "
-                           ",    CUST_ID_NBR = '" + str(custRegNum) + "' "
-                           ",    CUST_BSN_CON  = '" + str(custCat) + "' "
-                           ",    CUST_BSN_TYP  = '" + str(custType) + "' "
-                           ",    CUST_POST_NBR  = '" + str(custPostCode) + "' "
-                           ",    CUST_ADDR  = '" + str(custAddress) + "' "
-                           ",    CUST_TEL_NBR = '" + str(custTelPhone) + "' "
-                           ",    CUST_FAX_NBR = '" + str(custFax) + "'  "
-                           ",    CUST_EMP_NME  = '" + str(custEmp) + "' "
-                           ",    CUST_EMP_TEL  = '" + str(custEmpPhone) + "' "
-                           ",    CUST_EMAIL = '" + str(custEmail) + "' "
-                           ",    CUST_HOMEP = '" + str(custWeb) + "'  "
-                           ",    CUST_GBN = '" + str(custType) + "' "
-                           ",    UPD_DT = '" + str(creDt) + "' "
-                           ",    UPD_USER = '101' "
+                           "      CUST_NME  = '" + str(custName) + "' "
+                           "    , CUST_CEO_NME = '" + str(custCeo) + "' "
+                           "    , CUST_ID_NBR = '" + str(custRegNum) + "' "
+                           "    , CUST_BSN_CON  = '" + str(custCat) + "' "
+                           "    , CUST_BSN_TYP  = '" + str(custType) + "' "
+                           "    , CUST_POST_NBR  = '" + str(custPostCode) + "' "
+                           "    , CUST_ADDR  = '" + str(custAddress) + "' "
+                           "    , CUST_TEL_NBR = '" + str(custTelPhone) + "' "
+                           "    , CUST_FAX_NBR = '" + str(custFax) + "'  "
+                           "    , CUST_EMP_NME  = '" + str(custEmp) + "' "
+                           "    , CUST_EMP_TEL  = '" + str(custEmpPhone) + "' "
+                           "    , CUST_EMAIL = '" + str(custEmail) + "' "
+                           "    , CUST_HOMEP = '" + str(custWeb) + "'  "
+                           "    , CUST_GBN = '" + str(custType) + "' "
+                           "    , UPD_DT = '" + str(creDt) + "' "
+                           "    , UPD_USER = '" + str(user) + "' "
+                           "    WHERE ICUST = '" + str(iCust) + "' "
+                           "      AND CUST_NBR = '" + str(custCode) + "'"
                            )
             connection.commit()
 
@@ -237,6 +246,8 @@ def custViews_save(request):
 
 
 def custViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
+
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
@@ -244,7 +255,8 @@ def custViews_dlt(request):
             acc_split_list = cust.split(',')
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM MIS1TB003 WHERE CUST_NBR = '" + acc_split_list[0] + "'"
-                           "                                 CUST_GBN = '" + acc_split_list[1] + "' ")
+                           "                            AND CUST_GBN = '" + acc_split_list[1] + "' "
+                           "                            AND ICUST = '" + str(iCust) + "' ")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

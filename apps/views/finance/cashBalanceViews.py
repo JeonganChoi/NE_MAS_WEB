@@ -22,8 +22,9 @@ def cashBalRegBankViews(request):
         return JsonResponse({"bankList": banks})
 
 def cashBalRegSearchViews(request):
-    # form = CustBalRegForm(request.POST or None)
     SearchBank = request.POST.get('bankCode')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 조회
     if SearchBank != '' and SearchBank is not None:
@@ -48,6 +49,7 @@ def cashBalRegSearchViews(request):
                             " LEFT OUTER JOIN OSREFCP C "
                             " ON B.ACBKCD = C.RESKEY "
                             " WHERE C.RECODE = 'BNK' "
+                            "   AND A.ICUST = '" + str(iCust) + "' "
                             " ORDER BY A.ACDATE "
                             " AND C.RESKEY = '" + SearchBank + "'")
             acResult = cursor.fetchall()
@@ -77,6 +79,7 @@ def cashBalRegSearchViews(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON B.ACBKCD = C.RESKEY "
                            " WHERE C.RECODE = 'BNK' "
+                           "   AND A.ICUST = '" + str(iCust) + "'"
                            " ORDER BY A.ACDATE "
                 )
             allAcResult = cursor.fetchall()
@@ -90,6 +93,8 @@ def cashBalRegSearchViews(request):
 
 def cashBalRegSearchScndViews(request):
     SearchBank = request.POST.get('bankCode')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 조회
     with connection.cursor() as cursor:
@@ -109,6 +114,7 @@ def cashBalRegSearchScndViews(request):
             " ON B.ACBKCD = C.RESKEY "
             " WHERE C.RECODE = 'BNK' "
             " AND C.RESKEY = '" + SearchBank + "'"
+            " AND A.ICUST = '" + str(iCust) + "'"
             " ORDER BY A.ACDATE "
 
             )
@@ -119,6 +125,8 @@ def cashBalRegSearchScndViews(request):
 
 def cashBalRegCboSearchViews(request):
     SearchBank = request.POST.get('bankCode')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 계좌번호 란에 콤보박스에 바인딩
     with connection.cursor() as cursor:
@@ -133,7 +141,8 @@ def cashBalRegCboSearchViews(request):
             " LEFT OUTER JOIN OSREFCP C"
             " ON B.ACBKCD = C.RESKEY"
             " WHERE C.RECODE = 'BNK'"
-            " AND C.RESKEY = '" + SearchBank + "'"
+            " AND C.RESKEY = '" + SearchBank + "' "
+            " AND A.ICUST = '" + str(iCust) + "'"
             " GROUP BY C.RESKEY, B.ACNUM_NAME, A.ACNUMBER"
 
 
@@ -144,11 +153,12 @@ def cashBalRegCboSearchViews(request):
 
 def cashBalRegAcNmSearchViews(request):
     SearchBankAcNum = request.POST.get('acnumcode')
+    iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 계좌번호 란에 콤보박스에 바인딩
     with connection.cursor() as cursor:
         cursor.execute(
-            " SELECT ACNUM_NAME FROM ACNUMBER WHERE ACNUMBER = '" + SearchBankAcNum + "'"
+            " SELECT ACNUM_NAME FROM ACNUMBER WHERE ACNUMBER = '" + SearchBankAcNum + "' WHERE ICUST = '" + str(iCust) + "' "
             )
         acnamelist = cursor.fetchall()
 
@@ -162,16 +172,24 @@ def cashBalRegSaveViews(request):
     RegDate = request.POST.get("txtRegDate").replace('-', '')
     Amount = request.POST.get("txtAmount")
     Bigo = request.POST.get("txtBigo")
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACCASHP WHERE ACNUMBER = '" + ActNum + "' ")
+        cursor.execute(" SELECT ACNUMBER FROM ACCASHP WHERE ACNUMBER = '" + ActNum + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
+        acNum = chkresult[0][0]
+
         if chkresult:
             with connection.cursor() as cursor:
                 cursor.execute(" UPDATE ACCASHP SET "
                                "     ACAMTS = '" + str(Amount) + "' "
                                ",    ACDESC = '" + str(Bigo) + "' "
                                ",    ACDATE = '" + str(RegDate) + "' "
+                               ",    UPD_USER = '" + str(user) + "' "
+                               ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                               "     WHERE ACNUMBER = '" + str(acNum) + "' "
+                               "       AND ICUST = '" + str(iCust) + "'"
                                )
                 connection.commit()
 
@@ -187,6 +205,9 @@ def cashBalRegSaveViews(request):
                                ",    ACDATE "
                                ",    ACAMTS "
                                ",    ACDESC "
+                               ",    CRE_USER "
+                               ",    CRE_DT "
+                               ",    ICUST "
                                ") "
                                "    VALUES "
                                "    ("
@@ -194,6 +215,9 @@ def cashBalRegSaveViews(request):
                                ",   '" + str(RegDate) + "' "
                                ",   '" + str(Amount) + "'"
                                ",   '" + str(Bigo) + "'"
+                               ",   '" + str(user) + "' "
+                               ",   date_format(now(), '%Y%m%d')"
+                               ",   '" + str(iCust) + "'"
                                "    ) "
                                )
 
