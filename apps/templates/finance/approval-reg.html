@@ -364,7 +364,7 @@
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "approval_reg_search" %}',
+                url: '{% url "approval_sub_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },

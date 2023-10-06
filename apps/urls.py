@@ -92,6 +92,7 @@ urlpatterns = [
     # 결재등록
     path('approval_reg/', approvalViews.approvalViews, name='approval_reg'),
     path('approval_reg_search/', approvalViews.approvalViews_search, name='approval_reg_search'),
+    path('approval_sub_search/', approvalViews.approvalSubViews_search, name='approval_sub_search'),
     path('approval_reg_save/', approvalViews.approvalViews_save, name='approval_reg_save'),
 
     # 실행등록

@@ -28,7 +28,7 @@ def permitViews_search(request):
                        " ON A.IODATE = B.ACDATE "
                        " AND A.ACSEQN = B.ACSEQN "
                        " AND A.ICUST = B.ICUST "
-                       " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N')"
+                       " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
                        " LEFT OUTER JOIN PIS1TB001 C "
                        " ON A.CRE_USER = C.EMP_NBR "
                        " WHERE B.EMP_NBR = '" + user + "' "
