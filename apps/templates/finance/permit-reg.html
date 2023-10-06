@@ -72,11 +72,11 @@
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue">
                                       <tr>
-                                        <th style="font-size: 0.85rem" class="p-1">승인</th>
                                         <th style="font-size: 0.85rem" class="p-1">등록일자</th>
                                         <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                         <th style="font-size: 0.85rem" class="p-1">지출금액</th>
                                         <th style="font-size: 0.85rem" class="p-1">작성자</th>
+                                        <th style="font-size: 0.85rem" class="p-1">승인</th>
                                       </tr>
                                     </thead>
                                     <tbody id="mainTb">
@@ -156,7 +156,6 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -164,6 +163,7 @@
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "</tr> ");
 
                         total += Number(list[i][2])
@@ -174,16 +174,16 @@
         });
 
 
-        $(document).on('change', '#selectTb tbody tr td:first-child input[type=checkbox]', function() {
+        $(document).on('change', '#selectTb tbody tr td:last-child input[type=checkbox]', function() {
             var tr = $(this).parent().parent();
-            var iDate = tr.children().eq(1).text()
+            var iDate = tr.children().eq(0).text()
             var ioDate = iDate.replace(/\-/g, '')
-            var acTitle = tr.children().eq(2).text()
-            var acAmts = tr.children().eq(3).text()
-            var acEmp = tr.children().eq(4).text()
-            var acNme = tr.children().eq(5).text()
-            var acSeqn = tr.children().eq(6).text()
-            var acIogb = tr.children().eq(7).text()
+            var acTitle = tr.children().eq(1).text()
+            var acAmts = tr.children().eq(2).text()
+            var acEmp = tr.children().eq(3).text()
+            var acNme = tr.children().eq(4).text()
+            var acSeqn = tr.children().eq(5).text()
+            var acIogb = tr.children().eq(6).text()
 
             var cboActNum = "";
             var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
