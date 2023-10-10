@@ -8,8 +8,6 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-        <form method="post">
-        {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
                 <div class="mx-2 mb-2 d-md-flex align-items-center">
@@ -103,11 +101,11 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-4 col-lg-4 col-md-6 mb-md-0">
-                <div class="card shadow-xs border h-100">
+            <div class="mb-2 col-lg-4 col-4 mb-md-0">
+                <div class="card shadow-xs border">
                     <form class="form-control border-0 dropzone" id="dropzone" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="card-body">
+                        <div class="card-body p-1">
                             <div class="row">
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사 번</label>
@@ -124,7 +122,7 @@
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
                                 </div>
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem">전화 번호</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전화 번호</label>
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
                                 </div>
                                 <!--<div class="col-2">
@@ -135,41 +133,41 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem">입사 일자</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>입사 일자</label>
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtEmployDate" name="txtEmployDate"/>
                                 </div>
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem">퇴사 일자</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>퇴사 일자</label>
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtQuitDate" name="txtQuitDate"/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사업장</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사업장</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
                                 </div>
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>전결금액</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전결금액</label>
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="number" id="txtLimit" name="txtLimit"/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem">직 급</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>직 급</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboGroup" id="cboGroup"></select>
                                 </div>
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem">부 서</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>부 서</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDpt" id="cboDpt"></select>
                                 </div>
                                 <div hidden class="col-2">
-                                    <label class="" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>입력 사번</label>
+                                    <label class="" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>입력 사번</label>
                                     <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <label class="" style="font-size: 0.8rem">사용 유무</label>
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용 유무</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="usage" id="usage">
                                         <option value="0">사용</option>
                                         <option value="1">미사용</option>
@@ -185,17 +183,23 @@
                                         </div>
                                         <div class="form-group text-end mt-1 text-sm">
                                             <input name="file" id="file" type="file" multiple class=""/>
-                                            <a class="btn btn-outline-dark btn-sm mt-2" type="button" id="btnImgDlt">초기화</a>
+                                            <a class="btn btn-outline-dark btn-sm mt-2" style="font-size: 0.7rem" type="button" id="btnImgDlt">사진 초기화</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!--<div class="row">
+                                <div class="col-12">
+                                    <canvas height="100" width="100" class="signature-pad">
+
+                                    </canvas>
+                                </div>
+                            </div>-->
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        </form>
     </div>
 
 {% endblock %}
@@ -513,9 +517,9 @@
 
             var formData = new FormData($('#dropzone')[0]);
 
-            {#var empNo = document.getElementById('txtEmpNo').value#}
+            var empNo = document.getElementById('txtEmpNo').value
             {#var empNm = document.getElementById('txtEmpName').value#}
-            {#var empPW = document.getElementById('txtEmpPw').value#}
+            var empPW = document.getElementById('txtEmpPw').value
             {#var empDpt = document.getElementById('cboDpt').value#}
             {#var empGroup = document.getElementById('cboGroup').value#}
             {#var empCom = document.getElementById('cboCom').value#}
@@ -536,7 +540,6 @@
                 return false
             }
 
-            alert('들어옴')
             {#let data = {'empNo': empNo,'empNm': empNm,'empPW': empPW#}
             {#, 'empDpt': empDpt, 'empGroup': empGroup, 'empCom': empCom, 'empTel': empTel, 'empRDate': empRDate, 'empQDate': empQDate, 'inepno': inepno, 'limit': limit}#}
 
@@ -629,9 +632,9 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $("#txtEmpNo").html("");
-                    $("#txtEmpName").html("");
-                    $("#txtEmpPw").html("");
+                    $("#txtEmpNo").val("");
+                    $("#txtEmpName").val("");
+                    $("#txtEmpPw").val("");
                     $("#cboDpt").html("");
                     $("#cboGroup").html("");
                     $("#cboCom").html("");

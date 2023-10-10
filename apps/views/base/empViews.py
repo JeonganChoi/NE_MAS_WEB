@@ -199,11 +199,31 @@ def empViews_save(request):
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT EMP_NBR FROM PIS1TB001 WHERE EMP_NBR = '" + str(empNbr) + "' AND ICUST = '" + str(iCust) + "' ")
-        chkEmp = cursor.fetchall()
+        result = cursor.fetchall()
 
-        emp = chkEmp[0][0]
+    if result:
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE PIS1TB001 SET"
+                           "     EMP_NME  = '" + str(empNme) + "' "
+                           ",    EMP_PASS = '" + str(empPass) + "' "
+                           ",    EMP_DEPT = '" + str(empDept) + "' "
+                           ",    EMP_GBN  = '" + str(empGbn) + "' "
+                           ",    EMP_COM  = '" + str(empCom) + "' "
+                           ",    EMP_TEL  = '" + str(empTel) + "' "
+                           ",    EMP_IPSA = '" + str(empIpsa) + "' "
+                           ",    EMP_TESA = '" + str(empTesa) + "'  "
+                           ",    EMP_USE = '" + str(usage) + "'  "
+                           ",    EMP_FOLDER = '" + str(Rfilenameloc) + "'  "
+                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                           ",    UPD_USER = '" + str(user) + "' "
+                           "    WHERE EMP_NBR = '" + str(empNbr) + "' "
+                           "      AND ICUST = '" + str(iCust) + "' "
+                           )
+            connection.commit()
 
-    if emp is None or emp == '':
+            return JsonResponse({'sucYn': "Y"})
+
+    else:
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO PIS1TB001 "
                            "   ("
@@ -217,7 +237,7 @@ def empViews_save(request):
                            ",    EMP_IPSA "
                            ",    EMP_TESA "
                            ",    EMP_USE "
-                           ",    FOLDER "
+                           ",    EMP_FOLDER "
                            ",    CRE_DT "
                            ",    CRE_USER "
                            ",    ICUST "
@@ -244,28 +264,6 @@ def empViews_save(request):
             connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
-
-    elif emp:
-        with connection.cursor() as cursor:
-            cursor.execute("    UPDATE PIS1TB001 SET"
-                           "     EMP_NME  = '" + str(empNme) + "' "
-                           ",    EMP_PASS = '" + str(empPass) + "' "
-                           ",    EMP_DEPT = '" + str(empDept) + "' "
-                           ",    EMP_GBN  = '" + str(empGbn) + "' "
-                           ",    EMP_COM  = '" + str(empCom) + "' "
-                           ",    EMP_TEL  = '" + str(empTel) + "' "
-                           ",    EMP_IPSA = '" + str(empIpsa) + "' "
-                           ",    EMP_TESA = '" + str(empTesa) + "'  "
-                           ",    EMP_USE = '" + str(usage) + "'  "
-                           ",    FOLDER = '" + str(Rfilenameloc) + "'  "
-                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           ",    UPD_USER = '" + str(user) + "' "
-                           "    WHERE EMP_NBR = '" + str(empNbr) + "' "
-                           "      AND ICUST = '" + str(iCust) + "' "
-                           )
-            connection.commit()
-
-            return JsonResponse({'sucYn': "Y"})
 
     return render(request, 'base/base-emp.html')
 

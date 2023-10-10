@@ -116,7 +116,7 @@
                                     <div class="form-group">
                                         <div class="row mt-4">
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="far fa-edit me-2"></i>거래처</label>
+                                                <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>거래처</label>
                                                 <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                             </div>
                                             <div class="col-6">
@@ -130,43 +130,43 @@
                                                 <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
                                             </div>
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>관리계정</label>
+                                                <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
                                                 <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                             </div>
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>예정일자</label>
+                                                <label class="mt-2 text-sm"><i class="far fa-calendar me-2"></i>예정일자</label>
                                                 <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>금액</label>
+                                                <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
                                                 <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                             </div>
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>계좌번호</label>
+                                                <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>계좌번호</label>
                                                 <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>결제방법</label>
+                                                <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>결제방법</label>
                                                 <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                             </div>
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>카드</label>
+                                                <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>카드</label>
                                                 <select class="form-control border border-light rounded-1 text-center" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                             </div>
                                         </div>
                                         <div hidden class="row">
                                             <div class="col-6">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>어음번호</label>
+                                                <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>어음번호</label>
                                                 <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <label class="text-sm"><i class="fas fa-edit me-2"></i>내용</label>
+                                                <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
                                                 <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@
                                       </div>
                                     <div class="form-group text-end mt-3">
                                         <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
-                                    </div>
+                                    </div>류
                                 </div>
                             </div>
                         </div>
@@ -757,6 +757,9 @@
         {# 테이블 로우 클릭 시 #}
         $(document).on('click', '#withMainTb .withMainTr_tr', function () {
 
+            var itemimg = "";
+            var Rfilename = ""
+            var imglc = ""
             var cboWitCust2 = "";
             var cboWitGbn = "";
             var cboAdminCode = "";
@@ -823,6 +826,15 @@
                         cboWitMethod = list[i][4];
                         cboAdminCode = list[i][8];
                         cboWitActNum = list[i][12];
+
+                        imglc = '/static'
+                        itemimg = list[i][22]
+                        Rfilename = itemimg.substring(7)
+
+                        document.getElementById("itemimage").src = imglc + itemimg;
+                        document.getElementById("itemimage").dataset.origin = imglc + itemimg;
+
+
                     }
 
                     var combolist = data.cboCust;
@@ -994,13 +1006,13 @@
 
             {#var cboWitGbn = document.getElementById('cboWitGbn').value#}
             {#var txtTitle = document.getElementById('txtTitle').value#}
-            {#var cboWitCust = document.getElementById('cboWitCust').value#}
+            var cboWitCust = document.getElementById('cboWitCust').value
             {#var txtWitRegDate = document.getElementById('txtWitRegDate').value#}
             {#var txtExDate = document.getElementById('txtExDate').value#}
             {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
             {#var txtWitRecn = document.getElementById('txtWitRecn').value#}
             {#var cboAdminCode = document.getElementById('cboAdminCode').value#}
-            {#var txtWitPrice = document.getElementById('txtWitPrice').value#}
+            var txtWitPrice = document.getElementById('txtWitPrice').value
             {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
             {#var cboWitMethod = document.getElementById('cboWitMethod').value#}
             {#var cboWitCard = document.getElementById('cboWitCard').value#}
