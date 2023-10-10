@@ -26,14 +26,11 @@ def accountViews_search(request):
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM, A.ACNUMBER, IFNULL(A.ACNUM_NAME, ''), IFNULL(A.ACINDTE, '') "
                            "    , IFNULL(A.ACENDTE, ''), IFNULL(A.ACPAY, ''), IFNULL(A.ACDESC, '') "
                            "    , IFNULL(A.CRE_USER, ''), IFNULL(A.UPD_USER, '') "
-                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, ''), IFNULL(A.ACGBN, ''), IFNULL(C.RESNAM, '') "
+                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, '') "
                            "    FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
                            "    AND B.RECODE = 'BNK' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.ACGBN = C.RESKEY "
-                           "    AND C.RECODE = 'TOP' "
                            "    WHERE A.ACBKCD LIKE '%" + bankCode + "%'"
                            "      AND A.ICUST = '" + iCust + "' ")
             accountresult = cursor.fetchall()
@@ -45,14 +42,11 @@ def accountViews_search(request):
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM, A.ACNUMBER, IFNULL(A.ACNUM_NAME, ''), IFNULL(A.ACINDTE, '') "
                            "    , IFNULL(A.ACENDTE, ''), IFNULL(A.ACPAY, ''), IFNULL(A.ACDESC, '') "
                            "    , IFNULL(A.CRE_USER, ''), IFNULL(A.UPD_USER, '') "
-                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, ''), IFNULL(A.ACGBN, ''), IFNULL(C.RESNAM, '') "
+                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, '') "
                            "    FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
                            "    AND B.RECODE = 'BNK' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.ACGBN = C.RESKEY "
-                           "    AND C.RECODE = 'TOP' "
                            "    WHERE A.ACNUMBER LIKE '%" + actCode + "%'"
                            "      AND A.ICUST = '" + iCust + "' ")
             accountresult = cursor.fetchall()
@@ -73,16 +67,15 @@ def accountViews_search(request):
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM, A.ACNUMBER, IFNULL(A.ACNUM_NAME, ''), IFNULL(A.ACINDTE, '') "
                            "    , IFNULL(A.ACENDTE, ''), IFNULL(A.ACPAY, ''), IFNULL(A.ACDESC, '') "
                            "    , IFNULL(A.CRE_USER, ''), IFNULL(A.UPD_USER, '') "
-                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, ''), IFNULL(A.ACGBN, ''), IFNULL(C.RESNAM, '')  "
+                           "    , IFNULL(A.CRE_DT, ''), IFNULL(A.UPD_DT, '') "
                            "    FROM ACNUMBER A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
                            "    AND B.RECODE = 'BNK' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.ACGBN = C.RESKEY "
-                           "    AND C.RECODE = 'TOP' "
                            "    WHERE A.ICUST = '" + iCust + "'")
             accountresult = cursor.fetchall()
+
+        # TOP 계좌등록시 구분 참조코드
 
         # 은행명 - 콤보박스
         with connection.cursor() as cursor:
@@ -98,7 +91,7 @@ def accountViews_search(request):
 
 
 def accountViews_save(request):
-    acGbn = request.POST.get('cboTop')
+    # acGbn = request.POST.get('cboTop')
     accNum = request.POST.get('actCode')
     accName = request.POST.get('actNme')
     bankCode = request.POST.get('bankcode')
@@ -116,13 +109,12 @@ def accountViews_save(request):
                            "   ("
                            "     ACNUMBER "
                            ",    ACNUM_NAME "
-                           ",    ACGBN "
                            ",    ACBKCD "
                            ",    ACINDTE "
                            ",    ACENDTE "
                            ",    ACPAY "
                            ",    ACDESC "
-                           ",    CRE_USER "
+                           ",    CRE_USER " 
                            ",    CRE_DT "
                            ",    ICUST "
                            "    ) "
@@ -130,7 +122,6 @@ def accountViews_save(request):
                            "    ("
                            "    '" + accNum + "' "
                            ",   '" + str(accName) + "' "
-                           ",   '" + str(acGbn) + "' "
                            ",   '" + str(bankCode) + "' "
                            ",   '" + str(strDate) + "' "
                            ",   '" + str(endDate) + "' "
@@ -149,7 +140,6 @@ def accountViews_save(request):
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE ACNUMBER SET"
                            "     ACNUM_NAME = '" + str(accName) + "' "
-                           ",    ACGBN = '" + str(acGbn) + "' "
                            ",    ACBKCD = '" + str(bankCode) + "' "
                            ",    ACINDTE = '" + str(strDate) + "' "
                            ",    ACENDTE = '" + str(endDate) + "' "

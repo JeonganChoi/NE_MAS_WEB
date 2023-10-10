@@ -21,7 +21,7 @@
                           <i class="fas fa-plus me-2 fs-6"></i>저장
                     </button>
                     <button type="button" class="mb-0 btn btn-sm btn-light text-dark btn-sm align-items-center me-2" id="btnClear" name="btnClear">
-                          <i class="fas fa-plus me-2 fs-6"></i>초기화
+                          <i class="fas fa-eraser me-2 fs-6"></i>초기화
                     </button>
                     <button type="button" class="mb-0 btn btn-sm btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
                           <i class="fas fa-minus me-2 fs-6"></i>삭제
@@ -53,7 +53,7 @@
                                 <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 0.8rem">퇴직자</label>
                                 </span>
-                                <input type="radio" id="inputEmpCount" name="inputEmpCount" value="0"/>
+                                <input type="radio" id="i조nputEmpCount" name="inputEmpCount" value="0"/>
                                 <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 0.8rem">전 체</label>
                                 </span>
@@ -80,7 +80,6 @@
                                 <col width="8%">
                                 <col width="8%">
                                 <col width="10%">
-                                <col width="2%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
@@ -90,9 +89,8 @@
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">비밀 번호</th>
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">입사 일자</th>
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">퇴사 일자</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">근무조</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">직 급</th>
                               <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">부 서</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">구 분</th>
                             </tr>
                           </thead>
                           <tbody id="empMainTb">
@@ -107,84 +105,93 @@
             </div>
             <div class="mb-4 col-lg-4 col-md-6 mb-md-0">
                 <div class="card shadow-xs border h-100">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사 번</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpNo" name="txtEmpNo"/>
+                    <form class="form-control border-0 dropzone" id="dropzone" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사 번</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpNo" name="txtEmpNo"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>이 름</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpName" name="txtEmpName"/>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>이 름</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpName" name="txtEmpName"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비밀 번호</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem">전화 번호</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
+                                </div>
+                                <!--<div class="col-2">
+                                    <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>구 분</label>
+                                    <input class="form-check" type="checkbox" id="chkGbn" name="chkGbn"/>
+                                </div>
+                                <div class="col-4"></div>-->
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비밀 번호</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem">입사 일자</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtEmployDate" name="txtEmployDate"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem">퇴사 일자</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtQuitDate" name="txtQuitDate"/>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem">전화 번호</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사업장</label>
+                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>전결금액</label>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="number" id="txtLimit" name="txtLimit"/>
+                                </div>
                             </div>
-                            <!--<div class="col-2">
-                                <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>구 분</label>
-                                <input class="form-check" type="checkbox" id="chkGbn" name="chkGbn"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem">직 급</label>
+                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboGroup" id="cboGroup"></select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem">부 서</label>
+                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDpt" id="cboDpt"></select>
+                                </div>
+                                <div hidden class="col-2">
+                                    <label class="" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>입력 사번</label>
+                                    <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
+                                </div>
                             </div>
-                            <div class="col-4"></div>-->
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem">입사 일자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtEmployDate" name="txtEmployDate"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem">사용 유무</label>
+                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="usage" id="usage">
+                                        <option value="0">사용</option>
+                                        <option value="1">미사용</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem">퇴사 일자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtQuitDate" name="txtQuitDate"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>사업장</label>
-                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
-                            </div>
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>전결금액</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="number" id="txtLimit" name="txtLimit"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem">근무조</label>
-                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboGroup" id="cboGroup"></select>
-                            </div>
-                            <div class="col-6">
-                                <label class="" style="font-size: 0.8rem">부 서</label>
-                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDpt" id="cboDpt"></select>
-                            </div>
-                            <div hidden class="col-2">
-                                <label class="" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>입력 사번</label>
-                                <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="mt-4 form-label"><i class="fas fa-image me-2"></i>Signature 등록</label>
-                                    <form class="form-control dropzone" id="dropzone" enctype="multipart/form-data">
-    {#                                <form action="{% url 'payment_save' %}" class="form-control dropzone" id="dropzone" enctype="multipart/form-data">#}
-                                      <div class="fallback">
-                                          <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid shadow-sm" style="height: 10vh; width: 10vw">
-                                      </div>
-                                    </form>
-                                    <div class="form-group text-end mt-3">
-                                        <a class="btn btn-linkedin btn-sm" type="button" id="btnImgSave">등록</a>
-                                        <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">초기화</a>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="mt-4 form-label"><i class="fas fa-signature me-2"></i>Signature</label>
+                                        <div class="fallback">
+                                            <img id="sign" name="sign" alt="" src="" class="img-fluid border border-light rounded-2" style="height: 15vh; width: 100%">
+                                        </div>
+                                        <div class="form-group text-end mt-1 text-sm">
+                                            <input name="file" id="file" type="file" multiple class=""/>
+                                            <a class="btn btn-outline-dark btn-sm mt-2" type="button" id="btnImgDlt">초기화</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -194,6 +201,40 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        Dropzone.autoDiscover = false;
+        var drop = document.getElementById('dropzone')
+        var myDropzone = new Dropzone(drop, {
+            url: "/file/post",
+            addRemoveLinks: true
+
+        });
+    </script>
+    <script>
+            $('#btnImgDlt').click(function() {
+            $('#fileNm').empty();
+            $('#file').val("");
+
+            var origin_img_url = $('#sign').data('origin');
+            $('#sign').attr('src', origin_img_url);
+        });
+
+        //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 이벤트
+        $('#file').change(function(event) {
+            var file = event.target.files[0]
+
+            $('#fileNm').text(file.name);
+
+            var reader = new FileReader(); //1
+
+            reader.onload = function(e) {
+                $('#sign').attr('src', e.target.result); //3
+            }
+
+            reader.readAsDataURL(file); //2
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
 
@@ -239,7 +280,6 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkGbn[]' name='chkGbn[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "</tr> ");
                     }
 
@@ -328,7 +368,6 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkGbn[]' name='chkGbn[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "</tr> ");
                     }
                     var Num = list.length;
@@ -380,6 +419,9 @@
 
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#empMainTb .empMainTr_tr', function () {
+            var itemimg = "";
+            var Rfilename = ""
+            var imglc = ""
             var group = "";
             var dpt = "";
             var com = "";
@@ -422,6 +464,13 @@
                         group = list[i][6];
                         dpt = list[i][8];
                         com = list[i][19];
+
+                        imglc = '/static'
+                        itemimg = list[i][14]
+                        Rfilename = itemimg.substring(7)
+
+                        document.getElementById("sign").src = imglc + itemimg;
+                        document.getElementById("sign").dataset.origin = imglc + itemimg;
                     }
 
                     var combolist = data.jjoCombo;
@@ -462,17 +511,19 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var empNo = document.getElementById('txtEmpNo').value
-            var empNm = document.getElementById('txtEmpName').value
-            var empPW = document.getElementById('txtEmpPw').value
-            var empDpt = document.getElementById('cboDpt').value
-            var empGroup = document.getElementById('cboGroup').value
-            var empCom = document.getElementById('cboCom').value
-            var empTel = document.getElementById('txtEmpTel').value
-            var empRDate = document.getElementById('txtEmployDate').value
-            var empQDate = document.getElementById('txtQuitDate').value
-            var inepno = document.getElementById('txtEmp').value
-            var limit = document.getElementById('txtLimit').value
+            var formData = new FormData($('#dropzone')[0]);
+
+            {#var empNo = document.getElementById('txtEmpNo').value#}
+            {#var empNm = document.getElementById('txtEmpName').value#}
+            {#var empPW = document.getElementById('txtEmpPw').value#}
+            {#var empDpt = document.getElementById('cboDpt').value#}
+            {#var empGroup = document.getElementById('cboGroup').value#}
+            {#var empCom = document.getElementById('cboCom').value#}
+            {#var empTel = document.getElementById('txtEmpTel').value#}
+            {#var empRDate = document.getElementById('txtEmployDate').value#}
+            {#var empQDate = document.getElementById('txtQuitDate').value#}
+            {#var inepno = document.getElementById('txtEmp').value#}
+            {#var limit = document.getElementById('txtLimit').value#}
 
             if(empNo == '')
             {
@@ -485,13 +536,16 @@
                 return false
             }
 
-
-            let data = {'empNo': empNo,'empNm': empNm,'empPW': empPW
-            , 'empDpt': empDpt, 'empGroup': empGroup, 'empCom': empCom, 'empTel': empTel, 'empRDate': empRDate, 'empQDate': empQDate, 'inepno': inepno, 'limit': limit}
+            alert('들어옴')
+            {#let data = {'empNo': empNo,'empNm': empNm,'empPW': empPW#}
+            {#, 'empDpt': empDpt, 'empGroup': empGroup, 'empCom': empCom, 'empTel': empTel, 'empRDate': empRDate, 'empQDate': empQDate, 'inepno': inepno, 'limit': limit}#}
 
             $.ajax({
                 type: "post",
-                data: data,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
                 dataType: "json",
                 url: '{% url "base_emp_save" %}',
                 headers: {

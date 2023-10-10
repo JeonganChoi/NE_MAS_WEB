@@ -157,14 +157,6 @@
                                                 <label class="text-sm"><i class="fas fa-edit me-2"></i>카드</label>
                                                 <select class="form-control border border-light rounded-1 text-center" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                             </div>
-                                            <!--<div class="col-6">
-                                                <label class="mt-2 text-sm"><i class="fas fa-box me-2"></i>발행처</label>
-                                                <select class="form-control border border-light rounded-1 text-center" name="cboWitIssueCust" id="cboWitIssueCust" style="height: 2rem; font-size: 0.8rem"></select>
-                                            </div>-->
-                                            <!--<div class="col-4">
-                                                <label class="mt-4 h6"><i class="far fa-edit me-2"></i>회계계정</label>
-                                                <select class="form-control border border-light rounded-1 text-center" name="cboActCode" id="cboActCode"></select>
-                                            </div>-->
                                         </div>
                                         <div hidden class="row">
                                             <div class="col-6">
@@ -770,6 +762,7 @@
             var cboAdminCode = "";
             var cboWitMethod = "";
             var cboWitActNum = "";
+            var folder = "";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
@@ -824,6 +817,7 @@
                         $("#txtWitCashNum").val(list[i][15])
                         $("#txtWitRemark").val(list[i][19])
                         $("#txtTitle").val(list[i][21])
+                        folder = list[i][22]
                         cboWitCust2 = list[i][1];
                         cboWitGbn = list[i][6];
                         cboWitMethod = list[i][4];

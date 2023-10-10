@@ -1,0 +1,383 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} base_card {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="px-5 py-4 container-fluid">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="mx-2 mb-2 d-md-flex align-items-center">
+                    <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>카드 등록</h5>
+                    <button type="button" class="mb-0 mb-2 btn btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
+                          <i class="fas fa-search me-2 fs-6"></i>조회
+                    </button>
+                    <button type="button" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                          <i class="fas fa-plus me-2 fs-6"></i>저장
+                    </button>
+                    <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
+                          <i class="fas fa-minus me-2 fs-6"></i>삭제
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0">
+        <div class="my-4 row">
+            <div class="col-lg-8 col-md-6">
+                <div class="border shadow-xs card">
+                    <div class="pb-0 pt-0 card-header border-bottom">
+                        <div class="row pb-0">
+                          <div class="p-2 col-lg-3 mt-lg-0">
+                            <div class="input-group shadow-none">
+                                <span class="input-group-text text-body bg-transparent border-0">
+                                    <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>은행명</label>
+                                </span>
+                                <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="inputBank" id="inputBank"></select>
+                            </div>
+                          </div>
+                          <div class="p-2 col-lg-9 mt-lg-0"></div>
+                        </div>
+                    </div>
+                    <div class="px-0 py-0 card-body height-600">
+                      <div class="p-3 table-responsive">
+                        <table class="table mb-0 align-items-center justify-content-center">
+                            <colgroup>
+                                <col width="2%">
+                                <col width="6%">
+                                <col width="12%">
+                                <col width="12%">
+                                <col width="8%">
+                                <col width="20%">
+                            </colgroup>
+                          <thead class="bg-gray-100">
+                            <tr>
+                              <th class="text-center text-secondary text-center font-weight-bolder p-2"></th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">은행명</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">카드 번호</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">계좌 번호</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">결제 일자</th>
+                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">비 고</th>
+                            </tr>
+                          </thead>
+                          <tbody id="mainTb">
+                            <tr id="mainTr" class="mainTr_tr">
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 col-lg-4 col-md-6 mb-md-0">
+                <div class="card shadow-xs border h-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>은행명</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboBank" id="cboBank"></select>
+                            </div>
+                            <div class="col-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>카드 번호</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCardNum" name="txtCardNum"/>
+                            </div>
+                            <div class="col-6">
+                                <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>연결 계좌 번호</label>
+                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboActNum" id="cboActNum"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>결제 일자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtPayDate" name="txtPayDate"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비 고</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtRemark" name="txtRemark"/>
+                            </div>
+                        </div>
+                        <div class="row" hidden>
+                            <div class="col-6">
+                                <label class="mt-2" style="font-size: 0.8rem">등록자</label>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtUser" name="txtUser"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+    $(document).ready(function () {
+        var inputBank = "";
+        var cboBank = "";
+        var cboActNum = "";
+        var inputBankTxt = "<option value=''>:: 선택 ::</option>";
+        var cboBankTxt = "<option value=''>:: 선택 ::</option>";
+        var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
+        document.getElementById('txtPayDate').valueAsDate = new Date
+
+        $("#inputBank").html("");
+        $("#cboBank").html("");
+        $("#cboActNum").html("");
+
+        $.ajax({
+            type: "post",
+            url: '{% url "base_card_search" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.cardList;
+
+                $("#mainTb").html("");
+                for (var i = 0; i < list.length; i++) {
+                    $("#mainTb").append(
+                        "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'>" +
+                        "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCard[]' name='chkCard[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                        "</tr> ");
+                }
+
+                var combolist = data.cboBank;
+                for (var i = 0; i < combolist.length; i++) {
+                    if (combolist[i][0] == inputBank) {
+                        inputBankTxt = inputBankTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                    } else {
+                        inputBankTxt = inputBankTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                    }
+                }
+
+                var combolist2 = data.cboBank;
+                for (var i = 0; i < combolist2.length; i++) {
+                    if (combolist2[i][0] == cboBank) {
+                        cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                    } else {
+                        cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                    }
+                }
+
+                var combolist3 = data.cboAct;
+                for (var i = 0; i < combolist3.length; i++) {
+                    if (combolist3[i][0] == cboActNum) {
+                        cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][0] + "</option>";
+                    } else {
+                        cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][0] + "</option>";
+                    }
+                }
+
+                $("#inputBank").append(inputBankTxt);
+                $("#cboBank").append(cboBankTxt);
+                $("#cboActNum").append(cboActNumTxt);
+
+            }
+        })
+    });
+
+
+    {# 조회 버튼 누를시 #}
+    $(document).on('click', '#btnSearch', function () {
+        var bank = document.getElementById('inputBank').value
+
+        var data = {'bankCode': bank}
+
+        $.ajax({
+            type: "post",
+            url: '{% url "base_card_search" %}',
+            data : data,
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.cardList;
+
+                $("#mainTb").html("");
+                for (var i = 0; i < list.length; i++) {
+                    $("#mainTb").append(
+                        "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][2] + "'>" +
+                        "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCard[]' name='chkCard[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td>" +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                        "</tr> ");
+                }
+            }
+        })
+    });
+
+    {# 은행명에 따른 조회 #}
+    $('#inputBank').change(function () {
+
+        $("#btnSearch").trigger('click');
+
+    });
+
+    {#  테이블 로우 클릭 시  #}
+    $(document).on('click', '#mainTb .mainTr_tr', function () {
+        var cboBank = "";
+        var cboActNum = "";
+        var cboBankTxt = "<option value=''>:: 선택 ::</option>";
+        var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
+
+        $("#cboBank").html("");
+        $("#cboActNum").html("");
+
+        let search = $(this).attr('main_code');
+        var split = search.split(',');
+        var cardNum = split[0]
+        var actNum = split[1]
+        var bankCode = split[2]
+
+        let data = {'cardNum': cardNum, 'actNum': actNum, 'bankCode': bankCode}
+
+        $.ajax({
+            type: "post",
+            url: '{% url "base_card_search" %}',
+            data: data,
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.cardList;
+
+                for (var i = 0; i < list.length; i++) {
+                        $("#txtCardNum").val(list[i][0])
+                        $("#txtRemark").val(list[i][5])
+                        $("#txtPayDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        cboBank = list[i][2]
+                        cboActNum = list[i][1];
+                }
+
+                var combolist2 = data.cboBank;
+                for (var i = 0; i < combolist2.length; i++) {
+                    if (combolist2[i][0] == cboBank) {
+                        cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                    } else {
+                        cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                    }
+                }
+
+                var combolist3 = data.cboAct;
+                for (var i = 0; i < combolist3.length; i++) {
+                    if (combolist3[i][0] == cboActNum) {
+                        cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][0] + "</option>";
+                    } else {
+                        cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][0] + "</option>";
+                    }
+                }
+
+                $("#cboBank").append(cboBankTxt);
+                $("#cboActNum").append(cboActNumTxt);
+
+            }
+        })
+    });
+
+        {# 저장 버튼 #}
+        $(document).on('click', "#btnSave", function () {
+            var cboBank = $("#cboBank").val()
+            var cboActNum = $("#cboActNum").val()
+            var txtCardNum = document.getElementById('txtCardNum').value
+            var txtPayDate = document.getElementById('txtPayDate').value
+            var txtRemark = document.getElementById('txtRemark').value
+
+            if(cboBank == '') {
+                alert("은행명을 선택 해 주세요.")
+                return false
+            }
+            if (txtCardNum == '') {
+                alert("카드 번호를 입력해 주세요.")
+                return false
+            }
+
+            let data = {'cboBank': cboBank,'cboActNum': cboActNum,'txtCardNum': txtCardNum
+                        , 'txtPayDate': txtPayDate, 'txtRemark': txtRemark}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                dataType: "json",
+                url: '{% url "base_card_save" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if(data.sucYn === 'Y'){
+                        alert('저장 되었습니다.')
+                        location.href = "{% url 'base_card' %}";
+                    }
+                }
+            });
+
+        });
+
+        {#체크한 내용 삭제#}
+        $(document).on('click', "#btnDlt", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="chkCard[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='chkCard[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('삭제하실 카드를 체크 해주세요.');
+                return false;
+            }
+
+            //체크 한 거래처 삭제
+            var result = confirm("삭제하시겠습니까?")
+
+            if (result) {
+                if (chk_cust_id_arr.length > 0)
+
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        data: {
+                            'arrList': JSON.stringify(chk_cust_id_arr),
+                        },
+                        dataType: "json",
+                        url: '{% url "base_card_dlt" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            alert('삭제 되었습니다.')
+                            location.href = "{% url 'base_card' %}";
+                        }
+
+                    });
+            } else {
+
+            }
+        });
+
+    </script>
+{% endblock %}

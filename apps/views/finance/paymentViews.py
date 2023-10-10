@@ -351,8 +351,8 @@ def paymentViews_save(request):
     acGubn = request.POST.get("cboWitMethod")     # 결제방법
     acCard = request.POST.get("cboWitCard")
     acDesc = request.POST.get("txtWitRemark")     # 비고
-    creUser = request.POST.get("userId")
-    iCust = request.POST.get("USER_ICUST")
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
 
     file = request.FILES.get('file')
 

@@ -1,6 +1,6 @@
 from django.urls import path,re_path
 from apps.views.account import mainViews
-from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews
+from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews, cardViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews, permitViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
@@ -49,6 +49,11 @@ urlpatterns = [
     path('base_account_search/', accountViews.accountViews_search, name='base_account_search'),
     path('base_account_save/', accountViews.accountViews_save, name='base_account_save'),
     path('base_account_dlt/', accountViews.accountViews_dlt, name='base_account_dlt'),
+    # 카드관리
+    path('base_card/', cardViews.cardViews, name='base_card'),
+    path('base_card_search/', cardViews.cardViews_search, name='base_card_search'),
+    path('base_card_save/', cardViews.cardViews_save, name='base_card_save'),
+    path('base_card_dlt/', cardViews.cardViews_dlt, name='base_card_dlt'),
     # 지수관리
     path('base_targetIndex/', targetIndexViews.targetIndexViews, name='base_targetIndex'),
     path('base_target_search/', targetIndexViews.targetIndexSearchViews, name='base_target_search'),
