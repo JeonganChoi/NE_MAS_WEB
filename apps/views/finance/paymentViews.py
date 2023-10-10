@@ -197,6 +197,15 @@ def paymentViews_search(request):
     acCust = request.POST.get('acCust')
     acMcode = request.POST.get('acMcode')
     cboGbn = request.POST.get('cboGbn')
+    cboCard = request.POST.get('cboCard')
+
+    if cboCard:
+        # 거래처
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACCARD WHERE CARDNUM = '" + cboCard + "' ")
+            cboActNum = cursor.fetchall()
+
+            return JsonResponse({'cboActNum': cboActNum})
 
     if acIogb:
         with connection.cursor() as cursor:
@@ -207,7 +216,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACCODE,''), IFNULL(G.ACODENM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACFOLDER,'') "
+                           "    , IFNULL(A.ACFOLDER,''), IFNULL(A.ACCARD, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -262,8 +271,13 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
                 cboAcnumber = cursor.fetchall()
 
+            # 카드번호
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CARDNUM FROM ACCARD ")
+                cboCard = cursor.fetchall()
+
         return JsonResponse({'subList': subresult, 'cboCust': cboCust, 'cboGgn': cboGgn
-                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
 
     # 출금
     if cboGbn == '1':
@@ -297,8 +311,13 @@ def paymentViews_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAcnumber = cursor.fetchall()
 
+        # 카드번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD ")
+            cboCard = cursor.fetchall()
+
         return JsonResponse(
-            {'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+            {'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
 
     # 입금
     else:
@@ -332,7 +351,12 @@ def paymentViews_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAcnumber = cursor.fetchall()
 
-        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber})
+        # 카드번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD ")
+            cboCard = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
 
 
 def paymentViews_save(request):
@@ -402,6 +426,7 @@ def paymentViews_save(request):
                            ",    ACGUNO_BK "
                            ",    ACFOLDER "
                            ",    EXDATE "
+                           ",    ACCARD "
                            "    ) "
                            "    VALUES "
                            "    (   "
@@ -423,6 +448,7 @@ def paymentViews_save(request):
                            ",   '" + str(bnk) + "'"
                            ",   '" + str(Rfilenameloc) + "'"
                            "    '" + str(exDate) + "'"
+                           "    '" + str(acCard) + "'"
                            "    )   "
                            )
             connection.commit()
@@ -476,13 +502,14 @@ def paymentViews_save(request):
                            ",    ACGUNO_BK = '" + str(bnk) + "' "
                            ",    ACFOLDER = '" + str(Rfilenameloc) + "' "
                            ",    EXDATE = '" + str(exDate) + "' "
+                           ",    ACCARD = '" + str(acCard) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE acdate = '" + str(ioDate) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ACCUST = '" + str(acCust) + "' "
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
-                           # "     AND ICUST = '" + str(iCust) + "' "
+                           "     AND ICUST = '" + str(iCust) + "' "
                            )
             connection.commit()
 

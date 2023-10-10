@@ -24,11 +24,15 @@ def cardViews_search(request):
 
     if cardNum and actNum:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER "
+            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER"
+                           "        , A.GBN, C.RESNAM "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
                            " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.ACBKCD = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
                            " WHERE A.CARDNUM = '" + str(cardNum) + "' "
                            "   AND A.ACNUMBER = '" + str(actNum) + "' "
                            "   AND A.ACBKCD = '" + str(bankCode) + "' "
@@ -43,15 +47,23 @@ def cardViews_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAct = cursor.fetchall()
 
-        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' ")
+            cboType = cursor.fetchall()
+
+        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
 
     elif bankCode:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER "
+            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER"
+                           "        , A.GBN, C.RESNAM "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
                            " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.ACBKCD = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
                            " WHERE A.ACBKCD = '" + str(bankCode) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()
@@ -60,11 +72,15 @@ def cardViews_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER "
+            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER"
+                           "        , A.GBN, C.RESNAM  "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
                            " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.ACBKCD = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
                            " WHERE A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()
 
@@ -76,15 +92,20 @@ def cardViews_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
             cboAct = cursor.fetchall()
 
-        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' ")
+            cboType = cursor.fetchall()
+
+        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
 
 
 def cardViews_save(request):
     cboBank = request.POST.get('cboBank')
     cardNum = request.POST.get('txtCardNum')
     actNum = request.POST.get('cboActNum')
-    payDate = request.POST.get('txtPayDate').replace('-', '')
+    payDate = request.POST.get('txtPayDate')
     acRemark = request.POST.get('txtRemark')
+    cardType = request.POST.get('cboType')
     user = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
@@ -96,6 +117,7 @@ def cardViews_save(request):
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE ACCARD SET"
                            "     ACNUMBER = '" + str(actNum) + "' "
+                           ",    GBN = '" + str(cardType) + "' "
                            ",    ACBKCD = '" + str(cboBank) + "' "
                            ",    ACPAYDTE = '" + str(payDate) + "' "
                            ",    ACDESC = '" + str(acRemark) + "' "
@@ -114,6 +136,7 @@ def cardViews_save(request):
                            "   ("
                            "     CARDNUM "
                            ",    ACNUMBER "
+                           ",    GBN "
                            ",    ACBKCD "
                            ",    ACPAYDTE "
                            ",    ACDESC "
@@ -125,6 +148,7 @@ def cardViews_save(request):
                            "    ("
                            "    '" + cardNum + "' "
                            ",   '" + str(actNum) + "' "
+                           ",   '" + str(cardType) + "' "
                            ",   '" + str(cboBank) + "' "
                            ",   '" + str(payDate) + "' "
                            ",   '" + str(acRemark) + "' "
