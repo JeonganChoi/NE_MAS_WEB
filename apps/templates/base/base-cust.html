@@ -180,8 +180,12 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 분류</label>
+                                <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 분류</label>
                                 <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType" id="cboCustType"></select>
+                            </div>
+                            <div class="col-6">
+                                <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제 일자</label>
+                                <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDay" id="cboDay"></select>
                             </div>
                             <!--<div class="col-4">
                                 <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체군 분류</label>
@@ -208,13 +212,16 @@
         var inputCustType = "";
         var inputYn = "";
         var cboCustType = "";
+        var cboDay = "";
         var inputCustTypeTxt = "<option value=''>:: 전체 ::</option>";
         var inputYnTxt = "<option value=''>:: 선택 ::</option>";
         var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
+        var cboDayTxt = "<option value='last'> 말일 </option>";
 
         $("#inputCustType").html("");
         $("#inputYn").html("");
         $("#cboCustType").html("");
+        $("#cboDay").html("");
 
 
         $.ajax({
@@ -270,9 +277,14 @@
                     }
                 }
 
+                for (var i = 1; i < 32; i++) {
+                    cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
+                }
+
                 $("#inputCustType").append(inputCustTypeTxt);
                 $("#inputYn").append(inputYnTxt);
                 $("#cboCustType").append(cboCustTypeTxt);
+                $("#cboDay").append(cboDayTxt);
 
             }
         })
@@ -331,9 +343,12 @@
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#custMainTb .custMainTr_tr', function () {
             var cboCustType = "";
+            var cboDay = "";
             var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDayTxt = "<option value='last'>말일</option>";
 
             $("#cboCustType").html("");
+            $("#cboDay").html("");
 
             let custCode = $(this).attr('main_code');
 
@@ -374,6 +389,7 @@
                         $("#txtUser").val(list[i][18])
                         {# 업체 구분 #}
                         cboCustType = list[i][14];
+                        cboDay = list[i][20];
                     }
 
                     var combolist2 = data.cboCustType;
@@ -385,7 +401,16 @@
                         }
                     }
 
+                    for (var i = 1; i < 32; i++) {
+                        if (i == cboDay) {
+                            cboDayTxt = cboDayTxt + "<option value='" + i + "' selected>" + i + "일</option>";
+                        } else {
+                            cboDayTxt = cboDayTxt + "<option value='" + i + "'>" +i + "일</option>";
+                        }
+                    }
+
                     $("#cboCustType").append(cboCustTypeTxt);
+                    $("#cboDay").append(cboDayTxt);
                 }
             })
 
@@ -409,6 +434,7 @@
             var txtWebAddress = document.getElementById('txtWebAddress').value
             var cboCustType = document.getElementById('cboCustType').value
             var txtUser = document.getElementById('txtUser').value
+            var cboDay = document.getElementById('cboDay').value
 
 
             if(txtCustCode == '')
@@ -421,7 +447,7 @@
                 , 'txtRegNum': txtRegNum, 'txtCustCat': txtCustCat, 'txtCustType': txtCustType, 'txtPostCode': txtPostCode
                 , 'txtAddress': txtAddress, 'txtTelePhone': txtTelePhone, 'txtFax': txtFax, 'txtEmp': txtEmp
                 , 'txtEmpPhone': txtEmpPhone, 'txtEMail': txtEMail, 'txtWebAddress': txtWebAddress, 'cboCustType': cboCustType
-                , 'txtUser': txtUser}
+                , 'txtUser': txtUser, 'cboDay': cboDay}
 
             $.ajax({
                 type: "post",

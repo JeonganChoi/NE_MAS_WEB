@@ -49,7 +49,7 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, '') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(A.CUST_PAY_DAY, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
@@ -81,7 +81,7 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, '') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, ''), IFNULL(A.CUST_PAY_DAY, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
@@ -101,7 +101,7 @@ def custViews_search(request):
                 "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
                 "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
                 "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, '') "
+                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, ''), IFNULL(A.CUST_PAY_DAY, '') "
                 "   FROM MIS1TB003 A "
                 "   LEFT OUTER JOIN OSREFCP D "
                 "   ON A.CUST_GBN = D.RESKEY "
@@ -118,7 +118,7 @@ def custViews_search(request):
             cursor.execute(
                 " SELECT IFNULL(CUST_NME, ''), IFNULL(CUST_NBR, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ADDR, '') "
                 "   , IFNULL(CUST_ID_NBR, ''), IFNULL(CUST_POST_NBR, ''), IFNULL(CUST_TEL_NBR, '')"
-                "   , IFNULL(CUST_GBN, ''), IFNULL(CUST_END_CHK, 'Y') "
+                "   , IFNULL(CUST_GBN, ''), IFNULL(CUST_END_CHK, 'Y'), IFNULL(CUST_PAY_DAY, '') "
                 "   FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'"
             )
             custresult = cursor.fetchall()
@@ -162,6 +162,7 @@ def custViews_save(request):
     custEmail = request.POST.get('txtEMail')
     custWeb = request.POST.get('txtWebAddress')
     custType = request.POST.get('cboCustType')
+    cboDay = request.POST.get('cboDay')
     creUser = request.POST.get('txtUser')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')

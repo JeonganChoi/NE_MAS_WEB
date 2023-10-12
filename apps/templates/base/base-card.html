@@ -139,7 +139,7 @@
         var cboBankTxt = "<option value=''>:: 선택 ::</option>";
         var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
         var cboTypeTxt = "<option value=''>:: 선택 ::</option>";
-        var cboDayTxt = "";
+        var cboDayTxt = "<option value='last'> 말일 </option>";
 
 
         $("#inputBank").html("");
@@ -273,7 +273,7 @@
         var cboBankTxt = "<option value=''>:: 선택 ::</option>";
         var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
         var cboTypeTxt = "<option value=''>:: 선택 ::</option>";
-        var cboDayTxt = "<option value=''>:: 선택 ::</option>";
+        var cboDayTxt = "<option value='last'> 말일 </option>";
 
         $("#cboBank").html("");
         $("#cboActNum").html("");
@@ -357,6 +357,17 @@
             var cboBank = $("#cboBank").val()
             var cboActNum = $("#cboActNum").val()
             var cboType = $("#cboType").val()
+            var cboDay = $("#cboDay").val()
+            var last = new Date();
+            var day = last.getDate()
+
+            if(cboDay === 'last'){
+                alert(month)
+                alert(day)
+                return
+            }
+
+
             var txtCardNum = document.getElementById('txtCardNum').value
             var txtPayDate = document.getElementById('txtPayDate').value
             var txtRemark = document.getElementById('txtRemark').value
