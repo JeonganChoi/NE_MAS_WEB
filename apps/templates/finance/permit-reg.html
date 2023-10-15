@@ -35,23 +35,54 @@
                 <div class="card border border-white shadow-xs">
                     <div class="card-header pb-0">
                         <div class="row p-0">
-                            <div class="col-lg-2 col-2 w-20">
+                            <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label style="font-size: 0.85rem; width: 6rem"><i class="ni ni-calendar-grid-58 me-2"></i>승인일자</label>
-                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="ni ni-calendar-grid-58 me-2"></i>거래일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-2 w-20">
+                            <div class="col-lg-2 col-2"></div>
+                            <div class="col-lg-2 col-2 text-end">
+                                <button type="button" class="btn btn-sm btn-success text-white text-sm" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2 fs-6"></i>조 회</button>
+                            </div>
+                            <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label style="font-size: 0.85rem; width: 6rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
-                                    <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputPrice" id="inputPrice" style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check  me-2"></i>승인 일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
-                            <div class="col-lg-7 col-7 text-end">
+                            <div class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check me-2"></i>계좌 번호</label>
+                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="actNumber" id="actNumber" style="height: 2rem; width: 10rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2 text-end">
                                 <button type="button" class="btn text-white font-weight-bolder"
-                                        style="background-color: darkgreen" id="btnPermit" name="btnPermit"><i
-                                        class="fas fa-file-signature me-2"></i>승인
+                                        style="background-color: darkgreen" id="btnPermit" name="btnPermit">
+                                    <i class="fas fa-file-signature me-2 fs-6"></i>승인
                                 </button>
+                            </div>
+                        </div>
+                        <div class="row p-0">
+                            <div class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check me-2"></i>거래처</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCust" id="inputCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check me-2"></i>상계</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputOffSet" id="inputOffSet" style="height: 2rem; font-size: 0.8rem"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2"></div>
+                            <div class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check  me-2"></i>상계 금액</label>
+                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="CostOffSet" id="CostOffSet" style="height: 2rem; width: 10rem">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -65,6 +96,7 @@
                                           <col width="8%">
                                           <col width="15%">
                                           <col width="10%">
+                                          <col width="10%">
                                           <col hidden width="6%">
                                           <col width="6%">
                                           <col hidden width="6%">
@@ -74,7 +106,8 @@
                                       <tr>
                                         <th style="font-size: 0.85rem" class="p-1">등록일자</th>
                                         <th style="font-size: 0.85rem" class="p-1">제 목</th>
-                                        <th style="font-size: 0.85rem" class="p-1">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-1">계정 과목</th>
+                                        <th style="font-size: 0.85rem" class="p-1">금액</th>
                                         <th style="font-size: 0.85rem" class="p-1">작성자</th>
                                         <th style="font-size: 0.85rem" class="p-1">승인</th>
                                       </tr>
@@ -85,6 +118,17 @@
                                       </tr>
                                     </tbody>
                                   </table>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="row p-0">
+                                        <div class="col-lg-8 col-8"></div>
+                                        <div class="col-lg-4 col-4 text-end">
+                                            <div class="input-group shadow-none">
+                                                <label class="me-3" style="font-size: 0.85rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
+                                                <input readonly class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="inputPrice" id="inputPrice" style="height: 2rem; width: 10rem">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-6">
@@ -102,7 +146,7 @@
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center" style="background-color: darkgreen">
                                       <tr>
-                                        <th style="font-size: 0.85rem" class="p-1">등록일자</th>
+                                        <th style="font-size: 0.85rem" class="p-1">승인일자</th>
                                         <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                         <th style="font-size: 0.85rem" class="p-1">지출금액</th>
                                         <th style="font-size: 0.85rem" class="p-1">작성자</th>
