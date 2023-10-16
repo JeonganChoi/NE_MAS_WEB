@@ -37,7 +37,7 @@
                         <div class="row p-0">
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i class="ni ni-calendar-grid-58 me-2"></i>거래일자</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래일자</label>
                                     <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
@@ -47,14 +47,14 @@
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check  me-2"></i>승인 일자</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>승인 일자</label>
                                     <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check me-2"></i>계좌 번호</label>
-                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="actNumber" id="actNumber" style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌 번호</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actNumber" id="actNumber" style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2 text-end">
@@ -67,20 +67,20 @@
                         <div class="row p-0">
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check me-2"></i>거래처</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래처</label>
                                     <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCust" id="inputCust" style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check me-2"></i>상계</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputOffSet" id="inputOffSet" style="height: 2rem; font-size: 0.8rem"></select>
+                                    <label class="" style="font-size: 0.85rem; width: 4rem"><i class="fas fa-star me-2"></i>상계</label>
+                                    <input class="" value="off" type="checkbox" name="inputOffSet" id="inputOffSet"/>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2"></div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i class="fas fa-square-check  me-2"></i>상계 금액</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>상계 금액</label>
                                     <input class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="CostOffSet" id="CostOffSet" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
@@ -176,7 +176,16 @@
     <script>
         $(document).ready(function () {
 
+            var inputCust = "";
+            var actNumber = "";
+            var inputCustTxt = "<option value=''>:: 선택 ::</option>";
+            var actNumberTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#inputCust").html("");
+            $("#actNumber").html("");
+
             document.getElementById('inputDate').valueAsDate = new Date
+            document.getElementById('permitDate').valueAsDate = new Date
 
             var pDate = document.getElementById('inputDate').value
             var perDate = pDate.replace(/\-/g, '')
@@ -202,6 +211,7 @@
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-center p-2' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
@@ -213,6 +223,28 @@
                         total += Number(list[i][2])
                     }
                     document.getElementById('inputPrice').value = addComma(total)
+
+
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputCust) {
+                            inputCustTxt = inputCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputCustTxt = inputCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboAct;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == actNumber) {
+                            actNumberTxt = actNumberTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            actNumberTxt = actNumberTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#inputCust").append(inputCustTxt);
+                    $("#actNumber").append(actNumberTxt);
                 }
             })
         });
@@ -223,11 +255,15 @@
             var iDate = tr.children().eq(0).text()
             var ioDate = iDate.replace(/\-/g, '')
             var acTitle = tr.children().eq(1).text()
-            var acAmts = tr.children().eq(2).text()
-            var acEmp = tr.children().eq(3).text()
-            var acNme = tr.children().eq(4).text()
-            var acSeqn = tr.children().eq(5).text()
-            var acIogb = tr.children().eq(6).text()
+            var acMcode = tr.children().eq(2).text()
+            var acAmts = tr.children().eq(3).text()
+            var acEmp = tr.children().eq(4).text()
+            var acNme = tr.children().eq(5).text()
+            var acSeqn = tr.children().eq(6).text()
+            var acIogb = tr.children().eq(7).text()
+            var offTotal = 0;
+
+            var offSet = $('input[name=inputOffSet]:checked').val();
 
             var cboActNum = "";
             var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
@@ -260,6 +296,16 @@
 
 
             if($(this).is(':checked')) {
+                if(offSet == 'off'){
+                    {# 출금 #}
+                    if(acIogb == '1') {
+                        offTotal -= Number(acAmts)
+                    }
+                    {# 입금 #}
+                    else if(acIogb == '2') {
+                        offTotal += Number(acAmts)
+                    }
+                }
                 if($('#subTr' + acEmp).length == 0) {
 
                     var sub_tr_cnt = $('#chkTb tbody tr').length;
@@ -275,13 +321,61 @@
                         "<td hidden class='text-start p-2' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                         "<td class='text-center p-2'><select class='border border-light rounded-2 text-center' id='cboActNum' name='cboActNum' style='width: 12rem; height: 2rem; font-size: 0.8rem'></select></td> " +
                         "</tr> ");
-
                 }
+
+                document.getElementById('CostOffSet').value = addComma(offTotal)
+
             } else {
                 $('#subTr' + acEmp).remove();
             }
         });
 
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnSearch", function () {
+
+            var sDate = document.getElementById('inputDate').value;
+            var perDate = sDate.replace(/\-/g, '')
+            var custCode = document.getElementById('inputCust').value;
+            var offSet = $('input[name=inputOffSet]:checked').val();
+
+            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "permit_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+
+                    var total = 0;
+                    {# 순번, 입.출금구분, 날짜 #}
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-2' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
+                            "</tr> ");
+
+                        total += Number(list[i][2])
+                    }
+                    document.getElementById('inputPrice').value = addComma(total)
+
+                }
+            })
+
+        });
 
 
         {# 승인 버튼 #}

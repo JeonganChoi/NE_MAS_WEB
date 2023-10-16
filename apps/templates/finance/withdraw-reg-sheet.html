@@ -69,6 +69,9 @@
                                   <col width="10%">
                                   <col width="10%">
                                   <col width="10%">
+                                  <col width="10%">
+                                  <col width="10%">
+                                  <col width="10%">
                                   <col width="8%">
                                   <col width="4%">
                                   <col width="4%">
@@ -76,6 +79,9 @@
                             <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                               <tr>
                                 <th style="font-size: 0.85rem" class="p-1">거래일시</th>
+                                <th style="font-size: 0.85rem" class="p-1">제 목</th>
+                                <th style="font-size: 0.85rem" class="p-1">계정 명</th>
+                                <th style="font-size: 0.85rem" class="p-1">거래처</th>
                                 <th style="font-size: 0.85rem" class="p-1">맡기신 금액</th>
                                 <th style="font-size: 0.85rem" class="p-1">찾으신 금액</th>
                                 <th style="font-size: 0.85rem" class="p-1">잔금</th>
@@ -99,29 +105,31 @@
                     <form class="form-control border-0 dropzone" id="dropzone" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body">
-                            <input type="hidden" id="state" name="state" value="{{ state }}" />
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <label class="mt-2 text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금 구분</label>
+                                    <div class="col-4">
+                                        <label class="text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금 구분</label>
                                         <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitGbn" id="cboWitGbn" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>제 목</label>
+                                    <div class="col-4">
+                                        <label class="text-sm"><i class="far fa-edit me-2"></i>제 목</label>
                                         <input class="form-control text-start" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
-                            {% if state == "1" %}
-                            <div class="form-group">
+                            <div class="form-group basic">
                                 <div class="row mt-4">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>거래처</label>
                                         <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
                                         <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2 text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>예정 일자</label>
+                                        <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -129,31 +137,25 @@
                                         <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
                                         <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
-                                        <i class="far fa-calendar me-2"></i><label class="mt-2 text-sm" id="dateLabel">예정 일자</label>
-                                        <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
                                         <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <div class="col-6">
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>계좌번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>결제방법</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4 cboCard">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>카드</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
@@ -165,16 +167,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-8">
                                         <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
-                            {% elif state == "2" %}
-                            <div class="form-group">
+                            <div class="form-group replace">
                                 <div class="row mt-4">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
                                         <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
@@ -184,50 +185,64 @@
                                         <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
                                         <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>출금 계좌 번호</label>
-                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboOutAct" id="cboOutAct" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>입금 계좌 번호</label>
-                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboInAct" id="cboInAct" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
                                         <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <div class="col-6">
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
                                         <i class="far fa-calendar me-2"></i><label class="mt-2 text-sm" id="dateLabel">대체 일자</label>
                                         <input class="form-control text-center" type="date" id="txtOffDate" name="txtOffDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-8">
                                         <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
-                            {% endif %}
-                            <div class="form-group mt-2 mb-0">
-                                <div class="row">
-                                    <div class="col-6 text-start">
-                                        <button type="button" class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>결재선 지정</button>
+                            <div class="form-group">
+                                <div class="row mt-4">
+                                    <div class="col-4 text-start">
+                                        <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
+                                        <!--<div class="fallback mt-3">
+                                            <input name="file" id="file" type="file" multiple class=""/>
+                                        </div>-->
+                                        <div class="form-group text-start mt-3">
+                                            <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
+                                            <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
+                                        </div>
                                     </div>
-                                    <div class="col-6 text-start">
-                                        <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 text-start">
-                                        <div class="table-responsive-sm overflow-auto">
-                                            <table class="table mb-0 align-items-center justify-content-center" id="signTb">
-                                              <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
+                                    <div class="col-8 text-start">
+                                        <label class="form-label"><i class="fas fa-pen me-2"></i>결재선 지정</label>
+                                        <div class="form-group mt-3 mb-0">
+                                            <div class="row">
+                                                <div class="col-6 text-start">
+                                                    <button type="button" class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>결재선 지정</button>
+                                                </div>
+                                                <div class="col-6 text-start">
+                                                    <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 text-start">
+                                                    <div class="table-responsive-sm overflow-auto">
+                                                        <table class="table mb-0 align-items-center justify-content-center" id="signTb">
+                                                          <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
 
-                                              </tbody>
-                                            </table>
+                                                          </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -239,16 +254,7 @@
         </div>
     </div>
 
-    <!--<div class="card-body">
-        <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-          <div class="fallback">
-              <input name="file" id="file" type="file" multiple class=""/>
-              <img id="itemimage" name="itemimage" alt="" src="" class="img-fluid border-radius-sm shadow-sm" style="height: 50vh; width: 30vw">
-          </div>
-        <div class="form-group text-end mt-3">
-            <a class="btn btn-outline-dark btn-sm" type="button" id="btnImgDlt">사진 초기화</a>
-        </div>
-    </div>-->
+
 
 <!-- Modal -->
     <div class="modal fade" id="DecisionModal" tabindex="-1" role="dialog" aria-labelledby="DecisionModalLabel" aria-hidden="true">
@@ -507,15 +513,15 @@
             }
 
             $("#signTd").html("");
+            $("#signTd").append("<tr id='signTdTr' class='signTdTr_tr'>" );
             for (var i = 0; i < empArr.length; i++) {
                 $("#signTd").append(
-                    "<tr id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'>" +
+                    "<td hidden id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'></td>" +
                     "<td hidden class='text-center p-1' id='subSeq_" + i + "' style='font-size: 0.8rem'>" + i + "</td>" +
                     "<td hidden class='text-center p-1' id='subEmpDpt_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empDpt + "</td>" +
                     "<td hidden class='text-center p-1' id='subEmpGbn_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empGbn + "</td>" +
                     "<td hidden class='text-center p-1' id='subEmpNbr_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNbr + "</td>" +
-                    "<td class='text-start p-1 border border-white' id='subEmpNme_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNme + "</td>" +
-                    "</tr> ");
+                    "<td class='text-start p-1 border border-white' id='subEmpNme_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNme + "</td>");
             }
 
             $('#DecisionModal').modal('hide');
@@ -527,9 +533,6 @@
     <script>
         $(document).ready(function () {
 
-            var state = "1";
-            document.getElementById('state').innerHTML = state;
-
             var cboCust = "";
             var cboWitCust2 = "";
             var cboWitGbn = "";
@@ -539,7 +542,7 @@
             var cboWitCard = "";
             var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
-            var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";
+            var cboWitGbnTxt = "";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
@@ -558,6 +561,9 @@
             $("#txtWitPrice").val("");
             $("#txtWitCashNum").val("");
             $("#txtWitRemark").val("");
+
+            $('.basic').show();
+            $('.replace').hide();
 
             var date = new Date();
             date.setMonth(date.getMonth() - 6);
@@ -598,6 +604,9 @@
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>이월잔액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -618,16 +627,27 @@
                             total -= list[i][3]
                         }
 
+                        var check = "";
+                        if(list[i][10] == 'Y'){
+                            check = '승인';
+                        }
+                        else{
+                            check = '미승인';
+                        }
+
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                             "</tr> ");
                     }
 
@@ -733,9 +753,10 @@
                         }
                     })
                 }
-
-
             });
+
+
+
         });
 
         {# 조회 버튼 누를시 #}
@@ -771,6 +792,9 @@
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>이월잔액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -791,21 +815,43 @@
                             total -= list[i][3]
                         }
 
+                        var check = "";
+                        if(list[i][10] == 'Y'){
+                            check = '승인';
+                        }
+                        else{
+                            check = '미승인';
+                        }
+
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                             "</tr> ");
                     }
 
                 }
             })
+        });
+
+
+        {# 파일 선택 버튼 클릭시 #}
+        $(document).on('click', '#btnFile', function () {
+
+        });
+
+        {# 파일 보기 버튼 클릭시 #}
+        $(document).on('click', '#btnFileLook', function () {
+
         });
 
         {# 테이블 로우 클릭 시 #}
@@ -965,14 +1011,12 @@
         {# 입력란 계좌번호 선택시 계좌명 바인딩 #}
         $('#cboWitGbn').change(function () {
 
-            var state = "";
-            var cboGbn = document.getElementById('cboWitGbn').value
-            if(cboGbn === '3'){
-                state = '2';
-            }
-            else{
+            var val = $(this).val();
+            if(val == "1" || val == "2") {
+                $('.basic').show();
+                $('.replace').hide();
 
-                state = '1';
+                if(val == '2'){$('.cboCard').hide();}
 
                 var cboWitCust2 = "";
                 var cboAdminCode = "";
@@ -1047,6 +1091,48 @@
                         $("#cboWitMethod").append(cboWitMethodTxt);
                         $("#cboAdminCode").append(cboAdminCodeTxt);
                         $("#cboWitActNum").append(cboWitActNumTxt);
+                    }
+                })
+            } else if(val == "3") {
+                $('.replace').show();
+                $('.basic').hide();
+
+                var cboOutAct = "";
+                var cboInAct = "";
+                var cboOutActTxt = "<option value=''>:: 선택 ::</option>";
+                var cboInActTxt = "<option value=''>:: 선택 ::</option>";
+
+                $("#cboOutAct").html("");
+                $("#cboInAct").html("");
+
+                $.ajax({
+                    type: "post",
+                    url: '{% url "cboAct" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var combolist = data.cboAct;
+                        for (var i = 0; i < combolist.length; i++) {
+                            if (combolist[i][0] == cboOutAct) {
+                                cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                            } else {
+                                cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                            }
+                        }
+
+                        var combolist2 = data.cboAct;
+                        for (var i = 0; i < combolist2.length; i++) {
+                            if (combolist2[i][0] == cboInAct) {
+                                cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                            } else {
+                                cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                            }
+                        }
+
+                        $("#cboOutAct").append(cboOutActTxt);
+                        $("#cboInAct").append(cboInActTxt);
                     }
                 })
             }
@@ -1126,65 +1212,92 @@
 
             var formData = new FormData($('#dropzone')[0]);
 
-            {#var cboWitGbn = document.getElementById('cboWitGbn').value#}
+            var cboWitGbn = document.getElementById('cboWitGbn').value
             {#var txtTitle = document.getElementById('txtTitle').value#}
-            var cboWitCust = document.getElementById('cboWitCust').value
+            {#var cboWitCust = document.getElementById('cboWitCust').value#}
             {#var txtWitRegDate = document.getElementById('txtWitRegDate').value#}
             {#var txtExDate = document.getElementById('txtExDate').value#}
             {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
             {#var txtWitRecn = document.getElementById('txtWitRecn').value#}
             {#var cboAdminCode = document.getElementById('cboAdminCode').value#}
-            var txtWitPrice = document.getElementById('txtWitPrice').value
+            {#var txtWitPrice = document.getElementById('txtWitPrice').value#}
             {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
             {#var cboWitMethod = document.getElementById('cboWitMethod').value#}
             {#var cboWitCard = document.getElementById('cboWitCard').value#}
             {#var txtWitRemark = document.getElementById('txtWitRemark').value#}
             {#var file = document.getElementById('file').value#}
 
-            if (cboWitCust == '') {
-                alert("거래처를 입력해주세요.")
-                return false
-            }
-
-            if (txtWitPrice == '') {
-                alert("금액을 입력해주세요.")
-                return false
-            }
-
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
-            const subCount = $('#signTd tr').length;
+            if(cboWitGbn == '3'){
+                const subCount = $('#signTd tr').length;
 
-            var empArr = [];
-            for (var i = 0; i < subCount; i++) {
+                var empArr = [];
+                for (var i = 0; i < subCount; i++) {
 
-                var empNbr = $('#subEmpNbr_' + i).text();
+                    var empNbr = $('#subEmpNbr_' + i).text();
 
-                let data = {
-                    'empNbr': empNbr
-                };
-                empArr.push(data);
-            }
-
-            formData.append('empArrList', JSON.stringify(empArr))
-
-            $.ajax({
-                type: "post",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                url: '{% url "payment_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('저장 되었습니다.')
-                        location.href = "{% url 'with_reg_sheet' %}";
-                    }
+                    let data = {
+                        'empNbr': empNbr
+                    };
+                    empArr.push(data);
                 }
-            });
+
+                formData.append('empArrList', JSON.stringify(empArr))
+
+                $.ajax({
+                    type: "post",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    url: '{% url "offSet_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('저장 되었습니다.')
+                            location.href = "{% url 'with_reg_sheet' %}";
+                        }
+                    }
+                });
+            }
+            else{
+                const subCount = $('#signTd tr').length;
+
+                var empArr = [];
+                for (var i = 0; i < subCount; i++) {
+
+                    var empNbr = $('#subEmpNbr_' + i).text();
+
+                    let data = {
+                        'empNbr': empNbr
+                    };
+                    empArr.push(data);
+                }
+
+                formData.append('empArrList', JSON.stringify(empArr))
+
+                $.ajax({
+                    type: "post",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    url: '{% url "payment_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('저장 되었습니다.')
+                            location.href = "{% url 'with_reg_sheet' %}";
+                        }
+                    }
+                });
+            }
 
         });
 

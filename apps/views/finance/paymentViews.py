@@ -31,22 +31,28 @@ def receivePay_search(request):
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT ACIOGB, IODATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
+            cursor.execute("  SELECT IFNULL(ACIOGB, ''), IFNULL(IODATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0)"
+                           ", IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '')"
+                           ", IFNULL(MCODE, ''), IFNULL(FIN_OPT, ''), IFNULL(MCODENM, ''), IFNULL(ACTITLE, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
                            "     LEFT OUTER JOIN ACNUMBER C "
                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     LEFT OUTER JOIN OSCODEM D "
+                           "     ON A.MCODE = D.MCODE "
                            "     WHERE A.ACIOGB = '2' "
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
                            "     LEFT OUTER JOIN ACNUMBER C "
                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     LEFT OUTER JOIN OSCODEM D "
+                           "     ON A.MCODE = D.MCODE "
                            "     WHERE A.ACIOGB = '1' "
                            " ) AA "
                            " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
@@ -66,22 +72,28 @@ def receivePay_search(request):
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT ACIOGB, IODATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME, MCODE FROM "
+            cursor.execute("  SELECT IFNULL(ACIOGB, ''), IFNULL(IODATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0)"
+                           ", IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '')"
+                           ", IFNULL(MCODE, ''), IFNULL(FIN_OPT, ''), IFNULL(MCODENM, ''), IFNULL(ACTITLE, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
                            "     LEFT OUTER JOIN ACNUMBER C "
                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     LEFT OUTER JOIN OSCODEM D "
+                           "     ON A.MCODE = D.MCODE "
                            "     WHERE A.ACIOGB = '2' "
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
                            "     LEFT OUTER JOIN ACNUMBER C "
                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     LEFT OUTER JOIN OSCODEM D "
+                           "     ON A.MCODE = D.MCODE "
                            "     WHERE A.ACIOGB = '1' "
                            " ) AA "
                            " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
@@ -359,6 +371,13 @@ def paymentViews_search(request):
         return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
 
 
+def cboActNum_search(request):
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+        cboAct = cursor.fetchall()
+
+    return JsonResponse({'cboAct': cboAct})
+
 def paymentViews_save(request):
     empArray = json.loads(request.POST.get('empArrList'))
     ioDate = request.POST.get("txtWitRegDate").replace('-', '') # 등록일자
@@ -394,102 +413,17 @@ def paymentViews_save(request):
         else:
             Rfilenameloc = file
 
-
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
-        result = cursor.fetchall()  # 계좌 은행
-
-        bnk = result[0][0]
-
-    if exDate == '' or exDate is None:
-        exDate = ioDate
-
-    if acSeqn == '' or acSeqn is None:
+    if acSeqn:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO SISACCTT "
-                           "   (    "
-                           "     IODATE "
-                           ",    ACSEQN "
-                           ",    ACIOGB "
-                           ",    ACTITLE "
-                           ",    ACCUST "
-                           ",    ACGUBN "
-                           ",    MCODE "
-                           ",    ACCODE "
-                           ",    ACAMTS "
-                           ",    ACACNUMBER "
-                           ",    ACRECN "
-                           ",    ACDESC "
-                           ",    CRE_USER "
-                           ",    CRE_DT "
-                           ",    ICUST "
-                           ",    ACGUNO_BK "
-                           ",    ACFOLDER "
-                           ",    EXDATE "
-                           ",    ACCARD "
-                           "    ) "
-                           "    VALUES "
-                           "    (   "
-                           "    '" + str(ioDate) + "'"
-                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "') "
-                           ",   '" + str(acIogb) + "'"
-                           ",   '" + str(acTitle) + "'"
-                           ",   '" + str(acCust) + "'"
-                           ",   '" + str(acGubn) + "'"
-                           ",   '" + str(mCode) + "'"
-                           ",   '" + str(acCode) + "'"
-                           ",   '" + str(acAmts) + "'"
-                           ",   '" + str(acAcnumber) + "'"
-                           ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "' AND ACSEQN = '" + acSeqn + "' ) "
-                           ",   '" + str(acDesc) + "'"
-                           ",   '" + str(creUser) + "'"
-                           ",   date_format(now(), '%Y%m%d') "
-                           ",   '" + str(iCust) + "'"
-                           ",   '" + str(bnk) + "'"
-                           ",   '" + str(Rfilenameloc) + "'"
-                           "    '" + str(exDate) + "'"
-                           "    '" + str(acCard) + "'"
-                           "    )   "
-                           )
-            connection.commit()
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
+            result = cursor.fetchall()  # 계좌 은행
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate).replace('-', '') + "' AND ACIOGB = '" + str(acIogb) + "' ")
-                result2 = cursor.fetchall()  # 계좌 은행
+            bnk = result[0][0]
 
-                seq = result2[0][0]
+        if exDate == '' or exDate is None:
+            exDate = ioDate
+            acDate = ioDate
 
-            # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
-            opt = 'N'
-            empArrayLists = list(filter(len, empArray))
-            for data in range(len(empArrayLists)):
-                with connection.cursor() as cursor:
-                    cursor.execute(" INSERT INTO OSSIGN "
-                                   "    ( "
-                                   "     ACDATE "
-                                   "   , ACSEQN "
-                                   "   , SEQ "
-                                   "   , EMP_NBR "
-                                   "   , OPT "
-                                   "   , ACIOGB "
-                                   "   , ICUST "                                                    
-                                   "    ) "
-                                   "    VALUES "
-                                   "    ( "
-                                   "     '" + str(exDate) + "' "
-                                   "     , '" + str(seq) + "' "
-                                   "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
-                                   "     , '" + empArrayLists[data]["empNbr"] + "' "
-                                   "     , '" + opt + "' "
-                                   "     , '" + str(acIogb) + "' "
-                                   "     , '" + str(iCust) + "' "
-                                   "     ) "
-                    )
-                    connection.commit()
-
-        return JsonResponse({'sucYn': "Y"})
-
-    elif acSeqn:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE  SISACCTT SET"
                            "     ACGUBN = '" + str(acGubn) + "' "
@@ -502,10 +436,11 @@ def paymentViews_save(request):
                            ",    ACGUNO_BK = '" + str(bnk) + "' "
                            ",    ACFOLDER = '" + str(Rfilenameloc) + "' "
                            ",    EXDATE = '" + str(exDate) + "' "
+                           ",    ACDATE = '" + str(acDate) + "' "
                            ",    ACCARD = '" + str(acCard) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           "     WHERE acdate = '" + str(ioDate) + "' "
+                           "     WHERE IODATE = '" + str(ioDate) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ACCUST = '" + str(acCust) + "' "
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
@@ -515,9 +450,331 @@ def paymentViews_save(request):
 
         return JsonResponse({'sucYn': "Y"})
 
-#
-# return render(request, 'finance/withdraw-reg-sheet.html')
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
+            result = cursor.fetchall()  # 계좌 은행
 
+            bnk = result[0][0]
+
+        if exDate == '' or exDate is None:
+            exDate = ioDate
+            acDate = ioDate
+
+        if acSeqn == '' or acSeqn is None:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO SISACCTT "
+                               "   (    "
+                               "     IODATE "
+                               ",    ACSEQN "
+                               ",    ACIOGB "
+                               ",    ACTITLE "
+                               ",    ACCUST "
+                               ",    ACGUBN "
+                               ",    MCODE "
+                               ",    ACCODE "
+                               ",    ACAMTS "
+                               ",    ACACNUMBER "
+                               ",    ACRECN "
+                               ",    ACDESC "
+                               ",    CRE_USER "
+                               ",    CRE_DT "
+                               ",    ICUST "
+                               ",    ACGUNO_BK "
+                               ",    ACFOLDER "
+                               ",    EXDATE "
+                               ",    ACDATE "
+                               ",    ACCARD "
+                               "    ) "
+                               "    VALUES "
+                               "    (   "
+                               "    '" + str(ioDate) + "'"
+                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "') "
+                               ",   '" + str(acIogb) + "'"
+                               ",   '" + str(acTitle) + "'"
+                               ",   '" + str(acCust) + "'"
+                               ",   '" + str(acGubn) + "'"
+                               ",   '" + str(mCode) + "'"
+                               ",   '" + str(acCode) + "'"
+                               ",   '" + str(acAmts) + "'"
+                               ",   '" + str(acAcnumber) + "'"
+                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "' AND ACSEQN = '" + acSeqn + "' ) "
+                               ",   '" + str(acDesc) + "'"
+                               ",   '" + str(creUser) + "'"
+                               ",   date_format(now(), '%Y%m%d') "
+                               ",   '" + str(iCust) + "'"
+                               ",   '" + str(bnk) + "'"
+                               ",   '" + str(Rfilenameloc) + "'"
+                               "    '" + str(exDate) + "'"
+                               "    '" + str(acDate) + "'"
+                               "    '" + str(acCard) + "'"
+                               "    )   "
+                               )
+                connection.commit()
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate).replace('-', '') + "' AND ACIOGB = '" + str(acIogb) + "' ")
+                    result2 = cursor.fetchall()  # 계좌 은행
+
+                    seq = result2[0][0]
+
+                # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
+                opt = 'N'
+                empArrayLists = list(filter(len, empArray))
+                for data in range(len(empArrayLists)):
+                    with connection.cursor() as cursor:
+                        cursor.execute(" INSERT INTO OSSIGN "
+                                       "    ( "
+                                       "     ACDATE "
+                                       "   , ACSEQN "
+                                       "   , SEQ "
+                                       "   , EMP_NBR "
+                                       "   , OPT "
+                                       "   , ACIOGB "
+                                       "   , ICUST "                                                    
+                                       "    ) "
+                                       "    VALUES "
+                                       "    ( "
+                                       "     '" + str(acDate) + "' "
+                                       "     , '" + str(seq) + "' "
+                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
+                                       "     , '" + empArrayLists[data]["empNbr"] + "' "
+                                       "     , '" + opt + "' "
+                                       "     , '" + str(acIogb) + "' "
+                                       "     , '" + str(iCust) + "' "
+                                       "     ) "
+                        )
+                        connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+
+def offSetViews_save(request):
+    empArray = json.loads(request.POST.get('empArrList'))
+    ioDate = request.POST.get("txtWitRegDate").replace('-', '') # 등록일자
+    acSeqn = request.POST.get("txtWitSeq")               # 순번
+    acTitle = request.POST.get("txtTitle")
+    acIogb = request.POST.get("cboWitGbn")  # 구분(입금2/출금1)
+    acAmts = request.POST.get("txtWitPrice")      # 금액
+    acAcnumber = request.POST.get("cboWitActNum")  # 계좌번호
+    acDesc = request.POST.get("txtWitRemark")     # 비고
+    # 대체
+    outAct = request.POST.get("cboOutAct")     # 출금계좌
+    inAct = request.POST.get("cboInAct")  # 입금계좌
+    offDate = request.POST.get("txtOffDate").replace('-', '')  # 대체일자
+
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
+
+    file = request.FILES.get('file')
+
+    if (file is None):
+        file = ''
+    url = '/media/'
+
+    if file is None or not None:
+        if len(request.FILES) != 0:
+            myfile = request.FILES['file']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            Rfilenameloc = url + filename
+
+        else:
+            Rfilenameloc = file
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' ")
+        result = cursor.fetchall()  # 계좌 은행
+
+        acSeqn = result[0][0]
+
+    # 출금정보
+    if outAct:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + outAct + "' ")
+            result = cursor.fetchall()  # 계좌 은행
+
+            outBnk = result[0][0]
+
+        if offDate == '' or offDate is None:
+            offDate = ioDate
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                               "INSERT INTO SISACCTT "
+                               "   (    "
+                               "     IODATE "
+                               ",    ACSEQN "
+                               ",    ACIOGB "
+                               ",    ACTITLE "
+                               ",    ACAMTS "
+                               ",    ACACNUMBER "
+                               ",    ACRECN "
+                               ",    ACDESC "
+                               ",    CRE_USER "
+                               ",    CRE_DT "
+                               ",    ICUST "
+                               ",    ACGUNO_BK "
+                               ",    ACFOLDER "
+                               ",    EXDATE "
+                               ",    ACDATE "
+                               ",    OFF_GBN "
+                               "    ) "
+                               "    VALUES "
+                               "    (   "
+                               "    '" + str(ioDate) + "'"
+                               ",   '" + str(acSeqn) + "' "
+                               ",   '1'"
+                               ",   '" + str(acTitle) + "'"
+                               ",   '" + str(acAmts) + "'"
+                               ",   '" + str(outAct) + "'"
+                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                               ",   '" + str(acDesc) + "'"
+                               ",   '" + str(creUser) + "'"
+                               ",   date_format(now(), '%Y%m%d') "
+                               ",   '" + str(iCust) + "'"
+                               ",   '" + str(outBnk) + "'"
+                               ",   '" + str(Rfilenameloc) + "'"
+                               ",   '" + str(ioDate) + "'"
+                               ",   '" + str(ioDate) + "'"
+                               ",   'off'"
+                               "    )   "
+                               )
+            connection.commit()
+
+    # 입금정보
+    if inAct:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + inAct + "' ")
+            result = cursor.fetchall()  # 계좌 은행
+
+            inBnk = result[0][0]
+
+        if offDate == '' or offDate is None:
+            offDate = ioDate
+
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO SISACCTT "
+                               "   (    "
+                               "     IODATE "
+                               ",    ACSEQN "
+                               ",    ACIOGB "
+                               ",    ACTITLE "
+                               ",    ACAMTS "
+                               ",    ACACNUMBER "
+                               ",    ACRECN "
+                               ",    ACDESC "
+                               ",    CRE_USER "
+                               ",    CRE_DT "
+                               ",    ICUST "
+                               ",    ACGUNO_BK "
+                               ",    ACFOLDER "
+                               ",    EXDATE "
+                               ",    ACDATE "
+                               ",    OFF_GBN"
+                               "    ) "
+                               "    VALUES "
+                               "    (   "
+                               "    '" + str(ioDate) + "'"
+                               ",   '" + str(acSeqn) + "' "
+                               ",   '2'"
+                               ",   '" + str(acTitle) + "'"
+                               ",   '" + str(acAmts) + "'"
+                               ",   '" + str(inAct) + "'"
+                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                               ",   '" + str(acDesc) + "'"
+                               ",   '" + str(creUser) + "'"
+                               ",   date_format(now(), '%Y%m%d') "
+                               ",   '" + str(iCust) + "'"
+                               ",   '" + str(inBnk) + "'"
+                               ",   '" + str(Rfilenameloc) + "'"
+                               ",   '" + str(ioDate) + "'"
+                               ",   '" + str(ioDate) + "'"
+                               ",   'off'"
+                               "    )   "
+                               )
+            connection.commit()
+
+    # 대체젇보
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO SISACCTT "
+                       "   (    "
+                       "     IODATE "
+                       ",    ACSEQN "
+                       ",    ACIOGB "
+                       ",    ACTITLE "
+                       ",    ACAMTS "
+                       ",    ACACNUMBER "
+                       ",    ACRECN "
+                       ",    ACDESC "
+                       ",    CRE_USER "
+                       ",    CRE_DT "
+                       ",    ICUST "
+                       ",    ACFOLDER "
+                       ",    EXDATE "
+                       ",    ACDATE "
+                       ",    OFF_DATE "
+                       ",    OFF_AMTS "
+                       ",    OFF_GBN"
+                       "    ) "
+                       "    VALUES "
+                       "    (   "
+                       "    '" + str(ioDate) + "' "
+                       ",   '" + str(acSeqn) + "' "
+                       ",   '" + str(acIogb) + "' "
+                       ",   '" + str(acTitle) + "' "
+                       ",   '" + str(acAmts) + "' "
+                       ",   '" + str(acAcnumber) + "' "
+                       ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                       ",   '" + str(acDesc) + "' "
+                       ",   '" + str(creUser) + "' "
+                       ",   date_format(now(), '%Y%m%d') "
+                       ",   '" + str(iCust) + "' "
+                       ",   '" + str(Rfilenameloc) + "' "
+                       ",   '" + str(ioDate) + "' "
+                       ",   '" + str(ioDate) + "' "
+                       ",   '" + str(offDate) + "' "
+                       ",   '" + str(acAmts) + "' "
+                       ",   'off' "
+                       "    )   "
+                       )
+        connection.commit()
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate).replace('-', '') + "' AND ACIOGB = '" + str(acIogb) + "' ")
+        result2 = cursor.fetchall()  # 계좌 은행
+
+        seq = result2[0][0]
+
+    # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
+    opt = 'N'
+    empArrayLists = list(filter(len, empArray))
+    for data in range(len(empArrayLists)):
+        with connection.cursor() as cursor:
+            cursor.execute(" INSERT INTO OSSIGN "
+                           "    ( "
+                           "     ACDATE "
+                           "   , ACSEQN "
+                           "   , SEQ "
+                           "   , EMP_NBR "
+                           "   , OPT "
+                           "   , ACIOGB "
+                           "   , ICUST "                                                    
+                           "    ) "
+                           "    VALUES "
+                           "    ( "
+                           "     '" + str(ioDate) + "' "
+                           "     , '" + str(seq) + "' "
+                           "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
+                           "     , '" + empArrayLists[data]["empNbr"] + "' "
+                           "     , '" + opt + "' "
+                           "     , '" + str(acIogb) + "' "
+                           "     , '" + str(iCust) + "' "
+                           "     ) "
+            )
+            connection.commit()
+
+    return JsonResponse({'sucYn': "Y"})
 
 def paymentViews_dlt(request):
     if request.method == "POST":

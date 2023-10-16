@@ -125,9 +125,11 @@ urlpatterns = [
     path('receivePay_search/', paymentViews.receivePay_search, name='receivePay_search'),
     path('payment_search/', paymentViews.paymentViews_search, name='payment_search'),
     path('payment_save/', paymentViews.paymentViews_save, name='payment_save'),
+    path('offSet_save/', paymentViews.offSetViews_save, name='offSet_save'),
     path('payment_dlt/', paymentViews.paymentViews_dlt, name='payment_dlt'),
     path('apvLine_modal/', paymentViews.apvLine_modal_search, name='apvLine_modal'),
     path('checkLimit/', paymentViews.checkLimit_search, name='checkLimit'),
+    path('cboAct/', paymentViews.cboActNum_search, name='cboAct'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),

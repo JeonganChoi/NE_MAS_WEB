@@ -34,7 +34,7 @@
         </div>
         <hr class="my-0">
         <div class="my-4 row">
-            <div class="col-lg-2 col-md-2"></div>
+            <div class="col-lg-2 col-4"></div>
             <div class="col-lg-4 col-md-2">
                 <div class="border shadow-xs card">
                     <div class="px-0 py-0 card-body" style="height: 70vh">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-2">
+            <div class="col-lg-4 col-4">
                 <div class="border shadow-xs card">
                 <div class="px-0 py-0 card-body" style="height: 70vh">
                   <div class="p-3 table-responsive overflow-scroll" style="height: 70vh">
@@ -115,7 +115,7 @@
                         $("#MainTb").append(
                             "<tr id='#MainTr' class='MainTr_tr' main_code='" + list[i][0] + "'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "</tr> ");
                     }
                 }
@@ -147,8 +147,8 @@
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + list[i][0] + "'/></td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input type='text' class='form-control' id='mainName' name='mainName' value='" + list[i][1] + "'/></td> " +
-                            "<td class='text-center p-0' style='font-size: 0.85rem'><input type='text' class='form-control shadow-none border-0 text-xs text-center' id='subCode' name='subCode' value='" + list[i][2] + "'/></td> " +
-                            "<td class='text-center p-0' style='font-size: 0.85rem'><input type='text' class='form-control shadow-none border-0 text-xs text-center' id='subName' name='subName' value='" + list[i][3] + "'/></td> " +
+                            "<td class='p-0' style='font-size: 0.85rem'><input type='text' class='form-control shadow-none border-0 text-xs text-center' id='subCode' name='subCode' value='" + list[i][2] + "'/></td> " +
+                            "<td class='p-0' style='font-size: 0.85rem'><input type='text' class='form-control shadow-none border-0 text-xs text-start' id='subName' name='subName' value='" + list[i][3] + "'/></td> " +
                             "</tr> ");
                     }
                 }
@@ -169,8 +169,8 @@
             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]'/></div></td>" +
             "<td hidden class='text-center'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + firstVal + "'/></td>" +
             "<td hidden class='text-center'><input type='text' class='form-control' id='mainName' name='mainName' value='" + secVal + "'/></td> " +
-            "<td class='text-center p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' name='subCode' id='subCode'></td> " +
-            "<td class='text-center p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' name='subName' id='subName'></td>" +
+            "<td class='p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' name='subCode' id='subCode'></td> " +
+            "<td class='p-0'><input class='form-control border-0 text-xs text-start shadow-none' type='text' name='subName' id='subName'></td>" +
             "</tr> "
         );
     });
