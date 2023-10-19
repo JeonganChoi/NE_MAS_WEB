@@ -169,27 +169,27 @@ def approvalSubViews_search(request):
 
             # 거래처
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + iCust + "' ")
             cboCust = cursor.fetchall()
 
             # 입출금구분
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' ORDER BY RESKEY ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + iCust + "' ORDER BY RESKEY ")
             cboGgn = cursor.fetchall()
 
             # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ORDER BY MCODE ASC ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + iCust + "' ORDER BY MCODE ASC ")
             cboMCode = cursor.fetchall()
 
             # 결제방법
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' ORDER BY RESNAM ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + iCust + "' ORDER BY RESNAM ")
             cboPay = cursor.fetchall()
 
             # 계좌번호
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "' ")
             cboAcnumber = cursor.fetchall()
 
         return JsonResponse({"subList": subresult, "mainList": mainresult, "cboCust": cboCust, "cboGgn": cboGgn, "cboMCode": cboMCode, "cboPay": cboPay, "cboAcnumber": cboAcnumber})
