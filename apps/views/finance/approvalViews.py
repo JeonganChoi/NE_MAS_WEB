@@ -154,10 +154,16 @@ def approvalSubViews_search(request):
                            "        , IFNULL(A.EXDATE, ''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACCARD, '') "
                            "        , IFNULL(A.ACDESC, ''), IFNULL(A.ACSEQN, '') "
                            " FROM SISACCTT A "
+                           " LEFT OUTER JOIN OSSIGN B "
+                           " ON A.IODATE = B.ACDATE "
+                           " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ICUST = B.ICUST "
+                           " LEFT OUTER JOIN PIS1TB001 C "
+                           " ON B.EMP_NBR = C.EMP_NBR "
                            " WHERE A.IODATE = '" + str(ioDate) + "' "
                            " AND A.ACSEQN = '" + str(acSeqn) + "' "
                            " AND A.ACIOGB = '" + str(acIogb) + "' "
-                           " AND A.EMP_NBR = '" + empNbr + "' "
+                           " AND B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")
             mainresult = cursor.fetchall()
 
