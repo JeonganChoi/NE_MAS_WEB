@@ -259,7 +259,13 @@
             var empNbr = document.getElementById('inputEmp').value
             var gbn = document.getElementById('inputGbn').value
 
-            let data = {'empNbr': empNbr, 'gbn': gbn}
+            document.getElementById('txtWitRegDate').valueAsDate = new Date
+            document.getElementById('txtExDate').valueAsDate = new Date
+
+            var sDate = document.getElementById('txtWitRegDate').value
+            var ioDate = sDate.replace(/\-/g, '')
+
+            let data = {'empNbr': empNbr, 'gbn': gbn, "ioDate": ioDate}
 
             $.ajax({
                 type: "post",
@@ -276,12 +282,12 @@
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "'>" +
+                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>미결재</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
@@ -297,7 +303,10 @@
             var empNbr = document.getElementById('inputEmp').value
             var gbn = document.getElementById('inputGbn').value
 
-            let data = {'empNbr': empNbr, 'gbn': gbn}
+            var sDate = document.getElementById('txtWitRegDate').value
+            var ioDate = sDate.replace(/\-/g, '')
+
+            let data = {'empNbr': empNbr, 'gbn': gbn, 'ioDate': ioDate}
 
             $.ajax({
                 type: "post",
@@ -313,12 +322,12 @@
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "'>" +
+                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>미결재</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
@@ -359,7 +368,7 @@
             var acSeqn = split[1]
             var acIogb = split[2]
 
-            let data = {'ioDate': ioDate, 'acSeqn': acSeqn, 'acIogb': acIogb}
+            let data = {'ioDate': ioDate, 'acSeqn': acSeqn, 'acIogb': acIogb, 'empNbr': empNbr}
 
             $.ajax({
                 type: "post",

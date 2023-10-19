@@ -134,8 +134,8 @@
                                 </div>
                                 <div class="row">
                                     <div hidden class="col-4">
-                                        <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
-                                        <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
+                                        <input class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
+                                        <input class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
@@ -177,14 +177,10 @@
                                 <div class="row mt-4">
                                     <div class="col-4">
                                         <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
-                                        <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-center" type="date" id="txtWitRegDate2" name="txtWitRegDate2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div hidden class="col-4">
-                                        <input hidden class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
-                                        <input hidden class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
-                                    </div>
                                     <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>출금 계좌 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboOutAct" id="cboOutAct" style="height: 2rem; font-size: 0.8rem"></select>
@@ -195,17 +191,21 @@
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
-                                        <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-end" type="number" id="txtWitPrice2" name="txtWitPrice2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div hidden class="col-4">
+                                        <input class="form-control text-end" type="number" id="txtWitSeq2" name="txtWitSeq2"/>
+                                        <input class="form-control text-end" type="number" id="txtWitRecn2" name="txtWitRecn2"/>
+                                    </div>
                                     <div class="col-4">
                                         <i class="far fa-calendar me-2"></i><label class="mt-2 text-sm" id="dateLabel">대체 일자</label>
                                         <input class="form-control text-center" type="date" id="txtOffDate" name="txtOffDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-8">
                                         <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
-                                        <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-start" type="text" id="txtWitRemark2" name="txtWitRemark2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
@@ -513,7 +513,7 @@
             }
 
             $("#signTd").html("");
-            $("#signTd").append("<tr id='signTdTr' class='signTdTr_tr'>" );
+            $("#signTd").append("<tr id='signTdTr' class='signTdTr_tr'>" + + " </tr>" );
             for (var i = 0; i < empArr.length; i++) {
                 $("#signTd").append(
                     "<td hidden id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'></td>" +
@@ -528,6 +528,16 @@
 
         });
 
+
+            {#        for (var i = 0; i < empArr.length; i++) {#}
+            {#    $("#signTd").append(#}
+            {#        "<td hidden id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'></td>" +#}
+            {#        "<td hidden class='text-center p-1' id='subSeq_" + i + "' style='font-size: 0.8rem'>" + i + "</td>" +#}
+            {#        "<td hidden class='text-center p-1' id='subEmpDpt_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empDpt + "</td>" +#}
+            {#        "<td hidden class='text-center p-1' id='subEmpGbn_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empGbn + "</td>" +#}
+            {#        "<td hidden class='text-center p-1' id='subEmpNbr_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNbr + "</td>" +#}
+            {#        "<td class='text-start p-1 border border-white' id='subEmpNme_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNme + "</td>");#}
+            {#}#}
     </script>
 
     <script>
@@ -636,7 +646,7 @@
                         }
 
                         $("#withMainTb").append(
-                            "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "'>" +
+                            "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
@@ -648,6 +658,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                             "</tr> ");
                     }
 
@@ -824,7 +835,7 @@
                         }
 
                         $("#withMainTb").append(
-                            "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "'>" +
+                            "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
@@ -836,6 +847,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                             "</tr> ");
                     }
 
@@ -895,10 +907,11 @@
             var acNum = split[2]
             var acCust = split[3]
             var acMcode= split[4]
+            var acSeqn= split[5]
             var cboGbn = "";
 
 
-            let data = {'acIogb': acIogb, 'ioDate': ioDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn}
+            let data = {'acIogb': acIogb, 'ioDate': ioDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn, "acSeqn": acSeqn}
 
             $.ajax({
                 type: "post",
@@ -994,6 +1007,13 @@
                         } else {
                             cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
                         }
+                    }
+
+                    $('#signTd').empty();
+                    var permitList = data.permit;
+                    for (var i = 0; i < permitList.length; i++) {
+                        var _td = `<td class="text-start p-1 border border-white" id="subEmpNme_${i}" style="font-size: 0.8rem">${permitList[i][2]}</td>`;
+                        $('#signTd').append(_td);
                     }
 
                     $("#cboWitCust").append(cboWitCustTxt);
@@ -1229,17 +1249,19 @@
 
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             if(cboWitGbn == '3'){
-                const subCount = $('#signTd tr').length;
+                {#const subCount = $('#signTd tr').length;#}
 
                 var empArr = [];
-                for (var i = 0; i < subCount; i++) {
+                for (var i = 0; i < 10; i++) {
 
                     var empNbr = $('#subEmpNbr_' + i).text();
 
-                    let data = {
-                        'empNbr': empNbr
-                    };
-                    empArr.push(data);
+                    if(empNbr){
+                        let data = {
+                            'empNbr': empNbr
+                        };
+                        empArr.push(data);
+                    }
                 }
 
                 formData.append('empArrList', JSON.stringify(empArr))
@@ -1264,18 +1286,19 @@
                 });
             }
             else{
-                const subCount = $('#signTd tr').length;
 
                 var empArr = [];
-                for (var i = 0; i < subCount; i++) {
+                for (var i = 0; i < 10; i++) {
 
                     var empNbr = $('#subEmpNbr_' + i).text();
-
-                    let data = {
-                        'empNbr': empNbr
-                    };
-                    empArr.push(data);
+                    if(empNbr){
+                        let data = {
+                            'empNbr': empNbr
+                        };
+                        empArr.push(data);
+                    }
                 }
+
 
                 formData.append('empArrList', JSON.stringify(empArr))
 

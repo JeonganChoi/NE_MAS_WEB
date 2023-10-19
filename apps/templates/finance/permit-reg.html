@@ -392,6 +392,10 @@
                 var acIogb = $('#acIogb_' + i).text();
                 var acNum = $('#cboActNum_' + i).text();
 
+                if(acNum == '' || acNum == null){
+                    acNum = document.getElementById('actNumber').value;
+                }
+
                 let data = {
                     'ioDate': ioDate,
                     'acEmp': acEmp,

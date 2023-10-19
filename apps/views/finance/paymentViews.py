@@ -35,9 +35,9 @@ def receivePay_search(request):
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(ACIOGB, ''), IFNULL(IODATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0)"
                            ", IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '')"
-                           ", IFNULL(MCODE, ''), IFNULL(FIN_OPT, ''), IFNULL(MCODENM, ''), IFNULL(ACTITLE, '') FROM "
+                           ", IFNULL(MCODE, ''), IFNULL(FIN_OPT, ''), IFNULL(MCODENM, ''), IFNULL(ACTITLE, ''), IFNULL(ACSEQN, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -48,7 +48,7 @@ def receivePay_search(request):
                            "     WHERE A.ACIOGB = '2' "
                            "     AND A.ICUST = '" + iCust + "'"
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN  "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -78,9 +78,9 @@ def receivePay_search(request):
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(ACIOGB, ''), IFNULL(IODATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0)"
                            ", IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '')"
-                           ", IFNULL(MCODE, ''), IFNULL(FIN_OPT, ''), IFNULL(MCODENM, ''), IFNULL(ACTITLE, '') FROM "
+                           ", IFNULL(MCODE, ''), IFNULL(FIN_OPT, ''), IFNULL(MCODENM, ''), IFNULL(ACTITLE, ''), IFNULL(ACSEQN, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
+                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -91,7 +91,7 @@ def receivePay_search(request):
                            "     WHERE A.ACIOGB = '2' "
                            "     AND A.ICUST = '" + iCust + "'"
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE "
+                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
                            "     ON A.ACCUST = B.CUST_NBR "
@@ -221,6 +221,7 @@ def paymentViews_search(request):
     acMcode = request.POST.get('acMcode')
     cboGbn = request.POST.get('cboGbn')
     cboCard = request.POST.get('cboCard')
+    acSeqn = request.POST.get("acSeqn")
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
@@ -261,9 +262,18 @@ def paymentViews_search(request):
                            "    WHERE A.IODATE = '" + str(ioDate) + "' "
                            "    AND A.ACIOGB = '" + str(acIogb) + "' "
                            "    AND A.ACACNUMBER = '" + str(acNum) + "' "
+                           "    AND A.ACSEQN = '" + str(acSeqn) + "'"
                            "    AND A.ICUST = '" + str(iCust) + "'")
             subresult = cursor.fetchall()
             print(subresult)
+
+            # 결재할사람
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME FROM OSSIGN A "
+                               " LEFT OUTER JOIN PIS1TB001 B ON A.EMP_NBR = B.EMP_NBR"
+                               " WHERE A.ACDATE = '" + str(ioDate) + "' AND A.ACIOGB = '" + str(acIogb) + "' "
+                               "   AND A.ACSEQN = '" + str(acSeqn) + "' AND A.ICUST = '" + iCust + "'  ")
+                permit = cursor.fetchall()
 
             # 거래처
             with connection.cursor() as cursor:
@@ -300,7 +310,7 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + iCust + "' ")
                 cboCard = cursor.fetchall()
 
-        return JsonResponse({'subList': subresult, 'cboCust': cboCust, 'cboGgn': cboGgn
+        return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
                                 , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
 
     if acIogb:
@@ -334,9 +344,18 @@ def paymentViews_search(request):
                            "    AND A.ACACNUMBER = '" + str(acNum) + "' "
                            "    AND A.ACCUST = '" + str(acCust) + "'"
                            "    AND A.MCODE = '" + str(acMcode) + "' "
+                           "    AND A.ACSEQN = '" + str(acSeqn) + "'"
                            "    AND A.ICUST = '" + str(iCust) + "'")
             subresult = cursor.fetchall()
             print(subresult)
+
+            # 결재할사람
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME FROM OSSIGN A "
+                               " LEFT OUTER JOIN PIS1TB001 B ON A.EMP_NBR = B.EMP_NBR"
+                               " WHERE A.ACDATE = '" + str(ioDate) + "' AND A.ACIOGB = '" + str(acIogb) + "' "
+                               "   AND A.ACSEQN = '" + str(acSeqn) + "' AND A.ICUST = '" + iCust + "' ")
+                permit = cursor.fetchall()
 
             # 거래처
             with connection.cursor() as cursor:
@@ -373,7 +392,7 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + iCust + "' ")
                 cboCard = cursor.fetchall()
 
-        return JsonResponse({'subList': subresult, 'cboCust': cboCust, 'cboGgn': cboGgn
+        return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
                                 , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
 
     # 출금
@@ -476,7 +495,7 @@ def paymentViews_save(request):
     acCust = request.POST.get("cboWitCust")     # 거래처
     acIogb = request.POST.get("cboWitGbn")  # 구분(입금2/출금1)
     mCode = request.POST.get("cboAdminCode")  # 관리계정
-    acCode = request.POST.get("cboActCode")  # 회계계정
+    # acCode = request.POST.get("cboActCode")  # 회계계정
     acAmts = request.POST.get("txtWitPrice")      # 금액
     acAcnumber = request.POST.get("cboWitActNum")     # 계좌번호
     acGubn = request.POST.get("cboWitMethod")     # 결제방법
@@ -484,6 +503,7 @@ def paymentViews_save(request):
     acDesc = request.POST.get("txtWitRemark")     # 비고
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
+    acDate = request.POST.get("txtExDate").replace('-', '')
 
     file = request.FILES.get('file')
 
@@ -516,7 +536,6 @@ def paymentViews_save(request):
             cursor.execute("    UPDATE  SISACCTT SET"
                            "     ACGUBN = '" + str(acGubn) + "' "
                            ",    MCODE = '" + str(mCode) + "' "
-                           ",    ACCODE = '" + str(acCode) + "' "
                            ",    ACTITLE = '" + str(acTitle) + "' "
                            ",    ACAMTS = '" + str(acAmts) + "' "
                            ",    ACACNUMBER = '" + str(acAcnumber) + "' "
@@ -535,6 +554,61 @@ def paymentViews_save(request):
                            "     AND ICUST = '" + str(iCust) + "' "
                            )
             connection.commit()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' ")
+            result2 = cursor.fetchall()  # 계좌 은행
+
+            seq = result2[0][0]
+
+        # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
+        opt = 'N'
+        empArrayLists = list(filter(len, empArray))
+        for data in range(len(empArrayLists)):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" +  str(acIogb) + "' "
+                               "        AND EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' AND ICUST = '" + iCust + "'  ")
+                result3 = cursor.fetchall()
+
+                if(len(result3) != 0):
+                    seq2 = result3[0][0]
+
+                    with connection.cursor() as cursor:
+                        cursor.execute(" UPDATE OSSIGN SET "
+                                       "        EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' "
+                                       "      , OPT = '" + opt + "' "
+                                       "      , ACIOGB = '" + str(acIogb) + "' "
+                                       " WHERE ACDATE = '" + str(acDate) + "'  "
+                                       "   AND ACSEQN = '" + str(seq) + "' "
+                                       "   AND SEQ = '" + str(seq2) + "' "
+                                       "   AND ICUST = '" + iCust + "' "
+                        )
+                        connection.commit()
+
+                else:
+                    with connection.cursor() as cursor:
+                        cursor.execute(" INSERT INTO OSSIGN "
+                                       "    ( "
+                                       "     ACDATE "
+                                       "   , ACSEQN "
+                                       "   , SEQ "
+                                       "   , EMP_NBR "
+                                       "   , OPT "
+                                       "   , ACIOGB "
+                                       "   , ICUST "                                                    
+                                       "    ) "
+                                       "    VALUES "
+                                       "    ( "
+                                       "     '" + str(acDate) + "' "
+                                       "     , '" + str(seq) + "' "
+                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
+                                       "     , '" + empArrayLists[data]["empNbr"] + "' "
+                                       "     , '" + opt + "' "
+                                       "     , '" + str(acIogb) + "' "
+                                       "     , '" + str(iCust) + "' "
+                                       "     ) "
+                        )
+                        connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 
@@ -560,7 +634,6 @@ def paymentViews_save(request):
                                ",    ACCUST "
                                ",    ACGUBN "
                                ",    MCODE "
-                               ",    ACCODE "
                                ",    ACAMTS "
                                ",    ACACNUMBER "
                                ",    ACRECN "
@@ -583,7 +656,6 @@ def paymentViews_save(request):
                                ",   '" + str(acCust) + "'"
                                ",   '" + str(acGubn) + "'"
                                ",   '" + str(mCode) + "'"
-                               ",   '" + str(acCode) + "'"
                                ",   '" + str(acAmts) + "'"
                                ",   '" + str(acAcnumber) + "'"
                                ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + ioDate + "' AND ACIOGB = '" + acIogb + "' AND ACSEQN = '" + acSeqn + "' ) "
@@ -611,41 +683,61 @@ def paymentViews_save(request):
                 empArrayLists = list(filter(len, empArray))
                 for data in range(len(empArrayLists)):
                     with connection.cursor() as cursor:
-                        cursor.execute(" INSERT INTO OSSIGN "
-                                       "    ( "
-                                       "     ACDATE "
-                                       "   , ACSEQN "
-                                       "   , SEQ "
-                                       "   , EMP_NBR "
-                                       "   , OPT "
-                                       "   , ACIOGB "
-                                       "   , ICUST "                                                    
-                                       "    ) "
-                                       "    VALUES "
-                                       "    ( "
-                                       "     '" + str(acDate) + "' "
-                                       "     , '" + str(seq) + "' "
-                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
-                                       "     , '" + empArrayLists[data]["empNbr"] + "' "
-                                       "     , '" + opt + "' "
-                                       "     , '" + str(acIogb) + "' "
-                                       "     , '" + str(iCust) + "' "
-                                       "     ) "
-                        )
-                        connection.commit()
+                        cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" +  str(acIogb) + "' "
+                                       "        AND EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' AND ICUST = '" + iCust + "'  ")
+                        result3 = cursor.fetchall()
+
+                        seq2 = result3[0][0]
+
+                    if result:
+                        with connection.cursor() as cursor:
+                            cursor.execute(" UPDATE OSSIGN SET "
+                                           "        EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' "
+                                           "      , OPT = '" + opt + "' "
+                                           "      , ACIOGB = '" + str(acIogb) + "' "
+                                           " WHERE ACDATE = '" + str(acDate) + "'  "
+                                           "   AND ACSEQN = '" + str(seq) + "' "
+                                           "   AND SEQ = '" + str(seq2) + "' "
+                                           "   AND ICUST = '" + iCust + "' "
+                            )
+                            connection.commit()
+                    else:
+                        with connection.cursor() as cursor:
+                            cursor.execute(" INSERT INTO OSSIGN "
+                                           "    ( "
+                                           "     ACDATE "
+                                           "   , ACSEQN "
+                                           "   , SEQ "
+                                           "   , EMP_NBR "
+                                           "   , OPT "
+                                           "   , ACIOGB "
+                                           "   , ICUST "                                                    
+                                           "    ) "
+                                           "    VALUES "
+                                           "    ( "
+                                           "     '" + str(acDate) + "' "
+                                           "     , '" + str(seq) + "' "
+                                           "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
+                                           "     , '" + empArrayLists[data]["empNbr"] + "' "
+                                           "     , '" + opt + "' "
+                                           "     , '" + str(acIogb) + "' "
+                                           "     , '" + str(iCust) + "' "
+                                           "     ) "
+                            )
+                            connection.commit()
 
             return JsonResponse({'sucYn': "Y"})
 
 
 def offSetViews_save(request):
     empArray = json.loads(request.POST.get('empArrList'))
-    ioDate = request.POST.get("txtWitRegDate").replace('-', '') # 등록일자
-    acSeqn = request.POST.get("txtWitSeq")               # 순번
+    ioDate = request.POST.get("txtWitRegDate2").replace('-', '') # 등록일자
+    acSeqn = request.POST.get("txtWitSeq2")               # 순번
     acTitle = request.POST.get("txtTitle")
     acIogb = request.POST.get("cboWitGbn")  # 구분(입금2/출금1)
-    acAmts = request.POST.get("txtWitPrice")      # 금액
-    acAcnumber = request.POST.get("cboWitActNum")  # 계좌번호
-    acDesc = request.POST.get("txtWitRemark")     # 비고
+    acAmts = request.POST.get("txtWitPrice2")      # 금액
+    acAcnumber = request.POST.get("cboWitActNum2")  # 계좌번호
+    acDesc = request.POST.get("txtWitRemark2")     # 비고
     # 대체
     outAct = request.POST.get("cboOutAct")     # 출금계좌
     inAct = request.POST.get("cboInAct")  # 입금계좌
