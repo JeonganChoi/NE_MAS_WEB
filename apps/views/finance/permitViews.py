@@ -25,7 +25,7 @@ def permitViews_search(request):
     if offSet and custCode:
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                           "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                            "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
@@ -34,11 +34,11 @@ def permitViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
                            " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON A.CRE_USER = C.EMP_NBR "
+                           " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
                            " ON A.MCODE = D.MCODE "
                            " WHERE B.EMP_NBR = '" + user + "' "
-                           " AND B.ACDATE <= '" + perDate + "' "
+                           " AND A.IODATE <= '" + perDate + "' "
                            " AND A.ACCUST = '" + custCode + "' "
                            " AND A.OFF_GBN = 'off'"
                            " AND A.ICUST = '" + iCust + "' "
@@ -50,7 +50,7 @@ def permitViews_search(request):
     elif custCode:
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                           "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                            "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
@@ -59,11 +59,11 @@ def permitViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
                            " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON A.CRE_USER = C.EMP_NBR "
+                           " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
                            " ON A.MCODE = D.MCODE "
                            " WHERE B.EMP_NBR = '" + user + "' "
-                           " AND B.ACDATE <= '" + perDate + "' "
+                           " AND A.IODATE <= '" + perDate + "' "
                            " AND A.ACCUST = '" + custCode + "' "
                            " AND A.ICUST = '" + iCust + "' "
                            " ORDER BY A.ACSEQN ASC ")
@@ -74,7 +74,7 @@ def permitViews_search(request):
     elif offSet:
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                           "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                            "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
@@ -83,11 +83,11 @@ def permitViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
                            " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON A.CRE_USER = C.EMP_NBR "
+                           " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
                            " ON A.MCODE = D.MCODE "
                            " WHERE B.EMP_NBR = '" + user + "' "
-                           " AND B.ACDATE <= '" + perDate + "' "
+                           " AND A.IODATE <= '" + perDate + "' "
                            " AND A.OFF_GBN = 'off'"
                            " AND A.ICUST = '" + iCust + "' "
                            " ORDER BY A.ACSEQN ASC ")
@@ -98,7 +98,7 @@ def permitViews_search(request):
     else:
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                           "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                            "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
@@ -107,11 +107,11 @@ def permitViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
                            " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON A.CRE_USER = C.EMP_NBR "
+                           " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
                            " ON A.MCODE = D.MCODE "
                            " WHERE B.EMP_NBR = '" + user + "' "
-                           " AND B.ACDATE <= '" + perDate + "' "
+                           " AND A.IODATE <= '" + perDate + "' "
                            " AND A.ICUST = '" + iCust + "' "
                            " ORDER BY A.ACSEQN ASC ")
             mainresult = cursor.fetchall()
@@ -137,6 +137,33 @@ def cboActNum_search(request):
 
         return JsonResponse({'cboActNum': cboActNum})
 
+
+
+def balanceChk(request):
+    acNumber = request.POST.get('acNum')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(ACAMTS, 0) FROM ACBALANCE WHERE ACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
+        result = cursor.fetchall()
+        total = result[0][0]
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
+        result2 = cursor.fetchall()
+        outTotal = result2[0][0]
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '2' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
+        result3 = cursor.fetchall()
+        inTotal = result3[0][0]
+
+        balance = (total - outTotal) + inTotal
+        print(balance)
+
+        return JsonResponse({'balance': balance, 'acNumber': acNumber})
+
 def permitViews_save(request):
     pmtArray = json.loads(request.POST.get('pmtArrList'))
     iCust = request.session.get('USER_ICUST')
@@ -149,12 +176,68 @@ def permitViews_save(request):
             cursor.execute(" UPDATE SISACCTT SET "
                            "    ACDATE = '" + pmtArrayLists[data]["ioDate"] + "'"
                            "  , FIN_OPT = '" + permit + "' "
-                           "  , ACACNUMBER = '" + pmtArrayLists[data]["acNum"] + "' "
+                           "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"] + "' "
                            "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
                            "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                            "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
                            "     AND ICUST = '" + iCust + "' "
             )
+            connection.commit()
+
+        # 매입/매출 상세 조회
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACTITLE, ACCUST, ACGUBN, MCODE, ACDESC FROM SISACCTT "
+                           "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
+                           "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                           "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                           "     AND ICUST = '" + iCust + "' ")
+            result = cursor.fetchall()
+
+        cust = result[0][1]
+        mCode = result[0][3]
+
+        if pmtArrayLists[data]["acIogb"] == '1':
+            title = '매입 상계'
+        if pmtArrayLists[data]["acIogb"] == '2':
+            title = '매출 상계'
+
+        # mCode, aCode 계정코드를 어떻게 저장하면 되는지 물어보
+
+        # 입금/출금으로 저장
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO SISACCTT "
+                           "   (    "
+                           "     IODATE "
+                           ",    ACSEQN "
+                           ",    ACIOGB "
+                           ",    ACTITLE "
+                           ",    ACCUST "
+                           ",    MCODE "
+                           ",    ACAMTS "
+                           ",    ACACNUMBER "
+                           ",    ICUST "
+                           ",    EXDATE "
+                           ",    ACDATE "
+                           ",    FIN_OPT "
+                           ",    FIN_AMTS "
+                           "    ) "
+                           "    VALUES "
+                           "    (   "
+                           "    '" + pmtArrayLists[data]["ioDate"] + "'"
+                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + pmtArrayLists[data]["ioDate"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "') "
+                           ",   '" + pmtArrayLists[data]["acIogb"] + "'"
+                           ",   '" + str(title) + "'"
+                           ",   '" + str(cust) + "'"
+                           ",   '" + str(mCode) + "'"
+                           ",   '" + pmtArrayLists[data]["acAmts"] + "'"
+                           ",   '" + pmtArrayLists[data]["acNum"] + "'"
+                           ",   '" + str(iCust) + "'"
+                           ",   '" + pmtArrayLists[data]["ioDate"] + "'"
+                           ",   '" + pmtArrayLists[data]["ioDate"] + "'"
+                           ",    'Y' "
+                           ",    '" + pmtArrayLists[data]["acAmts"] + "' "
+                           "    )   "
+                           )
             connection.commit()
 
     return JsonResponse({'sucYn': "Y"})

@@ -381,14 +381,8 @@
         {# 승인 버튼 #}
         $(document).on('click', "#btnPermit", function () {
 
-            var offSet = $('input[name=inputOffSet]:checked').val();
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             const subCount = $('#subTb tr').length;
-
-            for (var i = 0; i < subCount; i++) {
-                var acNum = $('#cboActNum_' + i).text();
-            }
-
 
             var pmtArr = [];
             for (var i = 0; i < subCount; i++) {
@@ -398,17 +392,39 @@
                 var acSeqn = $('#acSeqn_' + i).text();
                 var acIogb = $('#acIogb_' + i).text();
                 var acNum = $('#cboActNum_' + i).text();
+                var acAmts = $('#acAmts_' + i).text();
 
-                if(acNum == '' || acNum == null) {
+                if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
                 }
+
+                let chk = {"acNum": acNum}
+
+                $.ajax({
+                    type: "post",
+                    data: chk,
+                    url: '{% url "balanceChk" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var act = "";
+                        if(data.balance < acAmts){
+                            act = data.balance
+                            alert('선택한' + act +  '통장의 잔고가 부족합니다.')
+                            return;
+                        }
+                    }
+                });
 
                 let data = {
                     'ioDate': ioDate,
                     'acEmp': acEmp,
                     'acSeqn': acSeqn,
                     'acIogb': acIogb,
-                    'acNum': acNum
+                    'acNum': acNum,
+                    'acAmts': acAmts
                 };
                 pmtArr.push(data);
             }

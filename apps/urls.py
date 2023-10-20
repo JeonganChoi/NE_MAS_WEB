@@ -103,6 +103,7 @@ urlpatterns = [
     # 실행등록
     path('permit_reg/', permitViews.permitViews, name='permit_reg'),
     path('permit_reg_search/', permitViews.permitViews_search, name='permit_reg_search'),
+    path('balanceChk/', permitViews.balanceChk, name='balanceChk'),
     path('permit_reg_save/', permitViews.permitViews_save, name='permit_reg_save'),
     path('permit_cbo_search/', permitViews.cboActNum_search, name='permit_cbo_search'),
 
