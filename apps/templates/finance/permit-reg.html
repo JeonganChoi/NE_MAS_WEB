@@ -380,8 +380,15 @@
 
         {# 승인 버튼 #}
         $(document).on('click', "#btnPermit", function () {
+
+            var offSet = $('input[name=inputOffSet]:checked').val();
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             const subCount = $('#subTb tr').length;
+
+            for (var i = 0; i < subCount; i++) {
+                var acNum = $('#cboActNum_' + i).text();
+            }
+
 
             var pmtArr = [];
             for (var i = 0; i < subCount; i++) {
@@ -392,7 +399,7 @@
                 var acIogb = $('#acIogb_' + i).text();
                 var acNum = $('#cboActNum_' + i).text();
 
-                if(acNum == '' || acNum == null){
+                if(acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
                 }
 

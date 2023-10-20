@@ -74,6 +74,7 @@
                                   <col width="8%">
                                   <col width="10%">
                                   <col width="10%">
+                                  <col width="4%">
                                   <col width="10%">
                                   <col width="10%">
                                   <col width="10%">
@@ -87,6 +88,7 @@
                                 <th style="font-size: 0.85rem" class="p-1">거래일시</th>
                                 <th style="font-size: 0.85rem" class="p-1">계정 명</th>
                                 <th style="font-size: 0.85rem" class="p-1">회계 계정명</th>
+                                <th style="font-size: 0.85rem" class="p-1">구 분</th>
                                 <th style="font-size: 0.85rem" class="p-1">거래처</th>
                                 <th style="font-size: 0.85rem" class="p-1">맡기신 금액</th>
                                 <th style="font-size: 0.85rem" class="p-1">찾으신 금액</th>
@@ -618,10 +620,10 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
@@ -652,7 +654,7 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
@@ -819,6 +821,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -853,6 +856,7 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
