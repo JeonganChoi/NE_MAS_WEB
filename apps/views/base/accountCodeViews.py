@@ -41,7 +41,27 @@ def accountCodeViews_search(request):
                            )
             mresult = cursor.fetchall()
 
-        return JsonResponse({"subMList": mresult})
+        # 상위계정과목
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' ")
+            cboMCode = cursor.fetchall()
+
+        # 회계계정과목
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' ")
+            cboACode = cursor.fetchall()
+
+        # 구분1
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+            gbnesult = cursor.fetchall()
+
+        # 구분2
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
+            gbn2result = cursor.fetchall()
+
+        return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
 
     else:
         with connection.cursor() as cursor:

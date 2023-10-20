@@ -157,7 +157,7 @@
             var cboGbn2_M = "";
             var cboMCode_A = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
-            var cboGbnTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt_M = "";
             var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
             var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
@@ -185,7 +185,7 @@
                         {#var YN = list[i][12] === 'Y' ? '사용' : '미사용';#}
 
                         $("#adminMainTb").append(
-                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
@@ -264,7 +264,7 @@
                     for (var i = 0; i < list.length; i++) {
 
                         $("#adminMainTb").append(
-                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
@@ -289,7 +289,7 @@
             var cboGbn2_M = "";
             var cboMCode_A = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
-            var cboGbnTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt_M = "";
             var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
             var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
@@ -356,7 +356,7 @@
 
                     var combolist2 = data.cboGbn2;
                     for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist[i][0] == cboGbn2_M) {
+                        if (combolist2[i][0] == cboGbn2_M) {
                             cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                         } else {
                             cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";

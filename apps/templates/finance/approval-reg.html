@@ -319,8 +319,23 @@
                 success: function (data) {
                     var list = data.mainList;
 
+                    var text = "";
+
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
+                        if(gbn == '2'){
+                            text = '미결재'
+                        }
+                        if(gbn == '3'){
+                            text = '결재'
+                        }
+                        if(gbn == '4'){
+                            text = '미승인'
+                        }
+                        if(gbn == '5'){
+                            text = '승인'
+                        }
+
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
@@ -328,7 +343,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>미결재</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }

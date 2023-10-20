@@ -34,7 +34,7 @@
                 <div class="card border border-white shadow-xs">
                     <div class="card-header pb-0">
                         <div class="row p-0">
-                            <div class="col-lg-8 col-8">
+                            <div class="col-lg-6 col-6">
                               <div class="input-group shadow-none">
                                   <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>일자</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="height: 2rem">
@@ -42,18 +42,24 @@
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="height: 2rem">
                               </div>
                             </div>
-                            <div class="col-lg-4 col-4 text-end">
+                            <div class="col-lg-6 col-6 text-end">
                                  <button type="button" class="btn btn-sm bg-gradient-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
                             </div>
                         </div>
                         <div class="row p-0">
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>거래처</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌번호</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>잔액</label>
                                     <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem">
@@ -79,8 +85,8 @@
                             <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                               <tr>
                                 <th style="font-size: 0.85rem" class="p-1">거래일시</th>
-                                <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                 <th style="font-size: 0.85rem" class="p-1">계정 명</th>
+                                <th style="font-size: 0.85rem" class="p-1">회계 계정명</th>
                                 <th style="font-size: 0.85rem" class="p-1">거래처</th>
                                 <th style="font-size: 0.85rem" class="p-1">맡기신 금액</th>
                                 <th style="font-size: 0.85rem" class="p-1">찾으신 금액</th>
@@ -528,22 +534,13 @@
 
         });
 
-
-            {#        for (var i = 0; i < empArr.length; i++) {#}
-            {#    $("#signTd").append(#}
-            {#        "<td hidden id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'></td>" +#}
-            {#        "<td hidden class='text-center p-1' id='subSeq_" + i + "' style='font-size: 0.8rem'>" + i + "</td>" +#}
-            {#        "<td hidden class='text-center p-1' id='subEmpDpt_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empDpt + "</td>" +#}
-            {#        "<td hidden class='text-center p-1' id='subEmpGbn_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empGbn + "</td>" +#}
-            {#        "<td hidden class='text-center p-1' id='subEmpNbr_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNbr + "</td>" +#}
-            {#        "<td class='text-start p-1 border border-white' id='subEmpNme_" + i + "' style='font-size: 0.8rem'>" + empArr[i].empNme + "</td>");#}
-            {#}#}
     </script>
 
     <script>
         $(document).ready(function () {
 
             var cboCust = "";
+            var cboAct = "";
             var cboWitCust2 = "";
             var cboWitGbn = "";
             var cboAdminCode = "";
@@ -551,6 +548,7 @@
             var cboWitActNum = "";
             var cboWitCard = "";
             var cboCustTxt = "<option value=''>:: 선택 ::</option>";
+            var cboActTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitGbnTxt = "";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
@@ -559,6 +557,7 @@
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputCust").html("");
+            $("#inputAct").html("");
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
             $("#cboAdminCode").html("");
@@ -585,11 +584,12 @@
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
             var cboCust = document.getElementById('inputCust').value;
+            var cboAct = document.getElementById('inputAct').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust}
+            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust, "cboAct": cboAct}
 
             $.ajax({
                 type: "post",
@@ -613,7 +613,8 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>이월잔액</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
@@ -638,7 +639,7 @@
                         }
 
                         var check = "";
-                        if(list[i][10] == 'Y'){
+                        if(list[i][9] == 'Y'){
                             check = '승인';
                         }
                         else{
@@ -649,8 +650,9 @@
                             "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
@@ -673,7 +675,17 @@
                             cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
+
+                    var combolist2 = data.cboAct;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboAct) {
+                            cboActTxt = cboActTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            cboActTxt = cboActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
                     $("#inputCust").append(cboCustTxt);
+                    $("#inputAct").append(cboActTxt);
 
                     var acIogb = "";
                     var acDate = "";
@@ -775,11 +787,12 @@
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
             var cboCust = document.getElementById('inputCust').value;
+            var cboAct = document.getElementById('inputAct').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust}
+            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust, "cboAct": cboAct}
 
             $.ajax({
                 type: "post",
@@ -802,7 +815,7 @@
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>이월잔액</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
@@ -827,7 +840,7 @@
                         }
 
                         var check = "";
-                        if(list[i][10] == 'Y'){
+                        if(list[i][9] == 'Y'){
                             check = '승인';
                         }
                         else{
@@ -838,8 +851,8 @@
                             "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
