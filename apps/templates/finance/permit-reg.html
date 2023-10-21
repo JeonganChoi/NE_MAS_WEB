@@ -6,7 +6,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-{#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
+    {#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
     <div class="height-100"
          style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
     <div class="container-fluid py-1 my-2">
@@ -16,7 +16,8 @@
                     <div class="card-body pb-2">
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
-                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>시행 관리</h4>
+                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>시행
+                                    관리</h4>
                             </div>
                             <!--<div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
@@ -37,29 +38,42 @@
                         <div class="row p-0">
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래일자</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
+                                            class="fas fa-search me-2"></i>거래일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20"
+                                           type="date" name="inputDate" id="inputDate"
+                                           style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2"></div>
                             <div class="col-lg-2 col-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary text-white" style="font-size: 0.8rem" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2 fs-6"></i>조 회</button>
+                                <button type="button" class="btn btn-sm btn-primary text-white"
+                                        style="font-size: 0.8rem" id="btnSearch" name="btnSearch"><i
+                                        class="fas fa-search me-2 fs-6"></i>조 회
+                                </button>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>승인 일자</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
+                                            class="fas fa-search  me-2"></i>승인 일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20"
+                                           type="date" name="permitDate" id="permitDate"
+                                           style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌 번호</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actNumber" id="actNumber" style="height: 2rem; font-size: 0.8rem"></select>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
+                                            class="fas fa-search me-2"></i>계좌 번호</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20"
+                                            name="actNumber" id="actNumber"
+                                            style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2 text-end">
                                 <button type="button" class="btn btn-sm text-white"
-                                        style="background-color: darkgreen; font-size: 0.8rem" id="btnPermit" name="btnPermit">
+                                        style="background-color: darkgreen; font-size: 0.8rem" id="btnPermit"
+                                        name="btnPermit">
                                     <i class="fas fa-file-signature me-2 fs-6"></i>승인
                                 </button>
                             </div>
@@ -67,22 +81,32 @@
                         <div class="row p-0">
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래처</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCust" id="inputCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
+                                            class="fas fa-search me-2"></i>거래처</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20"
+                                            name="inputCust" id="inputCust"
+                                            style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="" style="font-size: 0.85rem; width: 4rem"><i class="fas fa-star me-2"></i>상계</label>
+                                    <label class="" style="font-size: 0.85rem; width: 4rem"><i
+                                            class="fas fa-star me-2"></i>상계</label>
                                     <input class="" value="off" type="checkbox" name="inputOffSet" id="inputOffSet"/>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2"></div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>상계 금액</label>
-                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="CostOffSet" id="CostOffSet" style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
+                                            class="fas fa-search  me-2"></i>상계 금액</label>
+                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20"
+                                           type="text" name="CostOffSet" id="CostOffSet"
+                                           style="height: 2rem; width: 10rem">
                                 </div>
+                            </div>
+                            <div class="col-lg-2 col-2">
+                                <label class="me-3" style="font-size: 0.85rem; width: 5rem" id="offLabel"></label>
                             </div>
                         </div>
                     </div>
@@ -90,42 +114,47 @@
                         <div class="row">
                             <div class="col-lg-6 col-6">
                                 <div class="table-responsive-sm height-400 overflow-auto border border-light">
-                                  <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
-                                      <colgroup>
-                                          <col width="3%">
-                                          <col width="8%">
-                                          <col width="15%">
-                                          <col width="10%">
-                                          <col width="10%">
-                                          <col hidden width="6%">
-                                          <col width="6%">
-                                          <col hidden width="6%">
-                                          <col hidden width="6%">
-                                      </colgroup>
-                                    <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue">
-                                      <tr>
-                                        <th style="font-size: 0.85rem" class="p-1">등록일자</th>
-                                        <th style="font-size: 0.85rem" class="p-1">제 목</th>
-                                        <th style="font-size: 0.85rem" class="p-1">계정 과목</th>
-                                        <th style="font-size: 0.85rem" class="p-1">금액</th>
-                                        <th style="font-size: 0.85rem" class="p-1">작성자</th>
-                                        <th style="font-size: 0.85rem" class="p-1">승인</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="mainTb">
-                                      <tr id="#mainTr" class="mainTr_tr">
+                                    <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
+                                        <colgroup>
+                                            <col width="3%">
+                                            <col width="8%">
+                                            <col width="15%">
+                                            <col width="10%">
+                                            <col width="10%">ㅇ
+                                            <col hidden width="6%">
+                                            <col width="6%">
+                                            <col hidden width="6%">
+                                            <col hidden width="6%">
+                                        </colgroup>
+                                        <thead class="text-white font-weight-bolder text-center"
+                                               style="background-color: darkslateblue">
+                                        <tr>
+                                            <th style="font-size: 0.85rem" class="p-1">등록일자</th>
+                                            <th style="font-size: 0.85rem" class="p-1">제 목</th>
+                                            <th style="font-size: 0.85rem" class="p-1">계정 과목</th>
+                                            <th style="font-size: 0.85rem" class="p-1">금액</th>
+                                            <th style="font-size: 0.85rem" class="p-1">작성자</th>
+                                            <th style="font-size: 0.85rem" class="p-1">승인</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="mainTb">
+                                        <tr id="#mainTr" class="mainTr_tr">
 
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div class="mt-2">
                                     <div class="row p-0">
                                         <div class="col-lg-8 col-8"></div>
                                         <div class="col-lg-4 col-4 text-end">
                                             <div class="input-group shadow-none">
-                                                <label class="me-3" style="font-size: 0.85rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
-                                                <input readonly class="form-control border border-light rounded-1 text-end me-2 w-20" type="text" name="inputPrice" id="inputPrice" style="height: 2rem; width: 10rem">
+                                                <label class="me-3" style="font-size: 0.85rem"><i
+                                                        class="ni ni-money-coins me-2"></i>합계 금액</label>
+                                                <input readonly
+                                                       class="form-control border border-light rounded-1 text-end me-2 w-20"
+                                                       type="text" name="inputPrice" id="inputPrice"
+                                                       style="height: 2rem; width: 10rem">
                                             </div>
                                         </div>
                                     </div>
@@ -133,32 +162,33 @@
                             </div>
                             <div class="col-lg-6 col-6">
                                 <div class="table-responsive-sm height-400 overflow-auto border border-light">
-                                  <table class="table mb-0 align-items-center justify-content-center" id="chkTb">
-                                      <colgroup>
-                                          <col width="8%">
-                                          <col width="15%">
-                                          <col width="10%">
-                                          <col hidden width="6%">
-                                          <col width="6%">
-                                          <col hidden width="10%">
-                                          <col hidden width="6%">
-                                          <col width="10%">
-                                      </colgroup>
-                                    <thead class="text-white font-weight-bolder text-center" style="background-color: darkgreen">
-                                      <tr>
-                                        <th style="font-size: 0.85rem" class="p-1">승인일자</th>
-                                        <th style="font-size: 0.85rem" class="p-1">제 목</th>
-                                        <th style="font-size: 0.85rem" class="p-1">지출금액</th>
-                                        <th style="font-size: 0.85rem" class="p-1">작성자</th>
-                                        <th style="font-size: 0.85rem" class="p-1">계좌번호</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="subTb">
-                                      <tr>
+                                    <table class="table mb-0 align-items-center justify-content-center" id="chkTb">
+                                        <colgroup>
+                                            <col width="8%">
+                                            <col width="15%">
+                                            <col width="10%">
+                                            <col hidden width="6%">
+                                            <col width="6%">
+                                            <col hidden width="10%">
+                                            <col hidden width="6%">
+                                            <col width="10%">
+                                        </colgroup>
+                                        <thead class="text-white font-weight-bolder text-center"
+                                               style="background-color: darkgreen">
+                                        <tr>
+                                            <th style="font-size: 0.85rem" class="p-1">승인일자</th>
+                                            <th style="font-size: 0.85rem" class="p-1">제 목</th>
+                                            <th style="font-size: 0.85rem" class="p-1">지출금액</th>
+                                            <th style="font-size: 0.85rem" class="p-1">작성자</th>
+                                            <th style="font-size: 0.85rem" class="p-1">계좌번호</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="subTb">
+                                        <tr>
 
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -250,7 +280,7 @@
         });
 
 
-        $(document).on('change', '#selectTb tbody tr td:last-child input[type=checkbox]', function() {
+        $(document).on('change', '#selectTb tbody tr td:last-child input[type=checkbox]', function () {
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(0).text()
             var ioDate = iDate.replace(/\-/g, '')
@@ -284,7 +314,7 @@
                     for (var i = 0; i < combolist.length; i++) {
                         if (combolist[i][0] == cboActNum) {
                             cboActNumTxt = cboActNumTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
-                        }else {
+                        } else {
                             cboActNumTxt = cboActNumTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
                         }
                     }
@@ -294,25 +324,19 @@
                 }
             })
 
+            var total = 0;
+            if ($(this).is(':checked')) {
 
-            if($(this).is(':checked')) {
-                if(offSet == 'off'){
-                    {# 출금 #}
-                    if(acIogb == '1') {
-                        offTotal -= Number(acAmts)
-                    }
-                    {# 입금 #}
-                    else if(acIogb == '2') {
-                        offTotal += Number(acAmts)
-                    }
-                }
-                if($('#subTr' + acEmp).length == 0) {
+                if ($('#subTr' + acEmp).length == 0) {
+                    var sDate = document.getElementById('permitDate').value;
+                    var perDate = sDate.replace(/\-/g, '')
 
                     var sub_tr_cnt = $('#chkTb tbody tr').length;
 
                     $("#subTb").append(
                         "<tr id='subTr" + acEmp + "' class='subTr_tr'>" +
-                        "<td class='text-center p-2' name='ioDate'   id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
+                        "<td class='text-center p-2' name='perDate'   id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate + "</td>" +
+                        "<td hidden class='text-center p-2' name='ioDate'   id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td class='text-start p-2' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-end p-2' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
                         "<td hidden class='text-start p-2' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
@@ -321,12 +345,44 @@
                         "<td hidden class='text-start p-2' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                         "<td class='text-center p-2'><select class='border border-light rounded-2 text-center' id='cboActNum' name='cboActNum' style='width: 12rem; height: 2rem; font-size: 0.8rem'></select></td> " +
                         "</tr> ");
+
+                    if (offSet == 'off') {
+                        {# 출금 #}
+                        if (acIogb == '1') {
+                            offTotal -= Number(acAmts)
+                        }
+                            {# 입금 #}
+                        else if (acIogb == '2') {
+                            offTotal += Number(acAmts)
+                        }
+                    }
+
                 }
 
+            } else {
+                for (var i = 0; i < 10; i++) {
+                    var acIogb2 = $('#acIogb_' + i).text();
+                    var acAmts2 = $('#acAmts_' + i).text();
+
+                    if (acIogb2 == '1') {
+                        offTotal -= Number(acAmts2)
+                    }
+                    if (acIogb2 == '2') {
+                        offTotal += Number(acAmts2)
+                    }
+
+                }
                 document.getElementById('CostOffSet').value = addComma(offTotal)
+                $('#subTr' + acEmp).remove();
+            }
+
+            if (offTotal < 0) {
+                document.getElementById('CostOffSet').value = addComma(offTotal)
+                document.getElementById('offLabel').innerHTML = '출금'
 
             } else {
-                $('#subTr' + acEmp).remove();
+                document.getElementById('CostOffSet').value = addComma(offTotal)
+                document.getElementById('offLabel').innerHTML = '입금'
             }
         });
 
@@ -368,10 +424,10 @@
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "</tr> ");
 
-                        total += Number(list[i][2])
-                    }
-                    document.getElementById('inputPrice').value = addComma(total)
 
+                    }
+
+                    document.getElementById('inputPrice').value = addComma(total)
                 }
             })
 
@@ -383,10 +439,14 @@
 
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             const subCount = $('#subTb tr').length;
+            var offSet = $('input[name=inputOffSet]:checked').val();
+            var actNum = document.getElementById('actNumber').value;
+            var perDate = document.getElementById('permitDate').value;
 
             var pmtArr = [];
             for (var i = 0; i < subCount; i++) {
 
+                var perDate = $('#perDate_' + i).text();
                 var ioDate = $('#ioDate_' + i).text();
                 var acEmp = $('#acEmp_' + i).text();
                 var acSeqn = $('#acSeqn_' + i).text();
@@ -410,15 +470,16 @@
                     dataType: 'json',
                     success: function (data) {
                         var act = "";
-                        if(data.balance < acAmts){
+                        if (data.balance < acAmts) {
                             act = data.balance
-                            alert('선택한' + act +  '통장의 잔고가 부족합니다.')
+                            alert('선택한' + act + '통장의 잔고가 부족합니다.')
                             return;
                         }
                     }
                 });
 
                 let data = {
+                    'perDate': perDate,
                     'ioDate': ioDate,
                     'acEmp': acEmp,
                     'acSeqn': acSeqn,
@@ -432,7 +493,10 @@
             $.ajax({
                 type: "post",
                 data: {
-                    'pmtArrList': JSON.stringify(pmtArr)
+                    'pmtArrList': JSON.stringify(pmtArr),
+                    'offSet': offSet,
+                    'actNum': actNum,
+                    'perDate': perDate
                 },
                 dataType: "json",
                 url: '{% url "permit_reg_save" %}',
