@@ -471,7 +471,7 @@
                     success: function (data) {
                         var act = "";
                         if (data.balance < acAmts) {
-                            act = data.balance
+                            act = data.acNumber
                             alert('선택한' + act + '통장의 잔고가 부족합니다.')
                             return;
                         }
