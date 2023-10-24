@@ -120,7 +120,7 @@
                                             <col width="8%">
                                             <col width="15%">
                                             <col width="10%">
-                                            <col width="10%">ㅇ
+                                            <col width="10%">
                                             <col hidden width="6%">
                                             <col width="6%">
                                             <col hidden width="6%">
@@ -346,43 +346,18 @@
                         "<td class='text-center p-2'><select class='border border-light rounded-2 text-center' id='cboActNum' name='cboActNum' style='width: 12rem; height: 2rem; font-size: 0.8rem'></select></td> " +
                         "</tr> ");
 
-                    if (offSet == 'off') {
-                        {# 출금 #}
-                        if (acIogb == '1') {
-                            offTotal -= Number(acAmts)
-                        }
-                            {# 입금 #}
-                        else if (acIogb == '2') {
-                            offTotal += Number(acAmts)
-                        }
-                    }
+                {#    1. 승인 여러개 체크시 쌓이지 않고, 빼면 다 빠짐 #}
 
+                {#    2. "상계 체크란이 체크됬을때만 "#}
+                {#    acIogb 구분 값이 1이면 출금이라서 - 처리/ 2이면 입금이라서 + 처리 #}
+{#                    단 계산해서 -값이더라도 -빼고 숫자만 상계금액에 보여주기#}
+
+{#                    3. 승인 버튼을 누르면 빈값이 들어간 1줄이 들어오고 데이터가 들어옴. #}
                 }
 
             } else {
-                for (var i = 0; i < 10; i++) {
-                    var acIogb2 = $('#acIogb_' + i).text();
-                    var acAmts2 = $('#acAmts_' + i).text();
 
-                    if (acIogb2 == '1') {
-                        offTotal -= Number(acAmts2)
-                    }
-                    if (acIogb2 == '2') {
-                        offTotal += Number(acAmts2)
-                    }
-
-                }
-                document.getElementById('CostOffSet').value = addComma(offTotal)
                 $('#subTr' + acEmp).remove();
-            }
-
-            if (offTotal < 0) {
-                document.getElementById('CostOffSet').value = addComma(offTotal)
-                document.getElementById('offLabel').innerHTML = '출금'
-
-            } else {
-                document.getElementById('CostOffSet').value = addComma(offTotal)
-                document.getElementById('offLabel').innerHTML = '입금'
             }
         });
 
@@ -471,8 +446,7 @@
                     success: function (data) {
                         var act = "";
                         if (data.balance < acAmts) {
-                            act = data.acNumber
-                            alert('선택한' + act + '통장의 잔고가 부족합니다.')
+                            alert('선택한 통장의 잔고가 부족합니다.')
                             return;
                         }
                     }

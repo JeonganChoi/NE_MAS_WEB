@@ -108,14 +108,14 @@ def accountCodeViews_search(request):
 
 
 def chkCodeViews_search(request):
-    mCode = request.POST.get("txtCode_M")
+    mCode = request.POST.get("mCode")
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' ")
         result = cursor.fetchall()
-        key = result[0][0]
+        print(result)
 
-        return JsonResponse({"key": key})
+        return JsonResponse({"key": result})
 
 
 def accountCodeViews_saveM(request):
@@ -136,49 +136,8 @@ def accountCodeViews_saveM(request):
     with connection.cursor() as cursor:
         cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' ")
         result = cursor.fetchall()
-        key = result[0][0]
 
-    if key == '' or key is None:
-
-        with connection.cursor() as cursor:
-              cursor.execute(" INSERT INTO OSCODEM "
-                             "   (    "
-                             "     MCODE "
-                             ",    MCODE_M "
-                             ",    ACODE "
-                             ",    MSEQ "
-                             ",    MCODENM "
-                             ",    MDESC "
-                             ",    GBN "
-                             ",    GBN2 "
-                             ",    OPT "
-                             ",    ICUST "
-                             ",    CRE_USER "
-                             ",    CRE_DT "
-                             ",    ICUST "
-                             "    ) "
-                             "    VALUES "
-                             "    (   "
-                             "    '" + str(mCode) + "' "
-                             ",   '" + str(mCode_M) + "' "
-                             ",   '" + str(mCode_A) + "' "
-                             ",   (SELECT IFNULL(MAX(A.MSEQ) + 1, 1) AS COUNTED FROM OSCODEM A ) "
-                             ",   '" + str(mCodeNme) + "' "
-                             ",   '" + str(mDesc) + "' "
-                             ",   '" + str(gbn) + "' "
-                             ",   '" + str(gbn2) + "' "
-                             ",   '" + str(opt) + "' "
-                             ",   '" + str(iCust) + "' "
-                             ",   '" + str(user) + "' "
-                             ",   date_format(now(), '%Y%m%d') "
-                             ",   '" + str(iCust) + "' "
-                             "    )   "
-                             )
-              connection.commit()
-
-              return JsonResponse({'sucYn': "Y"})
-
-    elif mSeq:
+    if result:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODE_M = '" + str(mCode_M) + "' "
@@ -198,7 +157,44 @@ def accountCodeViews_saveM(request):
 
             return JsonResponse({'sucYn': "Y"})
 
-    return render(request, 'base/base-actCode-reg.html')
+    else:
+        with connection.cursor() as cursor:
+              cursor.execute(" INSERT INTO OSCODEM "
+                             "   (    "
+                             "     MCODE "
+                             ",    MCODE_M "
+                             ",    ACODE "
+                             ",    MSEQ "
+                             ",    MCODENM "
+                             ",    MDESC "
+                             ",    GBN "
+                             ",    GBN2 "
+                             ",    OPT "
+                             ",    CRE_USER "
+                             ",    CRE_DT "
+                             ",    ICUST "
+                             "    ) "
+                             "    VALUES "
+                             "    (   "
+                             "    '" + str(mCode) + "' "
+                             ",   '" + str(mCode_M) + "' "
+                             ",   '" + str(mCode_A) + "' "
+                             ",   (SELECT IFNULL(MAX(A.MSEQ) + 1, 1) AS COUNTED FROM OSCODEM A ) "
+                             ",   '" + str(mCodeNme) + "' "
+                             ",   '" + str(mDesc) + "' "
+                             ",   '" + str(gbn) + "' "
+                             ",   '" + str(gbn2) + "' "
+                             ",   '" + str(opt) + "' "
+                             ",   '" + str(user) + "' "
+                             ",   date_format(now(), '%Y%m%d') "
+                             ",   '" + str(iCust) + "' "
+                             "    )   "
+                             )
+              connection.commit()
+
+              return JsonResponse({'sucYn': "Y"})
+
+
 
 
 def accountCodeViews_dltM(request):
@@ -210,8 +206,8 @@ def accountCodeViews_dltM(request):
         for code in dataList:
             acc_split_list = code.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSCODEM WHERE MCODE_M = '" + acc_split_list[0] + "' "
-                               "                       AND MSEQ = '" + acc_split_list[2] + "' "
+                cursor.execute(" DELETE FROM OSCODEM WHERE MCODE = '" + acc_split_list[0] + "' "
+                               "                       AND MSEQ = '" + acc_split_list[1] + "' "
                                "                       AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 

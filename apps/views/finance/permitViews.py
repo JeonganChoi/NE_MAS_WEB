@@ -100,13 +100,14 @@ def permitViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                           "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
+                           "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
                            " AND A.ACSEQN = B.ACSEQN "
                            " AND A.ICUST = B.ICUST "
-                           " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+                           " AND B.OPT != 'N' "
+                           " AND A.FIN_OPT = 'N' "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
@@ -116,6 +117,7 @@ def permitViews_search(request):
                            " AND A.ICUST = '" + iCust + "' "
                            " ORDER BY A.ACSEQN ASC ")
             mainresult = cursor.fetchall()
+            # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + iCust + "'")
@@ -148,17 +150,29 @@ def balanceChk(request):
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(ACAMTS, 0) FROM ACBALANCE WHERE ACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
         result = cursor.fetchall()
-        total = result[0][0]
+
+        if result:
+            total = result[0][0]
+        else:
+            total = 0
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
         result2 = cursor.fetchall()
         outTotal = result2[0][0]
+        if result:
+            outTotal = result2[0][0]
+        else:
+            outTotal = 0
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '2' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
         result3 = cursor.fetchall()
         inTotal = result3[0][0]
+        if result:
+            inTotal = result3[0][0]
+        else:
+            inTotal = 0
 
         balance = (total - outTotal) + inTotal
         print(balance)
@@ -255,6 +269,7 @@ def permitViews_save(request):
                                "    ACDATE = '" + pmtArrayLists[data]["perDate"] + "'"
                                "  , FIN_OPT = '" + permit + "' "
                                "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"] + "' "
+                               "  , ACACNUMBER = '" + actNum + "' "
                                "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
                                "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                                "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "

@@ -186,7 +186,7 @@
 
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
-                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][2] + "," + list[i][4] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -265,7 +265,7 @@
 
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
-                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></div></td>" +
+                            "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][2] + "," + list[i][4] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
@@ -398,6 +398,8 @@
                 return false
             }
 
+            let data = {"mCode": mCode}
+
             $.ajax({
                 type: "post",
                 data: data,
@@ -407,7 +409,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if(data.key != '' || data.key != null){
+                    if(data.key != ''){
                         alert('존재 하는 계정 과목 코드 입니다.')
                     }
                     else{
@@ -426,13 +428,12 @@
                             return false
                         }
 
-                        let data = {
+                        let data2 = {
                             'cboCodeType': mCodeType,
                             'mCode_M': mCode_M,
                             "mCode_A": mCode_A,
                             'txtCode_M': mCode,
-                            'txtCodeNme_M': mCodeNme
-                            ,
+                            'txtCodeNme_M': mCodeNme,
                             'txtSeq_M': mSeq,
                             'txtDesc_M': mDesc,
                             'cboGbn_M': cboGbn_M,
@@ -442,7 +443,7 @@
 
                         $.ajax({
                             type: "post",
-                            data: data,
+                            data: data2,
                             dataType: "json",
                             url: '{% url "base_accountCode_saveM" %}',
                             headers: {
@@ -452,10 +453,13 @@
 
                                 if (data.sucYn === 'Y') {
                                     alert('저장되었습니다.')
-                                    location.href = "{% url 'base_accountCode' %}";
+
+                                    {# 조회 콤보박스 클릭시 #}
+                                    {#$('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);#}
+                                    {# 입력란 초기화 #}
+                                    document.getElementById('btnClear').click();
                                 }
                             }
-
                         });
 
                     }
