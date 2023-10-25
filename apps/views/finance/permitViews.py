@@ -34,6 +34,7 @@ def permitViews_search(request):
                            " AND A.ACSEQN = B.ACSEQN "
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+                           " AND A.FIN_OPT = 'N' "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
@@ -59,6 +60,7 @@ def permitViews_search(request):
                            " AND A.ACSEQN = B.ACSEQN "
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+                           " AND A.FIN_OPT = 'N' "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
@@ -83,6 +85,7 @@ def permitViews_search(request):
                            " AND A.ACSEQN = B.ACSEQN "
                            " AND A.ICUST = B.ICUST "
                            " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+                           " AND A.FIN_OPT = 'N' "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
                            " LEFT OUTER JOIN OSCODEM D "
@@ -155,7 +158,7 @@ def balanceChk(request):
             total = result[0][0]
         else:
             total = 0
-
+    # 출금
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
         result2 = cursor.fetchall()
@@ -164,7 +167,7 @@ def balanceChk(request):
             outTotal = result2[0][0]
         else:
             outTotal = 0
-
+    # 입금
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '2' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
         result3 = cursor.fetchall()
@@ -191,24 +194,25 @@ def permitViews_save(request):
         balance = 0;
         pmtArrayLists = list(filter(len, pmtArray))
         for data in range(len(pmtArrayLists)):
-            with connection.cursor() as cursor:
-                cursor.execute(" UPDATE SISACCTT SET "
-                               "    ACDATE = '" + pmtArrayLists[data]["perDate"] + "'"
-                               "  , FIN_OPT = '" + permit + "' "
-                               "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"] + "' "
-                               "  , OFF_GBN = 'Y' "
-                               "  , OFF_DATE = '" + pmtArrayLists[data]["perDate"] + "' "
-                               "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
-                               "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
-                               "     AND ICUST = '" + iCust + "' "
-                )
-                connection.commit()
+            if pmtArrayLists[data]["acIogb"]:
+                with connection.cursor() as cursor:
+                    cursor.execute(" UPDATE SISACCTT SET "
+                                   "    ACDATE = '" + pmtArrayLists[data]["perDate"] + "'"
+                                   "  , FIN_OPT = '" + str(permit) + "' "
+                                   "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"] + "' "
+                                   "  , OFF_GBN = 'Y' "
+                                   "  , OFF_DATE = '" + pmtArrayLists[data]["perDate"] + "' "
+                                   "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
+                                   "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                                   "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                                   "     AND ICUST = '" + str(iCust) + "' "
+                    )
+                    connection.commit()
 
-            if pmtArrayLists[data]["acIogb"] == '1':
-                balance -= pmtArrayLists[data]["acAmts"]
-            if pmtArrayLists[data]["acIogb"] == '2':
-                balance += pmtArrayLists[data]["acAmts"]
+                if pmtArrayLists[data]["acIogb"] == '1':
+                    balance -= pmtArrayLists[data]["acAmts"]
+                if pmtArrayLists[data]["acIogb"] == '2':
+                    balance += pmtArrayLists[data]["acAmts"]
 
         if balance < 0:
             finalacIogb = '2'
@@ -264,15 +268,21 @@ def permitViews_save(request):
     else:
         pmtArrayLists = list(filter(len, pmtArray))
         for data in range(len(pmtArrayLists)):
-            with connection.cursor() as cursor:
-                cursor.execute(" UPDATE SISACCTT SET "
-                               "    ACDATE = '" + pmtArrayLists[data]["perDate"] + "'"
-                               "  , FIN_OPT = '" + permit + "' "
-                               "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"] + "' "
-                               "  , ACACNUMBER = '" + actNum + "' "
-                               "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
-                               "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
-                               "     AND ICUST = '" + iCust + "' "
-                )
-                connection.commit()
+            if pmtArrayLists[data]["acIogb"]:
+                amts = pmtArrayLists[data]["acAmts"]
+                acAmts = amts.replace(",", "")
+                print(acAmts)
+                with connection.cursor() as cursor:
+                    cursor.execute(" UPDATE SISACCTT SET "
+                                   "    ACDATE = '" + pmtArrayLists[data]["perDate"] + "'"
+                                   "  , FIN_OPT = '" + str(permit) + "' "
+                                   "  , FIN_AMTS = '" + str(acAmts) + "' "
+                                   "  , ACACNUMBER = '" + str(actNum) + "' "
+                                   "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"] + "' "
+                                   "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                                   "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                                   "     AND ICUST = '" + str(iCust) + "' "
+                    )
+                    connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
