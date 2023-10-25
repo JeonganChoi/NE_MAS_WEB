@@ -92,7 +92,7 @@
                                 <div class="input-group shadow-none">
                                     <label class="" style="font-size: 0.85rem; width: 4rem"><i
                                             class="fas fa-star me-2"></i>상계</label>
-                                    <input class="" value="off" type="checkbox" name="inputOffSet" id="inputOffSet"/>
+                                    <input class="" value="off" type="radio" name="inputOffSet" id="inputOffSet"/>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2"></div>
@@ -184,7 +184,7 @@
                                         </tr>
                                         </thead>
                                         <tbody id="subTb">
-                                        <tr>
+                                        <tr id="subTr" class="subTr_tr">
 
                                         </tr>
                                         </tbody>
@@ -282,6 +282,7 @@
 
         $(document).on('change', '#selectTb tbody tr td:last-child input[type=checkbox]', function () {
             var tr = $(this).parent().parent();
+
             var iDate = tr.children().eq(0).text()
             var ioDate = iDate.replace(/\-/g, '')
             var acTitle = tr.children().eq(1).text()
@@ -293,49 +294,19 @@
             var acIogb = tr.children().eq(7).text()
             var offTotal = 0;
 
-            var offSet = $('input[name=inputOffSet]:checked').val();
+            {#var offSet = $('input[name=inputOffSet]:checked').val();#}
 
-            var cboActNum = "";
-            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
-
-            $("#cboActNum").html("");
-
-
-            $.ajax({
-                type: "post",
-                url: '{% url "permit_cbo_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    var combolist = data.cboActNum;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboActNum) {
-                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
-                        } else {
-                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
-                        }
-                    }
-
-                    $("#cboActNum").append(cboActNumTxt);
-
-                }
-            })
 
             var total = 0;
             if ($(this).is(':checked')) {
 
-                if ($('#subTr' + acEmp).length == 0) {
-                    var sDate = document.getElementById('permitDate').value;
-                    var perDate = sDate.replace(/\-/g, '')
+                if ($('#subTr' + acSeqn).length == 0) {
 
                     var sub_tr_cnt = $('#chkTb tbody tr').length;
 
                     $("#subTb").append(
-                        "<tr id='subTr" + acEmp + "' class='subTr_tr'>" +
-                        "<td class='text-center p-2' name='perDate'   id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate + "</td>" +
+                        "<tr id='subTr" + acSeqn + "' class='subTr_tr'>" +
+                        "<td class='text-center p-2' name='perDate'   id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td hidden class='text-center p-2' name='ioDate'   id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td class='text-start p-2' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-end p-2' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
@@ -357,7 +328,7 @@
 
             } else {
 
-                $('#subTr' + acEmp).remove();
+                $('#subTr' + acSeqn).remove();
             }
         });
 
