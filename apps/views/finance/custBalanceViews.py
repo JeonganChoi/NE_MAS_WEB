@@ -83,7 +83,25 @@ def custBalRegViews_save(request):
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    if iUser is None and iUser == '':
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT MOCUST FROM SIOMONTT WHERE MOCUST = '" + moCust + "' AND ICUST = '" + iCust + "' ")
+        result = cursor.fetchall()
+
+    if result:
+        with connection.cursor() as cursor:
+            cursor.execute("   UPDATE SIOMONTT SET "
+                           "     MOIWOL  = '" + str(moIwol) + "' "
+                           ",    MOIWOL2 = '" + str(moIwol2) + "' "
+                           ",    MODESC = '" + str(moDesc) + "' "
+                           ",    MOdate = '" + str(regDt) + "' "
+                           ",    UPD_USER = '" + str(user) + "' "
+                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                           "     AND ICUST = '" + str(iCust) + "'"
+                           )
+            connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+    else:
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO SIOMONTT "
                            "   ("
@@ -111,23 +129,6 @@ def custBalRegViews_save(request):
             connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
-
-    elif iUser:
-        with connection.cursor() as cursor:
-            cursor.execute("   UPDATE SIOMONTT SET "
-                           "     MOIWOL  = '" + str(moIwol) + "' "
-                           ",    MOIWOL2 = '" + str(moIwol2) + "' "
-                           ",    MODESC = '" + str(moDesc) + "' "
-                           ",    MOdate = '" + str(regDt) + "' "
-                           ",    UPD_USER = '" + str(user) + "' "
-                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           "     AND ICUST = '" + str(iCust) + "'"
-                           )
-            connection.commit()
-
-            return JsonResponse({'sucYn': "Y"})
-
-        return render(request, 'finance/custBalance-reg.html')
 
 
 

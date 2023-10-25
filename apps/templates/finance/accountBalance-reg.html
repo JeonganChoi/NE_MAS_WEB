@@ -92,7 +92,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>은행명</label>
-                                <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboBankName" id="cboBankName"></select>
+                                <select  style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboBankName" id="cboBankName"></select>
                             </div>
                             <div class="col-6">
 
@@ -105,7 +105,7 @@
                             </div>
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>계좌명</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtActName" name="txtActName"/>
+                                <input  style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtActName" name="txtActName"/>
                             </div>
                         </div>
                         <div class="row">
@@ -138,14 +138,9 @@
     <script>
         $(document).ready(function () {
             var inputBankType = "";
-            var cboBankName = "";
             var inputBankTypeTxt = "<option value=''>:: 전체 ::</option>";
-            var cboBankNameTxt = "<option value=''>:: 선택 ::</option>";
-            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputBankType").html("");
-            $("#cboBankName").html("");
-            $("#cboActNum").html("");
 
             $.ajax({
                 type: "post",
@@ -181,18 +176,8 @@
                         }
                     }
 
-                    var combolist3 = data.inputBankType;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == cboBankName) {
-                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
 
                     $("#inputBankType").append(inputBankTypeTxt);
-                    $("#cboBankName").append(cboBankNameTxt);
-                    $("#cboActNum").append(cboActNumTxt);
 
                 }
             })

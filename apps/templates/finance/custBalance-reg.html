@@ -148,7 +148,9 @@
             $("#inputCustCode").html("");
             $("#cboCustCode").html("");
 
-            document.getElementById('inputStrDate').valueAsDate = new Date
+            var date = new Date();
+            date.setMonth(date.getMonth() - 1);
+            document.getElementById('inputStrDate').valueAsDate = date
             document.getElementById('inputEndDate').valueAsDate = new Date
 
             {#var empType = $('input[name=inputEmpCount]:checked').val();#}
@@ -335,7 +337,7 @@
                 success: function (data) {
                     if (data.sucYn === 'Y') {
                         alert('저장 되었습니다.')
-                        location.href = "{% url 'base_emp' %}";
+                        location.href = "{% url 'custBalance_reg' %}";
                     }
                 }
             });

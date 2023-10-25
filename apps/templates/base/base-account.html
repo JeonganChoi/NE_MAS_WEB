@@ -37,7 +37,7 @@
                                 <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>은행명</label>
                                 </span>
-                                <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cbobankType" id="cbobankType"></select>
+                                <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-1 text-dark" name="cbobankType" id="cbobankType"></select>
                             </div>
                           </div>
                           <div class="p-2 col-lg-9 mt-lg-0"></div>
@@ -202,16 +202,7 @@
                         }
                     }
 
-                    {#var combolist2 = data.cboTop;#}
-                    {#for (var i = 0; i < combolist2.length; i++) {#}
-                    {#    if (combolist2[i][0] == cboTop) {#}
-                    {#        cboTopTxt = cboTopTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
-                    {#    } else {#}
-                    {#        cboTopTxt = cboTopTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";#}
-                    {#    }#}
-                    {#}#}
-                    {#$("#cboTop").append(cboTopTxt);#}
-                    $("#cboBankType").append(cboBankTypeTxt);
+                    $("#cbobankType").append(cboBankTypeTxt);
                     $("#inputbankType").append(bankTypeTxt);
 
                 }
