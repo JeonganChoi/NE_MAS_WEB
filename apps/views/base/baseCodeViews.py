@@ -52,29 +52,41 @@ def baseCodeViews_save(request):
         RECNAM = recnam_list[r]
 
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO OSREFCP "
-                           "("
-                           "    RESKEY"
-                           "    , RECODE"
-                           "    , RECNAM"
-                           "    , RESNAM"
-                           "    , ICUST"
-                           ") "
-                           "VALUES"
-                           "("
-                           "    '" + str(RESKEY) + "'"
-                           "    , '" + str(RECODE) + "'"
-                           "    , '" + str(RECNAM) + "'"
-                           "    , '" + str(RESNAM) + "'"
-                           "    , '" + str(iCust) + "'"
-                           ")"
-                           " ON DUPLICATE KEY UPDATE "
-                           "     RECNAM = '" + str(RECNAM) + "'"
-                           "    , RESNAM = '" + str(RESNAM) + "'"
-                           )
-            connection.commit()
+            cursor.execute(" SELECT RESKEY FROM OSREFCP WHERE RECODE = '" + str(RECODE) + "' AND RESKEY = '" + str(RESKEY) + "' ")
+            result = cursor.fetchall()
 
-    return redirect('/base_code')
+        if result:
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE OSREFCP SET "
+                               "      RECNAM = '" + str(RECNAM) + "' "
+                               "    , RESNAM = '" + str(RESNAM) + "' "
+                               " WHERE RECODE = '" + str(RECODE) + "' "
+                               " AND RESKEY = '" + str(RESKEY) + "' "
+                               " AND ICUST = '" + str(iCust) + "'"
+                               )
+                connection.commit()
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO OSREFCP "
+                               "("
+                               "    RESKEY"
+                               "    , RECODE"
+                               "    , RECNAM"
+                               "    , RESNAM"
+                               "    , ICUST"
+                               ") "
+                               "VALUES"
+                               "("
+                               "    '" + str(RESKEY) + "'"
+                               "    , '" + str(RECODE) + "'"
+                               "    , '" + str(RECNAM) + "'"
+                               "    , '" + str(RESNAM) + "'"
+                               "    , '" + str(iCust) + "'"
+                               ")"
+                               )
+                connection.commit()
+
+    return render(request, 'base/base-code.html')
 
 
 def baseCodeViews_dlt(request):

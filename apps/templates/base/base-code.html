@@ -163,21 +163,24 @@
         firstVal = document.getElementById('mainCode').value;
         secVal = document.getElementById('mainName').value;
 
+        const subCount = $('#subTb tr').length;
+        const i = subCount + 1
 
         $("#subTb").append(
             "<tr id='#subTr' class='subTr_tr'>" +
             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkSub[]' name='chkSub[]'/></div></td>" +
             "<td hidden class='text-center'><input type='text' class='form-control' id='mainCode' name='mainCode' value='" + firstVal + "'/></td>" +
             "<td hidden class='text-center'><input type='text' class='form-control' id='mainName' name='mainName' value='" + secVal + "'/></td> " +
-            "<td class='p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' name='subCode' id='subCode'></td> " +
-            "<td class='p-0'><input class='form-control border-0 text-xs text-start shadow-none' type='text' name='subName' id='subName'></td>" +
+            "<td class='p-0'><input class='form-control border-0 text-xs text-center shadow-none' type='text' id='subCode' name='subCode'></td> " +
+            "<td class='p-0'><input class='form-control border-0 text-xs text-start shadow-none' type='text' id='subName' name='subName'></td>" +
             "</tr> "
         );
     });
 
     {# 저장 클릭 시 #}
     $(document).on('click', "btnSave", function () {
-        $('form').submit();
+
+            $('form').submit();
     });
 
     {#체크한 내용 삭제#}
