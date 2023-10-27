@@ -139,7 +139,7 @@
         var cboBankTxt = "<option value=''>:: 선택 ::</option>";
         var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
         var cboTypeTxt = "<option value=''>:: 선택 ::</option>";
-        var cboDayTxt = "<option value='last'> 말일 </option>";
+        var cboDayTxt = "<option value=''>:: 선택 ::</option>";
 
 
         $("#inputBank").html("");
@@ -211,6 +211,7 @@
                 for (var i = 1; i < 32; i++) {
                     cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
                 }
+                cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
 
                 $("#inputBank").append(inputBankTxt);
                 $("#cboBank").append(cboBankTxt);

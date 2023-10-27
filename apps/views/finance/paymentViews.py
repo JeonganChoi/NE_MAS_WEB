@@ -390,7 +390,7 @@ def paymentViews_search(request):
     if cboCard:
         # 거래처
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACCARD WHERE CARDNUM = '" + cboCard + "' AND ICUST = '" + iCust + "' ")
+            cursor.execute(" SELECT ACNUMBER, CARDNUM FROM ACCARD WHERE CARDNUM = '" + cboCard + "' AND ICUST = '" + iCust + "' ")
             cboActNum = cursor.fetchall()
 
             return JsonResponse({'cboActNum': cboActNum})
@@ -638,14 +638,32 @@ def paymentViews_search(request):
 
 
 def cboActNum_search(request):
+    cboBank = request.POST.get("cboBank")
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "'")
-        cboAct = cursor.fetchall()
+    if cboBank:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + cboBank + "' AND ICUST = '" + iCust + "'")
+            cboAct = cursor.fetchall()
 
-    return JsonResponse({'cboAct': cboAct})
+        return JsonResponse({'cboAct': cboAct})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "'")
+            cboAct = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A "
+                            " LEFT OUTER JOIN OSREFCP B "
+                            " ON A.ACBKCD = B.RESKEY "
+                            " AND B.RECODE = 'BNK' "
+                            " WHERE A.ICUST = '" + iCust + "' "
+                            " GROUP BY A.ACBKCD")
+            cboBank = cursor.fetchall()
+
+        return JsonResponse({'cboAct': cboAct, 'cboBank': cboBank})
 
 def paymentViews_save(request):
     empArray = json.loads(request.POST.get('empArrList'))
@@ -663,6 +681,7 @@ def paymentViews_save(request):
     acGubn = request.POST.get("cboWitMethod")     # 결제방법
     acCard = request.POST.get("cboWitCard")
     acDesc = request.POST.get("txtWitRemark")     # 비고
+    acUse = request.POST.get("txtWhere")  # 사용처
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
@@ -708,6 +727,7 @@ def paymentViews_save(request):
                            ",    EXDATE = '" + str(exDate) + "' "
                            ",    ACDATE = '" + str(acDate) + "' "
                            ",    ACCARD = '" + str(acCard) + "' "
+                           ",    ACUSE = '" + str(acUse) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE IODATE = '" + str(ioDate) + "' "
@@ -810,6 +830,7 @@ def paymentViews_save(request):
                                ",    EXDATE "
                                ",    ACDATE "
                                ",    ACCARD "
+                               ",    ACUSE "
                                ",    FIN_OPT "
                                "    ) "
                                "    VALUES "
@@ -834,6 +855,7 @@ def paymentViews_save(request):
                                ",    '" + str(exDate) + "'"
                                ",    '" + str(acDate) + "'"
                                ",    '" + str(acCard) + "'"
+                               ",    '" + str(acUse) + "'"
                                ",    'N' "
                                "    )   "
                                )

@@ -177,6 +177,8 @@ def empViews_save(request):
     empIpsa = request.POST.get('txtEmployDate').replace('-', '')
     empTesa = request.POST.get('txtQuitDate').replace('-', '')
     usage = request.POST.get('usage')
+
+    charge = request.POST.get('chkPermit')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
@@ -213,6 +215,7 @@ def empViews_save(request):
                            ",    EMP_IPSA = '" + str(empIpsa) + "' "
                            ",    EMP_TESA = '" + str(empTesa) + "'  "
                            ",    EMP_USE = '" + str(usage) + "'  "
+                           ",    EMP_CHARGE = '" + str(charge) + "'  "
                            ",    EMP_FOLDER = '" + str(Rfilenameloc) + "'  "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            ",    UPD_USER = '" + str(user) + "' "
@@ -237,6 +240,7 @@ def empViews_save(request):
                            ",    EMP_IPSA "
                            ",    EMP_TESA "
                            ",    EMP_USE "
+                           ",    EMP_CHARGE "
                            ",    EMP_FOLDER "
                            ",    CRE_DT "
                            ",    CRE_USER "
@@ -254,6 +258,7 @@ def empViews_save(request):
                            ",   '" + str(empIpsa) + "' "
                            ",   '" + str(empTesa) + "' "
                            ",   '" + str(usage) + "' "
+                           ",   '" + str(charge) + "' "
                            ",   '" + str(Rfilenameloc) + "' "
                            ",   date_format(now(), '%Y%m%d') "
                            ",   '" + str(user) + "' "

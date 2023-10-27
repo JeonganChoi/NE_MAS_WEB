@@ -13,7 +13,7 @@ def loginView(request):
     msg = None
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT EMP_NBR, EMP_NME, EMP_DEPT, EMP_GBN, ICUST "
+        cursor.execute("SELECT EMP_NBR, EMP_NME, EMP_DEPT, EMP_GBN, ICUST, EMP_CHARGE "
                        "    FROM pis1tb001 "
                        "    WHERE EMP_NBR = '" + str(userId) + "' AND EMP_PASS = '" + str(userPw) + "' ")
         result = cursor.fetchall()
@@ -26,10 +26,15 @@ def loginView(request):
             USER_NM = result[0][1]
             USER_GBN = result[0][3]
             USER_ICUST = result[0][4]
+            if result[0][5]:
+                USER_CHARGE = result[0][5]
+            else:
+                USER_CHARGE = 'NO'
             request.session['userId'] = userId
             request.session['USER_NM'] = USER_NM
             request.session['USER_GBN'] = USER_GBN
             request.session['USER_ICUST'] = USER_ICUST
+            request.session['USER_CHARGE'] = USER_CHARGE
 
             with connection.cursor() as cursor:
                 cursor.execute("INSERT INTO LOG_RECODE "

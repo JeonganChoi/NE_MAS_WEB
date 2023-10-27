@@ -38,42 +38,38 @@
                         <div class="row p-0">
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fas fa-search me-2"></i>거래일자</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20"
-                                           type="date" name="inputDate" id="inputDate"
-                                           style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-2"></div>
+                            <div class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>승인</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputPermit" id="inputPermit" style="height: 2rem; font-size: 0.8rem">
+                                        <option value="1">시행</option>
+                                        <option value="0">미시행</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-lg-2 col-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary text-white"
-                                        style="font-size: 0.8rem" id="btnSearch" name="btnSearch"><i
-                                        class="fas fa-search me-2 fs-6"></i>조 회
+                                <button type="button" class="btn btn-sm btn-primary text-white" style="font-size: 0.8rem" id="btnSearch" name="btnSearch">
+                                        <i class="fas fa-search me-2 fs-6"></i>조 회
                                 </button>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fas fa-search  me-2"></i>승인 일자</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20"
-                                           type="date" name="permitDate" id="permitDate"
-                                           style="height: 2rem; width: 10rem">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>승인 일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fas fa-search me-2"></i>계좌 번호</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20"
-                                            name="actNumber" id="actNumber"
-                                            style="height: 2rem; font-size: 0.8rem"></select>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌 번호</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actNumber" id="actNumber" style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2 text-end">
-                                <button type="button" class="btn btn-sm text-white"
-                                        style="background-color: darkgreen; font-size: 0.8rem" id="btnPermit"
-                                        name="btnPermit">
+                                <button type="button" class="btn btn-sm text-white" style="background-color: darkgreen; font-size: 0.8rem" id="btnPermit" name="btnPermit">
                                     <i class="fas fa-file-signature me-2 fs-6"></i>승인
                                 </button>
                             </div>
@@ -81,11 +77,8 @@
                         <div class="row p-0">
                             <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fas fa-search me-2"></i>거래처</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20"
-                                            name="inputCust" id="inputCust"
-                                            style="height: 2rem; font-size: 0.8rem"></select>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래처</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCust" id="inputCust" style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
@@ -375,8 +368,9 @@
             var perDate = sDate.replace(/\-/g, '')
             var custCode = document.getElementById('inputCust').value;
             var offSet = $('input[name=inputOffSet]:checked').val();
+            var permitGbn = document.getElementById('inputPermit').value;
 
-            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet}
+            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn}
 
             $.ajax({
                 type: "post",

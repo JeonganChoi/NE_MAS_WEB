@@ -154,6 +154,10 @@
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
                                         <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
+                                    <div class="col-4">
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용처</label>
+                                        <input class="form-control text-start" type="text" id="txtWhere" name="txtWhere" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4 cboCard">
@@ -190,29 +194,37 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-3">
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>출금 은행</label>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboOutBank" id="cboOutBank" style="height: 2rem; font-size: 0.8rem"></select>
+                                    </div>
+                                    <div class="col-3">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>출금 계좌 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboOutAct" id="cboOutAct" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>입금 은행</label>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboInBank" id="cboInBank" style="height: 2rem; font-size: 0.8rem"></select>
+                                    </div>
+                                    <div class="col-3">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>입금 계좌 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboInAct" id="cboInAct" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-4">
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
                                         <input class="form-control text-end" type="number" id="txtWitPrice2" name="txtWitPrice2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div hidden class="col-4">
                                         <input class="form-control text-end" type="number" id="txtWitSeq2" name="txtWitSeq2"/>
                                         <input class="form-control text-end" type="number" id="txtWitRecn2" name="txtWitRecn2"/>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <i class="far fa-calendar me-2"></i><label class="mt-2 text-sm" id="dateLabel">대체 일자</label>
                                         <input class="form-control text-center" type="date" id="txtOffDate" name="txtOffDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark2" name="txtWitRemark2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
@@ -227,7 +239,7 @@
                                         </div>-->
                                         <div class="form-group text-start mt-3">
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
-                                            <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>일
+                                            <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                         </div>
                                     </div>
                                     <div class="col-8 text-start">
@@ -1136,12 +1148,18 @@
                 $('.basic').hide();
 
                 var cboOutAct = "";
+                var cboOutBank = "";
                 var cboInAct = "";
+                var cboInBank = "";
                 var cboOutActTxt = "<option value=''>:: 선택 ::</option>";
+                var cboOutBankTxt = "<option value=''>:: 선택 ::</option>";
                 var cboInActTxt = "<option value=''>:: 선택 ::</option>";
+                var cboInBankTxt = "<option value=''>:: 선택 ::</option>";
 
                 $("#cboOutAct").html("");
+                $("#cboOutBank").html("");
                 $("#cboInAct").html("");
+                $("#cboInBank").html("");
 
                 $.ajax({
                     type: "post",
@@ -1169,8 +1187,28 @@
                             }
                         }
 
+                        var combolist3 = data.cboBank;
+                        for (var i = 0; i < combolist3.length; i++) {
+                            if (combolist3[i][0] == cboOutBank) {
+                                cboOutBankTxt = cboOutBankTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                            } else {
+                                cboOutBankTxt = cboOutBankTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                            }
+                        }
+
+                        var combolist4 = data.cboBank;
+                        for (var i = 0; i < combolist4.length; i++) {
+                            if (combolist4[i][0] == cboInBank) {
+                                cboInBankTxt = cboInBankTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                            } else {
+                                cboInBankTxt = cboInBankTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                            }
+                        }
+
                         $("#cboOutAct").append(cboOutActTxt);
+                        $("#cboOutBank").append(cboOutBankTxt);
                         $("#cboInAct").append(cboInActTxt);
+                        $("#cboInBank").append(cboInBankTxt);
                     }
                 })
             }
@@ -1181,7 +1219,7 @@
         $('#cboWitCard').change(function () {
 
             var cboWitActNum = "";
-            var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
+            var cboWitActNumTxt = "";
 
             $("#cboWitActNum").html("");
 
@@ -1219,6 +1257,75 @@
                 }
             })
 
+        });
+
+        {# 출금 계좌 계좌명 바인딩 #}
+        $('#cboOutBank').change(function () {
+            var cboOutAct = "";
+            var cboOutActTxt = "";
+
+            $("#cboOutAct").html("");
+
+            var cboBank = document.getElementById('cboOutBank').value
+
+            let data = {'cboBank': cboBank}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "cboAct" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var combolist = data.cboAct;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboOutAct) {
+                            cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboOutAct").append(cboOutActTxt);
+                }
+            })
+        });
+
+        {# 입금 계좌 계좌명 바인딩 #}
+        $('#cboInBank').change(function () {
+            var cboInAct = "";
+            var cboInActTxt = "";
+
+            $("#cboInAct").html("");
+
+            var cboBank = document.getElementById('cboInBank').value
+
+            let data = {'cboBank': cboBank}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "cboAct" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist2 = data.cboAct;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboInAct) {
+                            cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboInAct").append(cboInActTxt);
+                }
+            })
         });
 
 
