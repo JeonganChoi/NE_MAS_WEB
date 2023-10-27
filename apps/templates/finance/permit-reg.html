@@ -121,6 +121,7 @@
                                             <col width="15%">
                                             <col width="10%">
                                             <col width="10%">
+                                            <col width="10%">
                                             <col hidden width="6%">
                                             <col width="6%">
                                             <col hidden width="6%">
@@ -132,6 +133,7 @@
                                             <th style="font-size: 0.85rem" class="p-1">등록일자</th>
                                             <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                             <th style="font-size: 0.85rem" class="p-1">계정 과목</th>
+                                            <th style="font-size: 0.85rem" class="p-1">계좌번호</th>
                                             <th style="font-size: 0.85rem" class="p-1">금액</th>
                                             <th style="font-size: 0.85rem" class="p-1">작성자</th>
                                             <th style="font-size: 0.85rem" class="p-1">승인</th>
@@ -242,6 +244,7 @@
                             "<td class='text-center p-2' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
@@ -286,11 +289,12 @@
             var ioDate = iDate.replace(/\-/g, '')
             var acTitle = tr.children().eq(1).text()
             var acMcode = tr.children().eq(2).text()
-            var acAmts = tr.children().eq(3).text()
-            var acEmp = tr.children().eq(4).text()
-            var acNme = tr.children().eq(5).text()
-            var acSeqn = tr.children().eq(6).text()
-            var acIogb = tr.children().eq(7).text()
+            var acNum = tr.children().eq(3).text()
+            var acAmts = tr.children().eq(4).text()
+            var acEmp = tr.children().eq(5).text()
+            var acNme = tr.children().eq(6).text()
+            var acSeqn = tr.children().eq(7).text()
+            var acIogb = tr.children().eq(8).text()
 
             var count = $(this).closest('tr').prevAll().length;
 
@@ -345,31 +349,13 @@
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
-                        "<td class='text-center p-1'><select class='border border-light rounded-2 text-center' id='cboActNum' name='cboActNum' style='width: 12rem; height: 2rem; font-size: 0.8rem'></select></td> " +
+                        "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "</tr> ");
 
                 {#    2. "상계 체크란이 체크됬을때만 "#}
                 {#    acIogb 구분 값이 1이면 출금이라서 - 처리/ 2이면 입금이라서 + 처리 #}
 {#                    단 계산해서 -값이더라도 -빼고 숫자만 상계금액에 보여주기#}
 
-
-                    if(offSet){
-                        {# 출금 #}
-{#                        if(acIogb == '1'){#}
-{#                            offTotal -= acAmts#}
-{#                            if(offTotal < 0){#}
-{#                                offTotal = offTotal.replace("-", "")#}
-{#                            }#}
-{#                        }#}
-                        {# 입금 #}
-{#                        if(acIogb == '2'){#}
-{#                            offTotal += acAmts#}
-{#                            if (offTotal < 0) {#}
-{#                                offTotal = offTotal.replace("-", "")#}
-{#                            }#}
-{#                        }#}
-
-                    }
                     document.getElementById('CostOffSet').value = addComma(offTotal)
 
 
@@ -412,6 +398,7 @@
                             "<td class='text-center p-2' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
@@ -447,8 +434,8 @@
                 var acEmp = $('#acEmp_' + i).text();
                 var acSeqn = $('#acSeqn_' + i).text();
                 var acIogb = $('#acIogb_' + i).text();
-                var acNum = $('#cboActNum_' + i).text();
                 var acAmts = $('#acAmts_' + i).text();
+                var acNum = $('#acNum_' + i).text();
 
                 if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
