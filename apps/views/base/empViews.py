@@ -53,6 +53,39 @@ def empViews_search(request):
 
         return JsonResponse({"empList": empresult})
 
+    if empType == '2':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT "
+                           "       A.EMP_NBR "
+                           "     , IFNULL(A.EMP_GBN, '') "
+                           "     , IFNULL(A.EMP_NME, '') "
+                           "     , IFNULL(A.EMP_PASS, '') "
+                           "     , IFNULL(A.EMP_IPSA, '') "
+                           "     , IFNULL(A.EMP_TESA, '') "
+                           "     , IFNULL(A.EMP_JO, '') "
+                           "     , IFNULL(C.RESNAM, '') "
+                           "     , IFNULL(A.EMP_DEPT, '') "
+                           "     , IFNULL(B.RESNAM, '') "
+                           "     , IFNULL(A.EMP_TEL, '') "
+                           "     , IFNULL(A.EMP_COM, '') "
+                           "     , IFNULL(H.RESNAM, '')"
+                           "     , IFNULL(A.ICUST, '')"
+                           "   FROM pis1tb001 A "
+                           "   LEFT OUTER JOIN osrefcp B "
+                           "   ON B.RECODE = 'DPT' "
+                           "   AND A.EMP_DEPT = B.RESKEY "
+                           "   LEFT OUTER JOIN osrefcp C "
+                           "   ON C.RECODE = 'JJO' "
+                           "   AND A.EMP_JO = C.RESKEY "
+                           "   LEFT OUTER JOIN osrefcp H "
+                           "   ON H.RECODE = 'COM' "
+                           "   AND A.EMP_COM = H.RESKEY "
+                           "   WHERE A.EMP_TESA != '' AND A.ICUST = '" + str(iCust) + "'"
+                           )
+            empresult = cursor.fetchall()
+
+        return JsonResponse({"empList": empresult})
+
     if empCode != '' and empCode is not None:
         with connection.cursor() as cursor:
             cursor.execute(

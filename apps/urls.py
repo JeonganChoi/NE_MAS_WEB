@@ -76,6 +76,7 @@ urlpatterns = [
     path('cashBalance_acnum_search', cashBalanceViews.cashBalRegCboSearchViews, name='cashBalance_acnum_search'),
     path('cashBalance_acname_search', cashBalanceViews.cashBalRegAcNmSearchViews, name='cashBalance_acname_search'),
     path('cashBalacne_save', cashBalanceViews.cashBalRegSaveViews, name='cashBalacne_save'),
+    path('cashBalacne_dlt', cashBalanceViews.cashViews_dlt, name='cashBalacne_dlt'),
 
     #  매입 관리
     path('purchase_reg/', purchaseViews.purchaseRegViews, name='purchase_reg'),

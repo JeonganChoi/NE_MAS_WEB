@@ -124,41 +124,36 @@ def cashBalRegSearchScndViews(request):
 
 
 def cashBalRegCboSearchViews(request):
-    SearchBank = request.POST.get('bankCode')
+    bank = request.POST.get('bankCode')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 계좌번호 란에 콤보박스에 바인딩
     with connection.cursor() as cursor:
-        cursor.execute(
-            " SELECT"
-            "         IFNULL(C.RESKEY,'') AS RESKEY"
-            "        ,IFNULL(B.ACNUM_NAME,'') AS ACNUM_NAME"
-            "        ,IFNULL(A.ACNUMBER,'') AS ACNUMBER"
-            " FROM ACCASHP A"
-            " LEFT OUTER JOIN ACNUMBER B"
-            " ON A.ACNUMBER = B.ACNUMBER"
-            " LEFT OUTER JOIN OSREFCP C"
-            " ON B.ACBKCD = C.RESKEY"
-            " WHERE C.RECODE = 'BNK'"
-            " AND C.RESKEY = '" + SearchBank + "' "
-            " AND A.ICUST = '" + str(iCust) + "'"
-            " GROUP BY C.RESKEY, B.ACNUM_NAME, A.ACNUMBER"
-
-
+        cursor.execute(" SELECT "
+                       "         IFNULL(C.RESKEY,'') AS RESKEY "
+                       "        ,IFNULL(B.ACNUM_NAME,'') AS ACNUM_NAME "
+                       "        ,IFNULL(B.ACNUMBER,'') AS ACNUMBER "
+                       " FROM ACNUMBER B "
+                       " LEFT OUTER JOIN OSREFCP C "
+                       " ON B.ACBKCD = C.RESKEY "
+                       " WHERE C.RECODE = 'BNK' "
+                       " AND B.ACBKCD = '" + bank + "' "
+                       " AND B.ICUST = '" + iCust + "' "
+                       " GROUP BY C.RESKEY, B.ACNUM_NAME, B.ACNUMBER "
             )
         acnumlist = cursor.fetchall()
 
     return JsonResponse({'acnumlist': acnumlist})
 
 def cashBalRegAcNmSearchViews(request):
-    SearchBankAcNum = request.POST.get('acnumcode')
+    actNum = request.POST.get('acnumcode')
     iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 계좌번호 란에 콤보박스에 바인딩
     with connection.cursor() as cursor:
         cursor.execute(
-            " SELECT ACNUM_NAME FROM ACNUMBER WHERE ACNUMBER = '" + SearchBankAcNum + "' WHERE ICUST = '" + str(iCust) + "' "
+            " SELECT ACNUM_NAME FROM ACNUMBER WHERE ACNUMBER = '" + actNum + "' AND ICUST = '" + str(iCust) + "' "
             )
         acnamelist = cursor.fetchall()
 
@@ -168,7 +163,7 @@ def cashBalRegAcNmSearchViews(request):
 
 def cashBalRegSaveViews(request):
     ActNum = request.POST.get("cboActNum")
-    # RAcNum = ActNum[2:]
+    RAcNum = ActNum[2:]
     RegDate = request.POST.get("txtRegDate").replace('-', '')
     Amount = request.POST.get("txtAmount")
     Bigo = request.POST.get("txtBigo")
@@ -178,9 +173,9 @@ def cashBalRegSaveViews(request):
     with connection.cursor() as cursor:
         cursor.execute(" SELECT ACNUMBER FROM ACCASHP WHERE ACNUMBER = '" + ActNum + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
-        acNum = chkresult[0][0]
 
         if chkresult:
+            acNum = chkresult[0][0]
             with connection.cursor() as cursor:
                 cursor.execute(" UPDATE ACCASHP SET "
                                "     ACAMTS = '" + str(Amount) + "' "
@@ -211,7 +206,7 @@ def cashBalRegSaveViews(request):
                                ") "
                                "    VALUES "
                                "    ("
-                               "    '" + str(ActNum) + "' "
+                               "    '" + str(RAcNum) + "' "
                                ",   '" + str(RegDate) + "' "
                                ",   '" + str(Amount) + "'"
                                ",   '" + str(Bigo) + "'"
@@ -226,5 +221,22 @@ def cashBalRegSaveViews(request):
             return JsonResponse({'sucYn': "Y"})
 
 
+def cashViews_dlt(request):
+    iCust = request.session.get('USER_ICUST')
 
+    if request.method == "POST":
+        dataList = json.loads(request.POST.get('arrList'))
+        print(dataList)
+        for act in dataList:
+            acc_split_list = act.split(',')
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM ACCASHP WHERE ACNUMBER = '" + acc_split_list[1] + "' "
+                               "                        AND ACDATE = '" + acc_split_list[2] + "' "
+                               "                        AND ICUST = '" + iCust + "'")
+                connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    else:
+        return render(request, 'base/base-card.html')
 

@@ -51,7 +51,7 @@
                                 <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 0.8rem">퇴직자</label>
                                 </span>
-                                <input type="radio" id="i조nputEmpCount" name="inputEmpCount" value="0"/>
+                                <input type="radio" id="inputEmpCount" name="inputEmpCount" value="0"/>
                                 <span class="input-group-text text-body bg-transparent border-0">
                                     <label style="font-size: 0.8rem">전 체</label>
                                 </span>
@@ -165,31 +165,28 @@
                                     <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row mt-4">
+                                <!--<div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용 유무</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="usage" id="usage">
                                         <option value="0">사용</option>
                                         <option value="1">미사용</option>
                                     </select>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex mt-4">
-                                        <label class="text-danger" style="font-size: 0.8rem; width: 4rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승인자</label>
-                                        <input type="checkbox" id="chkPermit" name="chkPermit" value="charge"/>
-                                    </div>
+                                </div>-->
+                                <div class="col-6"></div>
+                                <div class="col-6 text-end">
+                                    <label class="text-danger me-2" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승 인</label>
+                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="charge"/>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-6"></div>
+                                <div class="col-6 text-end">
                                     <div class="form-group">
-                                        <label class="mt-4 form-label"><i class="fas fa-signature me-2"></i>Signature</label>
-                                        <div class="fallback">
-                                            <img id="sign" name="sign" alt="" src="" class="img-fluid border border-light rounded-2" style="height: 15vh; width: 100%">
-                                        </div>
+                                        <label class="mt-4 form-label" style="font-size: 1rem"><i class="fas fa-signature me-2"></i>Signature</label>
                                         <div class="form-group text-end mt-1 text-sm">
-                                            <input name="file" id="file" type="file" multiple class=""/>
-                                            <a class="btn btn-outline-dark btn-sm mt-2" style="font-size: 0.7rem" type="button" id="btnImgDlt">사진 초기화</a>
+                                            <a class="btn btn-outline-primary btn-sm mt-2" style="font-size: 0.7rem" type="button" id="btnImgAdd">파일 선택</a>
+                                            <a class="btn btn-outline-dark btn-sm mt-2" style="font-size: 0.7rem" type="button" id="btnImgDlt">파일 초기화</a>
                                         </div>
                                     </div>
                                 </div>
