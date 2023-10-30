@@ -281,7 +281,7 @@ def apvLine_modal_search(request):
         for emp in empList:
             acc_split_list = emp.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT EMP_DEPT, EMP_GBN, EMP_NBR, EMP_NME "
+                cursor.execute(" SELECT IFNULL(EMP_DEPT, ''), IFNULL(EMP_GBN, ''), IFNULL(EMP_NBR, ''), IFNULL(EMP_NME, '') "
                                " FROM PIS1TB001 "
                                " WHERE EMP_DEPT = '" + acc_split_list[0] + "' AND EMP_GBN = '" + acc_split_list[1] + "' "
                                " AND EMP_NBR = '" + acc_split_list[2] + "' AND ICUST = '" + iCust + "' ")
@@ -291,7 +291,8 @@ def apvLine_modal_search(request):
 
     if cboDpt:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.EMP_DEPT, B.RESNAM, A.EMP_GBN, C.RESNAM, A.EMP_NBR, A.EMP_NME "
+            cursor.execute(" SELECT IFNULL(A.EMP_DEPT, ''), IFNULL(B.RESNAM, ''), IFNULL(A.EMP_GBN, '')"
+                           "        , IFNULL(C.RESNAM, ''), IFNULL(A.EMP_NBR, ''), IFNULL(A.EMP_NME, '') "
                            " FROM PIS1TB001 A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.EMP_DEPT = B.RESKEY "
@@ -299,7 +300,7 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE C.RESKEY LIKE '3%' "
+                           " WHERE A.EMP_LIMIT != '' "
                            " AND A.ICUST = '" + iCust + "'"
                            " AND A.EMP_DEPT = '" + cboDpt + "' ")
             mainresult = cursor.fetchall()
@@ -308,7 +309,8 @@ def apvLine_modal_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.EMP_DEPT, B.RESNAM, A.EMP_GBN, C.RESNAM, A.EMP_NBR, A.EMP_NME "
+            cursor.execute(" SELECT IFNULL(A.EMP_DEPT, ''), IFNULL(B.RESNAM, ''), IFNULL(A.EMP_GBN, '')"
+                           "        , IFNULL(C.RESNAM, ''), IFNULL(A.EMP_NBR, ''), IFNULL(A.EMP_NME, '') "
                            " FROM PIS1TB001 A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.EMP_DEPT = B.RESKEY "
@@ -316,9 +318,10 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE C.RESKEY LIKE '3%' "
+                           " WHERE A.EMP_LIMIT != '' "
                            " AND A.ICUST = '" + iCust + "'")
             mainresult = cursor.fetchall()
+            print(mainresult)
 
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' AND ICUST = '" + iCust + "' ORDER BY RESKEY ")
