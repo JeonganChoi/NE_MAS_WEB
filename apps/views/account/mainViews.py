@@ -13,7 +13,8 @@ def loginView(request):
     msg = None
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT EMP_NBR, EMP_NME, EMP_DEPT, EMP_GBN, ICUST, EMP_CHARGE "
+        cursor.execute("SELECT IFNULL(EMP_NBR, ''), IFNULL(EMP_NME, ''), IFNULL(EMP_DEPT, ''), IFNULL(EMP_GBN, '') "
+                       "        , IFNULL(ICUST, ''), IFNULL(EMP_CHARGE, ''), IFNULL(EMP_TESA, '') "
                        "    FROM pis1tb001 "
                        "    WHERE EMP_NBR = '" + str(userId) + "' AND EMP_PASS = '" + str(userPw) + "' ")
         result = cursor.fetchall()
@@ -23,42 +24,47 @@ def loginView(request):
             msg = '아이디 또는 비밀번호가 일치 하지 않습니다.'
             return render(request, "account/login.html", {"msg": msg})
         else:
-            USER_NM = result[0][1]
-            USER_GBN = result[0][3]
-            USER_ICUST = result[0][4]
-            if result[0][5]:
-                USER_CHARGE = result[0][5]
+            tesa = result[0][6]
+            if tesa != '':
+                msg = '사용 불가능한 아이디입니다.'
+                return render(request, "account/login.html", {"msg": msg})
             else:
-                USER_CHARGE = 'NO'
-            request.session['userId'] = userId
-            request.session['USER_NM'] = USER_NM
-            request.session['USER_GBN'] = USER_GBN
-            request.session['USER_ICUST'] = USER_ICUST
-            request.session['USER_CHARGE'] = USER_CHARGE
+                USER_NM = result[0][1]
+                USER_GBN = result[0][3]
+                USER_ICUST = result[0][4]
+                if result[0][5] != '':
+                    USER_CHARGE = result[0][5]
+                else:
+                    USER_CHARGE = 'NO'
+                request.session['userId'] = userId
+                request.session['USER_NM'] = USER_NM
+                request.session['USER_GBN'] = USER_GBN
+                request.session['USER_ICUST'] = USER_ICUST
+                request.session['USER_CHARGE'] = USER_CHARGE
 
-            with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO LOG_RECODE "
-                               "(LOG_SEQ"
-                               ", USER_ID"
-                               ", USER_NM"
-                               ", LOGIN_DT"
-                               ", ICUST"
-                               ") "
-                               "VALUES"
-                               "("
-                               "(SELECT IFNULL(MAX(LOG_SEQ) + 1, 1) AS LOG_SEQ FROM LOG_RECODE A) "
-                               ", '" + userId + "'"
-                               ", '" + USER_NM + "'"
-                               ", NOW() "
-                               ", '" + USER_ICUST + "'"
-                               ")"
-                               )
-                connection.commit()
+                with connection.cursor() as cursor:
+                    cursor.execute("INSERT INTO LOG_RECODE "
+                                   "(LOG_SEQ"
+                                   ", USER_ID"
+                                   ", USER_NM"
+                                   ", LOGIN_DT"
+                                   ", ICUST"
+                                   ") "
+                                   "VALUES"
+                                   "("
+                                   "(SELECT IFNULL(MAX(LOG_SEQ) + 1, 1) AS LOG_SEQ FROM LOG_RECODE A) "
+                                   ", '" + userId + "'"
+                                   ", '" + USER_NM + "'"
+                                   ", NOW() "
+                                   ", '" + USER_ICUST + "'"
+                                   ")"
+                                   )
+                    connection.commit()
 
-        # return render(request, "home/index.html")
-    return JsonResponse({'login': "Y"})
+            # return render(request, "home/index.html")
+        return JsonResponse({'login': "Y"})
 
-    return render(request, "home/index.html", {"msg": msg})
+        return render(request, "home/index.html", {"msg": msg})
 
 
 

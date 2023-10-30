@@ -24,14 +24,15 @@ def cardViews_search(request):
 
     if cardNum and actNum:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER"
-                           "        , A.GBN, C.RESNAM "
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
+                           "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, '') "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
                            " AND B.RECODE = 'BNK' "
                            " LEFT OUTER JOIN OSREFCP C "
-                           " ON A.ACBKCD = C.RESKEY "
+                           " ON A.GBN = C.RESKEY "
                            " AND C.RECODE = 'COT' "
                            " WHERE A.CARDNUM = '" + str(cardNum) + "' "
                            "   AND A.ACNUMBER = '" + str(actNum) + "' "
@@ -40,29 +41,30 @@ def cardViews_search(request):
             cardresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
             cboBank = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
             cboAct = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' AND ICUST = '" + str(iCust) + "' ")
             cboType = cursor.fetchall()
 
         return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
 
     elif bankCode:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER"
-                           "        , A.GBN, C.RESNAM "
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
+                           "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, '') "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
                            " AND B.RECODE = 'BNK' "
                            " LEFT OUTER JOIN OSREFCP C "
-                           " ON A.ACBKCD = C.RESKEY "
+                           " ON A.GBN = C.RESKEY "
                            " AND C.RECODE = 'COT' "
                            " WHERE A.ACBKCD = '" + str(bankCode) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")
@@ -72,28 +74,29 @@ def cardViews_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.CARDNUM, A.ACNUMBER, A.ACBKCD, B.RESNAM, A.ACPAYDTE, A.ACDESC, A.CRE_USER"
-                           "        , A.GBN, C.RESNAM  "
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, '')"
+                           "        , IFNULL(B.RESNAM, ''), IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '')"
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, '')  "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
                            " AND B.RECODE = 'BNK' "
                            " LEFT OUTER JOIN OSREFCP C "
-                           " ON A.ACBKCD = C.RESKEY "
+                           " ON A.GBN = C.RESKEY "
                            " AND C.RECODE = 'COT' "
                            " WHERE A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
             cboBank = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
             cboAct = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' AND ICUST = '" + str(iCust) + "' ")
             cboType = cursor.fetchall()
 
         return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
@@ -103,14 +106,14 @@ def cardViews_save(request):
     cboBank = request.POST.get('cboBank')
     cardNum = request.POST.get('txtCardNum')
     actNum = request.POST.get('cboActNum')
-    payDate = request.POST.get('txtPayDate')
+    payDate = request.POST.get('cboDay')
     acRemark = request.POST.get('txtRemark')
     cardType = request.POST.get('cboType')
     user = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDNUM = '" + cardNum + "' ")
+        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDNUM = '" + cardNum + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
 
     if result:

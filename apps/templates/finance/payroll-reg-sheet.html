@@ -613,9 +613,7 @@
                     $txtPmGts.each(function() {
                        pmGtg.push($(this).val());
                     });
-                    {#for (var j = 0; j < $txtPmGts.length; j++) {#}
-                    {#    pmGtg.push($('#txtPmGts_'+ i + '_' + j).val());#}
-                    {#}#}
+
                     var pmGott = $('#txtPmGott_' + i).val();
                     var pmJitt = $('#txtPmJitt_' + i).val();
 
@@ -650,11 +648,6 @@
                         'pmWwpy': pmWwpy,
                         'pmYupy': pmYupy,
                         'pmGsu': pmGsu,
-                        {#'pmGsu1': pmGsu0,#}
-                        {#'pmGsu2': pmGsu1,#}
-                        {#'pmGsu3': pmGsu2,#}
-                        {#'pmGsu4': pmGsu3,#}
-                        {#'pmGsu5': pmGsu4,#}
                         'pmPytt': pmPytt,
                         'pmKups': pmKups,
                         'pmMeps': pmMeps,
@@ -662,9 +655,6 @@
                         'pmTax3': pmTax3,
                         'pmGops': pmGops,
                         'pmGtg': pmGtg,
-                        {#'pmGtg1': pmGtg0,#}
-                        {#'pmGtg2': pmGtg1,#}
-                        {#'pmGtg3': pmGtg2,#}
                         'pmGott': pmGott,
                         'pmJitt': pmJitt
                     };

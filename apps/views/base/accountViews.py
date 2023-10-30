@@ -48,16 +48,16 @@ def accountViews_search(request):
                            "    ON A.ACBKCD = B.RESKEY "
                            "    AND B.RECODE = 'BNK' "
                            "    WHERE A.ACNUMBER LIKE '%" + actCode + "%'"
-                           "      AND A.ICUST = '" + iCust + "' ")
+                           "      AND A.ICUST = '" + str(iCust) + "' ")
             accountresult = cursor.fetchall()
 
         # 은행명 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
             bankCombo = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'TOP' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'TOP' AND ICUST = '" + str(iCust) + "' ")
             cboTop = cursor.fetchall()
 
         return JsonResponse({"bankCombo": bankCombo, "cboTop": cboTop, "accountList": accountresult})
@@ -72,18 +72,18 @@ def accountViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.ACBKCD = B.RESKEY "
                            "    AND B.RECODE = 'BNK' "
-                           "    WHERE A.ICUST = '" + iCust + "'")
+                           "    WHERE A.ICUST = '" + str(iCust) + "'")
             accountresult = cursor.fetchall()
 
         # TOP 계좌등록시 구분 참조코드
 
         # 은행명 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
             bankCombo = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'TOP' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'TOP' AND ICUST = '" + str(iCust) + "' ")
             cboTop = cursor.fetchall()
 
         return JsonResponse({"bankCombo": bankCombo, "cboTop": cboTop, "accountList": accountresult})
@@ -103,7 +103,29 @@ def accountViews_save(request):
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    if inepno is None or inepno == '':
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACNUMBER = '" + str(accNum) + "' AND ICUST = '" + str(iCust) + "' ")
+        result = cursor.fetchall()
+
+    if result:
+        with connection.cursor() as cursor:
+            cursor.execute("    UPDATE ACNUMBER SET"
+                           "     ACNUM_NAME = '" + str(accName) + "' "
+                           ",    ACBKCD = '" + str(bankCode) + "' "
+                           ",    ACINDTE = '" + str(strDate) + "' "
+                           ",    ACENDTE = '" + str(endDate) + "' "
+                           ",    ACPAY = '" + str(accPrc) + "' "
+                           ",    ACDESC = '" + str(remark) + "' "
+                           ",    UPD_USER = '" + user + "' "
+                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                           "     WHERE ACNUMBER = '" + str(accNum) + "' "
+                           "       AND ICUST = '" + iCust + "' "
+                           )
+            connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+    else:
         with connection.cursor() as cursor:
             cursor.execute(" INSERT INTO ACNUMBER "
                            "   ("
@@ -136,25 +158,6 @@ def accountViews_save(request):
 
         return JsonResponse({'sucYn': "Y"})
 
-    elif inepno:
-        with connection.cursor() as cursor:
-            cursor.execute("    UPDATE ACNUMBER SET"
-                           "     ACNUM_NAME = '" + str(accName) + "' "
-                           ",    ACBKCD = '" + str(bankCode) + "' "
-                           ",    ACINDTE = '" + str(strDate) + "' "
-                           ",    ACENDTE = '" + str(endDate) + "' "
-                           ",    ACPAY = '" + str(accPrc) + "' "
-                           ",    ACDESC = '" + str(remark) + "' "
-                           ",    UPD_USER = '" + user + "' "
-                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           "     WHERE ACNUMBER = '" + str(accNum) + "' "
-                           "       AND ICUST = '" + iCust + "' "
-                           )
-            connection.commit()
-
-            return JsonResponse({'sucYn': "Y"})
-
-    return render(request, 'base/base-account.html')
 
 
 def accountViews_dlt(request):

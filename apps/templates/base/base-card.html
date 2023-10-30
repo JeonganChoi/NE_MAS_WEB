@@ -14,11 +14,14 @@
             <div class="col-lg-12 col-sm-12">
                 <div class="mx-2 mb-2 d-md-flex align-items-center">
                     <h5 class="mb-0 font-weight-bold"><i class="fas fa-user-circle fas-4 me-3"></i>카드 등록</h5>
-                    <button type="button" class="mb-0 mb-2 btn btn-white btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
+                    <button type="button" class="mb-0 mb-2 btn btn-success btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                           <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
-                    <button type="button" class="mb-0 btn btn-success btn-sm align-items-center me-2" id="btnSave" name="btnSave">
+                    <button type="button" class="mb-0 btn btn-primary btn-sm align-items-center me-2" id="btnSave" name="btnSave">
                           <i class="fas fa-plus me-2 fs-6"></i>저장
+                    </button>
+                    <button type="button" class="mb-0 btn btn-white btn-sm align-items-center me-2 text-dark" id="btnClear" name="btnClear">
+                          <i class="fas fa-eraser me-2 fs-6"></i>초기화
                     </button>
                     <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
                           <i class="fas fa-minus me-2 fs-6"></i>삭제
@@ -208,6 +211,7 @@
                     }
                 }
 
+                cboDayTxt = cboDayTxt + "<option value=''></option>";
                 for (var i = 1; i < 32; i++) {
                     cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
                 }
@@ -274,7 +278,7 @@
         var cboBankTxt = "<option value=''>:: 선택 ::</option>";
         var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
         var cboTypeTxt = "<option value=''>:: 선택 ::</option>";
-        var cboDayTxt = "<option value='last'> 말일 </option>";
+        var cboDayTxt = "<option value=''> :: 선택 :: </option>";
 
         $("#cboBank").html("");
         $("#cboActNum").html("");
@@ -336,6 +340,7 @@
                     }
                 }
 
+                cboDayTxt = cboDayTxt + "<option value=''></option>";
                 for (var i = 1; i < 32; i++) {
                     if (i == cboDay) {
                         cboDayTxt = cboDayTxt + "<option value='" + i + "' selected>" + i + "일</option>";
@@ -343,6 +348,7 @@
                         cboDayTxt = cboDayTxt + "<option value='" + i + "'>" +i + "일</option>";
                     }
                 }
+                cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
 
                 $("#cboBank").append(cboBankTxt);
                 $("#cboActNum").append(cboActNumTxt);
@@ -362,15 +368,12 @@
             var last = new Date();
             var day = last.getDate()
 
-            if(cboDay === 'last'){
-                alert(month)
-                alert(day)
-                return
+            if(cboDay == 'last'){
+                cboDay = day
             }
 
 
             var txtCardNum = document.getElementById('txtCardNum').value
-            var txtPayDate = document.getElementById('txtPayDate').value
             var txtRemark = document.getElementById('txtRemark').value
 
             if(cboBank == '') {
@@ -383,7 +386,7 @@
             }
 
             let data = {'cboBank': cboBank, 'cboType': cboType, 'cboActNum': cboActNum,'txtCardNum': txtCardNum
-                        , 'txtPayDate': txtPayDate, 'txtRemark': txtRemark}
+                        , 'cboDay': cboDay, 'txtRemark': txtRemark}
 
             $.ajax({
                 type: "post",
@@ -444,6 +447,79 @@
             } else {
 
             }
+        });
+
+        {# 초기화 버튼 #}
+        $(document).on('click', "#btnClear", function () {
+
+            var cboBank = "";
+            var cboActNum = "";
+            var cboType = "";
+            var cboDay = "";
+            var cboBankTxt = "<option value=''>:: 선택 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
+            var cboTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDayTxt = "<option value=''> :: 선택 :: </option>";
+
+            $("#cboBank").html("");
+            $("#cboActNum").html("");
+            $("#cboType").html("");
+            $("#cboDay").html("");
+
+            $.ajax({
+                type: "post",
+                url: '{% url "base_card_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    $("#txtCardNum").val("");
+                    $("#txtPayDate").val("");
+                    $("#txtRemark").val("");
+
+
+                    var combolist2 = data.cboBank;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboBank) {
+                            cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboAct;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboActNum) {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][0] + "</option>";
+                        } else {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][0] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboType;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboType) {
+                            cboTypeTxt = cboTypeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboTypeTxt = cboTypeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    cboDayTxt = cboDayTxt + "<option value=''></option>";
+                    for (var i = 1; i < 32; i++) {
+                        cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
+                    }
+                    cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
+
+                    $("#cboBank").append(cboBankTxt);
+                    $("#cboActNum").append(cboActNumTxt);
+                    $("#cboType").append(cboTypeTxt);
+                    $("#cboDay").append(cboDayTxt);
+
+                }
+            })
         });
 
     </script>
