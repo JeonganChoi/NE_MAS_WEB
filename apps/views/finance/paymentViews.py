@@ -578,11 +578,6 @@ def paymentViews_search(request):
             cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '5%' AND ICUST = '" + iCust + "' ORDER BY MCODE ASC ")
             cboMCode = cursor.fetchall()
 
-        # 회계게정
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ICUST = '" + iCust + "' ORDER BY ACODE ASC ")
-            cboACode = cursor.fetchall()
-
         # 결제방법
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + iCust + "' ORDER BY RESNAM ")
@@ -617,11 +612,6 @@ def paymentViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE MCODE LIKE '4%' AND ICUST = '" + iCust + "' ORDER BY MCODE ASC ")
             cboMCode = cursor.fetchall()
-
-        # 회계게정
-        # with connection.cursor() as cursor:
-        #     cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ICUST = '" + iCust + "' ORDER BY ACODE ASC ")
-        #     cboACode = cursor.fetchall()
 
         # 결제방법
         with connection.cursor() as cursor:
