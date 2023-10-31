@@ -3,13 +3,14 @@ import os
 from django.shortcuts import render, redirect
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.template import loader
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 from django.core.files.storage import FileSystemStorage
+from urllib.parse import quote
 
 
 
@@ -707,7 +708,7 @@ def paymentViews_save(request):
 
     if acSeqn:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' AND ICUST = '" + iCust + "' ")
             result = cursor.fetchall()  # 계좌 은행
 
             bnk = result[0][0]
@@ -720,7 +721,7 @@ def paymentViews_save(request):
             cursor.execute("    UPDATE  SISACCTT SET"
                            "     ACGUBN = '" + str(acGubn) + "' "
                            ",    MCODE = '" + str(mCode) + "' "
-                           ",    MCODE = (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "') "
+                           ",    MCODE = (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + iCust + "') "
                            ",    ACTITLE = '" + str(acTitle) + "' "
                            ",    ACAMTS = '" + str(acAmts) + "' "
                            ",    ACACNUMBER = '" + str(acAcnumber) + "' "
@@ -787,7 +788,7 @@ def paymentViews_save(request):
                                        "    ( "
                                        "     '" + str(acDate) + "' "
                                        "     , '" + str(acSeqn) + "' "
-                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' ) "
+                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' AND ICUST = '" + iCust + "' ) "
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "
                                        "     , '" + opt + "' "
                                        "     , '" + str(acIogb) + "' "
@@ -800,7 +801,7 @@ def paymentViews_save(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' ")
+            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + acAcnumber + "' AND ICUST = '" + iCust + "' ")
             result = cursor.fetchall()  # 계좌 은행
 
             bnk = result[0][0]
@@ -839,16 +840,16 @@ def paymentViews_save(request):
                                "    VALUES "
                                "    (   "
                                "    '" + str(ioDate) + "'"
-                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "') "
+                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + " AND ICUST = '" + iCust + "'') "
                                ",   '" + str(acIogb) + "'"
                                ",   '" + str(acTitle) + "'"
                                ",   '" + str(acCust) + "'"
                                ",   '" + str(acGubn) + "'"
                                ",   '" + str(mCode) + "'"
-                               ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "')"
+                               ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + " AND ICUST = '" + iCust + "'')"
                                ",   '" + str(acAmts) + "'"
                                ",   '" + str(acAcnumber) + "'"
-                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ICUST = '" + iCust + "' ) "
                                ",   '" + str(acDesc) + "'"
                                ",   '" + str(creUser) + "'"
                                ",   date_format(now(), '%Y%m%d') "
@@ -865,7 +866,7 @@ def paymentViews_save(request):
                 connection.commit()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' ")
+                    cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + iCust + "' ")
                     result2 = cursor.fetchall()  # 계좌 은행
 
                     seq = result2[0][0]
@@ -889,7 +890,7 @@ def paymentViews_save(request):
                                        "    ( "
                                        "     '" + str(acDate) + "' "
                                        "     , '" + str(seq) + "' "
-                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' ) "
+                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' AND ICUST = '" + iCust + "' ) "
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "
                                        "     , '" + opt + "' "
                                        "     , '" + str(acIogb) + "' "
@@ -1180,3 +1181,39 @@ def checkLimit_search(request):
             YN = 'N'
 
         return JsonResponse({'YN': YN})
+
+
+
+# 파일 불러오기
+def download_file(request):
+    ioDate = request.GET.get('ioDate').replace('-', '')
+    acSeqn = request.GET.get('acSeqn')
+    acIogb = request.GET.get('acIogb')
+    acCust = request.GET.get('acCust')
+    iCust = request.session.get("USER_ICUST")
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+                    "    SELECT  ACFOLDER"
+                    "     FROM SISACCTT "
+                    "     WHERE IODATE = '" + str(ioDate) + "' "
+                    "     AND ACIOGB = '" + str(acIogb) + "' "
+                    "     AND ACCUST = '" + str(acCust) + "' "
+                    "     AND ACSEQN = '" + str(acSeqn) + "' "
+                    "     AND ICUST = '" + str(iCust) + "' "
+                       )
+        result = cursor.fetchall()
+
+    #     file_path = result[0][0]
+    #
+    # if file_path:
+    if result:
+        file_path = result[0][0]
+        # 한글 파일명 처리를 위한 인코딩
+        filename = quote(os.path.basename(file_path).encode('utf-8'))
+
+        response = FileResponse(open(file_path, 'rb'))
+        response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % filename
+        return response
+    else:
+        return JsonResponse({'sucYn': "N", 'message': "no file exists"})

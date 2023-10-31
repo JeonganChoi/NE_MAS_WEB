@@ -19,6 +19,8 @@ urlpatterns = [
     path('signup/', mainViews.signupView, name="signup"),
     path('page-404/', mainViews.page404, name="page-404"),
 
+# 파일 불러오기
+    path('download_file/', paymentViews.download_file, name='download_file'),
 
 #     기초정보
     # 계정코드관리

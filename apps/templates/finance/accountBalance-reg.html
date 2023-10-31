@@ -138,9 +138,12 @@
     <script>
         $(document).ready(function () {
             var inputBankType = "";
+            var cboBankName = "";
             var inputBankTypeTxt = "<option value=''>:: 전체 ::</option>";
+            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
 
             $("#inputBankType").html("");
+            $("#cboBankName").html("");
 
             $.ajax({
                 type: "post",
@@ -176,9 +179,18 @@
                         }
                     }
 
+                    var combolist2 = data.inputBankType;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboBankName) {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
 
                     $("#inputBankType").append(inputBankTypeTxt);
-
+                    $("#cboBankName").append(cboBankNameTxt);
                 }
             })
         });
@@ -231,7 +243,7 @@
         $('#cboBankName').change(function () {
 
             var cboActNum = "";
-            var cboActNumTxt = "<option value=''>:: 전체 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
             $("#cboActNum").html("");
             $("#txtActName").html("");
             document.getElementById('txtDate').valueAsDate = new Date

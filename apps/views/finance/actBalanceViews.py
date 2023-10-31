@@ -41,12 +41,12 @@ def actBalRegViews_search(request):
 
         # 은행명 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
             cboBankName = cursor.fetchall()
 
         # 계좌번호 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
             cboActNum = cursor.fetchall()
 
         return JsonResponse({"cboActNum": cboActNum, "cboBankName": cboBankName, "actBalList": actBalresult})
@@ -87,12 +87,12 @@ def actBalRegViews_search(request):
 
         # 은행명 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
             inputBankType = cursor.fetchall()
 
         # 계좌번호 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
             cboActNum = cursor.fetchall()
 
         return JsonResponse({"inputBankType": inputBankType, "actBalList": actBalresult, "cboActNum": cboActNum})
