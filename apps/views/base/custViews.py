@@ -63,7 +63,7 @@ def custViews_search(request):
 
             # 업체 분류 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' AND ICUST = '" + str(iCust) + "' ")
             cboCustType = cursor.fetchall()
 
             # 업체군 분류 - 콤보박스
@@ -125,13 +125,18 @@ def custViews_search(request):
 
         # 업체 구분 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' AND ICUST = '" + str(iCust) + "' ")
             inputCustType = cursor.fetchall()
 
         # 사용여부 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'UST' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'UST' AND ICUST = '" + str(iCust) + "' ")
             cboCustYn = cursor.fetchall()
+
+        # 사용여부 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+            cboBank = cursor.fetchall()
 
         # 업체 분류 - 콤보박스
         # with connection.cursor() as cursor:
@@ -143,7 +148,7 @@ def custViews_search(request):
         #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'POP' ")
         #     cboCustType2 = cursor.fetchall()
 
-        return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "custList": custresult})
+        return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "cboBank": cboBank, "custList": custresult})
 
 
 def custViews_save(request):
@@ -162,12 +167,53 @@ def custViews_save(request):
     custEmail = request.POST.get('txtEMail')
     custWeb = request.POST.get('txtWebAddress')
     custType = request.POST.get('cboCustType')
+    cboApv = request.POST.get('cboApv')
     cboDay = request.POST.get('cboDay')
     creUser = request.POST.get('txtUser')
+
+    custBank = request.POST.get('custBank')
+    custActNum = request.POST.get('custActNum')
+
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    if creUser is None or creUser == '':
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
+        result = cursor.fetchall()
+
+    if result:
+        custResult = result[0][0]
+
+        with connection.cursor() as cursor:
+            cursor.execute(" UPDATE MIS1TB003 SET "
+                           "      CUST_NME  = '" + str(custName) + "' "
+                           "    , CUST_CEO_NME = '" + str(custCeo) + "' "
+                           "    , CUST_ID_NBR = '" + str(custRegNum) + "' "
+                           "    , CUST_BSN_CON  = '" + str(custCat) + "' "
+                           "    , CUST_BSN_TYP  = '" + str(custType) + "' "
+                           "    , CUST_POST_NBR  = '" + str(custPostCode) + "' "
+                           "    , CUST_ADDR  = '" + str(custAddress) + "' "
+                           "    , CUST_TEL_NBR = '" + str(custTelPhone) + "' "
+                           "    , CUST_FAX_NBR = '" + str(custFax) + "'  "
+                           "    , CUST_EMP_NME  = '" + str(custEmp) + "' "
+                           "    , CUST_EMP_TEL  = '" + str(custEmpPhone) + "' "
+                           "    , CUST_EMAIL = '" + str(custEmail) + "' "
+                           "    , CUST_HOMEP = '" + str(custWeb) + "'  "
+                           "    , CUST_GBN = '" + str(custType) + "' "
+                           "    , CUST_PAY = '" + str(cboApv) + "' "
+                           "    , CUST_PAY_DAY = '" + str(cboDay) + "' "
+                           "    , UPD_DT = '" + str(creDt) + "' "
+                           "    , UPD_USER = '" + str(user) + "' "
+                           "    WHERE ICUST = '" + str(iCust) + "' "
+                           "      AND CUST_NBR = '" + str(custResult) + "'"
+                           )
+            connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+    else:
+
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO MIS1TB003 "
                            "   ("
@@ -186,6 +232,8 @@ def custViews_save(request):
                            ",    CUST_EMAIL "
                            ",    CUST_HOMEP "
                            ",    CUST_GBN "
+                           ",    CUST_PAY "
+                           ",    CUST_PAY_DAY "
                            ",    CRE_DT "
                            ",    CRE_USER "
                            ",    CRE_USER "
@@ -207,6 +255,8 @@ def custViews_save(request):
                            ",   '" + str(custEmail) + "'"
                            ",   '" + str(custWeb) + "'"
                            ",   '" + str(custType) + "'"
+                           ",   '" + str(cboApv) + "'"
+                           ",   '" + str(cboDay) + "'"
                            ",   '" + str(creDt) + "'"
                            ",   '" + str(user) + "'"
                            ",   '" + str(iCust) + "'"
@@ -217,33 +267,6 @@ def custViews_save(request):
 
         return JsonResponse({'sucYn': "Y"})
 
-    elif creUser:
-        with connection.cursor() as cursor:
-            cursor.execute(" UPDATE MIS1TB003 SET "
-                           "      CUST_NME  = '" + str(custName) + "' "
-                           "    , CUST_CEO_NME = '" + str(custCeo) + "' "
-                           "    , CUST_ID_NBR = '" + str(custRegNum) + "' "
-                           "    , CUST_BSN_CON  = '" + str(custCat) + "' "
-                           "    , CUST_BSN_TYP  = '" + str(custType) + "' "
-                           "    , CUST_POST_NBR  = '" + str(custPostCode) + "' "
-                           "    , CUST_ADDR  = '" + str(custAddress) + "' "
-                           "    , CUST_TEL_NBR = '" + str(custTelPhone) + "' "
-                           "    , CUST_FAX_NBR = '" + str(custFax) + "'  "
-                           "    , CUST_EMP_NME  = '" + str(custEmp) + "' "
-                           "    , CUST_EMP_TEL  = '" + str(custEmpPhone) + "' "
-                           "    , CUST_EMAIL = '" + str(custEmail) + "' "
-                           "    , CUST_HOMEP = '" + str(custWeb) + "'  "
-                           "    , CUST_GBN = '" + str(custType) + "' "
-                           "    , UPD_DT = '" + str(creDt) + "' "
-                           "    , UPD_USER = '" + str(user) + "' "
-                           "    WHERE ICUST = '" + str(iCust) + "' "
-                           "      AND CUST_NBR = '" + str(custCode) + "'"
-                           )
-            connection.commit()
-
-            return JsonResponse({'sucYn': "Y"})
-
-        return render(request, 'base/base-cust.html')
 
 
 def custViews_dlt(request):

@@ -37,6 +37,7 @@ def empViews_search(request):
                             "     , IFNULL(A.EMP_COM, '') "
                             "     , IFNULL(H.RESNAM, '') "
                             "     , IFNULL(A.ICUST, '')"
+                            "     , IFNULL(A.EMP_CLS, '')"
                             "   FROM pis1tb001 A "
                             "   LEFT OUTER JOIN osrefcp B "
                             "   ON B.RECODE = 'DPT' "
@@ -70,6 +71,7 @@ def empViews_search(request):
                            "     , IFNULL(A.EMP_COM, '') "
                            "     , IFNULL(H.RESNAM, '')"
                            "     , IFNULL(A.ICUST, '')"
+                           "     , IFNULL(A.EMP_CLS, '')"
                            "   FROM pis1tb001 A "
                            "   LEFT OUTER JOIN osrefcp B "
                            "   ON B.RECODE = 'DPT' "
@@ -104,7 +106,9 @@ def empViews_search(request):
                 "     , IFNULL(A.EMP_COM, '') "
                 "     , IFNULL(H.RESNAM, '') "
                 "     , IFNULL(A.ICUST, '') "
+                "     , IFNULL(A.EMP_CLS, '')"
                 "     , IFNULL(A.EMP_FOLDER, '') "
+                "     , IFNULL(A.EMP_LIMIT, '') "
                 "   FROM pis1tb001 A "
                 "   LEFT OUTER JOIN osrefcp B "
                 "   ON B.RECODE = 'DPT' "
@@ -124,12 +128,12 @@ def empViews_search(request):
 
         # 근무조 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'JJO' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'JJO' AND ICUST = '" + str(iCust) + "' ")
             jjoCombo = cursor.fetchall()
 
         # 부서 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' AND ICUST = '" + str(iCust) + "' ")
             dptCombo = cursor.fetchall()
 
         # 공정 - 콤보박스
@@ -139,10 +143,16 @@ def empViews_search(request):
 
         # 사업장 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' AND ICUST = '" + str(iCust) + "' ")
             comCombo = cursor.fetchall()
 
-        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "empList": empresult})
+        # 등급 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
+            comClass = cursor.fetchall()
+
+        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass
+                                , "empList": empresult})
 
     else:
         with connection.cursor() as cursor:
@@ -161,6 +171,7 @@ def empViews_search(request):
                            "     , IFNULL(A.EMP_COM, '') "
                            "     , IFNULL(H.RESNAM, '')"
                            "     , IFNULL(A.ICUST, '')"
+                           "     , IFNULL(A.EMP_CLS, '')"
                            "   FROM pis1tb001 A "
                            "   LEFT OUTER JOIN osrefcp B "
                            "   ON B.RECODE = 'DPT' "
@@ -177,12 +188,12 @@ def empViews_search(request):
 
         # 근무조 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'JJO' ORDER BY RESKEY ASC ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'JJO' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ASC ")
             jjoCombo = cursor.fetchall()
 
         # 부서 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' AND ICUST = '" + str(iCust) + "' ")
             dptCombo = cursor.fetchall()
 
         # 공정 - 콤보박스
@@ -192,10 +203,15 @@ def empViews_search(request):
 
         # 사업장 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' AND ICUST = '" + str(iCust) + "' ")
             comCombo = cursor.fetchall()
 
-        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "empList": empresult})
+        # 등급 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
+            comClass = cursor.fetchall()
+
+        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass, "empList": empresult})
 
 
 def empViews_save(request):
@@ -206,10 +222,11 @@ def empViews_save(request):
     empGbn = request.POST.get('cboGroup')
     empCom = request.POST.get('cboCom')
     empTel = request.POST.get('txtEmpTel')
-    limit = request.POST.get('limit')
+    limit = request.POST.get('txtLimit')
     empIpsa = request.POST.get('txtEmployDate').replace('-', '')
     empTesa = request.POST.get('txtQuitDate').replace('-', '')
-    usage = request.POST.get('usage')
+    # usage = request.POST.get('usage')
+    empClass = request.POST.get('cboClass')
 
     charge = request.POST.get('chkPermit')
     user = request.session.get('userId')
@@ -247,7 +264,8 @@ def empViews_save(request):
                            ",    EMP_TEL  = '" + str(empTel) + "' "
                            ",    EMP_IPSA = '" + str(empIpsa) + "' "
                            ",    EMP_TESA = '" + str(empTesa) + "'  "
-                           ",    EMP_USE = '" + str(usage) + "'  "
+                           ",    EMP_CLS = '" + str(empClass) + "'  "
+                           ",    EMP_LIMIT = '" + str(limit) + "'  "
                            ",    EMP_CHARGE = '" + str(charge) + "'  "
                            ",    EMP_FOLDER = '" + str(Rfilenameloc) + "'  "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
@@ -272,7 +290,8 @@ def empViews_save(request):
                            ",    EMP_TEL "
                            ",    EMP_IPSA "
                            ",    EMP_TESA "
-                           ",    EMP_USE "
+                           ",    EMP_LIMIT "
+                           ",    EMP_CLS "
                            ",    EMP_CHARGE "
                            ",    EMP_FOLDER "
                            ",    CRE_DT "
@@ -290,7 +309,8 @@ def empViews_save(request):
                            ",   '" + str(empTel) + "' "
                            ",   '" + str(empIpsa) + "' "
                            ",   '" + str(empTesa) + "' "
-                           ",   '" + str(usage) + "' "
+                           ",   '" + str(limit) + "' "
+                           ",   '" + str(empClass) + "' "
                            ",   '" + str(charge) + "' "
                            ",   '" + str(Rfilenameloc) + "' "
                            ",   date_format(now(), '%Y%m%d') "

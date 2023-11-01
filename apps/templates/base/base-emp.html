@@ -116,7 +116,7 @@
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpName" name="txtEmpName"/>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-1">
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>비밀 번호</label>
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpPw" name="txtEmpPw"/>
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="col-4"></div>-->
                             </div>
-                            <div class="row">
+                            <div class="row mt-1">
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>입사 일자</label>
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtEmployDate" name="txtEmployDate"/>
@@ -141,17 +141,17 @@
                                     <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtQuitDate" name="txtQuitDate"/>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-1">
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사업장</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
                                 </div>
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전결금액</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="number" id="txtLimit" name="txtLimit"/>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" value="0" type="text" id="txtLimit" name="txtLimit"/>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-1">
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>직 급</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboGroup" id="cboGroup"></select>
@@ -164,6 +164,13 @@
                                     <label class="" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>입력 사번</label>
                                     <input class="form-control" type="text" id="txtEmp" name="txtEmp"/>
                                 </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>등 급</label>
+                                    <select style="height: 2rem; font-size: 0.8rem; width: 5rem" class="form-control border border-light rounded-1 text-center p-0" name="cboClass" id="cboClass"></select>
+                                </div>
+                                <div class="col-6"></div>
                             </div>
                             <div class="row mt-4">
                                 <!--<div class="col-6">
@@ -248,9 +255,11 @@
             var group = "";
             var dpt = "";
             var com = "";
+            var cboClass = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
+            var cboClassTxt = "<option value=''>:: 선택 ::</option>";
             {#document.getElementById('txtEmployDate').valueAsDate = new Date#}
             {#document.getElementById('txtQuitDate').valueAsDate = new Date#}
 
@@ -258,6 +267,7 @@
             $("#cboDpt").html("");
             $("#cboCom").html("");
             $("#inputEmpNum").html("");
+            $("#cboClass").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
 
@@ -320,9 +330,19 @@
                         }
                     }
 
+                    var combolist2 = data.comClass;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboClass) {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboCom").append(comTxt);
+                    $("#cboClass").append(cboClassTxt);
 
                 }
             })
@@ -337,14 +357,17 @@
             var group = "";
             var dpt = "";
             var com = "";
+            var cboClass = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
+            var cboClassTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
             $("#cboCom").html("");
             $("#inputEmpNum").html("");
+            $("#cboClass").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
             let empCode = document.getElementById('inputEmpNo').value;
@@ -407,9 +430,19 @@
                         }
                     }
 
+                    var combolist2 = data.comClass;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboClass) {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboCom").append(comTxt);
+                    $("#cboClass").append(cboClassTxt);
                 }
             })
         });
@@ -432,13 +465,16 @@
             var group = "";
             var dpt = "";
             var com = "";
+            var cboClass = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
+            var cboClassTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
             $("#cboCom").html("");
+            $("#cboClass").html("");
 
             let empCode = $(this).attr('main_code');
             var empType = $(this).children().eq(2).text()
@@ -457,9 +493,6 @@
                     var list = data.empList;
 
                     for (var i = 0; i < list.length; i++) {
-                        for (var j = 0; j < 21; j++) {
-                            console.log("===================" + j + ":::" + list[i][j]);
-                        }
 
                         $("#txtEmpNo").val(list[i][0])
                         $("#txtEmpName").val(list[i][2])
@@ -467,17 +500,18 @@
                         $("#txtEmpTel").val(list[i][10])
                         $("#txtEmployDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtQuitDate").val(list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtLimit").val(list[i][13])
+                        $("#txtLimit").val(addComma(list[i][16]))
                         group = list[i][6];
                         dpt = list[i][8];
-                        com = list[i][19];
+                        com = list[i][11];
+                        cboClass = list[i][14];
 
-                        imglc = '/static'
-                        itemimg = list[i][14]
-                        Rfilename = itemimg.substring(7)
-
-                        document.getElementById("sign").src = imglc + itemimg;
-                        document.getElementById("sign").dataset.origin = imglc + itemimg;
+                        {#imglc = '/static'#}
+                        {#itemimg = list[i][15]#}
+                        {#Rfilename = itemimg.substring(7)#}
+                        {##}
+                        {#document.getElementById("sign").src = imglc + itemimg;#}
+                        {#document.getElementById("sign").dataset.origin = imglc + itemimg;#}
                     }
 
                     var combolist = data.jjoCombo;
@@ -507,9 +541,19 @@
                         }
                     }
 
+                    var combolist2 = data.comClass;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboClass) {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboCom").append(comTxt);
+                    $("#cboClass").append(cboClassTxt);
                 }
             })
 
@@ -612,14 +656,17 @@
         $(document).on('click', "#btnClear", function () {
             var group = "";
             var dpt = "";
+            var cboClass = "";
             var com = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
+            var cboClassTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
             $("#cboCom").html("");
+            $("#cboClass").html("");
 
 
             var empType = "";
@@ -674,10 +721,19 @@
                         }
                     }
 
+                    var combolist2 = data.comClass;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboClass) {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboCom").append(comTxt);
-
+                    $("#cboClass").append(cboClassTxt);
                 }
             })
         });
