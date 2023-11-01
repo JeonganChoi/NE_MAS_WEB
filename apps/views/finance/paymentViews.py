@@ -680,21 +680,52 @@ def paymentViews_save(request):
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
 
-    file = request.FILES.get('file')
+    # file = request.FILES.get('file')
 
-    if (file is None):
-        file = ''
-    url = '/media/'
+    # if (file is None):
+    #     file = ''
+    # url = '/Users/thenaeunsys/Documents/ImportFile/'
+    #
+    # if file is None or not None:
+    #     if len(request.FILES) != 0:
+    #         myfile = request.FILES['file']
+    #         fs = FileSystemStorage()
+    #         filename = fs.save(myfile.name, myfile)
+    #         Rfilenameloc = url + filename
+    #
+    #     else:
+    #         Rfilenameloc = file
 
-    if file is None or not None:
-        if len(request.FILES) != 0:
-            myfile = request.FILES['file']
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            Rfilenameloc = url + filename
+    fileOverwriteYn = request.POST.get("fileOverwriteYn")
 
-        else:
-            Rfilenameloc = file
+    uploaded_file = request.FILES.get('file')
+
+    if uploaded_file:
+        # 원하는 경로 설정, FileResponse
+        # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
+        # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
+        # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
+        # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
+        desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
+
+        # 해당 디렉토리가 없으면 생성
+        if not os.path.exists(desired_path):
+            os.makedirs(desired_path)
+
+        destination = os.path.join(desired_path, uploaded_file.name)
+
+        # 해당 경로에 동일한 이름의 파일이 있다면
+        if os.path.exists(destination):
+            if fileOverwriteYn == 'Y':
+                os.remove(destination)
+            else:
+                return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
+
+        with open(destination, 'wb+') as destination_file:
+            for chunk in uploaded_file.chunks():
+                destination_file.write(chunk)
+
+        Rfilenameloc = destination
 
     if acSeqn:
         with connection.cursor() as cursor:
@@ -830,13 +861,13 @@ def paymentViews_save(request):
                                "    VALUES "
                                "    (   "
                                "    '" + str(ioDate) + "'"
-                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + " AND ICUST = '" + iCust + "'') "
+                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + iCust + "') "
                                ",   '" + str(acIogb) + "'"
                                ",   '" + str(acTitle) + "'"
                                ",   '" + str(acCust) + "'"
                                ",   '" + str(acGubn) + "'"
                                ",   '" + str(mCode) + "'"
-                               ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + " AND ICUST = '" + iCust + "'')"
+                               ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + iCust + "')"
                                ",   '" + str(acAmts) + "'"
                                ",   '" + str(acAcnumber) + "'"
                                ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ICUST = '" + iCust + "' ) "
@@ -1206,4 +1237,4 @@ def download_file(request):
         response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % filename
         return response
     else:
-        return JsonResponse({'sucYn': "N", 'message': "no file exists"})
+        return render(request, "finance/back.html")

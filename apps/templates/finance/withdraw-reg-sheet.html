@@ -234,13 +234,12 @@
                                 <div class="row mt-4">
                                     <div class="col-4 text-start">
                                         <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                        <!--<div class="fallback mt-3">
-                                            <input name="file" id="file" type="file" multiple class=""/>
-                                        </div>-->
+                                        <input name="file" id="file" type="file" class="" style="display: none;" />
                                         <div class="form-group text-start mt-3">
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
                                             <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                         </div>
+                                        <div><span id="file_name"></span></div>
                                     </div>
                                     <div class="col-8 text-start">
                                         <label class="form-label"><i class="fas fa-pen me-2"></i>결재선 지정</label>
@@ -884,12 +883,24 @@
 
         {# 파일 선택 버튼 클릭시 #}
         $(document).on('click', '#btnFile', function () {
-
+            $("#file").click();
         });
 
         {# 파일 보기 버튼 클릭시 #}
         $(document).on('click', '#btnFileLook', function () {
+            var ioDate = $("#txtWitRegDate").val();
+            var acSeqn = $("#txtWitSeq").val();
+            var acIogb = $("#cboWitGbn").val();
+            var acCust = $("#cboWitCust").val();
 
+            location.href = "{% url 'download_file' %}?ioDate=" + ioDate + "&acSeqn=" + acSeqn + "&acIogb=" + acIogb + "&acCust=" + acCust;
+        });
+
+        $(document).on('change', '#file', function () {
+            let selectedFile = $(this).prop('files')[0];
+            if (selectedFile != null) {
+                $('#file_name').text(selectedFile.name);
+            }
         });
 
         {# 테이블 로우 클릭 시 #}
@@ -1403,6 +1414,29 @@
                             alert('저장 되었습니다.')
                             location.href = "{% url 'with_reg_sheet' %}";
                         }
+                        else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+                            if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {
+                                formData.append('fileOverwriteYn', 'Y');
+                                $.ajax({
+                                    type: "post",
+                                    data: formData,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    dataType: "json",
+                                    url: '{% url "offSet_save" %}',
+                                    headers: {
+                                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                                    },
+                                    success: function (data) {
+                                        if (data.sucYn === 'Y') {
+                                            alert('저장 되었습니다.')
+                                            location.href = "{% url 'with_reg_sheet' %}";
+                                        }
+                                    }
+                                });
+                            }
+                        }
                     }
                 });
             }
@@ -1438,6 +1472,29 @@
                         if (data.sucYn === 'Y') {
                             alert('저장 되었습니다.')
                             location.href = "{% url 'with_reg_sheet' %}";
+                        }
+                        else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+                            if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {
+                                formData.append('fileOverwriteYn', 'Y');
+                                $.ajax({
+                                    type: "post",
+                                    data: formData,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    dataType: "json",
+                                    url: '{% url "payment_save" %}',
+                                    headers: {
+                                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                                    },
+                                    success: function (data) {
+                                        if (data.sucYn === 'Y') {
+                                            alert('저장 되었습니다.')
+                                            location.href = "{% url 'with_reg_sheet' %}";
+                                        }
+                                    }
+                                });
+                            }
                         }
                     }
                 });
