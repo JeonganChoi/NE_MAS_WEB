@@ -397,7 +397,12 @@ def paymentViews_search(request):
             cursor.execute(" SELECT ACNUMBER, CARDNUM FROM ACCARD WHERE CARDNUM = '" + cboCard + "' AND ICUST = '" + iCust + "' ")
             cboActNum = cursor.fetchall()
 
-            return JsonResponse({'cboActNum': cboActNum})
+        # 카드
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACPAYDTE FROM ACCARD WHERE CARDNUM = '" + cboCard + "' AND ICUST = '" + iCust + "' ")
+            cboCard = cursor.fetchall()
+
+            return JsonResponse({'cboActNum': cboActNum, "cboCard": cboCard})
 
     if acIogb and acCust == '':
         with connection.cursor() as cursor:

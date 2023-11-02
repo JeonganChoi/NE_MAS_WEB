@@ -137,7 +137,7 @@
                                         <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-4">
-                                        <label class="mt-2 text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>예정 일자</label>
+                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>예정 일자</label>
                                         <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -1261,6 +1261,22 @@
                     }
 
                     $("#cboWitActNum").append(cboWitActNumTxt);
+
+                        var date = "";
+                        var now = new Date;
+                        var yyyymmdd = new Date(now.getFullYear(), now.getMonth()+ 1, 0)
+                        var yyyy = String(yyyymmdd.getFullYear());
+                        var mm = String(yyyymmdd.getMonth()+1);
+                        var nowDD = String(yyyymmdd.getDate());
+                        var dd = String(data.cboCard);
+                        if(dd > nowDD){
+                            date = yyyy + '-' + mm + '-' + nowDD;
+                        }
+                        else{
+                            date = yyyy + '-' + mm + '-' + dd;
+                        }
+
+                        document.getElementById('txtExDate').value = date;
                 }
             })
 
