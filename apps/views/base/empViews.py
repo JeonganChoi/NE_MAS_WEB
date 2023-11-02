@@ -2,13 +2,14 @@ import json
 from django.shortcuts import render, redirect
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.template import loader
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db import connection
 from django.core.files.storage import FileSystemStorage
+from urllib.parse import quote
 
 
 def empViews(request):
@@ -342,3 +343,35 @@ def empViews_dlt(request):
 
     else:
         return render(request, 'base/base-emp.html')
+
+
+
+# 파일 불러오기
+def download_file_emp(request):
+    empCode = request.GET.get('empCode')
+    empClass = request.GET.get('empClass')
+    iCust = request.session.get("USER_ICUST")
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+                    "    SELECT EMP_FOLDER"
+                    "     FROM PIS1TB001 "
+                    "     WHERE EMP_NBR = '" + str(empCode) + "' "
+                    "     AND EMP_CLS = '" + str(empClass) + "' "
+                    "     AND ICUST = '" + str(iCust) + "' "
+                       )
+        result = cursor.fetchall()
+
+    #     file_path = result[0][0]
+    #
+    # if file_path:
+    if result:
+        file_path = result[0][0]
+        # 한글 파일명 처리를 위한 인코딩
+        filename = quote(os.path.basename(file_path).encode('utf-8'))
+
+        response = FileResponse(open(file_path, 'rb'))
+        response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % filename
+        return response
+    else:
+        return render(request, "finance/back.html")

@@ -59,19 +59,32 @@ def custViews_search(request):
                 "   AND A.ICUST = '" + str(iCust) + "' "
             )
             custresult = cursor.fetchall()
-            print(custresult)
+
+        #  거래처 계좌번호 테이블
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT CUST_BKCD, CUST_ACNUM "
+                " FROM MIS1TB003_D "
+                " WHERE CUST_NBR LIKE '%" + custCode + "%' AND ICUST = '" + str(iCust) + "' ")
+            custBank = cursor.fetchall()
 
             # 업체 분류 - 콤보박스
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' AND ICUST = '" + str(iCust) + "' ")
             cboCustType = cursor.fetchall()
 
+        # 거래처 은행 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+            cboBank = cursor.fetchall()
+
             # 업체군 분류 - 콤보박스
         # with connection.cursor() as cursor:
         #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
         #     cboCustType2 = cursor.fetchall()
 
-        return JsonResponse({"cboCustType": cboCustType, "custList": custresult})
+        return JsonResponse({"cboCustType": cboCustType, "custBank": custBank, "cboBank": cboBank, "custList": custresult})
 
     elif custYn is not None and custYn != '':
         with connection.cursor() as cursor:
@@ -133,7 +146,7 @@ def custViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'UST' AND ICUST = '" + str(iCust) + "' ")
             cboCustYn = cursor.fetchall()
 
-        # 사용여부 - 콤보박스
+        # 거래처 은행 - 콤보박스
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
             cboBank = cursor.fetchall()
@@ -152,6 +165,7 @@ def custViews_search(request):
 
 
 def custViews_save(request):
+    custArray = json.loads(request.POST.get('custArrList'))
     custName = request.POST.get('txtCustName')
     custCode = request.POST.get('txtCustCode')
     custCeo = request.POST.get('txtCeo')
@@ -161,8 +175,6 @@ def custViews_save(request):
     custAddress = request.POST.get('txtAddress')
     custTelPhone = request.POST.get('txtTelePhone')
     custFax = request.POST.get('txtFax')
-    custEmp = request.POST.get('txtEmp')
-    custEmpPhone = request.POST.get('txtEmpPhone')
     creDt = request.POST.get('txtRegDate').replace('-', '')
     custEmail = request.POST.get('txtEMail')
     custWeb = request.POST.get('txtWebAddress')
@@ -171,15 +183,12 @@ def custViews_save(request):
     cboDay = request.POST.get('cboDay')
     creUser = request.POST.get('txtUser')
 
-    custBank = request.POST.get('custBank')
-    custActNum = request.POST.get('custActNum')
-
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE CUST_NBR = '" + custCode + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
 
     if result:
@@ -196,8 +205,6 @@ def custViews_save(request):
                            "    , CUST_ADDR  = '" + str(custAddress) + "' "
                            "    , CUST_TEL_NBR = '" + str(custTelPhone) + "' "
                            "    , CUST_FAX_NBR = '" + str(custFax) + "'  "
-                           "    , CUST_EMP_NME  = '" + str(custEmp) + "' "
-                           "    , CUST_EMP_TEL  = '" + str(custEmpPhone) + "' "
                            "    , CUST_EMAIL = '" + str(custEmail) + "' "
                            "    , CUST_HOMEP = '" + str(custWeb) + "'  "
                            "    , CUST_GBN = '" + str(custType) + "' "
@@ -210,7 +217,40 @@ def custViews_save(request):
                            )
             connection.commit()
 
-            return JsonResponse({'sucYn': "Y"})
+        custArrayLists = list(filter(len, custArray))
+        for data in range(len(custArrayLists)):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CUST_NBR FROM MIS1TB003_D WHERE CUST_NBR = '" + custCode + "' AND ICUST = '" + str(iCust) + "' ")
+                result = cursor.fetchall()
+
+            if result:
+                custNbr = result[0][0]
+                with connection.cursor() as cursor:
+                    cursor.execute(" UPDATE MIS1TB003_D SET "
+                                   "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
+                                   "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
+                                   " WHERE CUST_NBR = '" + custNbr + "'"
+                                   " AND ICUST = '" + str(iCust) + "'")
+                    connection.commit()
+            else:
+                with connection.cursor() as cursor:
+                    cursor.execute(" INSERT INTO MIS1TB003_D "
+                                   "("
+                                   "    CUST_NBR "
+                                   "   ,CUST_BKCD "
+                                   "   ,CUST_ACNUM "
+                                   "   ,ICUST"
+                                   ") "
+                                   "VALUES "
+                                   "("
+                                   "    '" + str(custResult) + "' "
+                                   "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
+                                   "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
+                                   "    ,'" + str(iCust) + "' "
+                                   ") ")
+                    connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
 
     else:
 
@@ -227,8 +267,6 @@ def custViews_save(request):
                            ",    CUST_ADDR "
                            ",    CUST_TEL_NBR "
                            ",    CUST_FAX_NBR "
-                           ",    CUST_EMP_NME "
-                           ",    CUST_EMP_TEL "
                            ",    CUST_EMAIL "
                            ",    CUST_HOMEP "
                            ",    CUST_GBN "
@@ -250,8 +288,6 @@ def custViews_save(request):
                            ",   '" + str(custAddress) + "'"
                            ",   '" + str(custTelPhone) + "'"
                            ",   '" + str(custFax) + "'"
-                           ",   '" + str(custEmp) + "'"
-                           ",   '" + str(custEmpPhone) + "'"
                            ",   '" + str(custEmail) + "'"
                            ",   '" + str(custWeb) + "'"
                            ",   '" + str(custType) + "'"
@@ -264,6 +300,39 @@ def custViews_save(request):
                            )
 
             connection.commit()
+
+        custArrayLists = list(filter(len, custArray))
+        for data in range(len(custArrayLists)):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CUST_NBR FROM MIS1TB003_D WHERE CUST_NBR = '" + custCode + "' AND ICUST = '" + str(iCust) + "' ")
+                result = cursor.fetchall()
+
+            if result:
+                custNbr = result[0][0]
+                with connection.cursor() as cursor:
+                    cursor.execute(" UPDATE MIS1TB003_D SET "
+                                   "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
+                                   "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
+                                   " WHERE CUST_NBR = '" + custNbr + "'"
+                                   " AND ICUST = '" + str(iCust) + "'")
+                    connection.commit()
+            else:
+                with connection.cursor() as cursor:
+                    cursor.execute(" INSERT INTO MIS1TB003_D "
+                                   "("
+                                   "    CUST_NBR "
+                                   "   ,CUST_BKCD "
+                                   "   ,CUST_ACNUM "
+                                   "   ,ICUST"
+                                   ") "
+                                   "VALUES "
+                                   "("
+                                   "    '" + str(custCode) + "' "
+                                   "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
+                                   "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
+                                   "    ,'" + str(iCust) + "' "
+                                   ") ")
+                    connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 

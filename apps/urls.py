@@ -21,6 +21,7 @@ urlpatterns = [
 
 # 파일 불러오기
     path('download_file/', paymentViews.download_file, name='download_file'),
+    path('download_file_emp/', empViews.download_file_emp, name='download_file_emp'),
 
 #     기초정보
     # 계정코드관리

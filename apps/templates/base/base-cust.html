@@ -8,8 +8,6 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-    <form method="post">
-        {% csrf_token %}
         <div class="row">
             <div class="col-lg-12 col-sm-12">
                 <div class="mx-2 mb-2 d-md-flex align-items-center">
@@ -103,123 +101,125 @@
             </div>
             <div class="mb-4 col-lg-5 col-md-3 mb-md-0">
                 <div class="card shadow-xs border h-100">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체명</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustName" name="txtCustName"/>
+                    <form method="post" id="dropzone">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체명</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustName" name="txtCustName"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 코드</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustCode" name="txtCustCode"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>대표자</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCeo" name="txtCeo"/>
+                                    </div>
                                 </div>
-                                <div class="col-4">
-                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 코드</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustCode" name="txtCustCode"/>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사업자 번호</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtRegNum" name="txtRegNum"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>업 태</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustCat" name="txtCustCat"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>업 종</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustType" name="txtCustType"/>
+                                    </div>
                                 </div>
-                                <div class="col-4">
-                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>대표자</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCeo" name="txtCeo"/>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>우편 번호</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtPostCode" name="txtPostCode"/>
+                                    </div>
+                                    <div class="col-8">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>주 소</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtAddress" name="txtAddress"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전화 번호</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtTelePhone" name="txtTelePhone"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>FAX</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtFax" name="txtFax"/>
+                                    </div>
+                                    <div class="col-4">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>등록일</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>e-Mail</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="email" id="txtEMail" name="txtEMail"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>홈페이지 주소</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtWebAddress" name="txtWebAddress"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 분류</label>
+                                        <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType" id="cboCustType"></select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제</label>
+                                        <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboApv" id="cboApv">
+                                            <option value="0">당월</option>
+                                            <option value="1">익월</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제 일자</label>
+                                        <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDay" id="cboDay"></select>
+                                    </div>
+                                    <!--<div class="col-4">
+                                        <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체군 분류</label>
+                                        <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType2" id="cboCustType2"></select>
+                                    </div>-->
+                                    <div hidden class="col-4">
+                                        <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용자</label>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtUser" name="txtUser"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사업자 번호</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtRegNum" name="txtRegNum"/>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>업 태</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustCat" name="txtCustCat"/>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>업 종</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustType" name="txtCustType"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>우편 번호</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtPostCode" name="txtPostCode"/>
-                                </div>
-                                <div class="col-8">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>주 소</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtAddress" name="txtAddress"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전화 번호</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtTelePhone" name="txtTelePhone"/>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>FAX</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtFax" name="txtFax"/>
-                                </div>
-                                <div class="col-4">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>등록일</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate"/>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>e-Mail</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="email" id="txtEMail" name="txtEMail"/>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>홈페이지 주소</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtWebAddress" name="txtWebAddress"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 분류</label>
-                                    <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType" id="cboCustType"></select>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제</label>
-                                    <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboApv" id="cboApv">
-                                        <option value="0">당월</option>
-                                        <option value="1">익월</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제 일자</label>
-                                    <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDay" id="cboDay"></select>
-                                </div>
-                                <!--<div class="col-4">
-                                    <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체군 분류</label>
-                                    <select style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCustType2" id="cboCustType2"></select>
-                                </div>-->
-                                <div hidden class="col-4">
-                                    <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용자</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtUser" name="txtUser"/>
-                                </div>
-                            </div>
-                        </div>
-                        <label class="" style="font-size: 0.8rem"><i class="fa fa-money-check-dollar me-2 text-dark text-sm"></i>거래처 계좌 정보</label>
-                        <div class="table-responsive height-100 w-60 border border-light">
-                            <table class="table" id="bankTb">
-                                <colgroup>
-                                    <col width="2%">
-                                    <col width="6%">
-                                </colgroup>
-                              <thead class="bg-gray-500">
-                                <tr>
-                                  <th style="font-size: 0.85rem" class="text-white text-center p-0">은 행</th>
-                                  <th style="font-size: 0.85rem" class="text-white text-center p-0">계좌 번호</th>
-                                </tr>
-                              </thead>
-                              <tbody id="subTb">
-                                <tr id="#subTr" class="subTr_tr">
+                            <label class="" style="font-size: 0.8rem"><i class="fa fa-money-check-dollar me-2 text-dark text-sm"></i>거래처 계좌 정보</label>
+                            <div class="table-responsive height-100 w-60 border border-light" id="custTb">
+                                <table class="table" id="bankTb">
+                                    <colgroup>
+                                        <col width="2%">
+                                        <col width="6%">
+                                    </colgroup>
+                                  <thead class="bg-gray-500">
+                                    <tr>
+                                      <th style="font-size: 0.85rem" class="text-white text-center p-0">은 행</th>
+                                      <th style="font-size: 0.85rem" class="text-white text-center p-0">계좌 번호</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="subTb">
+                                    <tr id="#subTr" class="subTr_tr">
 
-                                </tr>
-                              </tbody>
-                            </table>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </form>
     </div>
 
 {% endblock %}
@@ -324,16 +324,19 @@
                 $("#inputYn").append(inputYnTxt);
                 $("#cboCustType").append(cboCustTypeTxt);
                 $("#cboDay").append(cboDayTxt);
-                $("#custBank_" + i).append(custBankTxt);
 
+
+                {# 왼쪽 컬럼은 은행 종류 바인딩 #}
                 $("#subTb").html("");
-                for (var j = 0; j < 2; j++) {
+                for (var j = 0; j < 4; j++) {
                     $("#subTb").append(
                         "<tr id='#subTr' class='subTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'><select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='custBank_" + i + "' name='custBank'></select></td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control' type='text' id='custActNum_" + i + "' name='custActNum'/></td>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custBank_" + j + "' name='custBank'/></td>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
                         "</tr> ");
                 }
+
+                {#$("#custBank_" + i).append(custBankTxt);#}
             }
         })
         });
@@ -391,11 +394,14 @@
         $(document).on('click', '#custMainTb .custMainTr_tr', function () {
             var cboCustType = "";
             var cboDay = "";
+            var custBank = "";
             var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
             var cboDayTxt = "<option value='last'>말일</option>";
+            var custBankTxt = "<option value='last'>말일</option>";
 
             $("#cboCustType").html("");
             $("#cboDay").html("");
+            $("#custBank").html("");
 
             let custCode = $(this).attr('main_code');
 
@@ -428,8 +434,6 @@
                         $("#txtAddress").val(list[i][7])
                         $("#txtTelePhone").val(list[i][8])
                         $("#txtFax").val(list[i][9])
-                        $("#txtEmp").val(list[i][10])
-                        $("#txtEmpPhone").val(list[i][11])
                         $("#txtRegDate").val(list[i][19].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtEMail").val(list[i][12])
                         $("#txtWebAddress").val(list[i][13])
@@ -458,8 +462,32 @@
                     }
                     cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
 
+
+                    var list2 = data.custBank;
+                    $("#subTb").html("");
+                    for (var i = 0; i < list2.length; i++) {
+                        custBank = list[i][0]
+
+                        $("#subTb").append(
+                            "<tr id='#subTr' class='subTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank' value='" + list2[i][0] + "'/></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum' value='" + list2[i][1] + "'/></td>" +
+                            "</tr> ");
+                    }
+                    if(list2.length < 3){
+                        for (var j = 0; j < 3; j++) {
+                            $("#subTb").append(
+                                "<tr id='#subTr' class='subTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank'/></input></td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
+                                "</tr> ");
+                        }
+                    }
+
+
                     $("#cboCustType").append(cboCustTypeTxt);
                     $("#cboDay").append(cboDayTxt);
+                    $("#custBank").append(custBankTxt);
                 }
             })
 
@@ -468,26 +496,9 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var txtCustName = document.getElementById('txtCustName').value
-            var txtCustCode = document.getElementById('txtCustCode').value
-            var txtCeo = document.getElementById('txtCeo').value
-            var txtRegNum = document.getElementById('txtRegNum').value
-            var txtCustCat = document.getElementById('txtCustCat').value
-            var txtCustType = document.getElementById('txtCustType').value
-            var txtPostCode = document.getElementById('txtPostCode').value
-            var txtAddress = document.getElementById('txtAddress').value
-            var txtTelePhone = document.getElementById('txtTelePhone').value
-            var txtFax = document.getElementById('txtFax').value
-            var txtEmp = document.getElementById('txtEmp').value
-            var txtEmpPhone = document.getElementById('txtEmpPhone').value
-            var txtWebAddress = document.getElementById('txtWebAddress').value
-            var cboCustType = document.getElementById('cboCustType').value
-            var txtUser = document.getElementById('txtUser').value
-            var cboApv = document.getElementById('cboApv').value
-            var cboDay = document.getElementById('cboDay').value
-            var custBank = document.getElementById('custBank').value
-            var custActNum = document.getElementById('custActNum').value
+            var formData = new FormData($('#dropzone')[0]);
 
+            var txtCustCode = document.getElementById('txtCustCode').value
 
             if(txtCustCode == '')
             {
@@ -495,27 +506,57 @@
                 return false
             }
 
-            let data = {'txtCustName': txtCustName,'txtCustCode': txtCustCode,'txtCeo': txtCeo
-                , 'txtRegNum': txtRegNum, 'txtCustCat': txtCustCat, 'txtCustType': txtCustType, 'txtPostCode': txtPostCode
-                , 'txtAddress': txtAddress, 'txtTelePhone': txtTelePhone, 'txtFax': txtFax, 'txtEmp': txtEmp
-                , 'txtEmpPhone': txtEmpPhone, 'txtEMail': txtEMail, 'txtWebAddress': txtWebAddress, 'cboCustType': cboCustType
-                , 'txtUser': txtUser, 'cboDay': cboDay, "custBank": custBank, "custActNum": custActNum, "cboApv": cboApv};
 
-            $.ajax({
-                type: "post",
-                data: data,
-                dataType: "json",
-                url: '{% url "base_cust_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('저장 되었습니다.')
-                        location.href = "{% url 'base_cust' %}";
+            var saveresult = confirm("저장 하시겠습니까?")
+
+            if (saveresult == true) {
+
+                var Count = 0;
+                $("#custTb tr td input[name='custBank']").each(function (index, ele) {
+                    var ele_val = $(ele).val();
+
+                    if(ele_val){
+                        Count += 1;
+                    }
+                });
+
+
+                var custArr = [];
+                for (var i = 0; i < Count; i++) {
+
+                    var custBank = $('#custBank_' + i).val();
+                    var custActNum = $('#custActNum_' + i).val();
+
+                    if (custBank) {
+                        let data = {
+                            'custBank': custBank,
+                            'custActNum': custActNum,
+                        };
+                        custArr.push(data);
                     }
                 }
-            });
+
+                formData.append('custArrList', JSON.stringify(custArr))
+
+                $.ajax({
+                    type: "post",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    url: '{% url "base_cust_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('저장 되었습니다.')
+                            location.href = "{% url 'base_cust' %}";
+                        }
+                    }
+                });
+            }
 
         });
 
@@ -530,7 +571,7 @@
             //체크가 1개라도 안되있을때
             let chk_count = $("input[name='chkCust[]']").filter(":checked").length;
             if (chk_count < 1) {
-                alert('삭제하실 직원을 체크 해주세요.');
+                alert('삭제하실 거래처를 체크 해주세요.');
                 return false;
             }
 
@@ -590,8 +631,6 @@
                     $("#txtAddress").val("");
                     $("#txtTelePhone").val("");
                     $("#txtFax").val("");
-                    $("#txtEmp").val("");
-                    $("#txtEmpPhone").val("");
                     $("#txtWebAddress").val("");
                     $("#cboCustType").val("");
                     $("#txtUser").val("");

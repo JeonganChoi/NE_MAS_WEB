@@ -191,10 +191,12 @@
                                 <div class="col-6 text-end">
                                     <div class="form-group">
                                         <label class="mt-4 form-label" style="font-size: 1rem"><i class="fas fa-signature me-2"></i>Signature</label>
-                                        <div class="form-group text-end mt-1 text-sm">
-                                            <a class="btn btn-outline-primary btn-sm mt-2" style="font-size: 0.7rem" type="button" id="btnImgAdd">파일 선택</a>
-                                            <a class="btn btn-outline-dark btn-sm mt-2" style="font-size: 0.7rem" type="button" id="btnImgDlt">파일 초기화</a>
+                                        <input name="file" id="file" type="file" class="" style="display: none;" />
+                                        <div class="form-group text-end mt-2 text-sm">
+                                            <a class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem" type="button" id="btnImgAdd">파일 선택</a>
+                                            <a class="btn btn-outline-dark btn-sm" style="font-size: 0.7rem" type="button" id="btnFileLook">파일 보기</a>
                                         </div>
+                                        <div><span id="file_name"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -225,27 +227,45 @@
         });
     </script>
     <script>
-            $('#btnImgDlt').click(function() {
-            $('#fileNm').empty();
-            $('#file').val("");
-
-            var origin_img_url = $('#sign').data('origin');
-            $('#sign').attr('src', origin_img_url);
-        });
+        {#    $('#btnImgDlt').click(function() {#}
+        {#    $('#fileNm').empty();#}
+        {#    $('#file').val("");#}
+        {##}
+        {#    var origin_img_url = $('#sign').data('origin');#}
+        {#    $('#sign').attr('src', origin_img_url);#}
+        {#});#}
 
         //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 이벤트
         $('#file').change(function(event) {
             var file = event.target.files[0]
 
-            $('#fileNm').text(file.name);
-
             var reader = new FileReader(); //1
 
             reader.onload = function(e) {
-                $('#sign').attr('src', e.target.result); //3
+                $('#itemimage').attr('src', e.target.result); //3
             }
 
             reader.readAsDataURL(file); //2
+        });
+
+        {# 파일 선택 버튼 클릭시 #}
+        $(document).on('click', '#btnFile', function () {
+            $("#file").click();
+        });
+
+        {# 파일 보기 버튼 클릭시 #}
+        $(document).on('click', '#btnFileLook', function () {
+            var empCode = $("#txtEmpNo").val();
+            var empClass = $("#cboClass").val();
+
+            location.href = "{% url 'download_file_emp' %}?empCode=" + empCode + "&empClass=" + empClass;
+        });
+
+        $(document).on('change', '#file', function () {
+            let selectedFile = $(this).prop('files')[0];
+            if (selectedFile != null) {
+                $('#file_name').text(selectedFile.name);
+            }
         });
     </script>
 
