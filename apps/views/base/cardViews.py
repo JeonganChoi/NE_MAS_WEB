@@ -176,7 +176,7 @@ def cardViews_dlt(request):
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM ACCARD WHERE CARDNUM = '" + acc_split_list[0] + "' "
                                "                        AND ACBKCD = '" + acc_split_list[1] + "' "
-                               "                        AND ICUST = '" + iCust + "'")
+                               "                        AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

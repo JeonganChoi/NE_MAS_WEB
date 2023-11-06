@@ -1167,6 +1167,8 @@ def offSetViews_save(request):
     return JsonResponse({'sucYn': "Y"})
 
 def paymentViews_dlt(request):
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
     if request.method == "POST":
         dataList = json.loads(request.POST.get('arrList'))
         print(dataList)
@@ -1178,7 +1180,8 @@ def paymentViews_dlt(request):
                                "                      AND IODATE = '" + acc_split_list[2] + "'"
                                "                      AND ACACNUMBER = '" + acc_split_list[3] + "' "
                                "                      AND ACCUST = '" + acc_split_list[4] + "' "
-                               "                      AND MCODE = '" + acc_split_list[5] + "' ")
+                               "                      AND MCODE = '" + acc_split_list[5] + "' "
+                               "                      AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

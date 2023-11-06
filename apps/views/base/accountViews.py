@@ -171,7 +171,7 @@ def accountViews_dlt(request):
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM ACNUMBER WHERE ACBKCD = '" + acc_split_list[0] + "' "
                                "                        AND ACNUMBER = '" + acc_split_list[1] + "' "
-                               "                        AND ICUST = '" + iCust + "'")
+                               "                        AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
