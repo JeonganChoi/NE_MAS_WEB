@@ -52,7 +52,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-7 col-7">
                                 <div class="table-responsive-sm height-400 overflow-auto border border-light">
                                   <table class="table mb-0 align-items-center justify-content-center">
                                       <colgroup>
@@ -81,7 +81,7 @@
                                   </table>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-6">
+                            <div class="col-lg-5 col-5">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-4">
@@ -145,7 +145,7 @@
                                         <div class="col-8"></div>
                                         <div class="col-4">
                                             <div class="form-group text-end mt-3">
-                                            <a class="btn btn-primary text-white btn-sm" type="button" id="btnFileLook">파일 보기</a>
+                                            <a class="btn btn-success text-dark btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                             </div>
                                         </div>
                                     </div>
@@ -261,6 +261,31 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 파일이벤트
+        $('#file').change(function(event) {
+            var file = event.target.files[0]
+
+            var reader = new FileReader(); //1
+
+            reader.onload = function(e) {
+                $('#itemimage').attr('src', e.target.result); //3
+            }
+
+            reader.readAsDataURL(file); //2
+        });
+
+        {# 파일 보기 버튼 클릭시 #}
+        $(document).on('click', '#btnFileLook', function () {
+            var ioDate = $("#txtWitRegDate").val();
+            var acSeqn = $("#txtWitSeq").val();
+            var acIogb = $("#cboWitGbn").val();
+            var acCust = $("#cboWitCust").val();
+
+            location.href = "{% url 'download_file' %}?ioDate=" + ioDate + "&acSeqn=" + acSeqn + "&acIogb=" + acIogb + "&acCust=" + acCust;
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
 

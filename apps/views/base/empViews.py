@@ -1,4 +1,5 @@
 import json
+import os
 from django.shortcuts import render, redirect
 from django import template
 from django.contrib.auth.decorators import login_required
@@ -223,7 +224,7 @@ def empViews_save(request):
     empGbn = request.POST.get('cboGroup')
     empCom = request.POST.get('cboCom')
     empTel = request.POST.get('txtEmpTel')
-    limit = request.POST.get('txtLimit')
+    limit = request.POST.get('txtLimit').replace(',', '')
     empIpsa = request.POST.get('txtEmployDate').replace('-', '')
     empTesa = request.POST.get('txtQuitDate').replace('-', '')
     # usage = request.POST.get('usage')
@@ -233,28 +234,45 @@ def empViews_save(request):
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
+    fileOverwriteYn = request.POST.get("fileOverwriteYn")
 
-    file = request.FILES.get('file')
+    uploaded_file = request.FILES.get('file')
+    if uploaded_file is None:
+        uploaded_file = ''
 
-    if (file is None):
-        file = ''
-    url = '/media/'
+    if uploaded_file:
+        # 원하는 경로 설정, FileResponse
+        # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
+        # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
+        # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
+        # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
+        desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
 
-    if file is None or not None:
-        if len(request.FILES) != 0:
-            myfile = request.FILES['file']
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            Rfilenameloc = url + filename
+        # 해당 디렉토리가 없으면 생성
+        if not os.path.exists(desired_path):
+            os.makedirs(desired_path)
 
-        else:
-            Rfilenameloc = file
+        destination = os.path.join(desired_path, uploaded_file.name)
+
+        # 해당 경로에 동일한 이름의 파일이 있다면
+        if os.path.exists(destination):
+            if fileOverwriteYn == 'Y':
+                os.remove(destination)
+            else:
+                return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
+
+        with open(destination, 'wb+') as destination_file:
+            for chunk in uploaded_file.chunks():
+                destination_file.write(chunk)
+
+        uploaded_file = destination
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT EMP_NBR FROM PIS1TB001 WHERE EMP_NBR = '" + str(empNbr) + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
 
     if result:
+        emp = result[0][0]
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE PIS1TB001 SET"
                            "     EMP_NME  = '" + str(empNme) + "' "
@@ -268,10 +286,10 @@ def empViews_save(request):
                            ",    EMP_CLS = '" + str(empClass) + "'  "
                            ",    EMP_LIMIT = '" + str(limit) + "'  "
                            ",    EMP_CHARGE = '" + str(charge) + "'  "
-                           ",    EMP_FOLDER = '" + str(Rfilenameloc) + "'  "
+                           ",    EMP_FOLDER = '" + str(uploaded_file) + "'  "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            ",    UPD_USER = '" + str(user) + "' "
-                           "    WHERE EMP_NBR = '" + str(empNbr) + "' "
+                           "    WHERE EMP_NBR = '" + str(emp) + "' "
                            "      AND ICUST = '" + str(iCust) + "' "
                            )
             connection.commit()
@@ -313,7 +331,7 @@ def empViews_save(request):
                            ",   '" + str(limit) + "' "
                            ",   '" + str(empClass) + "' "
                            ",   '" + str(charge) + "' "
-                           ",   '" + str(Rfilenameloc) + "' "
+                           ",   '" + str(uploaded_file) + "' "
                            ",   date_format(now(), '%Y%m%d') "
                            ",   '" + str(user) + "' "
                            ",   '" + str(iCust) + "' "

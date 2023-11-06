@@ -193,10 +193,10 @@
                                         <label class="mt-4 form-label" style="font-size: 1rem"><i class="fas fa-signature me-2"></i>Signature</label>
                                         <input name="file" id="file" type="file" class="" style="display: none;" />
                                         <div class="form-group text-end mt-2 text-sm">
-                                            <a class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem" type="button" id="btnImgAdd">파일 선택</a>
+                                            <a class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem" type="button" id="btnFile">파일 선택</a>
                                             <a class="btn btn-outline-dark btn-sm" style="font-size: 0.7rem" type="button" id="btnFileLook">파일 보기</a>
                                         </div>
-                                        <div><span id="file_name"></span></div>
+                                        <div hidden><span id="file_name"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -227,13 +227,6 @@
         });
     </script>
     <script>
-        {#    $('#btnImgDlt').click(function() {#}
-        {#    $('#fileNm').empty();#}
-        {#    $('#file').val("");#}
-        {##}
-        {#    var origin_img_url = $('#sign').data('origin');#}
-        {#    $('#sign').attr('src', origin_img_url);#}
-        {#});#}
 
         //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 이벤트
         $('#file').change(function(event) {
@@ -626,8 +619,32 @@
                         alert('저장 되었습니다.')
                         location.href = "{% url 'base_emp' %}";
                     }
+                    else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+                        if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {
+                            formData.append('fileOverwriteYn', 'Y');
+                            $.ajax({
+                                type: "post",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                url: '{% url "base_emp_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('저장 되었습니다.')
+                                        location.href = "{% url 'base_emp' %}";
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
             });
+
         });
 
         {#체크한 내용 삭제#}
