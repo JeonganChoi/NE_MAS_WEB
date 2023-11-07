@@ -77,7 +77,7 @@ def permitViews_search(request):
 
     # 상계
     if offSet:
-        if (permitGbn == ''):
+        if permitGbn == '':
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
@@ -103,7 +103,7 @@ def permitViews_search(request):
 
             return JsonResponse({"mainList": mainresult})
 
-        if (permitGbn != ''):
+        if permitGbn != '':
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
@@ -130,7 +130,7 @@ def permitViews_search(request):
             return JsonResponse({"mainList": mainresult})
 
     else:
-        if (permitGbn == ''):
+        if permitGbn == '':
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
