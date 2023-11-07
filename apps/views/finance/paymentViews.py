@@ -668,9 +668,9 @@ def cboActNum_search(request):
 
 def paymentViews_save(request):
     empArray = json.loads(request.POST.get('empArrList'))
-    ioDate = request.POST.get("txtWitRegDate").replace('-', '') # 등록일자
+    ioDate = request.POST.get("txtWitRegDate").replace('-', '')
     exDate = request.POST.get("txtExDate").replace('-', '')
-    acSeqn = request.POST.get("txtWitSeq")               # 순번
+    acSeqn = request.POST.get("txtWitSeq")
     acTitle = request.POST.get("txtTitle")
     acRecn = request.POST.get("txtWitRecn")
     acCust = request.POST.get("cboWitCust")     # 거래처
@@ -714,8 +714,9 @@ def paymentViews_save(request):
         # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
         # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
         # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
-        desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
-
+        # desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
+        # desired_path = "/D:/NE_FTP/사업장/산양화학/Dodument/"
+        desired_path = "/D:/COMPANY/SANYANG/DOCUMENTS/"
         # 해당 디렉토리가 없으면 생성
         if not os.path.exists(desired_path):
             os.makedirs(desired_path)
