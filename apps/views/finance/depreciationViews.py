@@ -15,34 +15,39 @@ def depreciationViews(request):
     return render(request, "finance/depreciation-reg-sheet.html")
 
 def dptViews_search(request):
-    yymm = request.POST.get('yymm')
-    yymm = yymm + '00'
+    user = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
+    yyyy = request.POST.get('yymm')
+    yymm = yyyy + '00'
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(A.FIX_NO, ''), IFNULL(A.FIX_NME, ''), IFNULL(A.FIX_GRD, ''), IFNULL(A.FIX_QTY, 0) "
                        "    , IFNULL(A.FIX_GDATE, ''), IFNULL(A.FIX_YEARS, ''), IFNULL(A.FIX_GAMTS, 0) "
-                       "    , IFNULL(B.FIX_FUND, 0), IFNULL(B.FIX_REPAY, 0), IFNULL(B.FIX_TAXC, 0) "
+                       "    , IFNULL(B.FIX_FUND, 0), IFNULL(B.FIX_REPAY, 0), IFNULL(B.FIX_TAXC, 0), IFNULL(A.ICUST, '') "
                        "    FROM OSREPAY A "
                        "    LEFT OUTER JOIN OSREPAY_D B "
                        "    ON A.FIX_NO = B.FIX_NO "
-                       "    WHERE B.FIX_YYMM = '" + yymm + "' ")
+                       "    WHERE YEAR(A.FIX_GDATE) = '" + str(yyyy) + "' "
+                       "    AND A.ICUST = '" + str(iCust) + "'")
         mainresult = cursor.fetchall()
 
     return JsonResponse({"mainList": mainresult})
 
 def dptViews_save(request):
     fixArray = json.loads(request.POST.get('fixArrList'))
+    user = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
 
     fixArrayLists = list(filter(len, fixArray))
     for data in range(len(fixArrayLists)):
         print(fixArrayLists[data]["fixCode"])
         with connection.cursor() as cursor:
-            cursor.execute("SELECT FIX_NO, FIX_GRD, ICUST FROM OSREPAY WHERE FIX_NO = '" + fixArrayLists[data]["fixCode"] + "' ")
+            cursor.execute("SELECT FIX_NO, FIX_GRD, ICUST FROM OSREPAY WHERE FIX_NO = '" + fixArrayLists[data]["fixCode"] + "' AND ICUST = '" + str(iCust) + "' ")
             fixresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT FIX_NO, FIX_YYMM FROM OSREPAY_D WHERE FIX_NO = '" + fixArrayLists[data]["fixCode"] + "' ")
+                "SELECT FIX_NO, FIX_YYMM FROM OSREPAY_D WHERE FIX_NO = '" + fixArrayLists[data]["fixCode"] + "' AND ICUST = '" + str(iCust) + "' ")
             fixresult_d = cursor.fetchall()
 
             if(fixArrayLists[data]["fixAmts"] ==''):
@@ -73,10 +78,10 @@ def dptViews_save(request):
                                 " , FIX_GDATE = '" + fixArrayLists[data]["fixGdt"].replace("-", "") + "' "
                                 " , FIX_YEARS = '" + fixArrayLists[data]["fixYYYY"] + "' "
                                 " , FIX_GAMTS = '" + str(fixArrayLists[data]["fixAmts"]) + "' "
-                                " , UPD_USER = '101' "
+                                " , UPD_USER = '" + str(user) + "' "
                                 " , UPD_DT = date_format(now(), '%Y%m%d') "
-                                " WHERE FIX_NO = '" + fixCode + "' "
-                                "   AND ICUST = '" + iCust + "' "
+                                " WHERE FIX_NO = '" + str(fixCode) + "' "
+                                "   AND ICUST = '" + str(iCust) + "' "
                         )
                         connection.commit()
 
@@ -85,8 +90,8 @@ def dptViews_save(request):
                                 "   FIX_FUND = '" + str(fixArrayLists[data]["fixFund"]) + "' "
                                 " , FIX_REPAY = '" + str(fixArrayLists[data]["fixRepay"]) + "' "
                                 " , FIX_TAXC = '" + str(fixArrayLists[data]["fixTaxc"]) + "' "
-                                " WHERE FIX_NO = '" + fixCode_d + "' "
-                                "   AND FIX_YYMM = '" + fixyymm_d + "' "
+                                " WHERE FIX_NO = '" + str(fixCode_d) + "' "
+                                "   AND FIX_YYMM = '" + str(fixyymm_d) + "' "
                         )
                         connection.commit()
             else:
@@ -114,9 +119,9 @@ def dptViews_save(request):
                             " ,'" + fixArrayLists[data]["fixGdt"].replace("-", "") + "' "
                             " ,'" + fixArrayLists[data]["fixYYYY"] + "' "
                             " ,'" + str(fixArrayLists[data]["fixAmts"]) + "' "
-                            " ,'101' "
+                            " ,'" + str(user) + "' "
                             " ,date_format(now(), '%Y%m%d') "
-                            " ,'101' "
+                            " ,'" + str(iCust) + "' "
                             " ) "
                     )
                     connection.commit()
@@ -145,3 +150,34 @@ def dptViews_save(request):
     return JsonResponse({'arrList': "Y"})
 
     # return render(request, 'finance/depreciation-reg-sheet.html')
+
+
+
+def dptViews_dlt(request):
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
+
+    if request.method == "POST":
+        dataList = json.loads(request.POST.get('arrList'))
+        print(dataList)
+        for cust in dataList:
+            acc_split_list = cust.split(',')
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM OSREPAY WHERE FIX_NO = '" + acc_split_list[0] + "'"
+                               "                      AND FIX_GDATE = '" + acc_split_list[1] + "' "
+                               "                      AND ICUST = '" + str(iCust) + "'")
+                connection.commit()
+
+            yyyy = acc_split_list[1]
+            yymm = yyyy + '00'
+
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM OSREPAY_D WHERE FIX_NO = '" + acc_split_list[0] + "'"
+                               "                      AND FIX_YYMM = '" + str(yymm) + "' "
+                               "                      AND ICUST = '" + str(iCust) + "'")
+                connection.commit()
+
+        return JsonResponse({'sucYn': "Y"})
+
+    else:
+        return render(request, 'finance/withdraw-reg-sheet.html')

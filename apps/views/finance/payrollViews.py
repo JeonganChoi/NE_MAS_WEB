@@ -17,27 +17,28 @@ def payrollViews(request):
 def payrollViews_search(request):
     modal = request.POST.get('modal')
     yyyymm = request.POST.get('yyyymm')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     if modal:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ORDER BY ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ORDER BY ACNUMBER ")
             cboAct = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM ORDER BY MCODE ASC ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ASC ")
             cboMCode = cursor.fetchall()
 
         return JsonResponse({"cboAct": cboAct, "cboMCode": cboMCode})
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PNM' ORDER BY CAST(RESKEY AS UNSIGNED ) ASC ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PNM' AND ICUST = '" + str(iCust) + "' ORDER BY CAST(RESKEY AS UNSIGNED ) ASC ")
             headresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT EMP_NBR, EMP_NME FROM PIS1TB001 WHERE EMP_TESA IS NULL OR EMP_TESA = ''; ")
+            cursor.execute(" SELECT EMP_NBR, EMP_NME FROM PIS1TB001 WHERE EMP_TESA  IS NULL OR EMP_TESA = '' AND ICUST = '" + str(iCust) + "' ")
             empresult = cursor.fetchall()
-            print(empresult)
 
         # 날짜/사업장/사원번호/사원명/직책/기본시급/기본일급/기본시간/기본급/연장시간/휴계시간/휴일근로시간/휴일연장근로시간/주차지산/유급시간/
         # 심야시간/연장근로수당/휴계수당/휴일수당/휴일연장수당/심야수당/주차수당/유급수당/기타수당1,2,3,4,5/지급총액
@@ -72,10 +73,10 @@ def payrollViews_search(request):
                            "        WHERE PMYYMM = '" + str(yyyymm) + "' "
                            "    ) B "
                            " ON A.EMP_NBR = B.EMP_NBR "
-                           " AND A.ICUST = B.ICUST ")
+                           " AND A.ICUST = B.ICUST "
+                           " WHERE A.ICUST = '" + str(iCust) + "'")
 
             mainresult = cursor.fetchall()
-            print(mainresult)
 
         return JsonResponse({"headList": headresult, "empList": empresult, "mainList": mainresult})
 
@@ -88,7 +89,8 @@ def payrollViews_save(request):
     payArrayLists = list(filter(len, payArray))
     for data in range(len(payArrayLists)):
         with connection.cursor() as cursor:
-            cursor.execute("SELECT PMYYMM, EMP_NBR, ICUST FROM OSMONTHP WHERE PMYYMM = '" + payArrayLists[data]["pmYymm"] + "' AND EMP_NBR = '" + payArrayLists[data]["pmEmpNbr"] + "' ")
+            cursor.execute("SELECT PMYYMM, EMP_NBR, ICUST FROM OSMONTHP WHERE PMYYMM = '" + payArrayLists[data]["pmYymm"] + "' "
+                           "    AND EMP_NBR = '" + payArrayLists[data]["pmEmpNbr"] + "' AND ICUST = '" + str(iCust) + "' ")
             payresult = cursor.fetchall()
 
             if (payArrayLists[data]["pmTpay"] == ''):
@@ -197,10 +199,11 @@ def payrollViews_save(request):
                                     " , PMGTG3 = '" + str(pmGtg_list[2]) + "' "
                                     " , PMGOTT = '" + str(payArrayLists[data]["pmGott"]) + "' "
                                     " , PMJITT = '" + str(payArrayLists[data]["pmJitt"]) + "' "
-                                    " , UPD_USER = '" + user + "' "
+                                    " , UPD_USER = '" + str(user) + "' "
                                     " , UPD_DT = date_format(now(), '%Y%m%d') "
-                                    " WHERE PMYYMM = '" + yyyymm + "' "
-                                    "   AND EMP_NBR = '" + empCode + "' "
+                                    " WHERE PMYYMM = '" + str(yyyymm) + "' "
+                                    "   AND EMP_NBR = '" + str(empCode) + "' "
+                                    "   AND ICUST = '" + str(iCust) + "'"
                     )
                     connection.commit()
 
@@ -255,7 +258,7 @@ def payrollViews_save(request):
                                     "  '" + str(payArrayLists[data]["pmYymm"].replace("-", "")) + "' "
                                     " ,'" + str(payArrayLists[data]["pmEmpNbr"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmEmpNme"]) + "' "
-                                    " ,'101' "
+                                    " ,'" + str(iCust) + "' "
                                     " ,'" + str(payArrayLists[data]["pmGrad"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmTpay"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmDpay"]) + "' "
@@ -291,7 +294,7 @@ def payrollViews_save(request):
                                     " ,'" + str(pmGtg_list[2]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmGott"]) + "' "
                                     " ,'" + str(payArrayLists[data]["pmJitt"]) + "' "
-                                    " ,'" + user + "' "
+                                    " ,'" + str(user) + "' "
                                     " ,date_format(now(), '%Y%m%d') "
                                     " ) "
                     )
