@@ -246,7 +246,7 @@ def empViews_save(request):
         # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
         # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
         # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
-        desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
+        desired_path = "D:/COMPANY/SANYANG/DOCUMENTS/"
 
         # 해당 디렉토리가 없으면 생성
         if not os.path.exists(desired_path):
