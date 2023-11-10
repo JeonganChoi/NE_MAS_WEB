@@ -23,10 +23,10 @@
                             </div>
                             <div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-light text-primary text-sm" id="btnCall" name="btnCall">불러오기</button>
-                                <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSearch" name="btnSearch">조 회</button>
+                                <button type="button" class="btn btn-sm btn-success text-white text-sm" id="btnSearch" name="btnSearch">조 회</button>
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
                                 <button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">계 산</button>
-                                <button type="button" class="btn btn-sm btn-light text-success text-sm" id="btnExcel" name="btnExcel">엑셀</button>
+                                <button type="button" class="btn btn-sm text-white text-sm" style="background-color: darkgreen" id="btnExcel" name="btnExcel">엑셀</button>
                             </div>
                         </div>
                     </div>
@@ -158,6 +158,7 @@
 
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
+                        "<tr>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -176,16 +177,17 @@
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>주차시간</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>주차수당</th> " +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>유급시간</th> " +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>유급수당</th>");
+                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>유급수당</th>" +
+                        "</tr>");
 
                     for (var i = 0; i < list.length; i++) {
                         if(list[i][0] < 10) {
-                            $("#mainHd").append(
+                            $("#mainHd tr").append(
                                 "<th class='text-center border-end text-danger p-0' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
                         }
                     }
 
-                    $("#mainHd").append(
+                    $("#mainHd tr").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>총액</th> " +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>국민연금</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>의료보험</th> " +
@@ -195,15 +197,15 @@
 
                     for (var i = 0; i < list.length; i++) {
                         if (list[i][0] > 10 && list[i][0] < 20) {
-                            $("#mainHd").append(
+                            $("#mainHd tr").append(
                                 "<th class='text-center border-end text-danger p-0' style='font-size: 0.85rem'>" + list[i][1] + "</th>");
                         }
                     }
 
-                    $("#mainHd").append(
+                    $("#mainHd tr").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>공재금액</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border-end text-white p-0 excel-hidden' style='font-size: 0.85rem'>선택</th> ");
 
 
 
@@ -214,7 +216,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
-                            "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
+                            "<td hidden class='text-start p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmTPay_" + i + "' name='txtPmTPay' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][5] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
@@ -265,7 +267,7 @@
                             $("#mainTr_" + i).append(
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>" +
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
-                                "<td class='text-center border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
+                                "<td class='text-center border-bottom border-end p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
 
                     }
                 }
@@ -347,7 +349,7 @@
                     $("#mainHd").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>공재금액</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border-end text-white p-0 excel-hidden' style='font-size: 0.85rem'>선택</th> ");
 
 
 
@@ -485,7 +487,7 @@
                     $("#mainHd").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>공재금액</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border-end text-white p-0 excel-hidden' style='font-size: 0.85rem'>선택</th> ");
 
 
 
@@ -740,5 +742,28 @@
 
             $('#sendModal').show();
         });
+
+
+        {# 엑셀 버튼 누를시 #}
+        $(document).on('click', '#btnExcel', function () {
+            var mergedTable = $('<table></table>');
+            $('#grid').each(function () {
+                $(this).find('tr').each(function (row, tr) {
+                    var mergedRow = $('<tr></tr>');
+
+                    $(tr).find('th:not(.excel-hidden), td:not(.excel-hidden)').each(function (col, td) {
+                        var input = $(td).find('input');
+                        var text = input.length > 0 ? input.val() : $(td).text();
+                        $('<td>' + text + '</td>').appendTo(mergedRow);
+                    });
+                    mergedRow.appendTo(mergedTable);
+                });
+            });
+            mergedTable.table2excel({
+                name: 'Sheet1',
+                filename: '임금대장.xls',
+            });
+        });
+
     </script>
 {% endblock %}
