@@ -161,6 +161,7 @@
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAst[]' name='chkAst[]' value=''/></div></td>" +
                             "<td readonly class='text-center p-1' style='font-size: 0.85rem'><input readonly id='txtFixNo_" + (len + i) + "' name='txtFixNo' class='form-control bg-transparent border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme_" + (len + i) + "' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd_" + (len + i) + "' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
@@ -228,6 +229,7 @@
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAst[]' name='chkAst[]' value=''/></div></td>" +
                             "<td readonly class='text-center p-1' style='font-size: 0.85rem'><input readonly id='txtFixNo_" + (len + i) + "' name='txtFixNo' class='form-control bg-transparent border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'><input id='txtFixNme_" + (len + i) + "' name='txtFixNme' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><input id='txtFixGrd_" + (len + i) + "' name='txtFixGrd' class='form-control border-0 text-dark text-center shadow-none' type='text' value='' style='height: 1.5rem; font-size: 0.85rem' /></td> " +
@@ -251,7 +253,7 @@
 
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
-            var saveresult = confirm("저장 하시겠습니까? 입력한 정보가 맞다면 확인 버튼을 눌러주세요.")
+            var saveresult = confirm("저장 하시겠습니까?")
 
             if (saveresult == true) {
 
