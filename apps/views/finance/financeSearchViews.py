@@ -27,7 +27,7 @@ def purTransSearchViews_search(request):
     with connection.cursor() as cursor:
         cursor.execute("  SELECT IFNULL(ITEM, ''), IFNULL(UP_CODE, ''), IFNULL(CUST_NME, ''), IFNULL(OPT, '')"
                        "      , IFNULL(OPT_NME, ''), IFNULL(PAY_OPT, ''), IFNULL(PTP_NME, ''), IFNULL(DANWI, '')"
-                       "      , IFNULL(DANWI_NME, ''), IFNULL(DANGA, '') "
+                       "      , IFNULL(DANWI_NME, ''), IFNULL(DANGA, 0) "
                        "      , SUM(M01) AS M01, SUM(M01_S) AS M01_S, SUM(M01_A) AS M01_A "
                        "      , SUM(M02) AS M02, SUM(M02_S) AS M02_S, SUM(M02_A) AS M02_A "
                        "      , SUM(M03) AS M03, SUM(M03_S) AS M03_S, SUM(M03_A) AS M03_A "
@@ -266,7 +266,7 @@ def saleTransSearchViews_search(request):
     with connection.cursor() as cursor:
         cursor.execute("  SELECT IFNULL(ITEM, ''), IFNULL(UP_CODE, ''), IFNULL(CUST_NME, ''), IFNULL(OPT, '')"
                        "      , IFNULL(OPT_NME, ''), IFNULL(PAY_OPT, ''), IFNULL(PTP_NME, ''), IFNULL(DANWI, '')"
-                       "      , IFNULL(DANWI_NME, ''), IFNULL(DANGA, '') "
+                       "      , IFNULL(DANWI_NME, ''), IFNULL(DANGA, 0) "
                        "      , SUM(M01) AS M01, SUM(M01_S) AS M01_S, SUM(M01_A) AS M01_A "
                        "      , SUM(M02) AS M02, SUM(M02_S) AS M02_S, SUM(M02_A) AS M02_A "
                        "      , SUM(M03) AS M03, SUM(M03_S) AS M03_S, SUM(M03_A) AS M03_A "

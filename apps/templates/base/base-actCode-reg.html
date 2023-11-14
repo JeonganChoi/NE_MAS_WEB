@@ -38,10 +38,10 @@
                         <div class="row">
                             <div class="col-lg-7 col-7">
                                 <div class="row">
-                                    <div class="col-lg-8 col-8 text-start">
+                                    <div class="col-lg-10 col-10 text-start">
                                        <h6 class="mx-4 my-3 text-dark font-weight-bolder"><i class="ni ni-books me-2"></i>관리 계정 리스트</h6>
                                     </div>
-                                    <div class="col-lg-4 col-4 text-end">
+                                    <div class="col-lg-2 col-2 text-end">
                                         <select class="mx-4 my-3 form-control bg-warning text-white text-center w-60 p-0" style="height: 2rem; font-size: 0.8rem" name="cboCodeType" id="cboCodeType">
                                             <option selected value="4">수익</option>
                                             <option value="5">비용</option>
@@ -63,15 +63,15 @@
                                         </colgroup>
                                       <thead class="bg-gray-100">
                                         <tr>
-                                          <th class="text-center text-dark text-center font-weight-bolder p-2"></th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">상위 계정 과목</th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">회계 계정 명</th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">관리 계정 과목</th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">관리 계정 명</th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">구분</th>
-                                          <th hidden style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">구분2</th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">결제 여부</th>
-                                          <th style="font-size: 0.85rem" class="text-dark text-center font-weight-bolder p-2">비 고</th>
+                                          <th style="font-size: 0.8rem" class="p-1">선택</th>
+                                          <th style="font-size: 0.8rem" class="p-1">상위 계정 과목</th>
+                                          <th style="font-size: 0.8rem" class="p-1">회계 계정 명</th>
+                                          <th style="font-size: 0.8rem" class="p-1">관리 계정 과목</th>
+                                          <th style="font-size: 0.8rem" class="p-1">관리 계정 명</th>
+                                          <th style="font-size: 0.8rem" class="p-1">구분</th>
+                                          <th hidden style="font-size: 0.8rem" class="p-1">구분2</th>
+                                          <th style="font-size: 0.8rem" class="p-1">결제 여부</th>
+                                          <th style="font-size: 0.8rem" class="p-1">비 고</th>
                                         </tr>
                                       </thead>
                                       <tbody id="adminMainTb">
@@ -187,14 +187,14 @@
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][2] + "," + list[i][4] + "'/></div></td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
 
@@ -266,14 +266,14 @@
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1 ps-2'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkM[]' name='chkM[]' value='" + list[i][2] + "," + list[i][4] + "'/></div></td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][11] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][8] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
                 }
