@@ -165,7 +165,7 @@ def cashBalRegSaveViews(request):
     ActNum = request.POST.get("cboActNum")
     RAcNum = ActNum[2:]
     RegDate = request.POST.get("txtRegDate").replace('-', '')
-    Amount = request.POST.get("txtAmount")
+    Amount = request.POST.get("txtAmount").replace(',', '')
     Bigo = request.POST.get("txtBigo")
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')

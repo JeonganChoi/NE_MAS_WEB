@@ -97,7 +97,7 @@ def accountViews_save(request):
     bankCode = request.POST.get('bankcode')
     strDate = request.POST.get('regDate').replace('-', '')
     endDate = request.POST.get('eprDate').replace('-', '')
-    accPrc = request.POST.get('amts')
+    accPrc = request.POST.get('amts').replace(',', '')
     remark = request.POST.get('remark')
     inepno = request.POST.get('user')
     user = request.session.get('userId')

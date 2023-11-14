@@ -75,8 +75,8 @@ def custBalRegViews_search(request):
 
 def custBalRegViews_save(request):
     moCust = request.POST.get('cboCustCode')
-    moIwol = request.POST.get('txtNonGet')
-    moIwol2 = request.POST.get('txtNonPay')
+    moIwol = request.POST.get('txtNonGet').replace(',', '')
+    moIwol2 = request.POST.get('txtNonPay').replace(',', '')
     moDesc = request.POST.get('txtRemark')
     iUser = request.POST.get('txtUser')
     regDt = request.POST.get('txtRegDate').replace('-', '')

@@ -161,7 +161,6 @@ def payrollViews_save(request):
                 yyyymm = payresult[0][0]
                 empCode = payresult[0][1]
 
-
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE OSMONTHP SET "
                                     "   PMGRAD = '" + str(payArrayLists[data]["pmGrad"]) + "' "

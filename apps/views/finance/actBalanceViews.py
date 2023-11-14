@@ -101,7 +101,7 @@ def actBalRegViews_search(request):
 def actBalRegViews_save(request):
     actNum = request.POST.get('cboActNum')
     actDate = request.POST.get('txtDate').replace('-', '')
-    actAmts = request.POST.get('txtBalance')
+    actAmts = request.POST.get('txtBalance').replace(',', '')
     actDesc = request.POST.get('txtRemark')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')

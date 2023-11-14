@@ -230,21 +230,21 @@
 
                                             </tr>
                                           </tbody>
-                                          <tfoot class="bg-light text-dark">
+                                          <tfoot>
                                           <tr id="#totalTr2" class="totalTr2_tr">
 
                                           </tr>
                                           </tfoot>
                                       </table>
-                                      <table class="table mb-0 border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0 align-items-center justify-content-center">
-                                          <tbody id="subTb">
+                                      <table class="table mb-0 border border-light">
+                                          <tbody id="subTb" class="border border-light">
                                             <tr id="#subTr" class="subTr_tr">
 
                                             </tr>
                                           </tbody>
                                       </table>
-                                      <table class="table mb-0 border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0 align-items-center justify-content-center">
-                                          <tbody class="border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0" id="subTb2">
+                                      <table class="table mb-0 border border-light">
+                                          <tbody class="border border-light" id="subTb2">
                                           <tr id="#subTr2" class="subTr2_Tr">
 
                                           </tr>
@@ -417,7 +417,7 @@
                         Bal = Bill - Deposit
 
                         $("#sheetTb").append(
-                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<tr id='#sheetTr' class='sheetTr_tr border border-light'>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem' >" + list[i][1] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>매출</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>당월</td>" +
@@ -481,8 +481,8 @@
                     }
 
                     $("#sheetTb").append(
-                        "<tr id='#totalTr' class='totalTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>입금 소계</td>" +
+                        "<tr id='#totalTr' class='totalTr_tr border border-light'>" +
+                        "<td class='text-center p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>입금 소계</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_01) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_01) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_02) + "</td>" +
@@ -526,7 +526,7 @@
                         Bal2 = Bill2 - Deposit2
 
                         $("#sheetTb2").append(
-                            "<tr id='#sheetTr2' class='sheetTr2_tr'>" +
+                            "<tr id='#sheetTr2' class='sheetTr2_tr border border-light'>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem' >" + list2[i][1] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>매입</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem'>당월</td>" +
@@ -589,8 +589,8 @@
                         totalBal2 += Bal2;
                     }
                     $("#sheetTb2").append(
-                        "<tr id='#totalTr2' class='totalTr2_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>출금 소계</td>" +
+                        "<tr id='#totalTr2' class='totalTr2_tr border border-light'>" +
+                        "<td class='text-center p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>출금 소계</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_01) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_01) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_02) + "</td>" +
@@ -654,8 +654,8 @@
                         }
 
                         $("#subTb").append(
-                            "<tr id='#subTr' class='subTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem; max-width: 10rem; background-color: lightpink' >" + list3[i][2] + "</td>" +
+                            "<tr id='#subTr' class='subTr_tr border border-light'>" +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 10rem; max-width: 10rem' >" + list3[i][2] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>" + gubunName + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>당월</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][3]) + "</td> " +
@@ -707,7 +707,7 @@
                     {# 마지막 분석 집계 #}
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightblue'>통장잔액</td>" +
+                        "<td class='text-start p-1  border border-light' style='font-size: 0.85rem; min-width: 18rem'>통장잔액</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
@@ -723,7 +723,7 @@
                         "</tr> ");
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightblue'>월별집계 비교</td>" +
+                        "<td class='text-start p-1  border border-light' style='font-size: 0.85rem; min-width: 18rem'>월별집계 비교</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
@@ -738,8 +738,8 @@
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
                         "</tr> ");
                     $("#subTb2").append(
-                        "<tr id='#subTr2' class='subTr2_Tr border border-danger border-2 border-top border-start-0 border-end-0 border-bottom-0'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>매출계산서 - 매입계산서</td>" +
+                        "<tr id='#subTr2' class='subTr2_Tr border border-light'>" +
+                        "<td class='text-start p-1  border border-light' style='font-size: 0.85rem; min-width: 18rem'>매출계산서 - 매입계산서</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_01 - totalBill2_01) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_02 - totalBill2_02) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_03 - totalBill2_03) + "</td>" +
@@ -755,7 +755,7 @@
                         "</tr> ");
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익(원)</td>" +
+                        "<td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익(원)</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
@@ -771,7 +771,7 @@
                         "</tr> ");
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr'>" +
-                        "<td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익율</td>" +
+                        "<td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익율</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01).toFixed(2)) + "</td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02).toFixed(2)) + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03).toFixed(2)) + "</td>" +
@@ -787,7 +787,7 @@
                         "</tr> ");
                     $("#subTb2").append(
                         `<tr id='#subTr2' class='subTr2_Tr'>
-                            <td class='text-start p-1' style='font-size: 0.85rem; min-width: 18rem; background-color: lightpink'>수익목표율</td>
+                            <td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익목표율</td>
                             <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01) <= 0 ? '부실경영' : '정상경영'}</td>
                             <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02) <= 0 ? '부실경영' : '정상경영'}</td>
                             <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03) <= 0 ? '부실경영' : '정상경영'}</td>

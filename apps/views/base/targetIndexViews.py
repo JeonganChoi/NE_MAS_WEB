@@ -67,6 +67,32 @@ def targetIndexSaveViews(request):
     payArrayLists = list(filter(len, payArray))
     for data in range(len(payArrayLists)):
 
+        if (payArrayLists[data]["month01"] == ''):
+            payArrayLists[data]["month01"] = 0
+        if (payArrayLists[data]["month02"] == ''):
+            payArrayLists[data]["month02"] = 0
+        if (payArrayLists[data]["month03"] == ''):
+            payArrayLists[data]["month03"] = 0
+        if (payArrayLists[data]["month04"] == ''):
+            payArrayLists[data]["month04"] = 0
+        if (payArrayLists[data]["month05"] == ''):
+            payArrayLists[data]["month05"] = 0
+        if (payArrayLists[data]["month06"] == ''):
+            payArrayLists[data]["month06"] = 0
+        if (payArrayLists[data]["month07"] == ''):
+            payArrayLists[data]["month07"] = 0
+        if (payArrayLists[data]["month08"] == ''):
+            payArrayLists[data]["month08"] = 0
+        if (payArrayLists[data]["month09"] == ''):
+            payArrayLists[data]["month09"] = 0
+        if (payArrayLists[data]["month10"] == ''):
+            payArrayLists[data]["month10"] = 0
+        if (payArrayLists[data]["month11"] == ''):
+            payArrayLists[data]["month11"] = 0
+        if (payArrayLists[data]["month12"] == ''):
+            payArrayLists[data]["month12"] = 0
+
+
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ENTYPE FROM MIS1TB051 WHERE yymm = '" + year + "' AND ENTYPE = '" + payArrayLists[data]["iCode"] + "' ")
             result = cursor.fetchall()
@@ -74,18 +100,18 @@ def targetIndexSaveViews(request):
         if result:
             with connection.cursor() as cursor:
                 cursor.execute("    UPDATE MIS1TB051 SET"
-                              "     DATA01 = '" + payArrayLists[data]["month01"] + "' "
-                              ",    DATA02 = '" + payArrayLists[data]["month02"] + "' "
-                              ",    DATA03 = '" + payArrayLists[data]["month03"] + "' "
-                              ",    DATA04 = '" + payArrayLists[data]["month04"] + "' "
-                              ",    DATA05 = '" + payArrayLists[data]["month05"] + "' "
-                              ",    DATA06 = '" + payArrayLists[data]["month06"] + "' "
-                              ",    DATA07 = '" + payArrayLists[data]["month07"] + "' "
-                              ",    DATA08 = '" + payArrayLists[data]["month08"] + "' "
-                              ",    DATA09 = '" + payArrayLists[data]["month09"] + "' "
-                              ",    DATA10 = '" + payArrayLists[data]["month10"] + "' "
-                              ",    DATA11 = '" + payArrayLists[data]["month11"] + "' "
-                              ",    DATA12 = '" + payArrayLists[data]["month12"] + "' "
+                              "     DATA01 = '" + payArrayLists[data]["month01"].replace(',', '') + "' "
+                              ",    DATA02 = '" + payArrayLists[data]["month02"].replace(',', '') + "' "
+                              ",    DATA03 = '" + payArrayLists[data]["month03"].replace(',', '') + "' "
+                              ",    DATA04 = '" + payArrayLists[data]["month04"].replace(',', '') + "' "
+                              ",    DATA05 = '" + payArrayLists[data]["month05"].replace(',', '') + "' "
+                              ",    DATA06 = '" + payArrayLists[data]["month06"].replace(',', '') + "' "
+                              ",    DATA07 = '" + payArrayLists[data]["month07"].replace(',', '') + "' "
+                              ",    DATA08 = '" + payArrayLists[data]["month08"].replace(',', '') + "' "
+                              ",    DATA09 = '" + payArrayLists[data]["month09"].replace(',', '') + "' "
+                              ",    DATA10 = '" + payArrayLists[data]["month10"].replace(',', '') + "' "
+                              ",    DATA11 = '" + payArrayLists[data]["month11"].replace(',', '') + "' "
+                              ",    DATA12 = '" + payArrayLists[data]["month12"].replace(',', '') + "' "
                               ",    UPD_USER = '" + str(user) + "' "
                               ",    UPD_DT = date_format(now(), '%Y%m%d') "
                               "     WHERE yymm = '" + year + "' "
@@ -120,18 +146,18 @@ def targetIndexSaveViews(request):
                                "("
                                " '" + year + "' "
                                " ,'" + payArrayLists[data]["iCode"] + "'"
-                               " , '" + payArrayLists[data]["month01"] + "'"
-                               " , '" + payArrayLists[data]["month02"] + "'"
-                               " , '" + payArrayLists[data]["month03"] + "'"
-                               " , '" + payArrayLists[data]["month04"] + "'"
-                               " , '" + payArrayLists[data]["month05"] + "'"
-                               " , '" + payArrayLists[data]["month06"] + "'"
-                               " , '" + payArrayLists[data]["month07"] + "'"
-                               " , '" + payArrayLists[data]["month08"] + "'"
-                               " , '" + payArrayLists[data]["month09"] + "'"
-                               " , '" + payArrayLists[data]["month10"] + "'"
-                               " , '" + payArrayLists[data]["month11"] + "'"
-                               " , '" + payArrayLists[data]["month12"] + "'"
+                               " , '" + payArrayLists[data]["month01"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month02"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month03"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month04"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month05"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month06"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month07"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month08"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month09"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month10"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month11"].replace(',', '') + "'"
+                               " , '" + payArrayLists[data]["month12"].replace(',', '') + "'"
                                " , '" + str(user) + "' "
                                " , date_format(now(), '%Y%m%d') "
                                " , '" + str(iCust) + "' "
