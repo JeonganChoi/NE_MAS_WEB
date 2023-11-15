@@ -872,7 +872,7 @@ def paymentViews_save(request):
                                "    VALUES "
                                "    (   "
                                "    '" + str(ioDate) + "'"
-                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "') "
+                               ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "') "
                                ",   '" + str(acIogb) + "'"
                                ",   '" + str(acTitle) + "'"
                                ",   '" + str(acCust) + "'"
@@ -1082,7 +1082,7 @@ def offSetViews_save(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "'")
+            cursor.execute(" SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "'")
             seqresult = cursor.fetchall()  # 계좌 은행
 
             if seqresult:
@@ -1128,7 +1128,7 @@ def offSetViews_save(request):
                                 ",   '" + str(acTitle) + "'"
                                 ",   '" + str(acAmts) + "'"
                                 ",   '" + str(outAct) + "'"
-                                ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                                ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
                                 ",   '" + str(acDesc) + "'"
                                 ",   '" + str(creUser) + "'"
                                 ",   date_format(now(), '%Y%m%d') "
@@ -1183,7 +1183,7 @@ def offSetViews_save(request):
                                    ",   '" + str(acTitle) + "'"
                                    ",   '" + str(acAmts) + "'"
                                    ",   '" + str(inAct) + "'"
-                                   ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                                   ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
                                    ",   '" + str(acDesc) + "'"
                                    ",   '" + str(creUser) + "'"
                                    ",   date_format(now(), '%Y%m%d') "
@@ -1229,7 +1229,7 @@ def offSetViews_save(request):
                            ",   '" + str(acTitle) + "' "
                            ",   '" + str(acAmts) + "' "
                            ",   '" + str(acAcnumber) + "' "
-                           ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
+                           ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' ) "
                            ",   '" + str(acDesc) + "' "
                            ",   '" + str(creUser) + "' "
                            ",   date_format(now(), '%Y%m%d') "
