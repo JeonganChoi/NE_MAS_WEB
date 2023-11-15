@@ -243,9 +243,9 @@ def empViews_save(request):
     if uploaded_file:
         # 원하는 경로 설정, FileResponse
         # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
-        # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
+        # desired_path = "D:\\NE_FTP\\MAS_FILES\\" 맥
         # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
-        # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
+        # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/" 윈도우
         desired_path = "D:/COMPANY/SANYANG/DOCUMENTS/"
 
         # 해당 디렉토리가 없으면 생성

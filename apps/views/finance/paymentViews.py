@@ -1290,12 +1290,12 @@ def paymentViews_dlt(request):
         for cust in dataList:
             acc_split_list = cust.split(',')
             with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + acc_split_list[0] + "'"
-                               "                      AND ACIOGB = '" + acc_split_list[1] + "' "
-                               "                      AND IODATE = '" + acc_split_list[2] + "'"
-                               "                      AND ACACNUMBER = '" + acc_split_list[3] + "' "
-                               "                      AND ACCUST = '" + acc_split_list[4] + "' "
-                               "                      AND MCODE = '" + acc_split_list[5] + "' "
+                cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + acc_split_list[5] + "'"
+                               "                      AND ACIOGB = '" + acc_split_list[0] + "' "
+                               "                      AND IODATE = '" + acc_split_list[1] + "'"
+                               "                      AND ACACNUMBER = '" + acc_split_list[2] + "' "
+                               "                      AND ACCUST = '" + acc_split_list[3] + "' "
+                               "                      AND MCODE = '" + acc_split_list[4] + "' "
                                "                      AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
