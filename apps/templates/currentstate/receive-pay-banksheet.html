@@ -123,11 +123,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="px-0 py-0 card-body">
+                    <div class="px-0 py-0 card-body height-600">
                         <div class="row">
                             <div class="col-lg-9 col-9">
-                                <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>날짜별 내역서</h6>
-                                <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                <label class="mx-3 my-2 text-sm"><i class="ni ni-books me-3"></i>날짜별 내역서</label>
+                                <div class="m-1 table-responsive-sm overflow-auto height-500">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
                                             <col width="8%"/>
@@ -139,16 +139,16 @@
                                             <col width="8%"/>
                                             <col width="6%"/>
                                         </colgroup>
-                                        <thead class="bg-dark text-white font-weight-bolder">
+                                        <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                                         <tr>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래일시</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">맡기신 금액</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">찾으신 금액</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">잔금</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래처</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">내역</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">처리</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">거래일시</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">맡기신 금액</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">찾으신 금액</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">잔금</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">거래처</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">내역</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">계정</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">처리</th>
                                         </tr>
                                         </thead>
                                       <tbody id="sheetTb">
@@ -176,17 +176,17 @@
                                 </div>
                             </div>
                             <div class="col-lg-3 col-3">
-                                <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>계정별 총액</h6>
-                                <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                                <label class="mx-3 my-2 text-sm"><i class="ni ni-books me-3"></i>계정별 총액</label>
+                                <div class="m-1 table-responsive-sm overflow-auto height-500">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
                                             <col width="8%"/>
                                             <col width="8%"/>
                                         </colgroup>
-                                        <thead class="bg-dark text-white font-weight-bolder">
+                                        <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                                         <tr>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">총 금액</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">계정</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">총 금액</th>
                                         </tr>
                                         </thead>
                                       <tbody id="acTb">
@@ -311,7 +311,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -326,7 +326,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -419,7 +419,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -434,7 +434,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -509,7 +509,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -524,7 +524,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -598,7 +598,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -613,7 +613,7 @@
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +

@@ -16,8 +16,7 @@
                     <div class="card-body pb-2">
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
-                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>시행
-                                    관리</h4>
+                                <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>시행 관리</h4>
                             </div>
                             <!--<div class="col-lg-6 col-6 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
@@ -120,6 +119,7 @@
                                             <col width="6%">
                                             <col hidden width="6%">
                                             <col hidden width="6%">
+                                            <col width="6%">
                                         </colgroup>
                                         <thead class="text-white font-weight-bolder text-center"
                                                style="background-color: darkslateblue">
@@ -131,6 +131,7 @@
                                             <th style="font-size: 0.85rem" class="p-1">금액</th>
                                             <th style="font-size: 0.85rem" class="p-1">작성자</th>
                                             <th style="font-size: 0.85rem" class="p-1">승인</th>
+                                            <th style="font-size: 0.85rem" class="p-1">상계</th>
                                         </tr>
                                         </thead>
                                         <tbody id="mainTb">
@@ -245,6 +246,7 @@
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
+                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkSetOff[]' name='chkSetOff[]' value=''/></td> " +
                             "</tr> ");
 
                         total += Number(list[i][2])
@@ -385,6 +387,7 @@
                 }
             }
         });
+
 
         $(document).on('change', '#inputOffSet', function() {
            if($(this).is(':checked')) {

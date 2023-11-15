@@ -27,29 +27,28 @@ def receiptPaymentViews_search(request):
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(
-                "  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
-                " ( "
-                "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
-                "     FROM SISACCTT A "
-                "     LEFT OUTER JOIN MIS1TB003 B "
-                "     ON A.ACCUST = B.CUST_NBR "
-                "     LEFT OUTER JOIN ACNUMBER C "
-                "     ON A.ACACNUMBER = C.ACNUMBER "
-                "     WHERE A.ACIOGB = '2' "
-                "     UNION ALL "
-                "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
-                "     FROM SISACCTT A "
-                "     LEFT OUTER JOIN MIS1TB003 B "
-                "     ON A.ACCUST = B.CUST_NBR "
-                "     LEFT OUTER JOIN ACNUMBER C "
-                "     ON A.ACACNUMBER = C.ACNUMBER "
-                "     WHERE A.ACIOGB = '1' "
-                " ) AA "
-                " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                " AND AA.ACCUST = '" + cust + "' "
-                " AND AA.ACACNUMBER = '" + act + "' "
-                " ORDER BY AA.ACDATE ")
+            cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
+                           " ( "
+                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
+                           "     FROM SISACCTT A "
+                           "     LEFT OUTER JOIN MIS1TB003 B "
+                           "     ON A.ACCUST = B.CUST_NBR "
+                           "     LEFT OUTER JOIN ACNUMBER C "
+                           "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     WHERE A.ACIOGB = '2' "
+                           "     UNION ALL "
+                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
+                           "     FROM SISACCTT A "
+                           "     LEFT OUTER JOIN MIS1TB003 B "
+                           "     ON A.ACCUST = B.CUST_NBR "
+                           "     LEFT OUTER JOIN ACNUMBER C "
+                           "     ON A.ACACNUMBER = C.ACNUMBER "
+                           "     WHERE A.ACIOGB = '1' "
+                           " ) AA "
+                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " AND AA.ACCUST = '" + cust + "' "
+                           " AND AA.ACACNUMBER = '" + act + "' "
+                           " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({'balList': balresult, 'mainList': mainresult})

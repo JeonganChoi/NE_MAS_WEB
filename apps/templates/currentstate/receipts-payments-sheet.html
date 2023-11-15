@@ -52,10 +52,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="px-0 py-0 card-body">
+                    <div class="px-0 py-0 card-body height-600">
                         <div class="row">
-                            <div class="col-lg-9 col-9">
-                                <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
+                            <div class="col-lg-2 col-2"></div>
+                            <div class="col-lg-8 col-8">
+                                <div class="m-1 table-responsive-sm overflow-auto height-500">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
                                             <col width="8%"/>
@@ -65,14 +66,14 @@
                                             <col width="8%"/>
                                             <col width="8%"/>
                                         </colgroup>
-                                        <thead class="bg-dark text-white font-weight-bolder">
+                                        <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                                         <tr>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래 일시</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">맡기신 금액</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">찾으신 금액</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">잔금</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">거래처</th>
-                                            <th class="text-center p-2" style="font-size: 0.8rem;">통장명</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">거래 일시</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">맡기신 금액</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">찾으신 금액</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">잔금</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">거래처</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">통장명</th>
                                         </tr>
                                         </thead>
                                         <tbody id="sheetTb">
@@ -83,6 +84,7 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-2"></div>
                         </div>
                     </div>
                 </div>
@@ -134,14 +136,14 @@
                         bal = list2[i][0]
                         $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>이월 잔액</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>이월 잔액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
                             "</tr> ");
                     };
 
@@ -151,14 +153,14 @@
                             bal += list[i][2]
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                                 "</tr> ");
                         }
                         if(list[i][0] == '1'){
@@ -166,14 +168,14 @@
                             bal -= list[i][2]
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                                 "</tr> ");
                         }
 
@@ -236,14 +238,14 @@
                         bal = list2[i][0]
                         $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>이월 잔액</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>이월 잔액</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'></td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'></td> " +
                             "</tr> ");
                     }
 
@@ -253,14 +255,14 @@
                             bal += list[i][2]
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                                 "</tr> ");
                         }
                         if(list[i][0] == '1'){
@@ -268,14 +270,14 @@
                             bal -= list[i][2]
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(bal) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                                 "</tr> ");
                         }
                     }
