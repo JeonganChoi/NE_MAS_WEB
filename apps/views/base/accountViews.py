@@ -88,7 +88,15 @@ def accountViews_search(request):
 
         return JsonResponse({"bankCombo": bankCombo, "cboTop": cboTop, "accountList": accountresult})
 
+def chkAccount_search(request):
+    acNum = request.POST.get('actCode')
+    iCust = request.session.get('USER_ICUST')
 
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACNUMBER = '" + str(acNum) + "' AND ICUST = '" + str(iCust) + "' ")
+        account = cursor.fetchall()
+
+    return JsonResponse({"account": account})
 
 def accountViews_save(request):
     # acGbn = request.POST.get('cboTop')

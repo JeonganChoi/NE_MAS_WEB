@@ -50,11 +50,13 @@ urlpatterns = [
     # 게좌관리
     path('base_account/', accountViews.accountViews, name='base_account'),
     path('base_account_search/', accountViews.accountViews_search, name='base_account_search'),
+    path('chkAccount/', accountViews.chkAccount_search, name='chkAccount'),
     path('base_account_save/', accountViews.accountViews_save, name='base_account_save'),
     path('base_account_dlt/', accountViews.accountViews_dlt, name='base_account_dlt'),
     # 카드관리
     path('base_card/', cardViews.cardViews, name='base_card'),
     path('base_card_search/', cardViews.cardViews_search, name='base_card_search'),
+    path('chkCard/', cardViews.chkCard_search, name='chkCard'),
     path('base_card_save/', cardViews.cardViews_save, name='base_card_save'),
     path('base_card_dlt/', cardViews.cardViews_dlt, name='base_card_dlt'),
     # 지수관리

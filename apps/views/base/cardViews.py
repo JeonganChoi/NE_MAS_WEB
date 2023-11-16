@@ -70,7 +70,11 @@ def cardViews_search(request):
                            " AND A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()
 
-        return JsonResponse({'cardList': cardresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(bankCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            cboAct = cursor.fetchall()
+
+        return JsonResponse({'cardList': cardresult, 'cboAct': cboAct})
 
     else:
         with connection.cursor() as cursor:
@@ -101,6 +105,15 @@ def cardViews_search(request):
 
         return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
 
+
+def chkCard_search(request):
+    cardNum = request.POST.get('txtCardNum')
+    iCust = request.session.get("USER_ICUST")
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDNUM = '" + str(cardNum) + "' AND ICUST = '" + str(iCust) + "' ")
+        card = cursor.fetchall()
+
+    return JsonResponse({'card': card})
 
 def cardViews_save(request):
     cboBank = request.POST.get('cboBank')

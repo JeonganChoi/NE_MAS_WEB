@@ -61,14 +61,14 @@
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th style="font-size: 0.85rem" class="p-1">선택</th>
-                              <th style="font-size: 0.85rem" class="p-1">은행명</th>
-                              <th style="font-size: 0.85rem" class="p-1">계좌 번호</th>
-                              <th style="font-size: 0.85rem" class="p-1">통장명</th>
-                              <th style="font-size: 0.85rem" class="p-1">가입 일자</th>
-                              <th style="font-size: 0.85rem" class="p-1">만기 일자</th>
-                              <th style="font-size: 0.85rem" class="p-1">월 납입액</th>
-                              <th style="font-size: 0.85rem" class="p-1">비 고</th>
+                              <th style="font-size: 0.85rem" class="text-start p-1">선택</th>
+                              <th style="font-size: 0.85rem" class="text-start p-1">은행명</th>
+                              <th style="font-size: 0.85rem" class="text-start p-1">계좌 번호</th>
+                              <th style="font-size: 0.85rem" class="text-start p-1">통장명</th>
+                              <th style="font-size: 0.85rem" class="text-center p-1">가입 일자</th>
+                              <th style="font-size: 0.85rem" class="text-center p-1">만기 일자</th>
+                              <th style="font-size: 0.85rem" class="text-center p-1">월 납입액</th>
+                              <th style="font-size: 0.85rem" class="text-start p-1">비 고</th>
                             </tr>
                           </thead>
                           <tbody id="actMainTb">
@@ -101,23 +101,23 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-4" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>계좌 번호</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtActNum" name="txtActNum"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtActNum" name="txtActNum"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>가입 일자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtRegDate" name="txtRegDate"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtRegDate" name="txtRegDate"/>
                             </div>
                             <div class="col-6">
                                 <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>만기 일자</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="date" id="txtExpireDate" name="txtExpireDate"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="date" id="txtExpireDate" name="txtExpireDate"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>통장명</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtActName" name="txtActName"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtActName" name="txtActName"/>
                             </div>
                             <div class="col-6">
                                 <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>월 납입액</label>
@@ -155,8 +155,8 @@
             {#var cboTopTxt = "<option value=''>:: 선택 ::</option>";#}
             var cboBankTypeTxt = "<option value=''>:: 선택 ::</option>";
             var bankTypeTxt = "<option value=''>:: 선택 ::</option>";
-            document.getElementById('txtRegDate').valueAsDate = new Date
-            document.getElementById('txtExpireDate').valueAsDate = new Date
+            {#document.getElementById('txtRegDate').valueAsDate = new Date#}
+            {#document.getElementById('txtExpireDate').valueAsDate = new Date#}
 
             {#$("#cboTop").html("");#}
             $("#cbobankType").html("");
@@ -177,13 +177,13 @@
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][6]) + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "</tr> ");
                     }
 
@@ -234,13 +234,13 @@
                         $("#actMainTb").append(
                             "<tr id='#actMainTr' class='actMainTr_tr' main_code='" + list[i][2] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][6]) + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "</tr> ");
                     }
                 }
@@ -338,21 +338,41 @@
                 return false
             }
 
-            let data = {'bankcode': bankcode,'actCode': actCode,'regDate': regDate
-                        , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user}
+            let data = {'actCode': actCode}
 
             $.ajax({
                 type: "post",
                 data: data,
                 dataType: "json",
-                url: '{% url "base_account_save" %}',
+                url: '{% url "chkAccount" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 success: function (data) {
-                    if(data.sucYn === 'Y'){
-                        alert('저장 되었습니다.')
-                        location.href = "{% url 'base_account' %}";
+                    if(data.account != ''){
+                        alert('이미 존재하는 계좌번호 입니다.')
+                    }
+                    else{
+                        let data2 = {
+                            'bankcode': bankcode, 'actCode': actCode, 'regDate': regDate
+                            , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user
+                        }
+
+                        $.ajax({
+                            type: "post",
+                            data: data2,
+                            dataType: "json",
+                            url: '{% url "base_account_save" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+                                if (data.sucYn === 'Y') {
+                                    alert('저장 되었습니다.')
+                                    location.href = "{% url 'base_account' %}";
+                                }
+                            }
+                        });
                     }
                 }
             });
@@ -419,8 +439,6 @@
                 dataType: 'json',
                 success: function (data) {
 
-                    document.getElementById('txtRegDate').valueAsDate = new Date
-                    document.getElementById('txtExpireDate').valueAsDate = new Date
                     $("#txtActNum").val("");
                     $("#txtActName").val("");
                     $("#txtAmount").val("");

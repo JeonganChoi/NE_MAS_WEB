@@ -262,11 +262,49 @@
         })
     });
 
-    {# 은행명에 따른 조회 #}
+    {# 조회 조건 은행명에 따른 조회 #}
     $('#inputBank').change(function () {
 
         $("#btnSearch").trigger('click');
 
+    });
+
+    {# 입력란 은행명에 따른 조회 #}
+    $('#cboBank').change(function () {
+        var cboActNum = "";
+        var cardNum = "";
+        var actNum = "";
+        var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
+
+        $("#cboActNum").html("");
+
+        var bankCode = document.getElementById('cboBank').value
+
+        let data = {'bankCode': bankCode, 'cardNum': cardNum, 'actNum': actNum}
+
+        $.ajax({
+            type: "post",
+            url: '{% url "base_card_search" %}',
+            data: data,
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+
+                var combolist3 = data.cboAct;
+                for (var i = 0; i < combolist3.length; i++) {
+                    if (combolist3[i][0] == cboActNum) {
+                        cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][0] + "</option>";
+                    } else {
+                        cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][0] + "</option>";
+                    }
+                }
+
+                $("#cboActNum").append(cboActNumTxt);
+
+            }
+        })
     });
 
     {#  테이블 로우 클릭 시  #}
@@ -372,7 +410,6 @@
                 cboDay = day
             }
 
-
             var txtCardNum = document.getElementById('txtCardNum').value
             var txtRemark = document.getElementById('txtRemark').value
 
@@ -385,25 +422,43 @@
                 return false
             }
 
-            let data = {'cboBank': cboBank, 'cboType': cboType, 'cboActNum': cboActNum,'txtCardNum': txtCardNum
-                        , 'cboDay': cboDay, 'txtRemark': txtRemark}
+            let data = {'txtCardNum': txtCardNum}
 
             $.ajax({
                 type: "post",
                 data: data,
                 dataType: "json",
-                url: '{% url "base_card_save" %}',
+                url: '{% url "chkAccount" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 success: function (data) {
-                    if(data.sucYn === 'Y'){
-                        alert('저장 되었습니다.')
-                        location.href = "{% url 'base_card' %}";
+                    if(data.card != ''){
+                        alert('이미 존재 하는 카드 번호 입니다.')
+                    }
+                    else{
+
+                        let data2 = {'cboBank': cboBank, 'cboType': cboType, 'cboActNum': cboActNum,'txtCardNum': txtCardNum
+                                    , 'cboDay': cboDay, 'txtRemark': txtRemark}
+
+                        $.ajax({
+                            type: "post",
+                            data: data2,
+                            dataType: "json",
+                            url: '{% url "base_card_save" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+                                if(data.sucYn === 'Y'){
+                                    alert('저장 되었습니다.')
+                                    location.href = "{% url 'base_card' %}";
+                                }
+                            }
+                        });
                     }
                 }
             });
-
         });
 
         {#체크한 내용 삭제#}
