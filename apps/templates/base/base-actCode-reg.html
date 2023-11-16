@@ -99,7 +99,7 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-6">
                                             <label class="mt-2 text-danger" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-danger text-sm"></i>관리 계정 과목</label>
-                                            <input maxlength="6" style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>
+                                            <input readonly placeholder="관리 계정 코드는 자동 생성 됩니다." maxlength="6" style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>
                                         </div>
                                         <div class="col-lg-6 col-6">
                                             <label class="mt-2 text-danger" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-danger text-sm"></i>관리 계정 명</label>
@@ -389,82 +389,49 @@
             let cboGbn2_M = document.getElementById('cboGbn2_M').value;
             let mOpt = document.getElementById('cboOpt').value;
 
-            if (mCode_M == '') {
-                alert('상위 계정과목을 선택해주세요.')
+            if (mCode_A == '') {
+                alert('회계 계정과목을 선택해주세요.')
                 return false
             }
-            if (mCode == '') {
-                alert('하위 계정과목을 입력해주세요.')
+            if (mCodeNme == '') {
+                alert('계정명을 입력해주세요.')
                 return false
             }
 
-            let data = {"mCode": mCode}
+            let data2 = {
+                'cboCodeType': mCodeType,
+                'mCode_M': mCode_M,
+                "mCode_A": mCode_A,
+                'txtCode_M': mCode,
+                'txtCodeNme_M': mCodeNme,
+                'txtSeq_M': mSeq,
+                'txtDesc_M': mDesc,
+                'cboGbn_M': cboGbn_M,
+                'cboGbn2_M': cboGbn2_M,
+                'cboOpt': mOpt
+            }
 
             $.ajax({
                 type: "post",
-                data: data,
-                url: '{% url "base_chk_code" %}',
+                data: data2,
+                dataType: "json",
+                url: '{% url "base_accountCode_saveM" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
-                dataType: 'json',
                 success: function (data) {
-                    if(data.key != ''){
-                        alert('존재 하는 계정 과목 코드 입니다.')
-                    }
-                    else{
 
-                        if (mCode.substring(0, 1) != mCodeType) {
-                            if (mCodeType == '4') {
-                                alert('수익에 관한 계정과목은 앞자리 숫자 4로 시작한 6자리로 입력해주세요. 예시) 4XXXXX')
-                                return false
-                            } else if (mCodeType == '5') {
-                                alert('비용에 관한 계정과목은 앞자리 숫자 5로 시작한 6자리로 입력해주세요. 예시) 5XXXXX')
-                                return false
-                            }
-                        }
-                        if (mCodeNme == '') {
-                            alert('계정명을 입력해주세요.')
-                            return false
-                        }
+                    if (data.sucYn === 'Y') {
+                        alert('저장되었습니다.')
 
-                        let data2 = {
-                            'cboCodeType': mCodeType,
-                            'mCode_M': mCode_M,
-                            "mCode_A": mCode_A,
-                            'txtCode_M': mCode,
-                            'txtCodeNme_M': mCodeNme,
-                            'txtSeq_M': mSeq,
-                            'txtDesc_M': mDesc,
-                            'cboGbn_M': cboGbn_M,
-                            'cboGbn2_M': cboGbn2_M,
-                            'cboOpt': mOpt
-                        }
-
-                        $.ajax({
-                            type: "post",
-                            data: data2,
-                            dataType: "json",
-                            url: '{% url "base_accountCode_saveM" %}',
-                            headers: {
-                                'X-CSRFTOKEN': '{{ csrf_token }}'
-                            },
-                            success: function (data) {
-
-                                if (data.sucYn === 'Y') {
-                                    alert('저장되었습니다.')
-
-                                    {# 조회 콤보박스 클릭시 #}
-                                    {#$('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);#}
-                                    {# 입력란 초기화 #}
-                                    {#document.getElementById('btnClear').click();#}
-                                }
-                            }
-                        });
-
+                        location.reload()
+                        {# 조회 콤보박스 클릭시 #}
+                        {#$('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);#}
+                        {# 입력란 초기화 #}
+                        {#document.getElementById('btnClear').click();#}
                     }
                 }
-            })
+            });
         });
 
 
@@ -514,14 +481,79 @@
         {#입력란 내용 삭제#}
         $(document).on('click', "#btnClear", function () {
 
-            document.getElementById("cboMCode_M").value = "";
-            document.getElementById("txtCode_M").value = "";
-            document.getElementById("cboMCode_A").value = "";
-            document.getElementById("txtCodeNme_M").value = "";
-            document.getElementById("txtDesc_M").value = "";
-            document.getElementById("txtSeq_M").value = "";
-            document.getElementById("cboGbn_M").value = "";
-            document.getElementById("cboGbn2_M").value = "";
+            var cboMCode_M = "";
+            var cboGbn_M = "";
+            var cboGbn2_M = "";
+            var cboMCode_A = "";
+            var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
+            var cboGbnTxt_M = "";
+            var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
+            var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
+            $("#cboMCode_M").html("");
+            $("#cboGbn_M").html("");
+            $("#cboGbn2_M").html("");
+            $("#cboMCode_A").html("");
+
+            let mCodeType = document.getElementById('cboCodeType').value;
+            var mainCode = "";
+            let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "base_accountCode_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    $("#txtCode_M").val("");
+                    $("#txtDesc_M").val("");
+                    $("#txtCodeNme_M").val("");
+
+                    var combolist6 = data.cboMCode;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboMCode_M) {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist = data.cboGbn;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboGbn_M) {
+                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboGbn2;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboGbn2_M) {
+                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist5 = data.cboACode;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboMCode_A) {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboMCode_M").append(cboMCodeTxt_M);
+                    $("#cboGbn_M").append(cboGbnTxt_M);
+                    $("#cboGbn2_M").append(cboGbn2Txt_M);
+                    $("#cboMCode_A").append(cboMCodeTxt_A);
+                }
+            })
 
         });
 

@@ -158,6 +158,35 @@ def accountCodeViews_saveM(request):
             return JsonResponse({'sucYn': "Y"})
 
     else:
+
+        if mCode_A.startswith('41'):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 41001) FROM OSCODEM A WHERE MCODE LIKE '41%' ")
+                result = cursor.fetchall()
+                code = int(result[0][0])
+                mCode = code
+
+        if mCode_A.startswith('43'):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 43001) FROM OSCODEM A WHERE MCODE LIKE '43%' ")
+                result = cursor.fetchall()
+                code = int(result[0][0])
+                mCode = code
+
+        if mCode_A.startswith('51'):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 51001) FROM OSCODEM A WHERE MCODE LIKE '51%' ")
+                result = cursor.fetchall()
+                code = int(result[0][0])
+                mCode = code
+
+        if mCode_A.startswith('53'):
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 53001) FROM OSCODEM A WHERE MCODE LIKE '53%' ")
+                result = cursor.fetchall()
+                code = int(result[0][0])
+                mCode = code
+
         with connection.cursor() as cursor:
               cursor.execute(" INSERT INTO OSCODEM "
                              "   (    "
