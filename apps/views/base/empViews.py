@@ -273,11 +273,13 @@ def empViews_save(request):
 
     if result:
         emp = result[0][0]
+        # 이름/비번/부서/직급/구분/사업장/전화번호/입사/퇴사/등급/전결금액/승인여부/파일
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE PIS1TB001 SET"
                            "     EMP_NME  = '" + str(empNme) + "' "
                            ",    EMP_PASS = '" + str(empPass) + "' "
                            ",    EMP_DEPT = '" + str(empDept) + "' "
+                           ",    EMP_JO  = '" + str(empGbn) + "' "
                            ",    EMP_GBN  = '" + str(empGbn) + "' "
                            ",    EMP_COM  = '" + str(empCom) + "' "
                            ",    EMP_TEL  = '" + str(empTel) + "' "
@@ -304,6 +306,7 @@ def empViews_save(request):
                            ",    EMP_NME "
                            ",    EMP_PASS "
                            ",    EMP_DEPT "
+                           ",    EMP_JO "
                            ",    EMP_GBN "
                            ",    EMP_COM "
                            ",    EMP_TEL "
@@ -323,6 +326,7 @@ def empViews_save(request):
                            ",   '" + str(empNme) + "' "
                            ",   '" + str(empPass) + "' "
                            ",   '" + str(empDept) + "' "
+                           ",   '" + str(empGbn) + "' "
                            ",   '" + str(empGbn) + "' "
                            ",   '" + str(empCom) + "' "
                            ",   '" + str(empTel) + "' "
