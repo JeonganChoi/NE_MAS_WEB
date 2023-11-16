@@ -122,15 +122,15 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사업자 번호</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtRegNum" name="txtRegNum"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtRegNum" name="txtRegNum"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>업 태</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustCat" name="txtCustCat"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustCat" name="txtCustCat"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>업 종</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtCustType" name="txtCustType"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustType" name="txtCustType"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -146,11 +146,11 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전화 번호</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtTelePhone" name="txtTelePhone"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtTelePhone" name="txtTelePhone"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>FAX</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-center" type="text" id="txtFax" name="txtFax"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtFax" name="txtFax"/>
                                     </div>
                                     <div class="col-4">
                                     </div>
@@ -269,9 +269,9 @@
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td> " +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
                         "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                         "</tr> ");
                 }
@@ -380,9 +380,9 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "</tr> ");
                     }
@@ -466,12 +466,12 @@
                     var list2 = data.custBank;
                     $("#subTb").html("");
                     for (var i = 0; i < list2.length; i++) {
-                        custBank = list[i][0]
 
                         $("#subTb").append(
                             "<tr id='#subTr' class='subTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank' value='" + list2[i][0] + "'/></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum' value='" + list2[i][1] + "'/></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + i + "' name='custBank' value='" + list2[i][0] + "'/></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + i + "' name='custActNum' value='" + list2[i][1] + "'/></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + i + "' name='custSeq' value='" + list2[i][2] + "'/></td>" +
                             "</tr> ");
                     }
                     if(list2.length < 3){
@@ -480,6 +480,7 @@
                                 "<tr id='#subTr' class='subTr_tr'>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank'/></input></td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + j + "' name='custSeq'/></td>" +
                                 "</tr> ");
                         }
                     }
@@ -526,11 +527,13 @@
 
                     var custBank = $('#custBank_' + i).val();
                     var custActNum = $('#custActNum_' + i).val();
+                    var custSeq = $('#custSeq_' + i).val();
 
                     if (custBank) {
                         let data = {
                             'custBank': custBank,
                             'custActNum': custActNum,
+                            'custSeq': custSeq,
                         };
                         custArr.push(data);
                     }
@@ -606,11 +609,14 @@
         $(document).on('click', "#btnClear", function () {
             var inputYn = "";
             var cboCustType = "";
+            var cboDay = "";
             var inputYnTxt = "<option value=''>:: 선택 ::</option>";
             var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDayTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputYn").html("");
             $("#cboCustType").html("");
+            $("#cboDay").html("");
 
 
             $.ajax({
@@ -621,19 +627,21 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $("#txtCustName").html("");
-                    $("#txtCustCode").html("");
-                    $("#txtCeo").html("");
-                    $("#txtRegNum").html("");
-                    $("#txtCustCat").html("");
-                    $("#txtCustType").html("");
+                    $("#txtCustName").val("");
+                    $("#txtCustCode").val("");
+                    $("#txtCeo").val("");
+                    $("#txtRegNum").val("");
+                    $("#txtCustCat").val("");
+                    $("#txtCustType").val("");
                     $("#txtPostCode").val("");
                     $("#txtAddress").val("");
                     $("#txtTelePhone").val("");
                     $("#txtFax").val("");
+                    $("#txtEMail").val("");
                     $("#txtWebAddress").val("");
-                    $("#cboCustType").val("");
                     $("#txtUser").val("");
+
+                    $("#txtRegDate").val("");
 
                     var combolist4 = data.cboCustYn;
                     for (var i = 0; i < combolist4.length; i++) {
@@ -653,8 +661,28 @@
                         }
                     }
 
+                    cboDayTxt = cboDayTxt + "<option value=''></option>";
+                    for (var i = 1; i < 32; i++) {
+                        if (i == cboDay) {
+                            cboDayTxt = cboDayTxt + "<option value='" + i + "' selected>" + i + "일</option>";
+                        } else {
+                            cboDayTxt = cboDayTxt + "<option value='" + i + "'>" +i + "일</option>";
+                        }
+                    }
+                    cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
+
                     $("#inputYn").append(inputYnTxt);
                     $("#cboCustType").append(cboCustTypeTxt);
+                    $("#cboDay").append(cboDayTxt);
+
+                    $("#subTb").html("");
+                    for (var i = 0; i < 3; i++) {
+                        $("#subTb").append(
+                            "<tr id='#subTr' class='subTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + i + "' name='custBank' value=''/></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + i + "' name='custActNum' value=''/></td>" +
+                            "</tr> ");
+                    }
 
                 }
             })

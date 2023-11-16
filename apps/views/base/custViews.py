@@ -63,7 +63,7 @@ def custViews_search(request):
         #  거래처 계좌번호 테이블
         with connection.cursor() as cursor:
             cursor.execute(
-                " SELECT CUST_BKCD, CUST_ACNUM "
+                " SELECT CUST_BKCD, CUST_ACNUM, SEQ "
                 " FROM MIS1TB003_D "
                 " WHERE CUST_NBR LIKE '%" + custCode + "%' AND ICUST = '" + str(iCust) + "' ")
             custBank = cursor.fetchall()
@@ -220,17 +220,20 @@ def custViews_save(request):
         custArrayLists = list(filter(len, custArray))
         for data in range(len(custArrayLists)):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR FROM MIS1TB003_D WHERE CUST_NBR = '" + custCode + "' AND ICUST = '" + str(iCust) + "' ")
+                cursor.execute(" SELECT CUST_NBR, SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
+                               "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
 
             if result:
                 custNbr = result[0][0]
+                custSeq = result[0][1]
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE MIS1TB003_D SET "
                                    "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
                                    "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
                                    " WHERE CUST_NBR = '" + custNbr + "'"
-                                   " AND ICUST = '" + str(iCust) + "'")
+                                   " AND ICUST = '" + str(iCust) + "'"
+                                   " AND SEQ = '" + str(custSeq) + "'")
                     connection.commit()
             else:
                 with connection.cursor() as cursor:
@@ -239,6 +242,7 @@ def custViews_save(request):
                                    "    CUST_NBR "
                                    "   ,CUST_BKCD "
                                    "   ,CUST_ACNUM "
+                                   "   ,SEQ "
                                    "   ,ICUST"
                                    ") "
                                    "VALUES "
@@ -246,6 +250,7 @@ def custViews_save(request):
                                    "    '" + str(custResult) + "' "
                                    "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
                                    "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
+                                   "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM MIS1TB003_D A WHERE CUST_NBR = '" + str(custCode) + "') "
                                    "    ,'" + str(iCust) + "' "
                                    ") ")
                     connection.commit()
@@ -274,11 +279,11 @@ def custViews_save(request):
                            ",    CUST_PAY_DAY "
                            ",    CRE_DT "
                            ",    CRE_USER "
-                           ",    CRE_USER "
+                           ",    ICUST "
                            ") "
                            "    VALUES "
                            "    ("
-                           "    '" + custName + "'"
+                           "    '" + str(custName) + "'"
                            ",   '" + str(custCode) + "'"
                            ",   '" + str(custCeo) + "'"
                            ",   '" + str(custRegNum) + "'"
@@ -304,17 +309,20 @@ def custViews_save(request):
         custArrayLists = list(filter(len, custArray))
         for data in range(len(custArrayLists)):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR FROM MIS1TB003_D WHERE CUST_NBR = '" + custCode + "' AND ICUST = '" + str(iCust) + "' ")
+                cursor.execute(" SELECT CUST_NBR, SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
+                               "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
 
             if result:
                 custNbr = result[0][0]
+                custSeq = result[0][1]
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE MIS1TB003_D SET "
                                    "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
                                    "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
                                    " WHERE CUST_NBR = '" + custNbr + "'"
-                                   " AND ICUST = '" + str(iCust) + "'")
+                                   " AND ICUST = '" + str(iCust) + "'"
+                                   " AND SEQ = '" + str(custSeq) + "'")
                     connection.commit()
             else:
                 with connection.cursor() as cursor:
@@ -323,6 +331,7 @@ def custViews_save(request):
                                    "    CUST_NBR "
                                    "   ,CUST_BKCD "
                                    "   ,CUST_ACNUM "
+                                   "   ,SEQ "
                                    "   ,ICUST"
                                    ") "
                                    "VALUES "
@@ -330,6 +339,7 @@ def custViews_save(request):
                                    "    '" + str(custCode) + "' "
                                    "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
                                    "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
+                                   "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM MIS1TB003_D A WHERE CUST_NBR = '" + str(custCode) + "') "
                                    "    ,'" + str(iCust) + "' "
                                    ") ")
                     connection.commit()
