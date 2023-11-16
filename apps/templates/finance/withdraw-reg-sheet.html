@@ -412,7 +412,7 @@
 
                         $("#modalMainTd").append(
                             "<tr id='#modalMainTr' class='modalMainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkEmp[]' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkEmp_" + list[i][4] + "' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></td>" +
                             "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
                             "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
@@ -421,6 +421,11 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
+
+                    $('.subEmpNme').each(function() {
+                        const code = $(this).data('code');
+                        $(`#chkEmp_${code}`).trigger('click');
+                    });
 
                     var combolist = data.cboDpt;
                     for (var i = 0; i < combolist.length; i++) {
@@ -1056,7 +1061,7 @@
                     $('#signTd').empty();
                     var permitList = data.permit;
                     for (var i = 0; i < permitList.length; i++) {
-                        var _td = `<td class="text-start p-1 border border-white" id="subEmpNme_${i}" style="font-size: 0.8rem">${permitList[i][2]}</td>`;
+                        var _td = `<td class="text-start p-1 border border-white subEmpNme" id="subEmpNme_${i}" data-code="${permitList[i][1]}" style="font-size: 0.8rem">${permitList[i][2]}</td>`;
                         $('#signTd').append(_td);
                     }
 

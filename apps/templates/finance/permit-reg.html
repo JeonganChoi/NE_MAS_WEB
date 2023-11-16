@@ -245,8 +245,8 @@
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkSetOff[]' name='chkSetOff[]' value=''/></td> " +
+                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
+                            "<td class='text-center p-2' style='font-size: 0.85rem'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
                             "</tr> ");
 
                         total += Number(list[i][2])
@@ -279,7 +279,7 @@
         });
 
 
-        $(document).on('change', '#selectTb tbody tr td:last-child input[type=checkbox]', function () {
+        $(document).on('change', '#selectTb tbody tr td input.chkSetOff', function () {
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(0).text()
             var ioDate = iDate.replace(/\-/g, '')
@@ -297,6 +297,8 @@
             var offTotal = 0;
 
             var offSet = $('input[name=inputOffSet]:checked').val();
+
+            var isChkPerChecked = tr.find('input.chkPer').is(':checked');
 
             var pDate = document.getElementById('permitDate').value
             var perDate = pDate.replace(/\-/g, '')
@@ -349,69 +351,159 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
                         "</tr> ");
 
+
+
+                }
+
                 {#    2. "상계 체크란이 체크됬을때만 "#}
                 {#    acIogb 구분 값이 1이면 출금이라서 - 처리/ 2이면 입금이라서 + 처리 #}
 {#                    단 계산해서 -값이더라도 -빼고 숫자만 상계금액에 보여주기#}
 
-                    {#document.getElementById('CostOffSet').value = addComma(offTotal)#}
+                {#document.getElementById('CostOffSet').value = addComma(offTotal)#}
 
-                    if($('#inputOffSet').is(':checked')) {
-                        var costOffSet_val = parseInt($('#real_CostOffSet').val().replaceAll(',', ''));
-                        var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
+                var costOffSet_val = parseInt($('#real_CostOffSet').val().replaceAll(',', ''));
+                var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
 
-                        if(acIogb == '1') {
-                            acAmts_num *= -1;
+                if(acIogb == '1') {
+                    acAmts_num *= -1;
+                }
+
+                $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
+                $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
+
+            } else {
+
+                {#document.getElementById('CostOffSet').value = addComma(offTotal)#}
+                // 승인이 체크 되지 않은 경우
+                if(isChkPerChecked == false) {
+                    $('#subTr' + count).remove();
+                }
+
+                var costOffSet_val = parseInt($('#real_CostOffSet').val().replaceAll(',', ''));
+                var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
+
+                if(acIogb == '2') {
+                    acAmts_num *= -1;
+                }
+
+                $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
+                $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
+            }
+        });
+
+        $(document).on('change', '#selectTb tbody tr td input.chkPer', function () {
+            var tr = $(this).parent().parent();
+            var iDate = tr.children().eq(0).text()
+            var ioDate = iDate.replace(/\-/g, '')
+            var acTitle = tr.children().eq(1).text()
+            var acMcode = tr.children().eq(2).text()
+            var acNum = tr.children().eq(3).text()
+            var acAmts = tr.children().eq(4).text()
+            var acEmp = tr.children().eq(5).text()
+            var acNme = tr.children().eq(6).text()
+            var acSeqn = tr.children().eq(7).text()
+            var acIogb = tr.children().eq(8).text()
+
+            var count = $(this).closest('tr').prevAll().length;
+
+            var offTotal = 0;
+
+            var offSet = $('input[name=inputOffSet]:checked').val();
+
+            var isChkSetOffChecked = tr.find('input.chkSetOff').is(':checked');
+
+            var pDate = document.getElementById('permitDate').value
+            var perDate = pDate.replace(/\-/g, '')
+
+            var cboActNum = "";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#cboActNum_"+count).html("");
+
+            $.ajax({
+                type: "post",
+                url: '{% url "permit_cbo_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var combolist = data.cboActNum;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == acNum) {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
                         }
-
-                        $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
-                        $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
                     }
+
+                    $("#cboActNum_"+count).append(cboActNumTxt);
+                }
+            })
+
+
+            var total = 0;
+            if ($(this).is(':checked')) {
+
+                if ($('#subTr' + count).length == 0) {
+
+                    var sub_tr_cnt = $('#chkTb tbody tr').length;
+
+                    $("#subTb").append(
+                        "<tr id='subTr" + count + "' class='subTr_tr'>" +
+                        "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate + "</td>" +
+                        "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
+                        "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
+                        "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
+                        "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
+                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
+                        "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
+                        "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                        "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
+                        "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
+                        "</tr> ");
+
 
                 }
 
             } else {
 
                 {#document.getElementById('CostOffSet').value = addComma(offTotal)#}
-                $('#subTr' + count).remove();
-
-                if($('#inputOffSet').is(':checked')) {
-                    var costOffSet_val = parseInt($('#real_CostOffSet').val().replaceAll(',', ''));
-                    var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
-
-                    if(acIogb == '2') {
-                        acAmts_num *= -1;
-                    }
-
-                    $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
-                    $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
+                if(isChkSetOffChecked == 'false') {
+                    $('#subTr' + count).remove();
                 }
+
             }
         });
 
 
-        $(document).on('change', '#inputOffSet', function() {
-           if($(this).is(':checked')) {
-               var total_val = 0;
-               $('#subTb tr.subTr_tr').each(function(index, item) {
-                   if(index > 0) {
-                       var acAmts_num = parseInt($(this).children().eq(3).text().replaceAll(',', ''));
-                       var acIogb = $(this).find('[name=acIogb]').text();
-
-                       if(acIogb == '1') {
-                           acAmts_num *= -1;
-                       }
-
-                       total_val += acAmts_num;
-                   }
-               });
-
-               $('#CostOffSet').val(addComma(Math.abs(total_val)));
-               $('#real_CostOffSet').val(total_val);
-           } else {
-               $('#CostOffSet').val(0);
-               $('#real_CostOffSet').val(0);
-           }
-        });
+        {#$(document).on('change', '#inputOffSet', function() {#}
+        {#   if($(this).is(':checked')) {#}
+        {#       var total_val = 0;#}
+        {#       $('#subTb tr.subTr_tr').each(function(index, item) {#}
+        {#           if(index > 0) {#}
+        {#                var rowid = $(this).attr('id').split('subTr')[1];#}
+        {##}
+        {#               if($(`#chkSetOff_${rowid}`).is(':checked')) {#}
+        {#                   var acAmts_num = parseInt($(this).children().eq(3).text().replaceAll(',', ''));#}
+        {#                   var acIogb = $(this).find('[name=acIogb]').text();#}
+        {##}
+        {#                   if(acIogb == '1') {#}
+        {#                       acAmts_num *= -1;#}
+        {#                   }#}
+        {##}
+        {#                   total_val += acAmts_num;#}
+        {#               }#}
+        {#           }#}
+        {#       });#}
+        {##}
+        {#       $('#CostOffSet').val(addComma(Math.abs(total_val)));#}
+        {#       $('#real_CostOffSet').val(total_val);#}
+        {#   } else {#}
+        {#       $('#CostOffSet').val(0);#}
+        {#       $('#real_CostOffSet').val(0);#}
+        {#   }#}
+        {#});#}
 
         {# 조회 버튼 #}
         $(document).on('click', "#btnSearch", function () {
