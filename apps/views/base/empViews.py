@@ -273,6 +273,9 @@ def empViews_save(request):
 
     if result:
         emp = result[0][0]
+        if empClass == '1':
+            charge = 'CHARGE'
+
         # 이름/비번/부서/직급/구분/사업장/전화번호/입사/퇴사/등급/전결금액/승인여부/파일
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE PIS1TB001 SET"
@@ -299,6 +302,9 @@ def empViews_save(request):
             return JsonResponse({'sucYn': "Y"})
 
     else:
+        if empClass == '1':
+            charge = 'CHARGE'
+
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO PIS1TB001 "
                            "   ("

@@ -67,13 +67,13 @@
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="text-center text-secondary text-center font-weight-bolder p-2"></th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">계좌 번호</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">계좌명</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">은행명</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">기준 일자</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">잔 액</th>
-                              <th style="font-size: 0.85rem" class="text-secondary text-center font-weight-bolder p-2">비 고</th>
+                              <th style="font-size: 0.8rem" class="text-center p-1">선택</th>
+                              <th style="font-size: 0.8rem" class="text-start p-1">계좌 번호</th>
+                              <th style="font-size: 0.8rem" class="text-start p-1">계좌명</th>
+                              <th style="font-size: 0.8rem" class="text-start p-1">은행명</th>
+                              <th style="font-size: 0.8rem" class="text-center p-1">기준 일자</th>
+                              <th style="font-size: 0.8rem" class="text-start p-1">잔 액</th>
+                              <th style="font-size: 0.8rem" class="text-start p-1">비 고</th>
                             </tr>
                           </thead>
                           <tbody id="acBalMainTb">
@@ -115,7 +115,7 @@
                             </div>
                             <div class="col-6">
                                 <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>잔 액</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="number" value="0" id="txtBalance" name="txtBalance"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="text" value="0" id="txtBalance" name="txtBalance"/>
                             </div>
                         </div>
                         <div class="row">
@@ -139,11 +139,14 @@
         $(document).ready(function () {
             var inputBankType = "";
             var cboBankName = "";
+            var cboActNum = "";
             var inputBankTypeTxt = "<option value=''>:: 전체 ::</option>";
             var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputBankType").html("");
             $("#cboBankName").html("");
+            $("#cboActNum").html("");
 
             $.ajax({
                 type: "post",
@@ -164,7 +167,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "</tr> ");
@@ -191,6 +194,7 @@
 
                     $("#inputBankType").append(inputBankTypeTxt);
                     $("#cboBankName").append(cboBankNameTxt);
+                    $("#cboActNum").append(cboActNumTxt);
                 }
             })
         });
@@ -229,7 +233,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][5]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "</tr> ");
@@ -341,7 +345,7 @@
                         }
                         $("#txtActName").val(list[i][1])
                         $("#txtDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtBalance").val(list[i][5])
+                        $("#txtBalance").val(addComma(list[i][5]))
                         $("#txtRemark").val(list[i][6])
                         cboActNum = list[i][0];
                         cboBankName = list[i][2];

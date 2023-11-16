@@ -107,7 +107,7 @@ def actBalRegViews_save(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' ")
+        cursor.execute(" SELECT ACNUMBER FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
         if chkresult:
             with connection.cursor() as cursor:
@@ -117,7 +117,7 @@ def actBalRegViews_save(request):
                                ",    UPD_USER = '" + str(user) + "' "
                                ",    UPD_DT = date_format(now(), '%Y%m%d') "
                                "     WHERE ACNUMBER = '" + str(actNum) + "' "
-                               "       AND ICUST = '" + iCust + "'"
+                               "       AND ICUST = '" + str(iCust) + "'"
                                )
                 connection.commit()
 
@@ -135,6 +135,7 @@ def actBalRegViews_save(request):
                                ",    ACDESC "
                                ",    CRE_USER "
                                ",    CRE_DT "
+                               ",    ICUST "
                                ") "
                                "    VALUES "
                                "    ("
@@ -144,6 +145,7 @@ def actBalRegViews_save(request):
                                ",   '" + str(actDesc) + "' "
                                ",   '" + str(user) + "' "
                                ",   date_format(now(), '%Y%m%d') "
+                               ",   '" + str(iCust) + "' "
                                "    ) "
                                )
                 connection.commit()
