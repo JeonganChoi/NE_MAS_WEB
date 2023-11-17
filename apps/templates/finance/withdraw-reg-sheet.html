@@ -170,7 +170,7 @@
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>계좌번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-4 method">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>결제방법</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
@@ -619,13 +619,16 @@
                 success: function (data) {
                     var list = data.mainList;
                     var list2 = data.balList;
+                    var outTotal = data.outresult;
+                    var inTotal = data.inresult;
                     var total = 0;
 
+
                     $("#withMainTb").html("");
+                    {# 잔액 계산 #}
+                    total = (parseInt(list2) - parseInt(outTotal)) + parseInt(inTotal)
 
                     for (var i = 0; i < list2.length; i++) {
-
-                        total = list2[i][0]
 
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
@@ -824,12 +827,15 @@
                 success: function (data) {
                     var list = data.mainList;
                     var list2 = data.balList;
+                    var outTotal = data.outresult;
+                    var inTotal = data.inresult;
                     var total = 0;
 
                     $("#withMainTb").html("");
-                    for (var i = 0; i < list2.length; i++) {
+                    {# 잔액 계산 #}
+                    total = (parseInt(list2) - parseInt(outTotal)) + parseInt(inTotal)
 
-                        total = list2[i][0]
+                    for (var i = 0; i < list2.length; i++) {
 
                         $("#withMainTb").append(
                             "<tr id='#withMainTr' class='withMainTr_tr'>" +
@@ -928,6 +934,7 @@
             var cboWitCard = "";
 
             var folder = "";
+            var permit = "";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";
             var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";
@@ -974,108 +981,129 @@
 
                     $("#withSubTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        for (var j = 0; j < 21; j++) {
-                            console.log("===================" + j + ":::" + list[i][j]);
+                        permit = list[i][23]
+                        if(permit == 'Y'){
+                            alert('수정 불가능한 건입니다. ')
+
+                            $("#txtWitSeq").val("")
+                            $("#txtWitRecn").val("")
+                            $("#txtWitRegDate").val("")
+                            $("#txtExDate").val("")
+                            $("#txtWitPrice").val("")
+                            $("#txtWitCashNum").val("")
+                            $("#txtWitRemark").val("")
+                            $("#txtTitle").val("")
+
+
+
                         }
+                        else{
 
-                        $("#txtWitSeq").val(list[i][0])
-                        $("#txtWitRecn").val(list[i][3])
-                        $("#txtWitRegDate").val(list[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtExDate").val(list[i][20].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtWitPrice").val(list[i][10])
-                        $("#txtWitCashNum").val(list[i][15])
-                        $("#txtWitRemark").val(list[i][19])
-                        $("#txtTitle").val(list[i][21])
-                        folder = list[i][22]
-                        cboWitCust2 = list[i][1];
-                        cboWitGbn = list[i][6];
-                        cboWitMethod = list[i][4];
-                        cboAdminCode = list[i][8];
-                        cboWitActNum = list[i][12];
-                        cboWitCard = list[i][23];
+                            $("#txtWitSeq").val(list[i][0])
+                            $("#txtWitRecn").val(list[i][3])
+                            $("#txtWitRegDate").val(list[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                            $("#txtExDate").val(list[i][20].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                            $("#txtWitPrice").val(list[i][10])
+                            $("#txtWitCashNum").val(list[i][15])
+                            $("#txtWitRemark").val(list[i][19])
+                            $("#txtTitle").val(list[i][21])
+                            folder = list[i][22]
+                            cboWitCust2 = list[i][1];
+                            cboWitGbn = list[i][6];
+                            cboWitMethod = list[i][4];
+                            cboAdminCode = list[i][8];
+                            cboWitActNum = list[i][12];
+                            cboWitCard = list[i][23];
 
-                        {#imglc = '/static'#}
-                        {#itemimg = list[i][22]#}
-                        {#Rfilename = itemimg.substring(7)#}
-                        {##}
-                        {#document.getElementById("itemimage").src = imglc + itemimg;#}
-                        {#document.getElementById("itemimage").dataset.origin = imglc + itemimg;#}
+                            var combolist = data.cboCust;
+                            for (var i = 0; i < combolist.length; i++) {
+                                if (combolist[i][0] == cboWitCust2) {
+                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                                } else {
+                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                                }
+                            }
 
+                            var combolist2 = data.cboGgn;
+                            for (var i = 0; i < combolist2.length; i++) {
+                                if (combolist2[i][0] == cboWitGbn) {
+                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                                } else {
+                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                                }
+                            }
 
-                    }
+                            var combolist3 = data.cboPay;
+                            for (var i = 0; i < combolist3.length; i++) {
+                                if (combolist3[i][0] == cboWitMethod) {
+                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                                } else {
+                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                                }
+                            }
 
-                    var combolist = data.cboCust;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboWitCust2) {
-                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                        } else {
-                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
-                        }
-                    }
+                            var combolist4 = data.cboMCode;
+                            for (var i = 0; i < combolist4.length; i++) {
+                                if (combolist4[i][0] == cboAdminCode) {
+                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                                } else {
+                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                                }
+                            }
 
-                    var combolist2 = data.cboGgn;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboWitGbn) {
-                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
+                            var combolist5 = data.cboAcnumber;
+                            for (var i = 0; i < combolist5.length; i++) {
+                                if (combolist5[i][0] == cboWitActNum) {
+                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                                } else {
+                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                                }
+                            }
 
-                    var combolist3 = data.cboPay;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == cboWitMethod) {
-                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
+                            var combolist6 = data.cboCard;
+                            for (var i = 0; i < combolist6.length; i++) {
+                                if (combolist6[i][0] == cboWitCard) {
+                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                                } else {
+                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
+                                }
+                            }
 
-                    var combolist4 = data.cboMCode;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboAdminCode) {
-                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist5 = data.cboAcnumber;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == cboWitActNum) {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
-                        } else {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
-                        }
-                    }
-
-                    var combolist6 = data.cboCard;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == cboWitCard) {
-                            cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
-                        } else {
-                            cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
+                            $("#cboWitCust").append(cboWitCustTxt);
+                            $("#cboWitGbn").append(cboWitGbnTxt);
+                            $("#cboWitMethod").append(cboWitMethodTxt);
+                            $("#cboAdminCode").append(cboAdminCodeTxt);
+                            $("#cboWitActNum").append(cboWitActNumTxt);
+                            $("#cboWitCard").append(cboWitCardTxt);
                         }
                     }
 
                     $('#signTd').empty();
-                    var permitList = data.permit;
-                    for (var i = 0; i < permitList.length; i++) {
-                        var _td = `<td class="text-start p-1 border border-white subEmpNme" id="subEmpNme_${i}" data-code="${permitList[i][1]}" style="font-size: 0.8rem">${permitList[i][2]}</td>`;
-                        $('#signTd').append(_td);
+                    if(permit == 'Y'){}
+                    else{
+                        var permitList = data.permit;
+                        for (var i = 0; i < permitList.length; i++) {
+                            var _td = `<td class="text-start p-1 border border-white subEmpNme" id="subEmpNme_${i}" data-code="${permitList[i][1]}" style="font-size: 0.8rem">${permitList[i][2]}</td>`;
+                            $('#signTd').append(_td);
+                        }
                     }
-
-                    $("#cboWitCust").append(cboWitCustTxt);
-                    $("#cboWitGbn").append(cboWitGbnTxt);
-                    $("#cboWitMethod").append(cboWitMethodTxt);
-                    $("#cboAdminCode").append(cboAdminCodeTxt);
-                    $("#cboWitActNum").append(cboWitActNumTxt);
-                    $("#cboWitCard").append(cboWitCardTxt);
                 }
             })
 
         });
 
+        {# 카드 선택시 계좌명 바인딩 #}
+        $('#cboWitCard').change(function () {
+
+            var card = document.getElementById('cboWitCard').value
+
+            if(card){
+                $('.method').hide();
+            }
+            else{
+                $('.method').show();
+            }
+        });
 
         {# 입력란 계좌번호 선택시 계좌명 바인딩 #}
         $('#cboWitGbn').change(function () {

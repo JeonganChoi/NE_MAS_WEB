@@ -31,16 +31,24 @@ def receivePay_search(request):
 
     if strDate and endDate and cboCust == '' and cboAct == '':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE IODATE > '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ICUST = '" + str(iCust) + "' ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE < '" + str(strDate) + "' AND ACIOGB = '1' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' ")
+            outresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE < '" + str(strDate) + "' AND ACIOGB = '2' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' ")
+            inresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.ACDATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
                            ", IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
                            ", IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
                            ", IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, ''), IFNULL(AA.GBNNM, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -58,9 +66,9 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '2' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -78,35 +86,47 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "                               
                            "     WHERE A.ACIOGB = '1' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            " ) AA "
-                           " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           " ORDER BY AA.IODATE ")
+                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
             # 거래처
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + iCust + "' ORDER BY CUST_NBR ")
+                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ORDER BY CUST_NBR ")
                 cboCust = cursor.fetchall()
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "' ")
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
                 cboAct = cursor.fetchall()
 
-            return JsonResponse({'balList': balresult, 'mainList': mainresult, 'cboCust': cboCust, 'cboAct': cboAct})
+            return JsonResponse({'balList': balresult, 'mainList': mainresult, 'outresult': outresult, 'inresult': inresult, 'cboCust': cboCust, 'cboAct': cboAct})
 
     elif cboCust and cboAct == '':
+
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE IODATE > '" + str(strDate) + "' AND ACCUST = '" + str(cboCust) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE < '" + str(strDate) + "' AND ACCUST = '" + str(cboCust) + "' AND FIN_OPT = 'Y' "
+                           "        AND ACIOGB = '1' AND ICUST = '" + str(iCust) + "' ")
+            outresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE < '" + str(strDate) + "' AND ACCUST = '" + str(cboCust) + "' AND FIN_OPT = 'Y' "
+                           "        AND ACIOGB = '2' AND ICUST = '" + str(iCust) + "' ")
+            inresult = cursor.fetchall()
+
+
+        with connection.cursor() as cursor:
+            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.ACDATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
                            ", IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
                            ", IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
                            ", IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, ''), IFNULL(AA.GBNNM, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -124,9 +144,9 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '2' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM  "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -144,27 +164,38 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '1' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ACDATE = '" + str(iCust) + "'"
                            " ) AA "
-                           " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
                            " AND AA.ACCUST = '" + cboCust + "' "
-                           " ORDER BY AA.IODATE ")
+                           " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
-        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+        return JsonResponse({'balList': balresult, 'mainList': mainresult, 'outresult': outresult, 'inresult': inresult})
 
     elif cboAct and cboCust == '':
+
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE IODATE > '" + str(strDate) + "' AND ACACNUMBER = '" + str(cboAct) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ACNUMBER = '" + str(cboAct) + "' AND ICUST = '" + str(iCust) + "' ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE < '" + str(strDate) + "'  AND ACACNUMBER = '" + str(cboAct) + "' AND FIN_OPT = 'Y' "
+                           "        AND ACIOGB = '1' AND ICUST = '" + str(iCust) + "' ")
+            outresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE < '" + str(strDate) + "'  AND ACACNUMBER = '" + str(cboAct) + "' AND FIN_OPT = 'Y' "
+                           "        AND ACIOGB = '2' AND ICUST = '" + str(iCust) + "' ")
+            inresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.ACDATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
                            ", IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
                            ", IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
                            ", IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, ''), IFNULL(AA.GBNNM, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -182,9 +213,9 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '2' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM  "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -202,28 +233,39 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "                                 
                            "     WHERE A.ACIOGB = '1' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            " ) AA "
-                           " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           " AND AA.ACACNUMBER = '" + cboAct + "' "
-                           " ORDER BY AA.IODATE ")
+                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " AND AA.ACACNUMBER = '" + str(cboAct) + "' "
+                           " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
-        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+        return JsonResponse({'balList': balresult, 'mainList': mainresult, 'outresult': outresult, 'inresult': inresult})
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE IODATE > '" + str(strDate) + "' AND ACCUST = '" + str(cboCust) + "' "
-                           " AND ACACNUMBER = '" + str(cboAct) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ACNUMBER = '" + str(cboAct) + "' AND ICUST = '" + str(iCust) + "' ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
+                           "    WHERE ACDATE < '" + str(strDate) + "' AND ACACNUMBER = '" + str(cboAct) + "' AND FIN_OPT = 'Y' "
+                           "    AND ACCUST = '" + str(cboCust) + "' AND ACIOGB = '1' AND ICUST = '" + str(iCust) + "' ")
+            outresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
+                           "    WHERE ACDATE < '" + str(strDate) + "' AND ACACNUMBER = '" + str(cboAct) + "' AND FIN_OPT = 'Y' "
+                           "    AND ACCUST = '" + str(cboCust) + "' AND ACIOGB = '2' AND ICUST = '" + str(iCust) + "' ")
+            inresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.ACDATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
                            ", IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
                            ", IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
                            ", IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, ''), IFNULL(AA.GBNNM, '') FROM "
                            " ( "
-                           "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM  "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -241,9 +283,9 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '2' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            "     UNION ALL "
-                           "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM "
                            "     FROM SISACCTT A "
                            "     LEFT OUTER JOIN MIS1TB003 B "
@@ -261,15 +303,15 @@ def receivePay_search(request):
                            "    ON F.GBN = G.RESKEY "
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '1' "
-                           "     AND A.ICUST = '" + iCust + "'"
+                           "     AND A.ICUST = '" + str(iCust) + "'"
                            " ) AA "
-                           " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           " AND AA.ACACNUMBER = '" + cboAct + "' "
-                           " AND AA.ACCUST = '" + cboCust + "' "
-                           " ORDER BY AA.IODATE ")
+                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                           " AND AA.ACACNUMBER = '" + str(cboAct) + "' "
+                           " AND AA.ACCUST = '" + str(cboCust) + "' "
+                           " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
-        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+        return JsonResponse({'balList': balresult, 'mainList': mainresult, 'outresult': outresult, 'inresult': inresult})
 
 
 def apvLine_modal_search(request):
@@ -320,6 +362,7 @@ def apvLine_modal_search(request):
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
                            " WHERE A.EMP_LIMIT != '' "
+                           " AND A.EMP_NBR != '" + str(creUser) + "' "
                            " AND A.ICUST = '" + iCust + "'")
             mainresult = cursor.fetchall()
             print(mainresult)
@@ -413,7 +456,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, '') "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -494,7 +537,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, '') "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
