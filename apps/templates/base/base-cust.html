@@ -71,6 +71,7 @@
                                 <col width="2%">
                                 <col width="6%">
                                 <col width="12%">
+                                <col width="6%">
                                 <col width="8%">
                                 <col width="15%">
                                 <col width="8%">
@@ -82,6 +83,7 @@
                               <th style="font-size: 0.8rem" class="p-1">선택</th>
                               <th style="font-size: 0.8rem" class="p-1">업체 코드</th>
                               <th style="font-size: 0.8rem" class="p-1">업 체 명</th>
+                              <th style="font-size: 0.8rem" class="p-1">업체 구분</th>
                               <th style="font-size: 0.8rem" class="p-1">대표자</th>
                               <th style="font-size: 0.8rem" class="p-1">주 소</th>
                               <th style="font-size: 0.8rem" class="p-1">사업자 번호</th>
@@ -267,6 +269,7 @@
                         "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][0] + "," + list[i][7] + "'/></div></td>" +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][15] + "</td> " +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
@@ -341,15 +344,16 @@
         })
         });
 
-        {# 업체 구분 #}
-{#        $(document).on('click', "#inputCustType", function () {#}
-{#            $("#btnSearch").trigger('click');#}
-{#        });#}
-{##}
+
         {# 거래여부 #}
 {#        $(document).on('click', "#inputYn", function () {#}
 {#            $("#btnSearch").trigger('click');#}
 {#        });#}
+
+        {# 입력란 은행명에 따른 조회 #}
+        $('#inputCustType').change(function () {
+            $("#btnSearch").trigger('click');
+        });
 
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
@@ -378,6 +382,7 @@
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][0] + "," + list[i][7] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][15] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +

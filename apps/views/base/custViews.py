@@ -128,12 +128,17 @@ def custViews_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(
-                " SELECT IFNULL(CUST_NME, ''), IFNULL(CUST_NBR, ''), IFNULL(CUST_CEO_NME, ''), IFNULL(CUST_ADDR, '') "
-                "   , IFNULL(CUST_ID_NBR, ''), IFNULL(CUST_POST_NBR, ''), IFNULL(CUST_TEL_NBR, '')"
-                "   , IFNULL(CUST_GBN, ''), IFNULL(CUST_END_CHK, 'Y'), IFNULL(CUST_PAY_DAY, '') "
-                "   FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'"
-            )
+            cursor.execute(" SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ADDR, '') "
+                           "   , IFNULL(A.CUST_ID_NBR, ''), IFNULL(A.CUST_POST_NBR, ''), IFNULL(A.CUST_TEL_NBR, '')"
+                           "   , IFNULL(A.CUST_GBN, ''), IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CUST_PAY_DAY, '')"
+                           "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                           "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(D.RESNAM, '') "
+                           "   FROM MIS1TB003 A "
+                           "   LEFT OUTER JOIN OSREFCP D "
+                           "   ON A.CUST_GBN = D.RESKEY "
+                           "   AND D.RECODE = 'BGB' "
+                           "   WHERE A.ICUST = '" + str(iCust) + "' "
+                            )
             custresult = cursor.fetchall()
 
         # 업체 구분 - 콤보박스

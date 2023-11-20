@@ -144,7 +144,8 @@
                             <div class="row mt-1">
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사업장</label>
-                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>
+                                    <input readonly style="height: 2rem; font-size: 0.8rem" class="form-control text-start bg-transparent" value="" type="text" id="cboCom" name="cboCom"/>
+                                    <!--<select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboCom" id="cboCom"></select>-->
                                 </div>
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전결금액</label>
@@ -278,7 +279,6 @@
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboCom").html("");
             $("#inputEmpNum").html("");
             $("#cboClass").html("");
 
@@ -336,15 +336,6 @@
                         }
                     }
 
-                    var combolist6 = data.comCombo;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == com) {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
-                        } else {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist2 = data.comClass;
                     for (var i = 0; i < combolist2.length; i++) {
                         if (combolist2[i][0] == cboClass) {
@@ -356,7 +347,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboCom").append(comTxt);
                     $("#cboClass").append(cboClassTxt);
 
                 }
@@ -380,7 +370,6 @@
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboCom").html("");
             $("#inputEmpNum").html("");
             $("#cboClass").html("");
 
@@ -437,15 +426,6 @@
                         }
                     }
 
-                    var combolist6 = data.comCombo;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == com) {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
-                        } else {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist2 = data.comClass;
                     for (var i = 0; i < combolist2.length; i++) {
                         if (combolist2[i][0] == cboClass) {
@@ -457,7 +437,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboCom").append(comTxt);
                     $("#cboClass").append(cboClassTxt);
                 }
             })
@@ -482,6 +461,7 @@
             var dpt = "";
             var com = "";
             var cboClass = "";
+            var chkPermit = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
@@ -489,7 +469,6 @@
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboCom").html("");
             $("#cboClass").html("");
 
             let empCode = $(this).attr('main_code');
@@ -517,10 +496,11 @@
                         $("#txtEmployDate").val(list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtQuitDate").val(list[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtLimit").val(addComma(list[i][16]))
+                        $("#cboCom").val(list[i][17])
                         group = list[i][6];
                         dpt = list[i][8];
-                        com = list[i][11];
                         cboClass = list[i][14];
+                        chkPermit = list[i][18];
 
                         {#imglc = '/static'#}
                         {#itemimg = list[i][15]#}
@@ -528,6 +508,10 @@
                         {##}
                         {#document.getElementById("sign").src = imglc + itemimg;#}
                         {#document.getElementById("sign").dataset.origin = imglc + itemimg;#}
+                    }
+
+                    if(chkPermit != '' || chkPermit != null){
+                        $(`#chkPermit`).trigger('click');
                     }
 
                     var combolist = data.jjoCombo;
@@ -548,15 +532,6 @@
                         }
                     }
 
-                    var combolist6 = data.comCombo;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == com) {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
-                        } else {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist2 = data.comClass;
                     for (var i = 0; i < combolist2.length; i++) {
                         if (combolist2[i][0] == cboClass) {
@@ -568,7 +543,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboCom").append(comTxt);
                     $("#cboClass").append(cboClassTxt);
                 }
             })
@@ -705,7 +679,6 @@
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
-            $("#cboCom").html("");
             $("#cboClass").html("");
 
 
@@ -727,7 +700,7 @@
                     $("#txtEmpPw").val("");
                     $("#cboDpt").html("");
                     $("#cboGroup").html("");
-                    $("#cboCom").html("");
+                    $("#cboCom").val("");
                     $("#txtEmpTel").val("");
                     $("#txtEmployDate").val("");
                     $("#txtQuitDate").val("");
@@ -752,15 +725,6 @@
                         }
                     }
 
-                    var combolist6 = data.comCombo;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == com) {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
-                        } else {
-                            comTxt = comTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
-                        }
-                    }
-
                     var combolist2 = data.comClass;
                     for (var i = 0; i < combolist2.length; i++) {
                         if (combolist2[i][0] == cboClass) {
@@ -772,7 +736,6 @@
 
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
-                    $("#cboCom").append(comTxt);
                     $("#cboClass").append(cboClassTxt);
                 }
             })
