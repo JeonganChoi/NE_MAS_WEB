@@ -154,7 +154,7 @@
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>금액</label>
-                                        <input class="form-control text-end" type="number" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용처</label>
@@ -255,7 +255,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="table-responsive-sm overflow-auto">
+                                        <div hidden class="table-responsive-sm overflow-auto">
                                             <table class="table mb-0 align-items-center justify-content-center" id="signTb">
                                               <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
 
@@ -592,7 +592,7 @@
             $('.replace').hide();
 
             var date = new Date();
-            date.setMonth(date.getMonth() - 6);
+            date.setMonth(date.getMonth() - 3);
 
             document.getElementById("inputStrDate").valueAsDate = date;
             document.getElementById("inputEndDate").valueAsDate = new Date;
@@ -1003,10 +1003,11 @@
                             $("#txtWitRecn").val(list[i][3])
                             $("#txtWitRegDate").val(list[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                             $("#txtExDate").val(list[i][20].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                            $("#txtWitPrice").val(list[i][10])
+                            $("#txtWitPrice").val(addComma(list[i][10]))
                             $("#txtWitCashNum").val(list[i][15])
                             $("#txtWitRemark").val(list[i][19])
                             $("#txtTitle").val(list[i][21])
+                            $("#txtWhere").val(list[i][24])
                             folder = list[i][22]
                             cboWitCust2 = list[i][1];
                             cboWitGbn = list[i][6];

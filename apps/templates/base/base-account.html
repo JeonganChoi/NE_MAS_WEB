@@ -350,10 +350,11 @@
                 },
                 success: function (data) {
                     if(data.account != ''){
-                        alert('이미 존재하는 계좌번호 입니다.')
+                        alert('이미 존재하는 계좌번호 입니다. 수정하시겠습니까?')
+
                     }
                     else{
-                        let data2 = {
+                        let data = {
                             'bankcode': bankcode, 'actCode': actCode, 'regDate': regDate
                             , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user
                         }
