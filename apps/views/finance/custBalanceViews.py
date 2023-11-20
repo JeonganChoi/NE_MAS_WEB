@@ -17,14 +17,14 @@ def custBalRegViews(request):
 
 
 def custBalRegViews_search(request):
-    startDate = request.POST.get('startDate')
-    endDate = request.POST.get('endDate')
+    # startDate = request.POST.get('startDate')
+    # endDate = request.POST.get('endDate')
     regDate = request.POST.get('regDate')
     custCode = request.POST.get('custCode')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    if regDate is not None and regDate != '' and custCode is not None and custCode != '':
+    if custCode and regDate == '':
         with connection.cursor() as cursor:
             cursor.execute(
                 " SELECT IFNULL(A.MOdate,''), IFNULL(A.MOCUST, ''), IFNULL(B.CUST_NME,'') "
@@ -32,8 +32,8 @@ def custBalRegViews_search(request):
                 "    FROM SIOMONTT A "
                 "    LEFT OUTER JOIN MIS1TB003 B "
                 "    ON A.MOCUST = B.CUST_NBR "
-                "    WHERE A.MOdate LIKE '%" + regDate + "%' "
-                "    AND A.MOCUST LIKE '%" + custCode + "%' "
+                "    WHERE A.MOCUST = '" + custCode + "' "
+                "    AND A.ICUST = '" + str(iCust) + "'"
                 "    ORDER BY A.MOdate ")
 
             custBalresult = cursor.fetchall()
@@ -43,10 +43,28 @@ def custBalRegViews_search(request):
             cursor.execute(" SELECT CUST_NBR, CUST_NME, CUST_GBN FROM MIS1TB003 "
                            "        WHERE CUST_GBN = '1' "
                            "        OR CUST_GBN = '2' "
-                           "        OR CUST_GBN = '3' ")
+                           "        OR CUST_GBN = '3' "
+                           "        AND ICUST = '" + str(iCust) + "'")
             cboCustType = cursor.fetchall()
 
         return JsonResponse({"cboCustType": cboCustType, "custBalList": custBalresult})
+
+    if custCode and regDate:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT IFNULL(A.MOdate,''), IFNULL(A.MOCUST, ''), IFNULL(B.CUST_NME,'') "
+                "    , IFNULL(A.MOIWOL, 0), IFNULL(A.MOIWOL2, 0), IFNULL(A.MODESC, ''), IFNULL(B.CUST_GBN, '') "
+                "    FROM SIOMONTT A "
+                "    LEFT OUTER JOIN MIS1TB003 B "
+                "    ON A.MOCUST = B.CUST_NBR "
+                "    WHERE A.MOCUST = '" + custCode + "' "
+                "    AND A.MOdate = '" + str(regDate).replace('-', '') + "' "
+                "    AND A.ICUST = '" + str(iCust) + "'"
+                "    ORDER BY A.MOdate ")
+
+            custBalresult = cursor.fetchall()
+
+        return JsonResponse({"custBalList": custBalresult})
 
     else:
         with connection.cursor() as cursor:
@@ -56,8 +74,7 @@ def custBalRegViews_search(request):
                 "    FROM SIOMONTT A "
                 "    LEFT OUTER JOIN MIS1TB003 B "
                 "    ON A.MOCUST = B.CUST_NBR "
-                "    WHERE A.MOdate BETWEEN '" + startDate + "' AND '" + endDate + "' "
-                "    AND A.MOCUST LIKE '%" + custCode + "%'"
+                "    WHERE A.ICUST = '" + str(iCust) + "'"
                 "    ORDER BY A.MOdate ")
 
             custBalresult = cursor.fetchall()
@@ -67,7 +84,9 @@ def custBalRegViews_search(request):
             cursor.execute(" SELECT CUST_NBR, CUST_NME, CUST_GBN FROM MIS1TB003 "
                            "        WHERE CUST_GBN = '1' "
                            "        OR CUST_GBN = '2' "
-                           "        OR CUST_GBN = '3' ")
+                           "        OR CUST_GBN = '3' "
+                           "        AND ICUST = '" + str(iCust) + "'"
+                           )
             inputCustType = cursor.fetchall()
 
         return JsonResponse({"inputCustType": inputCustType, "custBalList": custBalresult})

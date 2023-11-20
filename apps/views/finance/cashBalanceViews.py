@@ -139,7 +139,7 @@ def cashBalRegCboSearchViews(request):
                        " ON B.ACBKCD = C.RESKEY "
                        " WHERE C.RECODE = 'BNK' "
                        " AND B.ACBKCD = '" + bank + "' "
-                       " AND B.ICUST = '" + iCust + "' "
+                       " AND B.ICUST = '" + str(iCust) + "' "
                        " GROUP BY C.RESKEY, B.ACNUM_NAME, B.ACNUMBER "
             )
         acnumlist = cursor.fetchall()

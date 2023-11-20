@@ -15,13 +15,12 @@ def actBalRegViews(request):
     return render(request, "finance/accountBalance-reg.html")
 
 def actBalRegViews_search(request):
-    actCode = request.POST.get('actCode')
     actNum = request.POST.get('actNum')
     bankCode = request.POST.get('bankCode')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    if actNum is not None and actNum != '' and bankCode is not None and bankCode != '':
+    if bankCode and actNum == '':
         with connection.cursor() as cursor:
             cursor.execute(
                 " SELECT IFNULL(A.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
@@ -32,8 +31,31 @@ def actBalRegViews_search(request):
                 "       LEFT OUTER JOIN OSREFCP C "
                 "       ON B.ACBKCD = C.RESKEY "
                 "       AND C.RECODE = 'BNK' "
-                "       WHERE A.ACNUMBER LIKE '%" + actNum + "%'"
-                "       AND B.ACBKCD LIKE '%" + bankCode + "%' "
+                "       WHERE A.ICUST = '" + str(iCust) + "'"
+                "       AND B.ACBKCD = '" + str(bankCode) + "' "
+                "       ORDER BY A.ACDATE"
+            )
+            actBalresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(bankCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            cboActNum = cursor.fetchall()
+
+        return JsonResponse({"actBalList": actBalresult, "cboActNum": cboActNum})
+
+    if actNum and bankCode:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT IFNULL(A.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
+                "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
+                "       FROM ACBALANCE A "
+                "       LEFT OUTER JOIN ACNUMBER B "
+                "       ON A.ACNUMBER = B.ACNUMBER "
+                "       LEFT OUTER JOIN OSREFCP C "
+                "       ON B.ACBKCD = C.RESKEY "
+                "       AND C.RECODE = 'BNK' "
+                "       WHERE A.ACNUMBER LIKE '%" + str(actNum) + "%'"
+                "       AND B.ACBKCD LIKE '%" + str(bankCode) + "%' "
                 "       AND A.ICUST = '" + str(iCust) + "' "
                 "       ORDER BY A.ACDATE"
             )
@@ -46,26 +68,15 @@ def actBalRegViews_search(request):
 
         # 계좌번호 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(bankCode) + "' AND ICUST = '" + str(iCust) + "' ")
             cboActNum = cursor.fetchall()
 
-        return JsonResponse({"cboActNum": cboActNum, "cboBankName": cboBankName, "actBalList": actBalresult})
-
-
-    elif actCode is not None and actCode != '' or bankCode is not None and bankCode != '':
-        # 계좌명 - 콤보박스
+        # 계좌번호 - 콤보박스
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.ACNUMBER, A.ACNUM_NAME, A.ACBKCD, B.RESNAM FROM ACNUMBER A "
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.ACBKCD = B.RESKEY "
-                           "    AND B.RECODE = 'BNK' "
-                           "    WHERE A.ACNUMBER LIKE '%" + actCode + "%' "
-                           "    AND A.ACBKCD LIKE '%" + bankCode + "%' "
-                           "    AND A.ICUST = '" + str(iCust) + "' ")
-            actResult = cursor.fetchall()
-            print(actResult)
+            cursor.execute(" SELECT ACNUM_NAME FROM ACNUMBER WHERE ACBKCD = '" + str(bankCode) + "' AND ACNUMBER = '" + str(actNum) + "' AND ICUST = '" + str(iCust) + "' ")
+            txtActNme = cursor.fetchall()
 
-        return JsonResponse({"actList": actResult})
+        return JsonResponse({"cboActNum": cboActNum, "cboBankName": cboBankName, "actBalList": actBalresult, "txtActNme": txtActNme})
 
     else:
         with connection.cursor() as cursor:
@@ -110,9 +121,11 @@ def actBalRegViews_save(request):
         cursor.execute(" SELECT ACNUMBER FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
         if chkresult:
+            actNum = chkresult[0][0]
             with connection.cursor() as cursor:
                 cursor.execute("    UPDATE ACBALANCE SET "
                                "     ACAMTS  = '" + str(actAmts) + "' "
+                               ",    ACDATE = '" + str(actDate) + "' "
                                ",    ACDESC = '" + str(actDesc) + "' "
                                ",    UPD_USER = '" + str(user) + "' "
                                ",    UPD_DT = date_format(now(), '%Y%m%d') "

@@ -208,6 +208,7 @@
         {#콤보박스 선택 시 이벤트#}
         $(document).on('change', "#cbobankType2", function () {
 
+            var AcNumber = "";
             var bankCode = $("#cbobankType2").val()
             var AcNumberTxt = "<option value=''>:: 선택 ::</option>";
 
@@ -223,11 +224,16 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var acnumlist = data.acnumlist;
-                    for (var i = 0; i < acnumlist.length; i++) {
-                        AcNumberTxt = AcNumberTxt + "<option value='" + acnumlist[i][0] + "," + acnumlist[i][2] + "' selected>" + acnumlist[i][2] + "</option>";
-                        {#AcNumberTxt = AcNumberTxt + "<option value='" + acnumlist[i][0] + "' selected>" + acnumlist[i][3] + "</option>";#}
+
+                    var combolist3 = data.acnumlist;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == AcNumber) {
+                            AcNumberTxt = AcNumberTxt + "<option value='" + combolist3[i][2] + "' selected>" + combolist3[i][2] + "</option>";
+                        } else {
+                            AcNumberTxt = AcNumberTxt + "<option value='" + combolist3[i][2] + "'>" + combolist3[i][2] + "</option>";
+                        }
                     }
+
                     $("#cboActNum").append(AcNumberTxt);
 
                 }
@@ -252,14 +258,11 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var acnamelist = data.acnamelist;
-                    var acname =  acnamelist[0][0]
-
+                    var acname = data.acnamelist;
 
                     $("#txtActName").val(acname);
                 }
             })
-
         });
 
         {# 로우 클릭시 #}

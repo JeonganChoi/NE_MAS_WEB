@@ -29,6 +29,7 @@ def baseCodeViews_search(request):
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RECODE, RECNAM FROM OSREFCP WHERE ICUST = '" + str(iCust) + "' "
+                           "        AND RECODE != 'UST' AND RECODE != 'MOP' "
                            "        GROUP BY RECODE, RECNAM "
                            "        ORDER BY RECODE ")
             mainresult = cursor.fetchall()

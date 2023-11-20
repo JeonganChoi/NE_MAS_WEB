@@ -77,6 +77,8 @@
                                 <col width="8%">
                                 <col width="6%">
                                 <col width="8%">
+                                <col width="6%">
+                                <col width="6%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
@@ -89,6 +91,8 @@
                               <th style="font-size: 0.8rem" class="p-1">사업자 번호</th>
                               <th style="font-size: 0.8rem" class="p-1">우편 번호</th>
                               <th style="font-size: 0.8rem" class="p-1">전화 번호</th>
+                              <th style="font-size: 0.8rem" class="p-1">결 제</th>
+                              <th style="font-size: 0.8rem" class="p-1">결제 일자</th>
                             </tr>
                           </thead>
                           <tbody id="custMainTb">
@@ -178,10 +182,7 @@
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제</label>
-                                        <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboApv" id="cboApv">
-                                            <option value="0">당월</option>
-                                            <option value="1">익월</option>
-                                        </select>
+                                        <select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboApv" id="cboApv"></select>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제 일자</label>
@@ -230,118 +231,136 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-        var inputCustType = "";
-        var inputYn = "";
-        var cboCustType = "";
-        var cboDay = "";
-        var custBank = "";
-        var custActNum = "";
-        var inputCustTypeTxt = "<option value=''>:: 전체 ::</option>";
-        var inputYnTxt = "<option value=''>:: 선택 ::</option>";
-        var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
-        var cboDayTxt = "<option value=''>:: 선택 ::</option>";
-        var custBankTxt = "<option value=''>:: 선택 ::</option>";
-        var custActNumTxt = "<option value=''>:: 선택 ::</option>";
 
-        $("#inputCustType").html("");
-        $("#inputYn").html("");
-        $("#cboCustType").html("");
-        $("#cboDay").html("");
+            var inputCustType = "";
+            var inputYn = "";
+            var cboCustType = "";
+            var cboDay = "";
+            var custBank = "";
+            var custActNum = "";
+            var cboApv = "";
+            var inputCustTypeTxt = "<option value=''>:: 전체 ::</option>";
+            var inputYnTxt = "<option value=''>:: 선택 ::</option>";
+            var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboDayTxt = "<option value=''>:: 선택 ::</option>";
+            var custBankTxt = "<option value=''>:: 선택 ::</option>";
+            var custActNumTxt = "<option value=''>:: 선택 ::</option>";
+            var cboApvTxt = "<option value=''>:: 선택 ::</option>";
 
-        var i = $('#bankTb tbody tr').length;
-        {# 첫 화면에 2개 row가 뜨도록 #}
-        $("#custBank_"+i).html("");
+            $("#inputCustType").html("");
+            $("#inputYn").html("");
+            $("#cboCustType").html("");
+            $("#cboDay").html("");
+            $("#cboApv").html("");
 
-        $.ajax({
-            type: "post",
-            url: '{% url "base_cust_search" %}',
-            headers: {
-                'X-CSRFTOKEN': '{{ csrf_token }}'
-            },
-            dataType: 'json',
-            success: function (data) {
-                var list = data.custList;
+            var i = $('#bankTb tbody tr').length;
+            {# 첫 화면에 2개 row가 뜨도록 #}
+            $("#custBank_"+i).html("");
 
-                $("#custMainTb").html("");
-                for (var i = 0; i < list.length; i++) {
-                    $("#custMainTb").append(
-                        "<tr id='#custMainTr' class='custMainTr_tr' main_code='" + list[i][1] + "'>" +
-                        "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][0] + "," + list[i][7] + "'/></div></td>" +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][15] + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
-                        "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
-                        "</tr> ");
-                }
+            $.ajax({
+                type: "post",
+                url: '{% url "base_cust_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.custList;
 
+                    $("#custMainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
 
-
-                var combolist = data.inputCustType;
-                for (var i = 0; i < combolist.length; i++) {
-                    if (combolist[i][0] == inputCustType) {
-                        inputCustTypeTxt = inputCustTypeTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                    } else {
-                        inputCustTypeTxt = inputCustTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        if(list[i][20] == 'last'){list[i][20] = '말월'}
+                        $("#custMainTb").append(
+                            "<tr id='#custMainTr' class='custMainTr_tr' main_code='" + list[i][1] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][1] + "," + list[i][14] + "'/></div></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][15] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][20] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][22] + "</td> " +
+                            "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
+                            "</tr> ");
                     }
-                }
 
-                var combolist4 = data.cboCustYn;
-                for (var i = 0; i < combolist4.length; i++) {
-                    if (combolist4[i][0] == inputYn) {
-                        inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                    } else {
-                        inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+
+
+                    var combolist = data.inputCustType;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputCustType) {
+                            inputCustTypeTxt = inputCustTypeTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputCustTypeTxt = inputCustTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
                     }
-                }
 
-                var combolist2 = data.inputCustType;
-                for (var i = 0; i < combolist2.length; i++) {
-                    if (combolist2[i][0] == cboCustType) {
-                        cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                    } else {
-                        cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                    var combolist4 = data.cboCustYn;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == inputYn) {
+                            inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
                     }
-                }
 
-                cboDayTxt = cboDayTxt + "<option value=''></option>";
-                for (var i = 1; i < 32; i++) {
-                    cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
-                }
-                cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
-
-                var combolist5 = data.cboBank;
-                for (var i = 0; i < combolist5.length; i++) {
-                    if (combolist5[i][0] == custBank) {
-                        custBankTxt = custBankTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
-                    } else {
-                        custBankTxt = custBankTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                    var combolist2 = data.inputCustType;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboCustType) {
+                            cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
                     }
+
+                    cboDayTxt = cboDayTxt + "<option value=''></option>";
+                    for (var i = 1; i < 32; i++) {
+                        cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
+                    }
+                    cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
+
+                    var combolist5 = data.cboBank;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == custBank) {
+                            custBankTxt = custBankTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            custBankTxt = custBankTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist6 = data.cboPay;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboApv) {
+                            cboApvTxt = cboApvTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            cboApvTxt = cboApvTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#inputCustType").append(inputCustTypeTxt);
+                    $("#inputYn").append(inputYnTxt);
+                    $("#cboCustType").append(cboCustTypeTxt);
+                    $("#cboDay").append(cboDayTxt);
+                    $("#cboApv").append(cboApvTxt);
+
+
+                    {# 왼쪽 컬럼은 은행 종류 바인딩 #}
+                    $("#subTb").html("");
+                    for (var j = 0; j < 4; j++) {
+                        $("#subTb").append(
+                            "<tr id='#subTr' class='subTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custBank_" + j + "' name='custBank'/></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
+                            "</tr> ");
+                    }
+
+                    {#$("#custBank_" + i).append(custBankTxt);#}
                 }
-
-                $("#inputCustType").append(inputCustTypeTxt);
-                $("#inputYn").append(inputYnTxt);
-                $("#cboCustType").append(cboCustTypeTxt);
-                $("#cboDay").append(cboDayTxt);
-
-
-                {# 왼쪽 컬럼은 은행 종류 바인딩 #}
-                $("#subTb").html("");
-                for (var j = 0; j < 4; j++) {
-                    $("#subTb").append(
-                        "<tr id='#subTr' class='subTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custBank_" + j + "' name='custBank'/></td>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
-                        "</tr> ");
-                }
-
-                {#$("#custBank_" + i).append(custBankTxt);#}
-            }
-        })
+            })
         });
 
 
@@ -377,17 +396,21 @@
 
                     $("#custMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
+
+                        if(list[i][20] == 'last'){list[i][20] = '말월'}
                         $("#custMainTb").append(
                             "<tr id='#custMainTr' class='custMainTr_tr' main_code='" + list[i][1] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][0] + "," + list[i][7] + "'/></div></td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][1] + "," + list[i][14] + "'/></div></td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][15] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][20] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][22] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "</tr> ");
                     }
@@ -400,11 +423,14 @@
             var cboCustType = "";
             var cboDay = "";
             var custBank = "";
+            var cboApv = "";
             var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
             var cboDayTxt = "<option value='last'>말일</option>";
             var custBankTxt = "<option value='last'>말일</option>";
+            var cboApvTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboCustType").html("");
+            $("#cboApv").html("");
             $("#cboDay").html("");
             $("#custBank").html("");
 
@@ -444,6 +470,7 @@
                         $("#txtWebAddress").val(list[i][13])
                         $("#txtUser").val(list[i][18])
                         {# 업체 구분 #}
+                        cboApv = list[i][21]
                         cboCustType = list[i][14];
                         cboDay = list[i][20];
                     }
@@ -457,7 +484,17 @@
                         }
                     }
 
-                    cboDayTxt = cboDayTxt + "<option value=''></option>";
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboApv) {
+                            cboApvTxt = cboApvTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboApvTxt = cboApvTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+
+                    cboDayTxt = cboDayTxt + "<option value='' ></option>";
                     for (var i = 1; i < 32; i++) {
                         if (i == cboDay) {
                             cboDayTxt = cboDayTxt + "<option value='" + i + "' selected>" + i + "일</option>";
@@ -492,6 +529,7 @@
 
 
                     $("#cboCustType").append(cboCustTypeTxt);
+                    $("#cboApv").append(cboApvTxt);
                     $("#cboDay").append(cboDayTxt);
                     $("#custBank").append(custBankTxt);
                 }
@@ -615,13 +653,16 @@
             var inputYn = "";
             var cboCustType = "";
             var cboDay = "";
+            var cboApv = "";
             var inputYnTxt = "<option value=''>:: 선택 ::</option>";
             var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
             var cboDayTxt = "<option value=''>:: 선택 ::</option>";
+            var cboApvTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputYn").html("");
             $("#cboCustType").html("");
             $("#cboDay").html("");
+            $("#cboApv").html("");
 
 
             $.ajax({
@@ -666,6 +707,15 @@
                         }
                     }
 
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboApv) {
+                            cboApvTxt = cboApvTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboApvTxt = cboApvTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
                     cboDayTxt = cboDayTxt + "<option value=''></option>";
                     for (var i = 1; i < 32; i++) {
                         if (i == cboDay) {
@@ -679,6 +729,7 @@
                     $("#inputYn").append(inputYnTxt);
                     $("#cboCustType").append(cboCustTypeTxt);
                     $("#cboDay").append(cboDayTxt);
+                    $("#cboApv").append(cboApvTxt);
 
                     $("#subTb").html("");
                     for (var i = 0; i < 3; i++) {

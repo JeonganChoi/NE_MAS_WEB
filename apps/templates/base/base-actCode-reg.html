@@ -63,7 +63,7 @@
                                         </colgroup>
                                       <thead class="bg-gray-100">
                                         <tr>
-                                          <th style="font-size: 0.8rem" class="p-1">선택</th>
+                                          <th style="font-size: 0.8rem" class="p-1">삭제</th>
                                           <th style="font-size: 0.8rem" class="p-1">상위 계정 과목</th>
                                           <th style="font-size: 0.8rem" class="p-1">회계 계정 명</th>
                                           <th style="font-size: 0.8rem" class="p-1">관리 계정 과목</th>
@@ -389,6 +389,10 @@
             let cboGbn2_M = document.getElementById('cboGbn2_M').value;
             let mOpt = document.getElementById('cboOpt').value;
 
+            if (mCode_M == '') {
+                alert('상위 계정과목을 선택해주세요.')
+                return false
+            }
             if (mCode_A == '') {
                 alert('회계 계정과목을 선택해주세요.')
                 return false

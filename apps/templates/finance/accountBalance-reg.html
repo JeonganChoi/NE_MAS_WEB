@@ -17,14 +17,11 @@
                     <button type="button" class="mb-0 mb-2 btn btn-success btn-sm align-items-center ms-md-auto mb-sm-0 me-2" id="btnSearch" name="btnSearch">
                           <i class="fas fa-search me-2 fs-6"></i>조회
                     </button>
-                    <!--<button type="button" class="mb-0 btn btn-dark btn-icon d-flex align-items-center" id="btnClear" name="btnClear">
-                      <span class="btn-inner--icon">
-                          <i class="fas fa-minus me-2 fs-5"></i>
-                      </span>
-                      <span class="btn-inner--text text-lg">초기화</span>
-                    </button>-->
                     <button type="button" class="mb-0 btn btn-primary btn-sm align-items-center me-2" id="btnSave" name="btnSave">
                           <i class="fas fa-plus me-2 fs-6"></i>저장
+                    </button>
+                    <button type="button" class="mb-0 btn btn-white btn-sm align-items-center me-2 text-dark" id="btnClear" name="btnClear">
+                          <i class="fas fa-eraser me-2 fs-6"></i>초기화
                     </button>
                     <button type="button" class="mb-0 btn btn-dark btn-sm align-items-center" id="btnDlt" name="btnDlt">
                           <i class="fas fa-minus me-2 fs-6"></i>삭제
@@ -255,9 +252,9 @@
             $("#txtRemark").html("");
 
             var bankCode = document.getElementById('cboBankName').value
-            var actCode = '';
+            var actNum = '';
 
-            var data = {'bankCode': bankCode, "actCode": actCode}
+            var data = {'bankCode': bankCode, "actNum": actNum}
 
             $.ajax({
                 type: "post",
@@ -269,7 +266,7 @@
                 dataType: 'json',
                 success: function (data) {
 
-                    var combolist4 = data.actList;
+                    var combolist4 = data.cboActNum;
                     for (var i = 0; i < combolist4.length; i++) {
                         if (combolist4[i][0] == cboActNum) {
                             cboActNumTxt = cboActNumTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][0] + "</option>";
@@ -287,9 +284,9 @@
         $('#cboActNum').change(function () {
 
             var actCode = document.getElementById('cboActNum').value
-            var bankCode = '';
+            var bankCode = document.getElementById('cboBankName').value;
 
-            var data = {'bankCode': bankCode, "actCode": actCode}
+            var data = {'bankCode': bankCode, "actNum": actCode}
 
             $.ajax({
                 type: "post",
@@ -300,14 +297,9 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.actList;
+                    var actName = data.txtActNme;
 
-                    for (var i = 0; i < list.length; i++) {
-                        for (var j = 0; j < 21; j++) {
-                            console.log("===================" + j + ":::" + list[i][j]);
-                        }
-                        $("#txtActName").val(list[i][1])
-                    }
+                    $("#txtActName").val(actName);
                 }
             })
         });
@@ -451,5 +443,46 @@
 
             }
         });
+
+        {# 초기화 버튼 #}
+        $(document).on('click', "#btnClear", function () {
+
+            var cboBankName = "";
+            var cboActNum = "";
+            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
+            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#cboBankName").html("");
+            $("#cboActNum").html("");
+
+            $.ajax({
+                type: "post",
+                url: '{% url "actBalance_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#txtActName").val("");
+                    $("#txtDate").val("");
+                    $("#txtBalance").val("");
+                    $("#txtRemark").val("");
+
+
+                    var combolist2 = data.inputBankType;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboBankName) {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboBankName").append(cboBankNameTxt);
+                    $("#cboActNum").append(cboActNumTxt);
+                }
+            })
+        });
+
     </script>
 {% endblock %}
