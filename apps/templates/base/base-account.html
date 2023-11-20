@@ -350,11 +350,36 @@
                 },
                 success: function (data) {
                     if(data.account != ''){
-                        alert('이미 존재하는 계좌번호 입니다. 수정하시겠습니까?')
 
+                        var saveresult = confirm("이미 존재하는 계좌번호 입니다. 수정하시겠습니까?")
+                        if(saveresult == true){
+                            let data2 = {
+                                'bankcode': bankcode, 'actCode': actCode, 'regDate': regDate
+                                , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user
+                            }
+
+                            $.ajax({
+                                type: "post",
+                                data: data2,
+                                dataType: "json",
+                                url: '{% url "base_account_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('수정 되었습니다.')
+                                        location.href = "{% url 'base_account' %}";
+                                    }
+                                }
+                            });
+                        }
+                        if(saveresult == false){
+                            alert('수정을 취소 하였습니다..')
+                        }
                     }
                     else{
-                        let data = {
+                        let data2 = {
                             'bankcode': bankcode, 'actCode': actCode, 'regDate': regDate
                             , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user
                         }

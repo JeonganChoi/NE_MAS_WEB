@@ -415,27 +415,34 @@
                 'cboOpt': mOpt
             }
 
-            $.ajax({
-                type: "post",
-                data: data2,
-                dataType: "json",
-                url: '{% url "base_accountCode_saveM" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
+            var saveresult = confirm("저장 하시겠습니까?")
+            if(saveresult == true){
+                $.ajax({
+                    type: "post",
+                    data: data2,
+                    dataType: "json",
+                    url: '{% url "base_accountCode_saveM" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
 
-                    if (data.sucYn === 'Y') {
-                        alert('저장되었습니다.')
+                        if (data.sucYn === 'Y') {
+                            alert('저장되었습니다.')
 
-                        location.reload()
-                        {# 조회 콤보박스 클릭시 #}
-                        {#$('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);#}
-                        {# 입력란 초기화 #}
-                        {#document.getElementById('btnClear').click();#}
+                            location.reload()
+                            {# 조회 콤보박스 클릭시 #}
+                            {#$('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);#}
+                            {# 입력란 초기화 #}
+                            {#document.getElementById('btnClear').click();#}
+                        }
                     }
-                }
-            });
+                });
+            }
+            if(saveresult == false){
+                alert('취소되었습니다.')
+            }
+
         });
 
 
