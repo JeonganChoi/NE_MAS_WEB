@@ -598,6 +598,97 @@
             document.getElementById("inputEndDate").valueAsDate = new Date;
             document.getElementById("txtWitRegDate").valueAsDate = new Date;
 
+            var acIogb = "";
+            var acDate = "";
+            var acNum = "";
+            var acCust = "";
+            var acMcode = "";
+            var cboGbn = "1";
+
+            let data2 = {
+                "acIogb": acIogb,
+                "acDate": acDate,
+                "acNum": acNum,
+                "acCust": acCust,
+                "acMcode": acMcode,
+                "cboGbn": cboGbn
+            }
+
+            $.ajax({
+                type: "post",
+                data: data2,
+                url: '{% url "payment_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboCust;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboWitCust2) {
+                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist2 = data.cboGgn;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == cboWitGbn) {
+                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        } else {
+                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist3 = data.cboPay;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboWitMethod) {
+                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboMCode;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboAdminCode) {
+                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist5 = data.cboAcnumber;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboWitActNum) {
+                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                        } else {
+                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                        }
+                    }
+
+                    var combolist6 = data.cboCard;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboWitCard) {
+                            cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                        } else {
+                            cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboWitCust").append(cboWitCustTxt);
+                    $("#cboWitGbn").append(cboWitGbnTxt);
+                    $("#cboWitMethod").append(cboWitMethodTxt);
+                    $("#cboAdminCode").append(cboAdminCodeTxt);
+                    $("#cboWitActNum").append(cboWitActNumTxt);
+                    $("#cboWitCard").append(cboWitCardTxt);
+                }
+            })
+
+
+
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
             var cboCust = document.getElementById('inputCust').value;
@@ -709,99 +800,9 @@
                     $("#inputCust").append(cboCustTxt);
                     $("#inputAct").append(cboActTxt);
 
-                    var acIogb = "";
-                    var acDate = "";
-                    var acNum = "";
-                    var acCust = "";
-                    var acMcode = "";
-                    var cboGbn = "";
 
-                    let data2 = {
-                        "acIogb": acIogb,
-                        "acDate": acDate,
-                        "acNum": acNum,
-                        "acCust": acCust,
-                        "acMcode": acMcode,
-                        "cboGbn": cboGbn
-                    }
-
-                    $.ajax({
-                        type: "post",
-                        data: data2,
-                        url: '{% url "payment_search" %}',
-                        headers: {
-                            'X-CSRFTOKEN': '{{ csrf_token }}'
-                        },
-                        dataType: 'json',
-                        success: function (data) {
-
-                            var combolist = data.cboCust;
-                            for (var i = 0; i < combolist.length; i++) {
-                                if (combolist[i][0] == cboWitCust2) {
-                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                                } else {
-                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
-                                }
-                            }
-
-                            var combolist2 = data.cboGgn;
-                            for (var i = 0; i < combolist2.length; i++) {
-                                if (combolist2[i][0] == cboWitGbn) {
-                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                                } else {
-                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                                }
-                            }
-
-                            var combolist3 = data.cboPay;
-                            for (var i = 0; i < combolist3.length; i++) {
-                                if (combolist3[i][0] == cboWitMethod) {
-                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                                } else {
-                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                                }
-                            }
-
-                            var combolist4 = data.cboMCode;
-                            for (var i = 0; i < combolist4.length; i++) {
-                                if (combolist4[i][0] == cboAdminCode) {
-                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                                } else {
-                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                                }
-                            }
-
-                            var combolist5 = data.cboAcnumber;
-                            for (var i = 0; i < combolist5.length; i++) {
-                                if (combolist5[i][0] == cboWitActNum) {
-                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
-                                } else {
-                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
-                                }
-                            }
-
-                            var combolist6 = data.cboCard;
-                            for (var i = 0; i < combolist6.length; i++) {
-                                if (combolist6[i][0] == cboWitCard) {
-                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
-                                } else {
-                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
-                                }
-                            }
-
-                            $("#cboWitCust").append(cboWitCustTxt);
-                            $("#cboWitGbn").append(cboWitGbnTxt);
-                            $("#cboWitMethod").append(cboWitMethodTxt);
-                            $("#cboAdminCode").append(cboAdminCodeTxt);
-                            $("#cboWitActNum").append(cboWitActNumTxt);
-                            $("#cboWitCard").append(cboWitCardTxt);
-                        }
-                    })
                 }
             });
-
-
-
         });
 
         {# 조회 버튼 누를시 #}
