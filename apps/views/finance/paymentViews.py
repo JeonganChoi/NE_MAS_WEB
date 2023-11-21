@@ -804,11 +804,11 @@ def paymentViews_save(request):
                            ",    ACDATE = '" + str(acDate) + "' "
                            ",    ACCARD = '" + str(acCard) + "' "
                            ",    ACUSE = '" + str(acUse) + "' "
+                           ",    ACCUST = '" + str(acCust) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE IODATE = '" + str(ioDate) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
-                           "     AND ACCUST = '" + str(acCust) + "' "
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
                            "     AND ICUST = '" + str(iCust) + "' "
                            )

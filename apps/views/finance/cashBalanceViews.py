@@ -27,36 +27,35 @@ def cashBalRegSearchViews(request):
     iCust = request.session.get('USER_ICUST')
 
     # 은행명 선택 시 조회
-    if SearchBank != '' and SearchBank is not None:
+    if SearchBank:
         # 은행 계좌 잔액 등록 - 은행명 콤보박스
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND RESKEY = '" + SearchBank + "' ")
             bankselected = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(
-                            " SELECT "
-                            "         IFNULL(C.RESKEY,'') AS RECODE"
-                            "        ,IFNULL(C.RESNAM,'') AS BANKNM "
-                            "        ,IFNULL(B.ACNUM_NAME,'') AS ACNUM_NAME "
-                            "        ,IFNULL(A.ACNUMBER,'') AS ACNUMBER "
-                            "        ,IFNULL(A.ACDATE,'') AS ACDATE "
-                            "        ,IFNULL(A.ACAMTS, 0) AS ACAMTS "
-                            "        ,IFNULL(A.ACDESC, '') AS ACDESC "
-                            " FROM ACCASHP A "
-                            " LEFT OUTER JOIN ACNUMBER B "
-                            " ON A.ACNUMBER = B.ACNUMBER "
-                            " LEFT OUTER JOIN OSREFCP C "
-                            " ON B.ACBKCD = C.RESKEY "
-                            " WHERE C.RECODE = 'BNK' "
-                            "   AND A.ICUST = '" + str(iCust) + "' "
-                            " ORDER BY A.ACDATE "
-                            " AND C.RESKEY = '" + SearchBank + "'")
+            cursor.execute(" SELECT IFNULL(C.RESKEY,'') AS RECODE "
+                           "        ,IFNULL(C.RESNAM,'') AS BANKNM "
+                           "        ,IFNULL(A.ACNUM_NAME,'') AS ACNUM_NAME "
+                           "        ,IFNULL(B.ACNUMBER,'') AS ACNUMBER "
+                           "        ,IFNULL(B.ACDATE,'') AS ACDATE "
+                           "        ,IFNULL(B.ACAMTS, 0) AS ACAMTS "
+                           "        ,IFNULL(B.ACDESC, '') AS ACDESC "
+                           " FROM ACNUMBER A "
+                           " LEFT OUTER JOIN ACCASHP  B "
+                           " ON A.ACNUMBER = B.ACNUMBER "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.ACBKCD = C.RESKEY "
+                           " AND C.RECODE = 'BNK' "
+                           " WHERE B.ICUST = '" + str(iCust) + "' "
+                           " AND C.RESKEY = '" + str(SearchBank) + "' "
+                           " ORDER BY B.ACDATE "
+                            )
             acResult = cursor.fetchall()
 
         return JsonResponse({'acList': acResult, "bankCombo2": bankselected})
 
-    elif SearchBank is None or SearchBank == '':
+    else:
         # 은행 계좌 잔액 등록 - 은행명 콤보박스
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
@@ -64,29 +63,26 @@ def cashBalRegSearchViews(request):
 
         # 은행 계좌 잔액 테이블
         with connection.cursor() as cursor:
-            cursor.execute(
-                           " SELECT "
-                           "         IFNULL(C.RESKEY,'') AS RECODE"
+            cursor.execute(" SELECT IFNULL(C.RESKEY,'') AS RECODE "
                            "        ,IFNULL(C.RESNAM,'') AS BANKNM "
-                           "        ,IFNULL(B.ACNUM_NAME,'') AS ACNUM_NAME "
-                           "        ,IFNULL(A.ACNUMBER,'') AS ACNUMBER "
-                           "        ,IFNULL(A.ACDATE,'') AS ACDATE "
-                           "        ,IFNULL(A.ACAMTS, 0) AS ACAMTS "
-                           "        ,IFNULL(A.ACDESC, '') AS ACDESC "
-                           " FROM ACCASHP A "
-                           " LEFT OUTER JOIN ACNUMBER B "
+                           "        ,IFNULL(A.ACNUM_NAME,'') AS ACNUM_NAME "
+                           "        ,IFNULL(B.ACNUMBER,'') AS ACNUMBER "
+                           "        ,IFNULL(B.ACDATE,'') AS ACDATE "
+                           "        ,IFNULL(B.ACAMTS, 0) AS ACAMTS "
+                           "        ,IFNULL(B.ACDESC, '') AS ACDESC "
+                           " FROM ACNUMBER A "
+                           " LEFT OUTER JOIN ACCASHP  B "
                            " ON A.ACNUMBER = B.ACNUMBER "
                            " LEFT OUTER JOIN OSREFCP C "
-                           " ON B.ACBKCD = C.RESKEY "
-                           " WHERE C.RECODE = 'BNK' "
-                           "   AND A.ICUST = '" + str(iCust) + "'"
-                           " ORDER BY A.ACDATE "
+                           " ON A.ACBKCD = C.RESKEY "
+                           " AND C.RECODE = 'BNK' "
+                           " WHERE B.ICUST = '" + str(iCust) + "' "
+                           " ORDER BY B.ACDATE "
                 )
             allAcResult = cursor.fetchall()
 
         return JsonResponse({"bankCombo": bankresult, "acList": allAcResult})
-    else:
-        return redirect('/cashBalance_reg')
+
 
 
 
@@ -163,7 +159,7 @@ def cashBalRegAcNmSearchViews(request):
 
 def cashBalRegSaveViews(request):
     ActNum = request.POST.get("cboActNum")
-    RAcNum = ActNum[2:]
+    RAcNum = ActNum[0:]
     RegDate = request.POST.get("txtRegDate").replace('-', '')
     Amount = request.POST.get("txtAmount").replace(',', '')
     Bigo = request.POST.get("txtBigo")
@@ -180,17 +176,15 @@ def cashBalRegSaveViews(request):
                 cursor.execute(" UPDATE ACCASHP SET "
                                "     ACAMTS = '" + str(Amount) + "' "
                                ",    ACDESC = '" + str(Bigo) + "' "
-                               ",    ACDATE = '" + str(RegDate) + "' "
                                ",    UPD_USER = '" + str(user) + "' "
                                ",    UPD_DT = date_format(now(), '%Y%m%d') "
                                "     WHERE ACNUMBER = '" + str(acNum) + "' "
-                               "       AND ICUST = '" + str(iCust) + "'"
+                               "     AND ACDATE = '" + str(RegDate) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
                                )
                 connection.commit()
 
                 return JsonResponse({'sucYn': "Y"})
-
-            return render(request, 'finance/cash-reg.html')
 
         else:
             with connection.cursor() as cursor:

@@ -184,7 +184,7 @@
                                 <div class="col-6"></div>
                                 <div class="col-6 text-end">
                                     <label class="text-danger me-2" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승 인</label>
-                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="charge"/>
+                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value=""/>
                                 </div>
                             </div>
                             <div class="row">
@@ -562,10 +562,13 @@
         $(document).on('click', "#btnSave", function () {
 
             var formData = new FormData($('#dropzone')[0]);
-
+            var chkPermit = "";
             var empNo = document.getElementById('txtEmpNo').value
-            var chkPermit = document.getElementById('chkPermit').value
-            alert(chkPermit)
+            var checked = $('#chkPermit').is(':checked');
+            if(checked){chkPermit = 'charge';}
+            else{chkPermit = "";}
+            {#document.getElementById('chkPermit').value#}
+
             var empPW = document.getElementById('txtEmpPw').value
             {#var empDpt = document.getElementById('cboDpt').value#}
             {#var empGroup = document.getElementById('cboGroup').value#}
