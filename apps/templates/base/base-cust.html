@@ -114,7 +114,7 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 코드</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtCustCode" name="txtCustCode"/>
+                                        <input readonly style="height: 2rem; font-size: 0.8rem" placeholder="거래처 코드는 자동 생성 됩니다." class="form-control text-start text-dark" type="text" id="txtCustCode" name="txtCustCode"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체명</label>
@@ -562,15 +562,6 @@
         $(document).on('click', "#btnSave", function () {
 
             var formData = new FormData($('#dropzone')[0]);
-
-            var txtCustCode = document.getElementById('txtCustCode').value
-
-            if(txtCustCode == '')
-            {
-                alert("업체코드를 입력해주세요.")
-                return false
-            }
-
 
             var saveresult = confirm("저장 하시겠습니까?")
 
