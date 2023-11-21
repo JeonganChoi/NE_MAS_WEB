@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전화 번호</label>
-                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel"/>
+                                    <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtEmpTel" name="txtEmpTel" maxlength="13"/>
                                 </div>
                                 <!--<div class="col-2">
                                     <label class="mt-4" style="font-size: 1rem"><i class="fas fa-circle me-2 text-info text-sm"></i>구 분</label>
@@ -226,6 +226,7 @@
             addRemoveLinks: true
 
         });
+
     </script>
     <script>
 
@@ -261,6 +262,14 @@
                 $('#file_name').text(selectedFile.name);
             }
         });
+
+        $('input[name=txtEmpTel]').on('input', function () {
+            var txtEmpTel = $(this).val();
+
+            var regex_txtEmpTel = txtEmpTel.replace(/[^0-9]/g, '').replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "");
+            $(this).val(regex_txtEmpTel);
+        });
+
     </script>
 
     <script>
@@ -555,7 +564,8 @@
             var formData = new FormData($('#dropzone')[0]);
 
             var empNo = document.getElementById('txtEmpNo').value
-            {#var chkPermit = document.getElementById('chkPermit').value#}
+            var chkPermit = document.getElementById('chkPermit').value
+            alert(chkPermit)
             var empPW = document.getElementById('txtEmpPw').value
             {#var empDpt = document.getElementById('cboDpt').value#}
             {#var empGroup = document.getElementById('cboGroup').value#}

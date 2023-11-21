@@ -142,7 +142,7 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>우편 번호</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtPostCode" name="txtPostCode"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtPostCode" name="txtPostCode" maxlength="6"/>
                                     </div>
                                     <div class="col-8">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>주 소</label>
@@ -152,11 +152,11 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>전화 번호</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtTelePhone" name="txtTelePhone"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtTelePhone" name="txtTelePhone" maxlength="12"/>
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>FAX</label>
-                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtFax" name="txtFax"/>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtFax" name="txtFax" maxlength="12"/>
                                     </div>
                                     <div class="col-4">
                                     </div>
@@ -379,6 +379,20 @@
 
             var regex_txtRegNum = txtRegNum.replace(/[^0-9]/g, '').replace(/^(\d{0,3})(\d{0,2})(\d{0,5})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "");
             $(this).val(regex_txtRegNum);
+        });
+
+        $('input[name=txtTelePhone]').on('input', function () {
+            var txtTelePhone = $(this).val();
+
+            var regex_txtTelePhone = txtTelePhone.replace(/[^0-9]/g, '').replace(/^(\d{0,3})(\d{0,3})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "");
+            $(this).val(regex_txtTelePhone);
+        });
+
+        $('input[name=txtFax]').on('input', function () {
+            var txtFax = $(this).val();
+
+            var regex_txtFax = txtFax.replace(/[^0-9]/g, '').replace(/^(\d{0,3})(\d{0,3})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "");
+            $(this).val(regex_txtFax);
         });
 
         {# 조회 버튼 누를시 #}
