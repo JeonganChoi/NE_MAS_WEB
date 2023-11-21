@@ -167,7 +167,7 @@ def cashBalRegSaveViews(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACCASHP WHERE ACNUMBER = '" + ActNum + "' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT ACNUMBER FROM ACCASHP WHERE ACNUMBER = '" + ActNum + "' AND ACDATE = '" + str(RegDate) + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
 
         if chkresult:

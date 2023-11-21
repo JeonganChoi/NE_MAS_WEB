@@ -180,21 +180,21 @@
         });
 
 
-        $("#btnSearch").on('click', function () {
+        $(document).on('click', '#btnSearch', function () {
 
             var bankCode = document.getElementById('cbobankType').value
             var data = {'bankCode': bankCode}
 
             $.ajax({
                 type: "post",
-                url: '{% url "cashBalance_search_scnd" %}',
+                url: '{% url "cashBalacne_search" %}',
                 data: data,
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.acListScnd;
+                    var list = data.acList;
                     $("#acTable").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#acTable").append(
@@ -212,6 +212,7 @@
                 }
             })
         });
+
         {#콤보박스 선택 시 이벤트#}
         $(document).on('change', "#cbobankType2", function () {
 
@@ -340,7 +341,7 @@
             });
         });
 
-                {#체크한 내용 삭제#}
+        {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
             var chk_cust_id_arr = [];
@@ -392,6 +393,10 @@
             document.getElementById("txtRegDate").value = new Date;
             document.getElementById("txtAmount").value = "0";
             document.getElementById("txtBigo").value = "";
+
+            $("select[name=cbobankType2]").attr("disabled", false)
+            $("select[name=cboActNum]").attr("disabled", false)
+            document.getElementById("txtActName").disabled = false;
         });
     </script>
 {% endblock %}
