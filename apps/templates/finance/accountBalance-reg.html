@@ -158,7 +158,7 @@
                     $("#acBalMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#acBalMainTb").append(
-                            "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][4] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
@@ -224,7 +224,7 @@
                     $("#acBalMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         $("#acBalMainTb").append(
-                            "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "'>" +
+                            "<tr id='#acBalMainTr' class='acBalMainTr_tr' main_code='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAct[]' name='chkAct[]' value='" + list[i][0] + "," + list[i][4] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
@@ -315,10 +315,12 @@
             $("#cboBankName").html("");
             $("#cboActNum").html("");
 
-            let actNum = $(this).attr('main_code');
+            let search = $(this).attr('main_code');
+            var actNum = $(this).children().eq(1).text()
             var bankCode = $(this).children().eq(3).text()
+            var regDate = $(this).children().eq(5).text()
 
-            let data = {'actNum': actNum, 'bankCode': bankCode}
+            let data = {'actNum': actNum, 'bankCode': bankCode, "regDate": regDate}
 
             $.ajax({
                 type: "post",
@@ -363,6 +365,13 @@
 
                     $("#cboBankName").append(cboBankNameTxt);
                     $("#cboActNum").append(cboActNumTxt);
+
+                    $("select[name=cboBankName]").attr("disabled", true)
+                    document.getElementById("cboBankName").classList.add('bg-transparent')
+                    $("select[name=cboActNum]").attr("disabled", true)
+                    document.getElementById("cboActNum").classList.add('bg-transparent')
+                    document.getElementById("txtActName").disabled = true;
+                    document.getElementById("txtActName").classList.add('bg-transparent')
 
                 }
             })

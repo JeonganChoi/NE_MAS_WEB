@@ -171,7 +171,10 @@
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>등 급</label>
                                     <select style="height: 2rem; font-size: 0.8rem; width: 5rem" class="form-control border border-light rounded-1 text-center p-0" name="cboClass" id="cboClass"></select>
                                 </div>
-                                <div class="col-6"></div>
+                                <div class="col-6 text-end">
+                                    <label class="text-danger mt-4 me-2" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승 인</label>
+                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="charge"/>
+                                </div>
                             </div>
                             <div class="row mt-4">
                                 <!--<div class="col-6">
@@ -182,10 +185,7 @@
                                     </select>
                                 </div>-->
                                 <div class="col-6"></div>
-                                <div class="col-6 text-end">
-                                    <label class="text-danger me-2" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승 인</label>
-                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value=""/>
-                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-6"></div>
@@ -519,8 +519,11 @@
                         {#document.getElementById("sign").dataset.origin = imglc + itemimg;#}
                     }
 
-                    if(chkPermit != '' || chkPermit != null){
+                    if(chkPermit == 'CHARGE'){
                         $(`#chkPermit`).trigger('click');
+                    }
+                    else{
+                        $(`#chkPermit`).checked = false;
                     }
 
                     var combolist = data.jjoCombo;
@@ -562,13 +565,8 @@
         $(document).on('click', "#btnSave", function () {
 
             var formData = new FormData($('#dropzone')[0]);
-            var chkPermit = "";
             var empNo = document.getElementById('txtEmpNo').value
-            var checked = $('#chkPermit').is(':checked');
-            if(checked){chkPermit = 'charge';}
-            else{chkPermit = "";}
             {#document.getElementById('chkPermit').value#}
-
             var empPW = document.getElementById('txtEmpPw').value
             {#var empDpt = document.getElementById('cboDpt').value#}
             {#var empGroup = document.getElementById('cboGroup').value#}

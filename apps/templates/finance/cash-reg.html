@@ -150,7 +150,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='bankName_" + i + "' name='bankName'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='acName_" + i + "' name='acName'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='acNum_" + i + "' name='acNum'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem' id='acDate_" + i + "' name='acDate'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem' id='acDate_" + i + "' name='acDate'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem' id='acAmts" + i + "' name='acAmts'>" + addComma(list[i][5]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='acDesc_" + i + "' name='acDesc'>" + list[i][6] + "</td> " +
                             "</tr> ");
@@ -204,7 +204,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='bankName_" + i + "' name='bankName'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='acName_" + i + "' name='acName'>" + list[i][2] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='acNum_" + i + "' name='acNum'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem' id='acDate_" + i + "' name='acDate'>" + list[i][4] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem' id='acDate_" + i + "' name='acDate'>" + list[i][4].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem' id='acAmts" + i + "' name='acAmts'>" + addComma(list[i][5]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem' id='acDesc_" + i + "' name='acDesc'>" + list[i][6] + "</td> " +
                             "</tr> ");
@@ -214,64 +214,64 @@
         });
 
         {#콤보박스 선택 시 이벤트#}
-        $(document).on('change', "#cbobankType2", function () {
-
-            var AcNumber = "";
-            var bankCode = $("#cbobankType2").val()
-            var AcNumberTxt = "<option value=''>:: 선택 ::</option>";
-
-            var data = {"bankCode":bankCode}
-            $("#cboActNum").html("");
-
-            $.ajax({
-                type: "post",
-                url: '{% url "cashBalance_acnum_search" %}',
-                data: data,
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    var combolist3 = data.acnumlist;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == AcNumber) {
-                            AcNumberTxt = AcNumberTxt + "<option value='" + combolist3[i][2] + "' selected>" + combolist3[i][2] + "</option>";
-                        } else {
-                            AcNumberTxt = AcNumberTxt + "<option value='" + combolist3[i][2] + "'>" + combolist3[i][2] + "</option>";
-                        }
-                    }
-
-                    $("#cboActNum").append(AcNumberTxt);
-
-                }
-            })
-        });
+        {#$(document).on('change', "#cbobankType2", function () {#}
+        {##}
+        {#    var AcNumber = "";#}
+        {#    var bankCode = $("#cbobankType2").val()#}
+        {#    var AcNumberTxt = "<option value=''>:: 선택 ::</option>";#}
+        {##}
+        {#    var data = {"bankCode":bankCode}#}
+        {#    $("#cboActNum").html("");#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        url: '{% url "cashBalance_acnum_search" %}',#}
+        {#        data: data,#}
+        {#        headers: {#}
+        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+        {#        },#}
+        {#        dataType: 'json',#}
+        {#        success: function (data) {#}
+        {##}
+        {#            var combolist3 = data.acnumlist;#}
+        {#            for (var i = 0; i < combolist3.length; i++) {#}
+        {#                if (combolist3[i][0] == AcNumber) {#}
+        {#                    AcNumberTxt = AcNumberTxt + "<option value='" + combolist3[i][2] + "' selected>" + combolist3[i][2] + "</option>";#}
+        {#                } else {#}
+        {#                    AcNumberTxt = AcNumberTxt + "<option value='" + combolist3[i][2] + "'>" + combolist3[i][2] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            $("#cboActNum").append(AcNumberTxt);#}
+        {##}
+        {#        }#}
+        {#    })#}
+        {#});#}
 
 
         {#계좌번호 선택시 계좌명에 바인딩#}
-        $(document).on('change', "#cboActNum", function (e) {
-            $("#txtActName").html("");
-            var acnumcodeval = document.getElementById('cboActNum')
-            var acnumcode = acnumcodeval.options[acnumcodeval.selectedIndex].text
-
-            var data = {"acnumcode":acnumcode}
-
-            $.ajax({
-                type: "post",
-                url: '{% url "cashBalance_acname_search" %}',
-                data: data,
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    var acname = data.acnamelist;
-
-                    $("#txtActName").val(acname);
-                }
-            })
-        });
+        {#$(document).on('change', "#cboActNum", function (e) {#}
+        {#    $("#txtActName").html("");#}
+        {#    var acnumcodeval = document.getElementById('cboActNum')#}
+        {#    var acnumcode = acnumcodeval.options[acnumcodeval.selectedIndex].text#}
+        {##}
+        {#    var data = {"acnumcode":acnumcode}#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        url: '{% url "cashBalance_acname_search" %}',#}
+        {#        data: data,#}
+        {#        headers: {#}
+        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+        {#        },#}
+        {#        dataType: 'json',#}
+        {#        success: function (data) {#}
+        {#            var acname = data.acnamelist;#}
+        {##}
+        {#            $("#txtActName").val(acname);#}
+        {#        }#}
+        {#    })#}
+        {#});#}
 
         {# 로우 클릭시 #}
         $(document).on('click', '#acTable tr', function () {
@@ -303,8 +303,6 @@
             $("#txtRegDate").val(Rregdate)
             $("#txtAmount").val(amount)
             $("#txtBigo").val(remark)
-
-
         });
 
         {# 저장 #}

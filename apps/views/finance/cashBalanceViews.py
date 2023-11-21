@@ -37,7 +37,7 @@ def cashBalRegSearchViews(request):
             cursor.execute(" SELECT IFNULL(C.RESKEY,'') AS RECODE "
                            "        ,IFNULL(C.RESNAM,'') AS BANKNM "
                            "        ,IFNULL(A.ACNUM_NAME,'') AS ACNUM_NAME "
-                           "        ,IFNULL(B.ACNUMBER,'') AS ACNUMBER "
+                           "        ,IFNULL(A.ACNUMBER,'') AS ACNUMBER "
                            "        ,IFNULL(B.ACDATE,'') AS ACDATE "
                            "        ,IFNULL(B.ACAMTS, 0) AS ACAMTS "
                            "        ,IFNULL(B.ACDESC, '') AS ACDESC "
@@ -47,7 +47,7 @@ def cashBalRegSearchViews(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.ACBKCD = C.RESKEY "
                            " AND C.RECODE = 'BNK' "
-                           " WHERE B.ICUST = '" + str(iCust) + "' "
+                           " WHERE A.ICUST = '" + str(iCust) + "' "
                            " AND C.RESKEY = '" + str(SearchBank) + "' "
                            " ORDER BY B.ACDATE "
                             )
@@ -66,7 +66,7 @@ def cashBalRegSearchViews(request):
             cursor.execute(" SELECT IFNULL(C.RESKEY,'') AS RECODE "
                            "        ,IFNULL(C.RESNAM,'') AS BANKNM "
                            "        ,IFNULL(A.ACNUM_NAME,'') AS ACNUM_NAME "
-                           "        ,IFNULL(B.ACNUMBER,'') AS ACNUMBER "
+                           "        ,IFNULL(A.ACNUMBER,'') AS ACNUMBER "
                            "        ,IFNULL(B.ACDATE,'') AS ACDATE "
                            "        ,IFNULL(B.ACAMTS, 0) AS ACAMTS "
                            "        ,IFNULL(B.ACDESC, '') AS ACDESC "
@@ -76,7 +76,7 @@ def cashBalRegSearchViews(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.ACBKCD = C.RESKEY "
                            " AND C.RECODE = 'BNK' "
-                           " WHERE B.ICUST = '" + str(iCust) + "' "
+                           " WHERE A.ICUST = '" + str(iCust) + "' "
                            " ORDER BY B.ACDATE "
                 )
             allAcResult = cursor.fetchall()
