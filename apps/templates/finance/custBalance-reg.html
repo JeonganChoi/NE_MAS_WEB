@@ -65,8 +65,8 @@
                         <table class="table mb-0 align-items-center justify-content-center">
                             <colgroup>
                                 <col width="2%">
-                                <col width="6%">
                                 <col width="8%">
+                                <col width="6%">
                                 <col width="15%">
                                 <col width="8%">
                                 <col width="8%">
@@ -76,8 +76,8 @@
                             <tr>
                               <th class="text-center p-1"></th>
                               <th style="font-size: 0.85rem" class="text-center p-1">거래처 코드</th>
-                              <th style="font-size: 0.85rem" class="text-center p-1">등록 일자</th>
                               <th style="font-size: 0.85rem" class="text-center p-1">거래처명</th>
+                              <th style="font-size: 0.85rem" class="text-center p-1">등록 일자</th>
                               <th style="font-size: 0.85rem" class="text-center p-1">미수 잔액</th>
                               <th style="font-size: 0.85rem" class="text-center p-1">미지급 잔액</th>
                               <th style="font-size: 0.85rem" class="text-center p-1">비 고</th>
@@ -169,8 +169,8 @@
                             "<tr id='#custBalMainTr' class='custBalMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBalance[]' name='chkBalance[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
@@ -232,8 +232,8 @@
                             "<tr id='#custBalMainTr' class='custBalMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkBalance[]' name='chkBalance[]' value='" + list[i][0] + "," + list[i][2] + "'/></div></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +

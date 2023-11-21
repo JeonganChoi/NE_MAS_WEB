@@ -271,8 +271,11 @@ def empViews_save(request):
 
         uploaded_file = destination
 
-    if charge != 'CHARGE':
+    if charge != 'charge':
         charge = ''
+
+    if limit == '' or limit is None:
+        limit = 0
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT EMP_NBR FROM PIS1TB001 WHERE EMP_NBR = '" + str(empNbr) + "' AND ICUST = '" + str(iCust) + "' ")

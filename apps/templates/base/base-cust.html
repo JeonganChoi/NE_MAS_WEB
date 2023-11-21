@@ -48,7 +48,7 @@
                                 <span class="input-group-text bg-transparent border-0">
                                     <label style="font-size: 0.85rem"><i class="fas fa-search me-2"></i>업체 코드/명</label>
                                 </span>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" type="text" id="inputCustCode" name="inputCustCode"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" value="" type="text" id="inputCustCode" name="inputCustCode"/>
                             </div>
                           </div>
                           <div class="p-3 col-lg-3 mt-lg-0" hidden>
@@ -257,8 +257,14 @@
             {# 첫 화면에 2개 row가 뜨도록 #}
             $("#custBank_"+i).html("");
 
+            var custType = "";
+            var custCode = "";
+
+            let data = {"custType": custType, "custCode": custCode}
+
             $.ajax({
                 type: "post",
+                data: data,
                 url: '{% url "base_cust_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -282,8 +288,8 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][20] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][22] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][20] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "</tr> ");
                     }
@@ -400,9 +406,9 @@
 
             var custType = document.getElementById('inputCustType').value;
             var custCode = document.getElementById('inputCustCode').value;
-            var custYn = document.getElementById('inputYn').value;
+            {#var custYn = document.getElementById('inputYn').value;#}
 
-            let data = {"custType": custType, "custCode": custCode, "custYn": custYn}
+            let data = {"custType": custType, "custCode": custCode}
 
             $.ajax({
                 type: "post",
@@ -430,8 +436,8 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][20] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][22] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][20] + "</td> " +
                             "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "</tr> ");
                     }
@@ -456,8 +462,9 @@
             $("#custBank").html("");
 
             let custCode = $(this).attr('main_code');
+            var custType = "";
 
-            let data = {'custCode': custCode}
+            let data = {"custType": custType, "custCode": custCode}
 
             $.ajax({
                 type: "post",
@@ -478,22 +485,22 @@
                         $("#txtCustName").val(list[i][0])
                         $("#txtCustCode").val(list[i][1])
                         $("#txtCeo").val(list[i][2])
-                        $("#txtRegNum").val(list[i][3])
-                        $("#txtCustCat").val(list[i][4])
+                        $("#txtRegNum").val(list[i][4])
+                        $("#txtCustCat").val(list[i][23])
                         {# 업종 #}
-                        $("#txtCustType").val(list[i][5])
-                        $("#txtPostCode").val(list[i][6])
-                        $("#txtAddress").val(list[i][7])
-                        $("#txtTelePhone").val(list[i][8])
-                        $("#txtFax").val(list[i][9])
-                        $("#txtRegDate").val(list[i][19].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtEMail").val(list[i][12])
-                        $("#txtWebAddress").val(list[i][13])
-                        $("#txtUser").val(list[i][18])
+                        $("#txtCustType").val(list[i][24])
+                        $("#txtPostCode").val(list[i][5])
+                        $("#txtAddress").val(list[i][10])
+                        $("#txtTelePhone").val(list[i][6])
+                        $("#txtFax").val(list[i][12])
+                        $("#txtRegDate").val(list[i][18].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                        $("#txtEMail").val(list[i][16])
+                        $("#txtWebAddress").val(list[i][25])
+                        $("#txtUser").val(list[i][17])
                         {# 업체 구분 #}
                         cboApv = list[i][21]
                         cboCustType = list[i][14];
-                        cboDay = list[i][20];
+                        cboDay = list[i][9];
                     }
 
                     var combolist2 = data.cboCustType;

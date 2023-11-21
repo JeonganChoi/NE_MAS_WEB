@@ -49,7 +49,7 @@ def cashBalRegSearchViews(request):
                            " AND C.RECODE = 'BNK' "
                            " WHERE A.ICUST = '" + str(iCust) + "' "
                            " AND C.RESKEY = '" + str(SearchBank) + "' "
-                           " ORDER BY B.ACDATE "
+                           " ORDER BY C.RESKEY, A.ACNUMBER, B.ACDATE "
                             )
             acResult = cursor.fetchall()
 
@@ -77,7 +77,7 @@ def cashBalRegSearchViews(request):
                            " ON A.ACBKCD = C.RESKEY "
                            " AND C.RECODE = 'BNK' "
                            " WHERE A.ICUST = '" + str(iCust) + "' "
-                           " ORDER BY B.ACDATE "
+                           " ORDER BY C.RESKEY, A.ACNUMBER, B.ACDATE "
                 )
             allAcResult = cursor.fetchall()
 

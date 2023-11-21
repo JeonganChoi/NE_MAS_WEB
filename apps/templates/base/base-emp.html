@@ -519,11 +519,12 @@
                         {#document.getElementById("sign").dataset.origin = imglc + itemimg;#}
                     }
 
-                    if(chkPermit == 'CHARGE'){
-                        $(`#chkPermit`).trigger('click');
+                    if(chkPermit == 'charge'){
+                        {#$(`#chkPermit`).trigger('click');#}
+                        $(`#chkPermit`).prop("checked",true);
                     }
                     else{
-                        $(`#chkPermit`).checked = false;
+                        $(`#chkPermit`).prop("checked",false);
                     }
 
                     var combolist = data.jjoCombo;
@@ -721,6 +722,9 @@
                     $("#txtQuitDate").val("");
                     $("#txtEmp").val("");
                     $("#txtLimit").val("");
+                    $(`#chkPermit`).prop("checked",false);
+
+                    {#$(`#chkPermit`).checked = false;#}
 
                     var combolist = data.jjoCombo;
                     for (var i = 0; i < combolist.length; i++) {

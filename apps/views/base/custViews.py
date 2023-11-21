@@ -16,56 +16,53 @@ def custViews(request):
 def custViews_search(request):
     custType = request.POST.get('custType')
     custCode = request.POST.get('custCode')
-    custYn = request.POST.get('custYn')
+    # custYn = request.POST.get('custYn')
     iCust = request.session.get('USER_ICUST')
 
-    if custCode is not None and custCode != '' and custType is not None and custType != '':
+    if custCode != '' and custType != '':
         with connection.cursor() as cursor:
-            cursor.execute(
-                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
-                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
-                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
-                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
-                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(A.CUST_PAY_DAY, '')"
-                "   , IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '')  "
-                "   FROM MIS1TB003 A "
-                "   LEFT OUTER JOIN OSREFCP D "
-                "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'BGB' "
-                "   LEFT OUTER JOIN OSREFCP B "
-                "   ON A.CUST_PAY = B.RESKEY "
-                "   AND B.RECODE = 'MOP' "
-                "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
-                "   OR A.CUST_NME LIKE '%" + custCode + "%' "
-                "   AND A.CUST_GBN = '" + custType + "' "
-                "   AND A.ICUST = '" + str(iCust) + "'"
-            )
+            cursor.execute(" SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ADDR, '') "
+                           "   , IFNULL(A.CUST_ID_NBR, ''), IFNULL(A.CUST_POST_NBR, ''), IFNULL(A.CUST_TEL_NBR, '')"
+                           "   , IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CUST_PAY_DAY, '')"
+                           "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                           "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_EMAIL, '')"
+                           "   , IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(D.RESNAM, '')"
+                           "   , IFNULL(A.CUST_PAY_DAY, '') , IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '') "
+                           "   FROM MIS1TB003 A "
+                           "   LEFT OUTER JOIN OSREFCP D "
+                           "   ON A.CUST_GBN = D.RESKEY "
+                           "   AND D.RECODE = 'BGB' "
+                           "   LEFT OUTER JOIN OSREFCP B "
+                           "   ON A.CUST_PAY = B.RESKEY "
+                           "   AND B.RECODE = 'MOP' "
+                           "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
+                           "    OR A.CUST_NME LIKE '%" + custCode + "%'"
+                           "    AND A.CUST_GBN LIKE '%" + custType + "%' "
+                           "    AND A.ICUST = '" + str(iCust) + "' ")
             custresult = cursor.fetchall()
 
         return JsonResponse({"custList": custresult})
 
-    elif custCode is not None and custCode != '':
+    elif custCode != '' and custType == '':
         with connection.cursor() as cursor:
-            cursor.execute(
-                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
-                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
-                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
-                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
-                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(A.CUST_PAY_DAY, '')"
-                "   , IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '') "
-                "   FROM MIS1TB003 A "
-                "   LEFT OUTER JOIN OSREFCP D "
-                "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'BGB' "
-                "   LEFT OUTER JOIN OSREFCP B "
-                "   ON A.CUST_PAY = B.RESKEY "
-                "   AND B.RECODE = 'MOP' "
-                "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
-                "   OR A.CUST_NME LIKE '%" + custCode + "%' "
-                "   AND A.ICUST = '" + str(iCust) + "' "
-            )
+            cursor.execute(" SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ADDR, '') "
+                           "   , IFNULL(A.CUST_ID_NBR, ''), IFNULL(A.CUST_POST_NBR, ''), IFNULL(A.CUST_TEL_NBR, '')"
+                           "   , IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CUST_PAY_DAY, '')"
+                           "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                           "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_EMAIL, '')"
+                           "   , IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(D.RESNAM, '')"
+                           "   , IFNULL(A.CUST_PAY_DAY, '') , IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '')"
+                           "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_HOMEP, '') "
+                           "   FROM MIS1TB003 A "
+                           "   LEFT OUTER JOIN OSREFCP D "
+                           "   ON A.CUST_GBN = D.RESKEY "
+                           "   AND D.RECODE = 'BGB' "
+                           "   LEFT OUTER JOIN OSREFCP B "
+                           "   ON A.CUST_PAY = B.RESKEY "
+                           "   AND B.RECODE = 'MOP' "
+                           "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
+                           "   OR A.CUST_NME LIKE '%" + custCode + "%' "
+                           "   AND A.ICUST = '" + str(iCust) + "' ")
             custresult = cursor.fetchall()
 
         #  거래처 계좌번호 테이블
@@ -100,49 +97,103 @@ def custViews_search(request):
 
         return JsonResponse({"cboCustType": cboCustType, "custBank": custBank, "cboBank": cboBank, "cboPay": cboPay, "custList": custresult})
 
-    elif custYn is not None and custYn != '':
+    # elif custCode != '':
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
+    #             "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
+    #             "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+    #             "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
+    #             "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
+    #             "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(A.CUST_PAY_DAY, '')"
+    #             "   , IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '') "
+    #             "   FROM MIS1TB003 A "
+    #             "   LEFT OUTER JOIN OSREFCP D "
+    #             "   ON A.CUST_GBN = D.RESKEY "
+    #             "   AND D.RECODE = 'BGB' "
+    #             "   LEFT OUTER JOIN OSREFCP B "
+    #             "   ON A.CUST_PAY = B.RESKEY "
+    #             "   AND B.RECODE = 'MOP' "
+    #             "   WHERE A.CUST_NBR LIKE '%" + custCode + "%' "
+    #             "   OR A.CUST_NME LIKE '%" + custCode + "%' "
+    #             "   AND A.ICUST = '" + str(iCust) + "' "
+    #         )
+    #         custresult = cursor.fetchall()
+    #
+    #     #  거래처 계좌번호 테이블
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             " SELECT CUST_BKCD, CUST_ACNUM, SEQ "
+    #             " FROM MIS1TB003_D "
+    #             " WHERE CUST_NBR LIKE '%" + custCode + "%' AND ICUST = '" + str(iCust) + "' ")
+    #         custBank = cursor.fetchall()
+    #
+    #         # 업체 분류 - 콤보박스
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BGB' AND ICUST = '" + str(iCust) + "' ")
+    #         cboCustType = cursor.fetchall()
+    #
+    #     # 거래처 은행 - 콤보박스
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+    #         cboBank = cursor.fetchall()
+    #
+    #     # 결제(달선택) - 콤보박스
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MOP' AND ICUST = '" + str(iCust) + "' ")
+    #         cboPay = cursor.fetchall()
+    #
+    #         # 업체군 분류 - 콤보박스
+    #     # with connection.cursor() as cursor:
+    #     #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+    #     #     cboCustType2 = cursor.fetchall()
+    #
+    #     return JsonResponse({"cboCustType": cboCustType, "custBank": custBank, "cboBank": cboBank, "cboPay": cboPay, "custList": custresult})
+
+    # elif custYn != '':
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
+    #             "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
+    #             "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+    #             "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
+    #             "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
+    #             "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, '')"
+    #             "   , IFNULL(A.CUST_PAY_DAY, ''), IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '') "
+    #             "   FROM MIS1TB003 A "
+    #             "   LEFT OUTER JOIN OSREFCP D "
+    #             "   ON A.CUST_GBN = D.RESKEY "
+    #             "   AND D.RECODE = 'BGB' "
+    #             "   LEFT OUTER JOIN OSREFCP B "
+    #             "   ON A.CUST_PAY = B.RESKEY "
+    #             "   AND B.RECODE = 'MOP' "
+    #             "   WHERE A.CUST_END_CHK LIKE '%" + custYn + "%' AND A.ICUST = '" + str(iCust) + "' "
+    #         )
+    #         custresult = cursor.fetchall()
+    #
+    #
+    #     return JsonResponse({"custList": custresult})
+
+    elif custType != '' and custCode == '':
         with connection.cursor() as cursor:
-            cursor.execute(
-                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
-                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
-                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
-                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
-                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, '')"
-                "   , IFNULL(A.CUST_PAY_DAY, ''), IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '') "
-                "   FROM MIS1TB003 A "
-                "   LEFT OUTER JOIN OSREFCP D "
-                "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'BGB' "
-                "   LEFT OUTER JOIN OSREFCP B "
-                "   ON A.CUST_PAY = B.RESKEY "
-                "   AND B.RECODE = 'MOP' "
-                "   WHERE A.CUST_END_CHK LIKE '%" + custYn + "%' AND A.ICUST = '" + str(iCust) + "' "
-            )
-            custresult = cursor.fetchall()
+            cursor.execute(" SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ADDR, '') "
+                           "   , IFNULL(A.CUST_ID_NBR, ''), IFNULL(A.CUST_POST_NBR, ''), IFNULL(A.CUST_TEL_NBR, '')"
+                           "   , IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CUST_PAY_DAY, '')"
+                           "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
+                           "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_EMAIL, '')"
+                           "   , IFNULL(A.CRE_USER, ''), IFNULL(A.CRE_DT, ''), IFNULL(D.RESNAM, '')"
+                           "   , IFNULL(A.CUST_PAY_DAY, '') , IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '') "
+                           "   FROM MIS1TB003 A "
+                           "   LEFT OUTER JOIN OSREFCP D "
+                           "   ON A.CUST_GBN = D.RESKEY "
+                           "   AND D.RECODE = 'BGB' "
+                           "   LEFT OUTER JOIN OSREFCP B "
+                           "   ON A.CUST_PAY = B.RESKEY "
+                           "   AND B.RECODE = 'MOP' "
+                           "   WHERE A.CUST_GBN LIKE '%" + custType + "%' AND A.ICUST = '" + str(iCust) + "' ")
 
-
-        return JsonResponse({"custList": custresult})
-
-    elif custType is not None and custType != '':
-        with connection.cursor() as cursor:
-            cursor.execute(
-                " SELECT IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_CEO_NME, ''), IFNULL(A.CUST_ID_NBR, '') "
-                "   , IFNULL(A.CUST_BSN_CON, ''), IFNULL(A.CUST_BSN_TYP, ''), IFNULL(A.CUST_POST_NBR, '') "
-                "   , IFNULL(A.CUST_ADDR, ''), IFNULL(A.CUST_TEL_NBR, ''), IFNULL(A.CUST_FAX_NBR, '') "
-                "   , IFNULL(A.CUST_EMP_NME, ''), IFNULL(A.CUST_EMP_PHN, ''), IFNULL(A.CUST_EMAIL, '') "
-                "   , IFNULL(A.CUST_HOMEP, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_BUNR, '')"
-                "   , IFNULL(A.CUST_END_CHK, 'Y'), IFNULL(A.CRE_DT, ''), IFNULL(A.CRE_USER, '') "
-                "   , IFNULL(A.CUST_PAY_DAY, ''), IFNULL(A.CUST_PAY, ''), IFNULL(B.RESNAM, '')  "
-                "   FROM MIS1TB003 A "
-                "   LEFT OUTER JOIN OSREFCP D "
-                "   ON A.CUST_GBN = D.RESKEY "
-                "   AND D.RECODE = 'BGB' "
-                "   LEFT OUTER JOIN OSREFCP B "
-                "   ON A.CUST_PAY = B.RESKEY "
-                "   AND B.RECODE = 'MOP' "
-                "   WHERE A.CUST_GBN LIKE '%" + custType + "%' AND A.ICUST = '" + str(iCust) + "'"
-            )
             custresult = cursor.fetchall()
 
 
