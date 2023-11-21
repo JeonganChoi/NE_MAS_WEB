@@ -39,15 +39,15 @@ def custBalRegViews_search(request):
             custBalresult = cursor.fetchall()
 
         # 거래처 - 콤보박스
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME, CUST_GBN FROM MIS1TB003 "
-                           "        WHERE CUST_GBN = '1' "
-                           "        OR CUST_GBN = '2' "
-                           "        OR CUST_GBN = '3' "
-                           "        AND ICUST = '" + str(iCust) + "'")
-            cboCustType = cursor.fetchall()
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT CUST_NBR, CUST_NME, CUST_GBN FROM MIS1TB003 "
+        #                    "        WHERE CUST_GBN = '1' "
+        #                    "        OR CUST_GBN = '2' "
+        #                    "        OR CUST_GBN = '3' "
+        #                    "        AND ICUST = '" + str(iCust) + "'")
+        #     cboCustType = cursor.fetchall()
 
-        return JsonResponse({"cboCustType": cboCustType, "custBalList": custBalresult})
+        return JsonResponse({"custBalList": custBalresult})
 
     if custCode and regDate:
         with connection.cursor() as cursor:
@@ -64,7 +64,17 @@ def custBalRegViews_search(request):
 
             custBalresult = cursor.fetchall()
 
-        return JsonResponse({"custBalList": custBalresult})
+        # 거래처 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_NBR, CUST_NME, CUST_GBN FROM MIS1TB003 "
+                           "        WHERE CUST_GBN = '1' "
+                           "        OR CUST_GBN = '2' "
+                           "        OR CUST_GBN = '3' "
+                           "        AND ICUST = '" + str(iCust) + "'"
+                           )
+            inputCustType = cursor.fetchall()
+
+        return JsonResponse({"cboCustType": inputCustType, "custBalList": custBalresult})
 
     else:
         with connection.cursor() as cursor:
@@ -112,9 +122,10 @@ def custBalRegViews_save(request):
                            "     MOIWOL  = '" + str(moIwol) + "' "
                            ",    MOIWOL2 = '" + str(moIwol2) + "' "
                            ",    MODESC = '" + str(moDesc) + "' "
-                           ",    MOdate = '" + str(regDt) + "' "
                            ",    UPD_USER = '" + str(user) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
+                           "     WHERE MOCUST = '" + str(moCust) + "' "
+                           "     AND MOdate = '" + str(regDt) + "' "
                            "     AND ICUST = '" + str(iCust) + "'"
                            )
             connection.commit()

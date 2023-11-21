@@ -254,7 +254,6 @@
             var regDate = split[0]
             var custCode = split[1]
 
-
             let data = {'custCode': custCode, 'regDate': regDate}
 
             $.ajax({
@@ -269,14 +268,12 @@
                     var list = data.custBalList;
 
                     for (var i = 0; i < list.length; i++) {
-                        for (var j = 0; j < 21; j++) {
-                            console.log("===================" + j + ":::" + list[i][j]);
-                        }
                         $("#txtRegDate").val(list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                         $("#txtNonGet").val(addComma(list[i][3]))
                         $("#txtNonPay").val(addComma(list[i][4]))
                         $("#txtRemark").val(list[i][5])
                         cboCustCode = list[i][1];
+
                     }
 
                     var combolist2 = data.cboCustType;
@@ -287,7 +284,6 @@
                             cboCustCodeTxt = cboCustCodeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
                         }
                     }
-
                     $("#cboCustCode").append(cboCustCodeTxt);
                 }
             })
