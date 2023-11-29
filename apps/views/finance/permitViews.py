@@ -81,7 +81,7 @@ def permitViews_search(request):
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
+                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN OSSIGN B "
                                " ON A.IODATE = B.ACDATE "
@@ -107,7 +107,7 @@ def permitViews_search(request):
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
+                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN OSSIGN B "
                                " ON A.IODATE = B.ACDATE "
@@ -134,7 +134,7 @@ def permitViews_search(request):
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
+                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN OSSIGN B "
                                " ON A.IODATE = B.ACDATE "
@@ -167,7 +167,7 @@ def permitViews_search(request):
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
+                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN OSSIGN B "
                                " ON A.IODATE = B.ACDATE "

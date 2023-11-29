@@ -58,7 +58,7 @@
                                             <col width="10%">
                                             <col width="10%">
                                             <col hidden width="10%">
-                                            <col width="5%">
+                                            <!--<col width="5%">-->
                                             <col width="20%">
                                         </colgroup>
                                       <thead class="bg-gray-100">
@@ -70,7 +70,7 @@
                                           <th style="font-size: 0.8rem" class="p-1">관리 계정 명</th>
                                           <th style="font-size: 0.8rem" class="p-1">구분</th>
                                           <th hidden style="font-size: 0.8rem" class="p-1">구분2</th>
-                                          <th style="font-size: 0.8rem" class="p-1">결제 여부</th>
+                                          <!--<th style="font-size: 0.8rem" class="p-1">결제 여부</th>-->
                                           <th style="font-size: 0.8rem" class="p-1">비 고</th>
                                         </tr>
                                       </thead>
@@ -115,11 +115,11 @@
                                             <label class="mt-2" style="font-size: 0.85rem"><i class="fas fa-clone me-2 text-info text-sm"></i>구 분2</label>
                                             <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn2_M" id="cboGbn2_M"></select>
                                         </div>
-                                        <div class="col-lg-6 col-6">
+                                        <div hidden class="col-lg-6 col-6">
                                             <label class="mt-2" style="font-size: 0.85rem"><i class="fas fa-clone me-2 text-info text-sm"></i>결제 여부</label>
                                             <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboOpt" id="cboOpt">
                                                 <option value="N">미사용</option>
-                                                <option value="Y">사용</option>
+                                                <option value="Y" selected>사용</option>
                                             </select>
                                         </div>
                                     </div>
@@ -182,7 +182,6 @@
 
                     $("#adminMainTb").html("");
                     for (var i = 0; i < list.length; i++) {
-                        {#var YN = list[i][12] === 'Y' ? '사용' : '미사용';#}
 
                         $("#adminMainTb").append(
                             "<tr id='#adminMainTr' class='adminMainTr_tr' main_code='" + list[i][2] + "'>" +
@@ -193,9 +192,10 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
+
+                            {#"<td class='text-start p-1' style='font-size: 0.8rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +#}
                     }
 
                     var combolist6 = data.cboMCode;
@@ -277,7 +277,6 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][8] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + (list[i][12] === 'Y' ? '사용' : '미사용') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
@@ -480,14 +479,13 @@
                         if (data.sucYn === 'Y') {
                             alert('저장되었습니다.')
 
-
                             if(mCodeType == '5'){
-                               $('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);
 
                             }
                             {# 조회 콤보박스 클릭시 #}
                             if(mCodeType == '4'){
-                               $('#cboCodeType[name="cboCodeType"][value="4"]').prop("selected", true);
+                               {#$('#cboCodeType[name="cboCodeType"][value="4"]').prop("selected", true);#}
+                               {#$('#cboCodeType option:eq(0)').prop("selected", true);#}
                             }
                             {# 입력란 초기화 #}
                             {#document.getElementById('btnClear').click();#}

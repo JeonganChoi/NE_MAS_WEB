@@ -117,6 +117,7 @@
                                             <col width="10%">
                                             <col hidden width="6%">
                                             <col width="6%">
+                                            <col width="6%">
                                             <col hidden width="6%">
                                             <col hidden width="6%">
                                             <col width="6%">
@@ -130,6 +131,7 @@
                                             <th style="font-size: 0.85rem" class="p-1">계좌번호</th>
                                             <th style="font-size: 0.85rem" class="p-1">금액</th>
                                             <th style="font-size: 0.85rem" class="p-1">작성자</th>
+                                            <th style="font-size: 0.85rem" class="p-1">직업정보</th>
                                             <th style="font-size: 0.85rem" class="p-1">승인</th>
                                             <th style="font-size: 0.85rem" class="p-1">상계</th>
                                         </tr>
@@ -243,8 +245,9 @@
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
                             "</tr> ");
@@ -540,6 +543,7 @@
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +

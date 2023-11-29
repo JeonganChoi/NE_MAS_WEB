@@ -190,6 +190,10 @@
                                         <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
+                                    <div class="col-6">
+                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>직업정보</label>
+                                        <input class="form-control text-start" type="text" id="txtInfo" name="txtInfo" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group replace">
@@ -1019,6 +1023,7 @@
                             $("#txtWitCashNum").val("")
                             $("#txtWitRemark").val("")
                             $("#txtTitle").val("")
+                            $("#txtInfo").val("")
                         }
                         else{
 
@@ -1031,13 +1036,14 @@
                             $("#txtWitRemark").val(list[i][19])
                             $("#txtTitle").val(list[i][21])
                             $("#txtWhere").val(list[i][24])
+                            $("#txtInfo").val(list[i][25])
                             folder = list[i][22]
                             cboWitCust2 = list[i][1];
                             cboWitGbn = list[i][6];
                             cboWitMethod = list[i][4];
                             cboAdminCode = list[i][8];
                             cboWitActNum = list[i][12];
-                            cboWitCard = list[i][23];
+                            cboWitCard = list[i][22];
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
@@ -1136,6 +1142,7 @@
             if(val == "1" || val == "2") {
                 $('.basic').show();
                 $('.replace').hide();
+                $('.line').show();
 
                 if(val == '2'){$('.cboCard').hide();}
 
@@ -1498,6 +1505,7 @@
                         else if(data.sucYn === 'N' && data.message == 'same file name exists') {
                             if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {
                                 formData.append('fileOverwriteYn', 'Y');
+
                                 $.ajax({
                                     type: "post",
                                     data: formData,

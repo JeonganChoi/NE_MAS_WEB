@@ -456,7 +456,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, '') "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, '')  "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -536,7 +536,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, '') "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -727,6 +727,7 @@ def paymentViews_save(request):
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
+    acInfo = request.POST.get("txtInfo")
     # file = request.FILES.get('file')
 
     # if (file is None):
@@ -804,6 +805,7 @@ def paymentViews_save(request):
                            ",    ACDATE = '" + str(acDate) + "' "
                            ",    ACCARD = '" + str(acCard) + "' "
                            ",    ACUSE = '" + str(acUse) + "' "
+                           ",    ACINFO = '" + str(acInfo) + "' "
                            ",    ACCUST = '" + str(acCust) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
@@ -908,6 +910,7 @@ def paymentViews_save(request):
                                ",    ACDATE "
                                ",    ACCARD "
                                ",    ACUSE "
+                               ",    ACINFO "
                                ",    FIN_OPT "
                                "    ) "
                                "    VALUES "
@@ -933,6 +936,7 @@ def paymentViews_save(request):
                                ",    '" + str(acDate) + "'"
                                ",    '" + str(acCard) + "'"
                                ",    '" + str(acUse) + "'"
+                               ",    '" + str(acInfo) + "'"
                                ",    'N' "
                                "    )   "
                                )
