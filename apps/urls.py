@@ -30,6 +30,7 @@ urlpatterns = [
     path('base_chk_code/', accountCodeViews.chkCodeViews_search, name='base_chk_code'),
     path('base_accountCode_saveM/', accountCodeViews.accountCodeViews_saveM, name='base_accountCode_saveM'),
     path('base_accountCode_dltM/', accountCodeViews.accountCodeViews_dltM, name='base_accountCode_dltM'),
+    path('chkcodeM/', accountCodeViews.chkcodeM, name='chkcodeM'),
     # 계정코드관리
     path('base_charge/', baseChargeViews.baseChargeViews, name='base_charge'),
     # 참조코드관리

@@ -245,6 +245,11 @@
         {# 조회 콤보박스 클릭시 #}
         $('#cboCodeType').change(function () {
 
+            var cboMCode_M = "";
+            var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
+            $("#cboMCode_M").html("");
+
+
             let mCodeType = document.getElementById('cboCodeType').value;
             var mainCode = "";
             let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
@@ -276,8 +281,53 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
                             "</tr> ");
                     }
+
+                    var combolist6 = data.cboMCode;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == cboMCode_M) {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
+                        }
+                    }
+                    $("#cboMCode_M").append(cboMCodeTxt_M);
                 }
             })
+        });
+
+        {# 조회 콤보박스 클릭시 #}
+        $('#cboMCode_M').change(function () {
+
+            let mCodeType = document.getElementById('cboMCode_M').value;
+            var codeType = mCodeType.slice(0, 1)
+
+            var cboMCode_A = "";
+            var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
+            $("#cboMCode_A").html("");
+
+            let data = {"codeType": codeType}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "chkcodeM" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var combolist5 = data.cboACode;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboMCode_A) {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#cboMCode_A").append(cboMCodeTxt_A);
+                }
+            });
         });
 
 
@@ -430,11 +480,18 @@
                         if (data.sucYn === 'Y') {
                             alert('저장되었습니다.')
 
-                            location.reload()
+
+                            if(mCodeType == '5'){
+                               $('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);
+
+                            }
                             {# 조회 콤보박스 클릭시 #}
-                            {#$('#cboCodeType[name="cboCodeType"][value="5"]').prop("selected", true);#}
+                            if(mCodeType == '4'){
+                               $('#cboCodeType[name="cboCodeType"][value="4"]').prop("selected", true);
+                            }
                             {# 입력란 초기화 #}
                             {#document.getElementById('btnClear').click();#}
+
                         }
                     }
                 });

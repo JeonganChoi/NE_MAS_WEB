@@ -43,12 +43,12 @@ def accountCodeViews_search(request):
 
         # 상위계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + codeType + "%' ")
             cboMCode = cursor.fetchall()
 
         # 회계계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + codeType + "%' ")
             cboACode = cursor.fetchall()
 
         # 구분1
@@ -86,12 +86,12 @@ def accountCodeViews_search(request):
 
         # 상위계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + codeType + "%' ")
             cboMCode = cursor.fetchall()
 
         # 회계계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + codeType + "%' ")
             cboACode = cursor.fetchall()
 
         # 구분1
@@ -105,6 +105,17 @@ def accountCodeViews_search(request):
             gbn2result = cursor.fetchall()
 
         return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
+
+def chkcodeM(request):
+    codeType = request.POST.get('codeType')
+    iCust = request.session.get("USER_ICUST")
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+        cboACode = cursor.fetchall()
+
+    return JsonResponse({"cboACode": cboACode})
+
 
 
 def chkCodeViews_search(request):
@@ -137,6 +148,7 @@ def accountCodeViews_saveM(request):
         cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' ")
         result = cursor.fetchall()
 
+    # if result != '' or result is not None:
     if result:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
