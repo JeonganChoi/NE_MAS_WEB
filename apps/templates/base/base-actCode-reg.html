@@ -479,17 +479,13 @@
                         if (data.sucYn === 'Y') {
                             alert('저장되었습니다.')
 
-                            if(mCodeType == '5'){
-
-                            }
-                            {# 조회 콤보박스 클릭시 #}
-                            if(mCodeType == '4'){
-                               {#$('#cboCodeType[name="cboCodeType"][value="4"]').prop("selected", true);#}
-                               {#$('#cboCodeType option:eq(0)').prop("selected", true);#}
-                            }
-                            {# 입력란 초기화 #}
-                            {#document.getElementById('btnClear').click();#}
-
+                            $('#cboCodeType').trigger('change');
+                            $("#txtCode_M").val("");
+                            $("#txtDesc_M").val("");
+                            $("#txtCodeNme_M").val("");
+                            $("#cboMCode_M").val("");
+                            $("#cboMCode_A").val("");
+                            $("#cboGbn_M").val("");
                         }
                     }
                 });
