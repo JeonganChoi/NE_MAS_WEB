@@ -1426,64 +1426,64 @@
         });
 
         {# 카드 선택시 계좌명 바인딩 #}
-        $('#cboWitCard').change(function () {
-
-            var cboWitActNum = "";
-            var cboWitActNumTxt = "";
-
-            $("#cboWitActNum").html("");
-
-            var cboCard = document.getElementById('cboWitCard').value
-            var cboGbn = "";
-            var acIogb = "";
-            var acDate = "";
-            var acNum = "";
-            var acCust = "";
-            var acMcode = "";
-
-            var data = {"cboGbn": cboGbn, 'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, 'cboCard': cboCard}
-
-
-            $.ajax({
-                type: "post",
-                url: '{% url "payment_search" %}',
-                data: data,
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    var combolist5 = data.cboActNum;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == cboWitActNum) {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
-                        } else {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
-                        }
-                    }
-
-                    $("#cboWitActNum").append(cboWitActNumTxt);
-
-                        var date = "";
-                        var now = new Date;
-                        var yyyymmdd = new Date(now.getFullYear(), now.getMonth()+ 1, 0)
-                        var yyyy = String(yyyymmdd.getFullYear());
-                        var mm = String(yyyymmdd.getMonth()+1);
-                        var nowDD = String(yyyymmdd.getDate());
-                        var dd = String(data.cboCard);
-                        if(dd > nowDD){
-                            date = yyyy + '-' + mm + '-' + nowDD;
-                        }
-                        else{
-                            date = yyyy + '-' + mm + '-' + dd;
-                        }
-
-                        document.getElementById('txtExDate').value = date;
-                }
-            })
-
-        });
+        {#$('#cboWitCard').change(function () {#}
+        {##}
+        {#    var cboWitActNum = "";#}
+        {#    var cboWitActNumTxt = "";#}
+        {##}
+        {#    $("#cboWitActNum").html("");#}
+        {##}
+        {#    var cboCard = document.getElementById('cboWitCard').value#}
+        {#    var cboGbn = "";#}
+        {#    var acIogb = "";#}
+        {#    var acDate = "";#}
+        {#    var acNum = "";#}
+        {#    var acCust = "";#}
+        {#    var acMcode = "";#}
+        {##}
+        {#    var data = {"cboGbn": cboGbn, 'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, 'cboCard': cboCard}#}
+        {##}
+        {##}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        url: '{% url "payment_search" %}',#}
+        {#        data: data,#}
+        {#        headers: {#}
+        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+        {#        },#}
+        {#        dataType: 'json',#}
+        {#        success: function (data) {#}
+        {##}
+        {#            var combolist5 = data.cboActNum;#}
+        {#            for (var i = 0; i < combolist5.length; i++) {#}
+        {#                if (combolist5[i][0] == cboWitActNum) {#}
+        {#                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";#}
+        {#                } else {#}
+        {#                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            $("#cboWitActNum").append(cboWitActNumTxt);#}
+        {##}
+        {#                var date = "";#}
+        {#                var now = new Date;#}
+        {#                var yyyymmdd = new Date(now.getFullYear(), now.getMonth()+ 1, 0)#}
+        {#                var yyyy = String(yyyymmdd.getFullYear());#}
+        {#                var mm = String(yyyymmdd.getMonth()+1);#}
+        {#                var nowDD = String(yyyymmdd.getDate());#}
+        {#                var dd = String(data.cboCard);#}
+        {#                if(dd > nowDD){#}
+        {#                    date = yyyy + '-' + mm + '-' + nowDD;#}
+        {#                }#}
+        {#                else{#}
+        {#                    date = yyyy + '-' + mm + '-' + dd;#}
+        {#                }#}
+        {##}
+        {#                document.getElementById('txtExDate').value = date;#}
+        {#        }#}
+        {#    })#}
+        {##}
+        {#});#}
 
         {# 출금 계좌 계좌명 바인딩 #}
         $('#cboOutBank').change(function () {

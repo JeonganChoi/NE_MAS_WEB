@@ -726,7 +726,7 @@ def cboActNum_search(request):
 
     if card:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(card) + "' AND ICUST = '" + str(iCust) + "'")
+            cursor.execute(" SELECT ACNUMBER FROM ACCARD WHERE CARDNUM = '" + str(card) + "' AND ICUST = '" + str(iCust) + "'")
             cboAct = cursor.fetchall()
 
         return JsonResponse({'cboAct': cboAct})
