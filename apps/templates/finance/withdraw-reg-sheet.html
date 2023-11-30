@@ -113,7 +113,7 @@
             </div>
             <div class="col-lg-4 col-4 mb-md-0">
                 <div class="card border-0 shadow-xs height-600">
-                    <form class="form-control border-0 shadow-none dropzone" id="dropzone" enctype="multipart/form-data">
+                    <form class="form-control border-0 shadow-none dropzone p-0" id="dropzone" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="form-group">
@@ -139,7 +139,7 @@
                                 </div>
                             </div>
                             <div class="form-group basic">
-                                <div class="row mt-4">
+                                <div class="row mt-2">
                                     <div class="col-6">
                                         <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>거래처</label>
                                         <select class="form-control text-center p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
@@ -149,13 +149,13 @@
                                         <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mt-2">
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용처</label>
+                                        <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용처</label>
                                         <input class="form-control text-start" type="text" id="txtWhere" name="txtWhere" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>예정 일자</label>
+                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>예정 일자</label>
                                         <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -166,17 +166,23 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-3 method">
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>결제방법</label>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 cboBank">
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>은행</label>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboBank" id="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
+                                    </div>
                                     <div class="col-4 cboCard">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>카드</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-4 cboAct">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>계좌번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
-                                    </div>
-                                    <div class="col-3 method">
-                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>결제방법</label>
-                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                 </div>
                                 <div hidden class="row">
@@ -191,7 +197,7 @@
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>직업정보</label>
+                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>지급정보</label>
                                         <input class="form-control text-start" type="text" id="txtInfo" name="txtInfo" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -572,6 +578,7 @@
             var cboWitMethod = "";
             var cboWitActNum = "";
             var cboWitCard = "";
+            var cboBank = "";
             var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboActTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
@@ -580,6 +587,7 @@
             var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
+            var cboBankTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputCust").html("");
             $("#inputAct").html("");
@@ -589,6 +597,7 @@
             $("#cboWitMethod").html("");
             $("#cboWitActNum").html("");
             $("#cboWitCard").html("");
+            $("#cboBank").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
@@ -598,6 +607,10 @@
 
             $('.basic').show();
             $('.replace').hide();
+            {#$('.method').show();#}
+            {#$('.cboCard').hide();#}
+            {#$('.cboBank').hide();#}
+            {#$('.cboAct').hide();#}
 
             var date = new Date();
             date.setMonth(date.getMonth() - 3);
@@ -686,12 +699,22 @@
                         }
                     }
 
+                    var combolist7 = data.cboBank;
+                    for (var i = 0; i < combolist7.length; i++) {
+                        if (combolist7[i][0] == cboBank) {
+                            cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                        } else {
+                            cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboWitCust").append(cboWitCustTxt);
                     $("#cboWitGbn").append(cboWitGbnTxt);
                     $("#cboWitMethod").append(cboWitMethodTxt);
                     $("#cboAdminCode").append(cboAdminCodeTxt);
                     $("#cboWitActNum").append(cboWitActNumTxt);
                     $("#cboWitCard").append(cboWitCardTxt);
+                    $("#cboBank").append(cboBankTxt);
                 }
             })
 
@@ -962,6 +985,7 @@
             var cboWitMethod = "";
             var cboWitActNum = "";
             var cboWitCard = "";
+            var cboBank = "";
 
             var folder = "";
             var permit = "";
@@ -971,6 +995,7 @@
             var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
+            var cboBankTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
@@ -978,6 +1003,7 @@
             $("#cboWitMethod").html("");
             $("#cboWitActNum").html("");
             $("#cboWitCard").html("");
+            $("#cboBank").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
@@ -1044,6 +1070,7 @@
                             cboAdminCode = list[i][8];
                             cboWitActNum = list[i][12];
                             cboWitCard = list[i][22];
+                            cboBank = list[i][26]
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
@@ -1099,12 +1126,22 @@
                                 }
                             }
 
+                            var combolist7 = data.cboBank;
+                            for (var i = 0; i < combolist7.length; i++) {
+                                if (combolist7[i][0] == cboBank) {
+                                    cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                                } else {
+                                    cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
+                                }
+                            }
+
                             $("#cboWitCust").append(cboWitCustTxt);
                             $("#cboWitGbn").append(cboWitGbnTxt);
                             $("#cboWitMethod").append(cboWitMethodTxt);
                             $("#cboAdminCode").append(cboAdminCodeTxt);
                             $("#cboWitActNum").append(cboWitActNumTxt);
                             $("#cboWitCard").append(cboWitCardTxt);
+                            $("#cboBank").append(cboBankTxt);
                         }
                     }
 
@@ -1122,17 +1159,111 @@
 
         });
 
-        {# 카드 선택시 계좌명 바인딩 #}
+
+        {# 결제방법 선택시 계좌명 바인딩 #}
+        $('#cboWitMethod').change(function () {
+
+            $("#cboCard").html("");
+            $("#cboAct").html("");
+
+            var method = document.getElementById('cboWitMethod').value
+
+            if(method == '3'){
+                $('.cboCard').show();
+                $('.cboAct').show();
+                $('.cboBank').show();
+            }
+            else{
+                $('.cboCard').hide();
+                $('.cboBank').show();
+                $('.cboAct').show();
+            }
+        });
+
+
+        {# 결제방법 선택시 계좌명 바인딩 #}
+        $('#cboBank').change(function () {
+
+            var cboWitCard = "";
+            var cboWitActNum = "";
+            var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
+            var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#cboWitActNum").html("");
+            $("#cboWitCard").html("");
+
+            var cboBank = document.getElementById('cboBank').value
+
+            var data = {"cboBank": cboBank}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cboAct" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboCard;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboWitCard) {
+                            cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                        }
+                    }
+
+                    var combolist5 = data.cboAct;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboWitActNum) {
+                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                        } else {
+                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboWitCard").append(cboWitCardTxt);
+                    $("#cboWitActNum").append(cboWitActNumTxt);
+                }
+            });
+        });
+
+
         $('#cboWitCard').change(function () {
+
+            var cboWitActNum = "";
+            var cboWitActNumTxt = "";
+
+            $("#cboWitActNum").html("");
 
             var card = document.getElementById('cboWitCard').value
 
-            if(card){
-                $('.method').hide();
-            }
-            else{
-                $('.method').show();
-            }
+            var data = {"card": card}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cboAct" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboAct;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboWitActNum) {
+                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#cboWitActNum").append(cboWitActNumTxt);
+                }
+            });
         });
 
         {# 입력란 계좌번호 선택시 계좌명 바인딩 #}
@@ -1470,6 +1601,18 @@
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             if(cboWitGbn == '3'){
                 {#const subCount = $('#signTd tr').length;#}
+
+                var outAct = document.getElementById('cboOutAct').value
+                var inAct = document.getElementById('cboInBank').value
+                if(outAct == ''){
+                    alert('출금 계좌를 선택해주세요.')
+                    return false
+                }
+                if(inAct == ''){
+                    alert('입금 계좌를 선택해주세요.')
+                    return false
+                }
+
 
                 var empArr = [];
                 for (var i = 0; i < 10; i++) {

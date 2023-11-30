@@ -445,7 +445,12 @@ def paymentViews_search(request):
             cursor.execute(" SELECT ACPAYDTE FROM ACCARD WHERE CARDNUM = '" + cboCard + "' AND ICUST = '" + iCust + "' ")
             cboCard = cursor.fetchall()
 
-            return JsonResponse({'cboActNum': cboActNum, "cboCard": cboCard})
+        # 은행명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cboBank = cursor.fetchall()
+
+        return JsonResponse({'cboActNum': cboActNum, "cboCard": cboCard, "cboBank": cboBank})
 
     if acIogb and acCust == '':
         with connection.cursor() as cursor:
@@ -456,7 +461,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, '')  "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')  "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -474,6 +479,8 @@ def paymentViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP F "
                            "    ON A.ACGUNO_BK = F.RESKEY "
                            "    AND F.RECODE = 'BNK' "
+                           "    LEFT OUTER JOIN ACNUMBER H "
+                           "    ON A.ACACNUMBER = H.ACNUMBER "
                            "    WHERE A.IODATE = '" + str(ioDate) + "' "
                            "    AND A.ACIOGB = '" + str(acIogb) + "' "
                            "    AND A.ACACNUMBER = '" + str(acNum) + "' "
@@ -511,7 +518,7 @@ def paymentViews_search(request):
 
             # 결제방법
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESNAM ")
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
                 cboPay = cursor.fetchall()
 
             # 계좌번호
@@ -524,8 +531,13 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
                 cboCard = cursor.fetchall()
 
+            # 은행명
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+                cboBank = cursor.fetchall()
+
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
-                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
 
     if acIogb and acCust:
         with connection.cursor() as cursor:
@@ -536,7 +548,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, '') "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')  "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -554,6 +566,8 @@ def paymentViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP F "
                            "    ON A.ACGUNO_BK = F.RESKEY "
                            "    AND F.RECODE = 'BNK' "
+                           "    LEFT OUTER JOIN ACNUMBER H "
+                           "    ON A.ACACNUMBER = H.ACNUMBER "
                            "    WHERE A.IODATE = '" + str(ioDate) + "' "
                            "    AND A.ACIOGB = '" + str(acIogb) + "' "
                            "    AND A.ACACNUMBER = '" + str(acNum) + "' "
@@ -593,7 +607,7 @@ def paymentViews_search(request):
 
             # 결제방법
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESNAM ")
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
                 cboPay = cursor.fetchall()
 
             # 계좌번호
@@ -606,8 +620,13 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
                 cboCard = cursor.fetchall()
 
+            # 은행명
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+                cboBank = cursor.fetchall()
+
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
-                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
 
     # 출금
     if cboGbn == '1':
@@ -628,7 +647,7 @@ def paymentViews_search(request):
 
         # 결제방법
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESNAM ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
             cboPay = cursor.fetchall()
 
         # 계좌번호
@@ -641,8 +660,12 @@ def paymentViews_search(request):
             cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
             cboCard = cursor.fetchall()
 
-        return JsonResponse(
-            {'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
+        # 은행명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cboBank = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
 
     # 입금
     else:
@@ -663,7 +686,7 @@ def paymentViews_search(request):
 
         # 결제방법
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESNAM ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
             cboPay = cursor.fetchall()
 
         # 계좌번호
@@ -676,24 +699,41 @@ def paymentViews_search(request):
             cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
             cboCard = cursor.fetchall()
 
-        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard})
+        # 은행명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cboBank = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
 
 
 def cboActNum_search(request):
     cboBank = request.POST.get("cboBank")
+    card = request.POST.get("card")
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
     if cboBank:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + cboBank + "' AND ICUST = '" + iCust + "'")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "'")
+            cboAct = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "' ")
+            cboCard = cursor.fetchall()
+
+        return JsonResponse({'cboAct': cboAct, "cboCard": cboCard})
+
+    if card:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(card) + "' AND ICUST = '" + str(iCust) + "'")
             cboAct = cursor.fetchall()
 
         return JsonResponse({'cboAct': cboAct})
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "'")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
             cboAct = cursor.fetchall()
 
         with connection.cursor() as cursor:
@@ -701,7 +741,7 @@ def cboActNum_search(request):
                             " LEFT OUTER JOIN OSREFCP B "
                             " ON A.ACBKCD = B.RESKEY "
                             " AND B.RECODE = 'BNK' "
-                            " WHERE A.ICUST = '" + iCust + "' "
+                            " WHERE A.ICUST = '" + str(iCust) + "' "
                             " GROUP BY A.ACBKCD")
             cboBank = cursor.fetchall()
 
@@ -719,6 +759,7 @@ def paymentViews_save(request):
     mCode = request.POST.get("cboAdminCode")  # 관리계정
     # acCode = request.POST.get("cboActCode")  # 회계계정
     acAmts = request.POST.get("txtWitPrice").replace(',', '')      # 금액
+    acBank = request.POST.get("cboBank")  # 은행
     acAcnumber = request.POST.get("cboWitActNum")     # 계좌번호
     acGubn = request.POST.get("cboWitMethod")     # 결제방법
     acCard = request.POST.get("cboWitCard")
@@ -779,11 +820,11 @@ def paymentViews_save(request):
         uploaded_file = destination
 
     if acSeqn:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(acAcnumber) + "' AND ICUST = '" + str(iCust) + "' ")
-            result = cursor.fetchall()  # 계좌 은행
-
-            bnk = result[0][0]
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(acAcnumber) + "' AND ICUST = '" + str(iCust) + "' ")
+        #     result = cursor.fetchall()  # 계좌 은행
+        #
+        #     bnk = result[0][0]
 
         if exDate == '' or exDate is None:
             exDate = ioDate
@@ -799,7 +840,7 @@ def paymentViews_save(request):
                            ",    ACAMTS = '" + str(acAmts) + "' "
                            ",    ACACNUMBER = '" + str(acAcnumber) + "' "
                            ",    ACDESC = '" + str(acDesc) + "' "
-                           ",    ACGUNO_BK = '" + str(bnk) + "' "
+                           ",    ACGUNO_BK = '" + str(acBank) + "' "
                            ",    ACFOLDER = '" + str(uploaded_file) + "' "
                            ",    EXDATE = '" + str(exDate) + "' "
                            ",    ACDATE = '" + str(acDate) + "' "
@@ -875,11 +916,9 @@ def paymentViews_save(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(acAcnumber) + "' AND ICUST = '" + str(iCust) + "' ")
-            result = cursor.fetchall()  # 계좌 은행
-
-            bnk = result[0][0]
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(acAcnumber) + "' AND ICUST = '" + str(iCust) + "' ")
+        #     result = cursor.fetchall()  # 계좌 은행
 
         if exDate == '' or exDate is None:
             exDate = ioDate
@@ -930,7 +969,7 @@ def paymentViews_save(request):
                                ",   '" + str(creUser) + "'"
                                ",   date_format(now(), '%Y%m%d') "
                                ",   '" + str(iCust) + "'"
-                               ",   '" + str(bnk) + "'"
+                               ",   '" + str(acBank) + "'"
                                ",   '" + str(uploaded_file) + "'"
                                ",    '" + str(exDate) + "'"
                                ",    '" + str(acDate) + "'"
@@ -986,6 +1025,7 @@ def offSetViews_save(request):
     acTitle = request.POST.get("txtTitle")
     acIogb = request.POST.get("cboWitGbn")  # 구분(입금2/출금1)
     acAmts = request.POST.get("txtWitPrice2").replace(',', '')      # 금액
+    acBank = request.POST.get("cboBank")  # 계좌번호
     acAcnumber = request.POST.get("cboWitActNum2")  # 계좌번호
     acDesc = request.POST.get("txtWitRemark2")     # 비고
     # 대체
@@ -1049,6 +1089,7 @@ def offSetViews_save(request):
                 cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(outAct) + "' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()  # 계좌 은행
 
+            if (len(result) != 0):
                 outBnk = result[0][0]
 
             if offDate == '' or offDate is None:
@@ -1078,6 +1119,7 @@ def offSetViews_save(request):
                 cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(inAct) + "'  AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()  # 계좌 은행
 
+            if (len(result) != 0):
                 inBnk = result[0][0]
 
             if offDate == '' or offDate is None:
