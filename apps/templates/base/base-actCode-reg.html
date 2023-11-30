@@ -530,7 +530,8 @@
                             'X-CSRFTOKEN': '{{ csrf_token }}'
                         },
                         success: function (data) {
-                            location.href = "{% url 'base_accountCode' %}";
+                            {#location.href = "{% url 'base_accountCode' %}";#}
+                            $('#cboCodeType').trigger('change');
                         }
 
                     });
