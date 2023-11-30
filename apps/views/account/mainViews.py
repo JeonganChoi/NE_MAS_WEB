@@ -22,12 +22,12 @@ def loginView(request):
         if len(result) == 0:
             # if len(result) == 0:
             msg = '아이디 또는 비밀번호가 일치 하지 않습니다.'
-            return render(request, "account/login.html", {"msg": msg})
+            return render(request, "account/login.html", {'login': "N", "msg": msg})
         else:
             tesa = result[0][6]
             if tesa != '':
                 msg = '사용 불가능한 아이디입니다.'
-                return render(request, "account/login.html", {"msg": msg})
+                return render(request, "account/login.html", {'login': "N", "msg": msg})
             else:
                 USER_NM = result[0][1]
                 USER_GBN = result[0][3]
@@ -62,9 +62,9 @@ def loginView(request):
                     connection.commit()
 
             # return render(request, "home/index.html")
-        return JsonResponse({'login': "Y"})
+            return JsonResponse({'login': "Y"})
 
-        return render(request, "home/index.html", {"msg": msg})
+        # return render(request, "home/index.html", {})
 
 
 

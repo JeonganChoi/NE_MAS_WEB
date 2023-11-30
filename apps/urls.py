@@ -1,5 +1,5 @@
 from django.urls import path,re_path
-from apps.views.account import mainViews
+from apps.views.account import mainViews, regInfoViews
 from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews, cardViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews, permitViews
@@ -18,6 +18,9 @@ urlpatterns = [
     path('main/', mainViews.index, name="index"),
     path('signup/', mainViews.signupView, name="signup"),
     path('page-404/', mainViews.page404, name="page-404"),
+
+    path('reg_cust/', regInfoViews.regCustomers, name="reg_cust"),
+    path('reg_cust_list/', regInfoViews.regCustomers_list, name="reg_cust_list"),
 
 # 파일 불러오기
     path('download_file/', paymentViews.download_file, name='download_file'),

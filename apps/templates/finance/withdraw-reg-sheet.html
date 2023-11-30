@@ -529,8 +529,9 @@
 
             {#var saveresult = confirm("결재라인을 지정하시겠습니까?")#}
 
-            const tbRow = $('#modalSubTd tr').length;
 
+
+            const tbRow = $('#modalSubTd tr').length;
 
             var empArr = [];
             for (var i = 0; i < tbRow; i++) {
@@ -546,12 +547,15 @@
                     'empNbr': empNbr,
                     'empNme': empNme
                 };
+
                 empArr.push(data);
+
             }
 
             $("#signTd").html("");
             $("#signTd").append("<tr id='signTdTr' class='signTdTr_tr'>" + + " </tr>" );
             for (var i = 0; i < empArr.length; i++) {
+
                 $("#signTd").append(
                     "<td hidden id='signTdTr" + empArr[i][2] + "' class='signTdTr_tr'></td>" +
                     "<td hidden class='text-center p-1' id='subSeq_" + i + "' style='font-size: 0.8rem'>" + i + "</td>" +
@@ -1646,28 +1650,31 @@
                             location.href = "{% url 'with_reg_sheet' %}";
                         }
                         else if(data.sucYn === 'N' && data.message == 'same file name exists') {
-                            if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {
-                                formData.append('fileOverwriteYn', 'Y');
 
-                                $.ajax({
-                                    type: "post",
-                                    data: formData,
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    dataType: "json",
-                                    url: '{% url "offSet_save" %}',
-                                    headers: {
-                                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                                    },
-                                    success: function (data) {
-                                        if (data.sucYn === 'Y') {
-                                            alert('저장 되었습니다.')
-                                            location.href = "{% url 'with_reg_sheet' %}";
-                                        }
+                            formData.append('fileOverwriteYn', 'Y');
+
+                            $.ajax({
+                                type: "post",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                url: '{% url "offSet_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('저장 되었습니다.')
+                                        location.href = "{% url 'with_reg_sheet' %}";
                                     }
-                                });
-                            }
+                                }
+                            });
+
+                            {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
+                            {##}
+                            {#}#}
                         }
                     }
                 });
@@ -1706,27 +1713,29 @@
                             location.href = "{% url 'with_reg_sheet' %}";
                         }
                         else if(data.sucYn === 'N' && data.message == 'same file name exists') {
-                            if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {
-                                formData.append('fileOverwriteYn', 'Y');
-                                $.ajax({
-                                    type: "post",
-                                    data: formData,
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    dataType: "json",
-                                    url: '{% url "payment_save" %}',
-                                    headers: {
-                                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                                    },
-                                    success: function (data) {
-                                        if (data.sucYn === 'Y') {
-                                            alert('저장 되었습니다.')
-                                            location.href = "{% url 'with_reg_sheet' %}";
-                                        }
+
+                            formData.append('fileOverwriteYn', 'Y');
+                            $.ajax({
+                                type: "post",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                url: '{% url "payment_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('저장 되었습니다.')
+                                        location.href = "{% url 'with_reg_sheet' %}";
                                     }
-                                });
-                            }
+                                }
+                            });
+                            {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
+                            {##}
+                            {#}#}
                         }
                     }
                 });
@@ -1765,6 +1774,7 @@
             $("#txtWitCashNum").val("");
             $("#txtWitRemark").val("");
             $("#txtExDate").val("");
+            $("#txtInfo").val("");
 
             cboWitGbn = '1'
             var cboGbn = '1';

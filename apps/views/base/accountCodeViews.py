@@ -145,11 +145,10 @@ def accountCodeViews_saveM(request):
 
     # 수익4/ 비용5
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' ")
+        cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' AND ICUST = '" + str(iCust) + "'")
         result = cursor.fetchall()
 
-    # if result != '' or result is not None:
-    if result:
+    if result[0][0] != '':
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODE_M = '" + str(mCode_M) + "' "
@@ -173,28 +172,28 @@ def accountCodeViews_saveM(request):
 
         if mCode_A.startswith('41'):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 41001) FROM OSCODEM A WHERE MCODE LIKE '41%' ")
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 41001) FROM OSCODEM A WHERE MCODE LIKE '41%' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
                 code = int(result[0][0])
                 mCode = code
 
         if mCode_A.startswith('43'):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 43001) FROM OSCODEM A WHERE MCODE LIKE '43%' ")
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 43001) FROM OSCODEM A WHERE MCODE LIKE '43%' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
                 code = int(result[0][0])
                 mCode = code
 
         if mCode_A.startswith('51'):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 51001) FROM OSCODEM A WHERE MCODE LIKE '51%' ")
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 51001) FROM OSCODEM A WHERE MCODE LIKE '51%' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
                 code = int(result[0][0])
                 mCode = code
 
         if mCode_A.startswith('53'):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 53001) FROM OSCODEM A WHERE MCODE LIKE '53%' ")
+                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 53001) FROM OSCODEM A WHERE MCODE LIKE '53%' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
                 code = int(result[0][0])
                 mCode = code

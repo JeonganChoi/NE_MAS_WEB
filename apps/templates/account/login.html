@@ -16,6 +16,7 @@
                 <div class="pb-0 card-header text-start">
                   <h4 class="font-weight-bolder text-dark">Naeun Managerial Account</h4>
                   <p class="mb-0">Enter your id and password to sign in</p>
+                  <span class="mb-0 text-danger" id="loginTxt"></span>
                 </div>
                 <div class="card-body">
                   <form role="form" class="text-start">
@@ -76,6 +77,10 @@
                 dataType: 'json',
                 success: function (data) {
 
+                    if(data.login === "N"){
+                        $("#loginTxt").text('아이디 또는 비밀번호를 확인해주세요.');
+                        return false
+                    }
                     if(data.login === "Y"){
                         location.href = "{% url 'index' %}";
                     }
