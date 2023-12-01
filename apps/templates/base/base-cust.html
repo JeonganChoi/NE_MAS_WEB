@@ -545,15 +545,13 @@
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + i + "' name='custSeq' value='" + list2[i][2] + "'/></td>" +
                             "</tr> ");
                     }
-                    if(list2.length < 3){
-                        for (var j = 0; j < 3; j++) {
-                            $("#subTb").append(
-                                "<tr id='#subTr' class='subTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank'/></input></td>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + j + "' name='custSeq'/></td>" +
-                                "</tr> ");
-                        }
+                    for (var j = list2.length; j < list2.length + 3; j++) {
+                        $("#subTb").append(
+                            "<tr id='#subTr' class='subTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank'/></input></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + j + "' name='custSeq'/></td>" +
+                            "</tr> ");
                     }
 
 
@@ -590,25 +588,55 @@
                     }
                 });
 
+                var Count2 = 0;
+                $("#custTb tr td input[name='custSeq']").each(function (index, ele) {
+                    var ele_val = $(ele).val();
 
-                var custArr = [];
-                for (var i = 0; i < Count; i++) {
-
-                    var custBank = $('#custBank_' + i).val();
-                    var custActNum = $('#custActNum_' + i).val();
-                    var custSeq = $('#custSeq_' + i).val();
-
-                    if (custBank) {
-                        let data = {
-                            'custBank': custBank,
-                            'custActNum': custActNum,
-                            'custSeq': custSeq,
-                        };
-                        custArr.push(data);
+                    if(ele_val){
+                        Count2 += 1;
                     }
+                });
+
+                if(Count2 > Count){
+                var custArr = [];
+                    for (var i = 0; i < Count2; i++) {
+
+                        var custBank = $('#custBank_' + i).val();
+                        var custActNum = $('#custActNum_' + i).val();
+                        var custSeq = $('#custSeq_' + i).val();
+
+                        if (custSeq) {
+                            let data = {
+                                'custBank': custBank,
+                                'custActNum': custActNum,
+                                'custSeq': custSeq,
+                            };
+                            custArr.push(data);
+                        }
+                    }
+                    formData.append('custArrList', JSON.stringify(custArr))
+                }
+                else{
+                    var custArr = [];
+                    for (var i = 0; i < Count; i++) {
+
+                        var custBank = $('#custBank_' + i).val();
+                        var custActNum = $('#custActNum_' + i).val();
+                        var custSeq = $('#custSeq_' + i).val();
+
+                        if (custBank) {
+                            let data = {
+                                'custBank': custBank,
+                                'custActNum': custActNum,
+                                'custSeq': custSeq,
+                            };
+                            custArr.push(data);
+                        }
+                    }
+                    formData.append('custArrList', JSON.stringify(custArr))
                 }
 
-                formData.append('custArrList', JSON.stringify(custArr))
+
 
                 $.ajax({
                     type: "post",

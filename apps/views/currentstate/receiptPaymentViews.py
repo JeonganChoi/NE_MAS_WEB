@@ -15,16 +15,31 @@ def receiptPaymentViews(request):
     return render(request, "currentstate/receipts-payments-sheet.html")
 
 def receiptPaymentViews_search(request):
-    strDate = request.POST.get('strDate')
-    endDate = request.POST.get('endDate')
+    strDate = request.POST.get('strDate').replace("-", "")
+    endDate = request.POST.get('endDate').replace("-", "")
     act = request.POST.get('act')
     cust = request.POST.get('cust')
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
 
-    if act and cust:
+    temp = [act, cust]
+    if all(temp):
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
-                           "    WHERE ACDATE > '" + strDate + "' AND ACCUST = '" + cust + "' AND ACACNUMBER = '" + act + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                           " (SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " UNION ALL "
+                           " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                           "        WHERE ACIOGB = '2' AND ACCUST = '" + str(cust) + "' AND ACACNUMBER = '" + str(act) + "' "
+                           "        AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " UNION ALL "
+                           " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                           "        WHERE ACIOGB = '1' AND ACCUST = '" + str(cust) + "' AND ACACNUMBER = '" + str(act) + "' "
+                           "        AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " ) AA ")
             balresult = cursor.fetchall()
+
+            # cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
+            #                "    WHERE ACDATE > '" + strDate + "' AND ACCUST = '" + cust + "' AND ACACNUMBER = '" + act + "' ")
 
         with connection.cursor() as cursor:
             cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
@@ -36,6 +51,7 @@ def receiptPaymentViews_search(request):
                            "     LEFT OUTER JOIN ACNUMBER C "
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '2' "
+                           "     AND A.ICUST = '" + str(iCust) + "' "
                            "     UNION ALL "
                            "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
                            "     FROM SISACCTT A "
@@ -44,20 +60,35 @@ def receiptPaymentViews_search(request):
                            "     LEFT OUTER JOIN ACNUMBER C "
                            "     ON A.ACACNUMBER = C.ACNUMBER "
                            "     WHERE A.ACIOGB = '1' "
+                           "     AND A.ICUST = '" + str(iCust) + "' "
                            " ) AA "
-                           " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                           " AND AA.ACCUST = '" + cust + "' "
-                           " AND AA.ACACNUMBER = '" + act + "' "
+                           " WHERE AA.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                           " AND AA.ACCUST = '" + str(cust) + "' "
+                           " AND AA.ACACNUMBER = '" + str(act) + "' "
                            " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
-    elif act:
+    if any(temp):
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
-                           "    WHERE ACDATE > '" + strDate + "' AND ACACNUMBER = '" + act + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                           " (SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " UNION ALL "
+                           " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                           "        WHERE ACIOGB = '2' AND ACCUST = '" + str(cust) + "' OR ACACNUMBER = '" + str(act) + "' "
+                           "        AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " UNION ALL "
+                           " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                           "        WHERE ACIOGB = '1' AND ACCUST = '" + str(cust) + "' OR ACACNUMBER = '" + str(act) + "' "
+                           "        AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " ) AA ")
             balresult = cursor.fetchall()
+
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
+        #                    "    WHERE ACDATE > '" + strDate + "' AND ACACNUMBER = '" + act + "' ")
+        #     balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
             cursor.execute(
@@ -70,6 +101,7 @@ def receiptPaymentViews_search(request):
                 "     LEFT OUTER JOIN ACNUMBER C "
                 "     ON A.ACACNUMBER = C.ACNUMBER "
                 "     WHERE A.ACIOGB = '2' "
+                "     AND A.ICUST = '" + str(iCust) + "' "
                 "     UNION ALL "
                 "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
                 "     FROM SISACCTT A "
@@ -78,42 +110,11 @@ def receiptPaymentViews_search(request):
                 "     LEFT OUTER JOIN ACNUMBER C "
                 "     ON A.ACACNUMBER = C.ACNUMBER "
                 "     WHERE A.ACIOGB = '1' "
+                "     AND A.ICUST = '" + str(iCust) + "' "
                 " ) AA "
-                " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                " AND AA.ACACNUMBER = '" + act + "' "
-                " ORDER BY AA.ACDATE ")
-            mainresult = cursor.fetchall()
-
-        return JsonResponse({'balList': balresult, 'mainList': mainresult})
-
-    elif cust:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT "
-                           "    WHERE ACDATE > '" + strDate + "' AND ACCUST = '" + cust + "' ")
-            balresult = cursor.fetchall()
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
-                " ( "
-                "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
-                "     FROM SISACCTT A "
-                "     LEFT OUTER JOIN MIS1TB003 B "
-                "     ON A.ACCUST = B.CUST_NBR "
-                "     LEFT OUTER JOIN ACNUMBER C "
-                "     ON A.ACACNUMBER = C.ACNUMBER "
-                "     WHERE A.ACIOGB = '2' "
-                "     UNION ALL "
-                "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
-                "     FROM SISACCTT A "
-                "     LEFT OUTER JOIN MIS1TB003 B "
-                "     ON A.ACCUST = B.CUST_NBR "
-                "     LEFT OUTER JOIN ACNUMBER C "
-                "     ON A.ACACNUMBER = C.ACNUMBER "
-                "     WHERE A.ACIOGB = '1' "
-                " ) AA "
-                " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
-                " AND AA.ACCUST = '" + cust + "' "
+                " WHERE AA.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                " AND AA.ACACNUMBER = '" + str(act) + "' "
+                "  OR AA.ACCUST = '" + str(cust) + "'"
                 " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
 
@@ -121,9 +122,14 @@ def receiptPaymentViews_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACDATE > '" + strDate + "' ")
+            cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                           " (SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " UNION ALL "
+                           " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE ACIOGB = '2' AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " UNION ALL "
+                           " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT WHERE ACIOGB = '1' AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " ) AA ")
             balresult = cursor.fetchall()
-
 
         with connection.cursor() as cursor:
             cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
@@ -135,6 +141,7 @@ def receiptPaymentViews_search(request):
                             "     LEFT OUTER JOIN ACNUMBER C "
                             "     ON A.ACACNUMBER = C.ACNUMBER "
                             "     WHERE A.ACIOGB = '2' "
+                            "       AND A.ICUST = '" + str(iCust) + "'"
                             "     UNION ALL "
                             "     SELECT A.ACIOGB, A.ACDATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
                             "     FROM SISACCTT A "
@@ -143,18 +150,19 @@ def receiptPaymentViews_search(request):
                             "     LEFT OUTER JOIN ACNUMBER C "
                             "     ON A.ACACNUMBER = C.ACNUMBER "
                             "     WHERE A.ACIOGB = '1' "
+                            "       AND A.ICUST = '" + str(iCust) + "'"
                             " ) AA "
-                            " WHERE AA.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
+                            " WHERE AA.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
                             " ORDER BY AA.ACDATE ")
             mainresult = cursor.fetchall()
             print(mainresult)
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ORDER BY CUST_NBR ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ORDER BY CUST_NBR ")
             cboCust = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER ORDER BY ACNUMBER ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ORDER BY ACNUMBER ")
             cboAct = cursor.fetchall()
 
         return JsonResponse({'balList': balresult, 'mainList': mainresult, 'cboCust': cboCust, 'cboAct': cboAct})

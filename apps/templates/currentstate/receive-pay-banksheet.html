@@ -83,9 +83,9 @@
         <div class="row mt-n1">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
-                    <div class="card-body">
-                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>은행 내역서</h5>
+                <div class="card bg-gradient-primary">
+                    <div class="card-body bg-transparent">
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fa fa-credit-card fs-4 me-3"></i>은행 내역서</h5>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                               </div>
                             </div>
                             <div class="col-lg-1 col-1 text-end">
-                              <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                              <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fa fa-search fs-6 me-2"></i>조회</button>
                             </div>
                         </div>
                     </div>
@@ -212,9 +212,7 @@
         $(document).ready(function () {
 
             var date = new Date();
-            {#var Year = now.getFullYear()#}
-            {#var date = Year + '-01-01'#}
-            date.setDate(1);
+            date.setMonth(date.getMonth() - 3);
             document.getElementById('inputStrDate').valueAsDate = date
             document.getElementById('inputEndDate').valueAsDate = new Date
 
@@ -227,7 +225,10 @@
             $("#cboBank").html("");
             $("#cboAccount").html("");
 
-            let data = {'cboBank': cboBank, 'cboAccount': cboAccount}
+            var startDate = "";
+            var endDate = "";
+
+            let data = {'cboBank': cboBank, 'cboAccount': cboAccount, "startDate": startDate, "endDate": endDate}
 
             $.ajax({
                 type: "post",

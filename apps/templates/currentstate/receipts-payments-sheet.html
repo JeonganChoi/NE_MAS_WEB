@@ -13,15 +13,15 @@
         <div class="row mt-n1">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
-                    <div class="card-body">
-                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>입/출금 원장</h5>
+                <div class="card bg-gradient-primary">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fa fa-credit-card fs-4 me-3"></i>입/출금 원장</h5>
                     </div>
                 </div>
             </div>
             <div class="col-lg-1 col-1"></div>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-2">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
                 <div class="card">
@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-4 text-start">
                               <div class="input-group shadow-none">
-                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>일자</label>
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 3rem" for="inputStrDate"><i class="fas fa-search me-2"></i>일자</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                                   <span class="me-2">-</span>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
@@ -37,26 +37,26 @@
                             </div>
                             <div class="col-lg-3 col-3 text-start">
                               <div class="input-group shadow-none">
-                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>거래처</label>
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>거래처</label>
                                   <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem; max-width: 12rem"></select>
                               </div>
                             </div>
                             <div class="col-lg-3 col-3 text-start">
                               <div class="input-group shadow-none">
-                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>통장명</label>
+                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>통장명</label>
                                   <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem; max-width: 15rem"></select>
                               </div>
                             </div>
-                            <div class="col-lg-1 col-1 text-end">
-                              <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            <div class="col-lg-2 col-2 text-end">
+                              <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fa fa-search fs-6 me-2"></i>조회</button>
                             </div>
                         </div>
                     </div>
-                    <div class="px-0 py-0 card-body height-600">
+                    <div class="px-0 py-0 card-body">
                         <div class="row">
                             <div class="col-lg-2 col-2"></div>
                             <div class="col-lg-8 col-8">
-                                <div class="m-1 table-responsive-sm overflow-auto height-500">
+                                <div class="m-1 table-responsive-sm overflow-auto border border-light height-500 shadow-card">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
                                             <col width="8%"/>
@@ -69,8 +69,8 @@
                                         <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                                         <tr>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">거래 일시</th>
-                                            <th class="text-center p-1" style="font-size: 0.8rem;">맡기신 금액</th>
-                                            <th class="text-center p-1" style="font-size: 0.8rem;">찾으신 금액</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">입 금</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">출 금</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">잔금</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">거래처</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">통장명</th>
@@ -99,7 +99,9 @@
     <script>
         $(document).ready(function () {
 
-            document.getElementById('inputStrDate').valueAsDate = new Date
+            var date = new Date();
+            date.setMonth(date.getMonth() - 3);
+            document.getElementById('inputStrDate').valueAsDate = date
             document.getElementById('inputEndDate').valueAsDate = new Date
 
             var cust = "";
@@ -133,7 +135,7 @@
                     $("#sheetTb").html("");
 
                     for (var i = 0; i < list2.length; i++) {
-                        bal = list2[i][0]
+                        bal = list2[i][3]
                         $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>이월 잔액</td>" +
@@ -150,7 +152,7 @@
                     for (var i = 0; i < list.length; i++) {
                         if(list[i][0] == '2'){
                             {# 입금 #}
-                            bal += list[i][2]
+                            bal += parseInt(list[i][2])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
                                 "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
@@ -165,7 +167,7 @@
                         }
                         if(list[i][0] == '1'){
                             {# 출금 #}
-                            bal -= list[i][2]
+                            bal -= parseInt(list[i][2])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
                                 "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
@@ -235,7 +237,7 @@
                     $("#sheetTb").html("");
 
                     for (var i = 0; i < list2.length; i++) {
-                        bal = list2[i][0]
+                        bal = list2[i][3]
                         $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.8rem'>이월 잔액</td>" +
@@ -252,7 +254,7 @@
                     for (var i = 0; i < list.length; i++) {
                         if(list[i][0] == '2'){
                             {# 입금 #}
-                            bal += list[i][2]
+                            bal += parseInt(list[i][2])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
                                 "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
@@ -267,7 +269,7 @@
                         }
                         if(list[i][0] == '1'){
                             {# 출금 #}
-                            bal -= list[i][2]
+                            bal -= parseInt(list[i][2])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
                                 "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
