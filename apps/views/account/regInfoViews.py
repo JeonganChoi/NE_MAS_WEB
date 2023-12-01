@@ -15,13 +15,32 @@ def regCustomers(request):
 
 
 def regCustomers_list(request):
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(CUST_NBR, ''), IFNULL(CUST_NME, ''), IFNULL(CUST_GBN, ''), IFNULL(CEO_NAME, '') "
-                       ", IFNULL(CUST_ADS, ''), IFNULL(CUST_ID_NUM, ''), IFNULL(POST_CODE, ''), IFNULL(CUST_TEL, '') "
-                       ", IFNULL(CUST_FAX, ''), IFNULL(REG_DATE, ''), IFNULL(FIN_DATE, '') FROM ACCOMLIST ")
-        cust = cursor.fetchall()
+    custCode = request.POST.get('custCode')
 
-    return JsonResponse({"custList": cust})
+    if custCode != '':
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT IFNULL(CUST_NBR, ''), IFNULL(CUST_NME, ''), IFNULL(CUST_GBN, ''), IFNULL(CEO_NAME, '') "
+                "       , IFNULL(CUST_ADS, ''), IFNULL(CUST_ID_NUM, ''), IFNULL(POST_CODE, ''), IFNULL(CUST_TEL, '') "
+                "       , IFNULL(CUST_FAX, ''), IFNULL(REG_DATE, ''), IFNULL(FIN_DATE, ''), IFNULL(CUST_INDUSTRY, '')"
+                "       , IFNULL(CUST_TYPE, ''), IFNULL(CUST_PMK, ''), IFNULL(CUST_EMAIL, ''), IFNULL(CUST_ACCOUNT, '')"
+                " FROM ACCOMLIST "
+                " WHERE CUST_NBR = '" + str(custCode) + "' "
+                "    OR CUST_NME = '" + str(custCode) + "' "
+                " ORDER BY CUST_NBR ")
+            cust = cursor.fetchall()
+
+        return JsonResponse({"custList": cust})
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(CUST_NBR, ''), IFNULL(CUST_NME, ''), IFNULL(CUST_GBN, ''), IFNULL(CEO_NAME, '') "
+                           "        , IFNULL(CUST_ADS, ''), IFNULL(CUST_ID_NUM, ''), IFNULL(POST_CODE, ''), IFNULL(CUST_TEL, '') "
+                           "        , IFNULL(CUST_FAX, ''), IFNULL(REG_DATE, ''), IFNULL(FIN_DATE, '') "
+                           " FROM ACCOMLIST ORDER BY CUST_NBR ")
+            cust = cursor.fetchall()
+
+        return JsonResponse({"custList": cust})
 
 
 # def regCustomers_save(request):

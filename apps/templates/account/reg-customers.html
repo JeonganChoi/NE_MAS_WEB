@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="col-4">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>업체 분류</label>
-                                        <input style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-start p-0" name="txtCustType" id="txtCustType"/>
+                                        <input style="font-size: 0.8rem; height: 2rem" class="form-control border border-light rounded-1 text-start p-0" name="txtCustGbn" id="txtCustGbn"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -159,10 +159,7 @@
                                 <div class="row">
                                     <div class="col-8">
                                         <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>거래처 계좌 정보</label>
-                                        <div class="d-flex">
-                                            <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtBank" name="txtBank"/>
-                                            <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtAct" name="txtAct"/>
-                                        </div>
+                                        <input style="height: 2rem; font-size: 0.8rem" class="form-control text-start" type="text" id="txtBank" name="txtBank"/>
                                     </div>
                                 </div>
                             </div>
@@ -180,8 +177,13 @@
 
     $(document).ready(function () {
 
+        var custCode = "";
+
+        let data = {"custCode": custCode}
+
         $.ajax({
             type: "post",
+            data: data,
             url: '{% url "reg_cust_list" %}',
             headers: {
                 'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -194,7 +196,7 @@
                 for (var i = 0; i < list.length; i++) {
 
                     $("#custMainTb").append(
-                        "<tr id='#custMainTr' class='custMainTr_tr' main_code='" + list[i][1] + "'>" +
+                        "<tr id='#custMainTr' class='custMainTr_tr' main_code='" + list[i][0] + "'>" +
                         "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][0] + "'/></div></td>" +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
                         "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
@@ -213,6 +215,101 @@
         });
     });
 
+    {# 조회 버튼 누를시 #}
+    $(document).on('click', '#btnSearch', function () {
+
+        var custCode = document.getElementById('inputCustCode').value;
+
+        let data = {"custCode": custCode}
+
+        $.ajax({
+            type: "post",
+            data: data,
+            url: '{% url "reg_cust_list" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.custList;
+
+                $("#custMainTb").html("");
+                for (var i = 0; i < list.length; i++) {
+
+                    $("#custMainTb").append(
+                        "<tr id='#custMainTr' class='custMainTr_tr' main_code='" + list[i][0] + "'>" +
+                        "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkCust[]' name='chkCust[]' value='" + list[i][0] + "'/></div></td>" +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][8] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][9] + "</td> " +
+                        "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][10] + "</td> " +
+                        "</tr> ");
+                }
+            }
+        });
+    });
+
+    {#  테이블 로우 클릭 시  #}
+    $(document).on('click', '#custMainTb .custMainTr_tr', function () {
+
+        let custCode = $(this).attr('main_code');
+
+        let data = {"custCode": custCode}
+
+        $.ajax({
+            type: "post",
+            data: data,
+            url: '{% url "reg_cust_list" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (data) {
+                var list = data.custList;
+
+                for (var i = 0; i < list.length; i++) {
+
+                    $("#txtCustCode").val(list[i][0])
+                    $("#txtCustName").val(list[i][1])
+                    $("#txtCeo").val(list[i][3])
+                    $("#txtRegNum").val(list[i][5])
+                    $("#txtCustCat").val(list[i][11])
+                    $("#txtCustType").val(list[i][12])
+                    $("#txtPostCode").val(list[i][6])
+                    $("#txtAddress").val(list[i][4])
+                    $("#txtTelePhone").val(list[i][7])
+                    $("#txtFax").val(list[i][8])
+                    $("#txtCustGbn").val(list[i][2])
+                    $("#txtRegDate").val(list[i][9])
+                    $("#txtExpDate").val(list[i][10])
+                    $("#txtEMail").val(list[i][14])
+                    $("#txtBank").val(list[i][15])
+                }
+            }
+        });
+    });
+
+    {# 저장 버튼 누를시 #}
+    $(document).on('click', '#btnSave', function () {
+
+    });
+
+    {# 삭제 버튼 누를시 #}
+    $(document).on('click', '#btnDlt', function () {
+
+    });
+
+    {# 초기화 버튼 누를시 #}
+    $(document).on('click', '#btnClear', function () {
+
+    });
 
     </script>
 {% endblock %}
