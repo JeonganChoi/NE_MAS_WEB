@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6 col-6">
+                                        <div class="col-6 cboGbn">
                                             <label class="mt-2" style="font-size: 0.85rem"><i class="fas fa-clone me-2 text-info text-sm"></i>구 분</label>
                                             <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn_M" id="cboGbn_M"></select>
                                         </div>
@@ -117,7 +117,7 @@
                                         </div>
                                         <div hidden class="col-lg-6 col-6">
                                             <label class="mt-2" style="font-size: 0.85rem"><i class="fas fa-clone me-2 text-info text-sm"></i>결제 여부</label>
-                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboOpt" id="cboOpt">
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboOpt" id="cboOpt">분
                                                 <option value="N">미사용</option>
                                                 <option value="Y" selected>사용</option>
                                             </select>
@@ -168,6 +168,8 @@
             let mCodeType = document.getElementById('cboCodeType').value;
             var mainCode = "";
             let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
+
+            $('.cboGbn').hide();
 
             $.ajax({
                 type: "post",
@@ -252,6 +254,15 @@
 
             let mCodeType = document.getElementById('cboCodeType').value;
             var mainCode = "";
+
+            if(mCodeType == '4'){
+                $('.cboGbn').hide();
+            }
+            if(mCodeType == '5'){
+                $('.cboGbn').show();
+            }
+
+
             let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
 
             $.ajax({
