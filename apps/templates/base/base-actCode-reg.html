@@ -555,79 +555,82 @@
         {#입력란 내용 삭제#}
         $(document).on('click', "#btnClear", function () {
 
-            var cboMCode_M = "";
-            var cboGbn_M = "";
-            var cboGbn2_M = "";
-            var cboMCode_A = "";
-            var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
-            var cboGbnTxt_M = "";
-            var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
-            var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
-            $("#cboMCode_M").html("");
-            $("#cboGbn_M").html("");
-            $("#cboGbn2_M").html("");
-            $("#cboMCode_A").html("");
+            location.reload();
 
-            let mCodeType = document.getElementById('cboCodeType').value;
-            var mainCode = "";
-            let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
 
-            $.ajax({
-                type: "post",
-                data: data,
-                url: '{% url "base_accountCode_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    $("#txtCode_M").val("");
-                    $("#txtDesc_M").val("");
-                    $("#txtCodeNme_M").val("");
-
-                    var combolist6 = data.cboMCode;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == cboMCode_M) {
-                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
-                        } else {
-                            cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist = data.cboGbn;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboGbn_M) {
-                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                        } else {
-                            cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist2 = data.cboGbn2;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboGbn2_M) {
-                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist5 = data.cboACode;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == cboMCode_A) {
-                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
-                        } else {
-                            cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
-                        }
-                    }
-
-                    $("#cboMCode_M").append(cboMCodeTxt_M);
-                    $("#cboGbn_M").append(cboGbnTxt_M);
-                    $("#cboGbn2_M").append(cboGbn2Txt_M);
-                    $("#cboMCode_A").append(cboMCodeTxt_A);
-                }
-            })
+            {#var cboMCode_M = "";#}
+            {#var cboGbn_M = "";#}
+            {#var cboGbn2_M = "";#}
+            {#var cboMCode_A = "";#}
+            {#var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";#}
+            {#var cboGbnTxt_M = "";#}
+            {#var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";#}
+            {#var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";#}
+            {#$("#cboMCode_M").html("");#}
+            {#$("#cboGbn_M").html("");#}
+            {#$("#cboGbn2_M").html("");#}
+            {#$("#cboMCode_A").html("");#}
+            {##}
+            {#let mCodeType = document.getElementById('cboCodeType').value;#}
+            {#var mainCode = "";#}
+            {#let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}#}
+            {##}
+            {#$.ajax({#}
+            {#    type: "post",#}
+            {#    data: data,#}
+            {#    url: '{% url "base_accountCode_search" %}',#}
+            {#    headers: {#}
+            {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
+            {#    },#}
+            {#    dataType: 'json',#}
+            {#    success: function (data) {#}
+            {##}
+            {#        $("#txtCode_M").val("");#}
+            {#        $("#txtDesc_M").val("");#}
+            {#        $("#txtCodeNme_M").val("");#}
+            {##}
+            {#        var combolist6 = data.cboMCode;#}
+            {#        for (var i = 0; i < combolist6.length; i++) {#}
+            {#            if (combolist6[i][0] == cboMCode_M) {#}
+            {#                cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist = data.cboGbn;#}
+            {#        for (var i = 0; i < combolist.length; i++) {#}
+            {#            if (combolist[i][0] == cboGbn_M) {#}
+            {#                cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboGbnTxt_M = cboGbnTxt_M + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist2 = data.cboGbn2;#}
+            {#        for (var i = 0; i < combolist2.length; i++) {#}
+            {#            if (combolist2[i][0] == cboGbn2_M) {#}
+            {#                cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboGbn2Txt_M = cboGbn2Txt_M + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist5 = data.cboACode;#}
+            {#        for (var i = 0; i < combolist5.length; i++) {#}
+            {#            if (combolist5[i][0] == cboMCode_A) {#}
+            {#                cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboMCodeTxt_A = cboMCodeTxt_A + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        $("#cboMCode_M").append(cboMCodeTxt_M);#}
+            {#        $("#cboGbn_M").append(cboGbnTxt_M);#}
+            {#        $("#cboGbn2_M").append(cboGbn2Txt_M);#}
+            {#        $("#cboMCode_A").append(cboMCodeTxt_A);#}
+            {#    }#}
+            {#})#}
 
         });
 

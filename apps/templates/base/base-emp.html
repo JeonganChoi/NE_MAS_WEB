@@ -684,80 +684,82 @@
 
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
-            var group = "";
-            var dpt = "";
-            var cboClass = "";
-            var com = "";
-            var groupTxt = "<option value=''>:: 선택 ::</option>";
-            var dptTxt = "<option value=''>:: 선택 ::</option>";
-            var comTxt = "<option value=''>:: 선택 ::</option>";
-            var cboClassTxt = "<option value=''>:: 선택 ::</option>";
 
-            $("#cboGroup").html("");
-            $("#cboDpt").html("");
-            $("#cboClass").html("");
-
-
-            var empType = "";
-
-            let data = {'empType': empType}
-
-            $.ajax({
-                type: "post",
-                data: data,
-                url: '{% url "base_emp_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    $("#txtEmpNo").val("");
-                    $("#txtEmpName").val("");
-                    $("#txtEmpPw").val("");
-                    $("#cboDpt").html("");
-                    $("#cboGroup").html("");
-                    $("#cboCom").val("");
-                    $("#txtEmpTel").val("");
-                    $("#txtEmployDate").val("");
-                    $("#txtQuitDate").val("");
-                    $("#txtEmp").val("");
-                    $("#txtLimit").val("");
-                    $(`#chkPermit`).prop("checked",false);
-
+            location.reload();
+            {#var group = "";#}
+            {#var dpt = "";#}
+            {#var cboClass = "";#}
+            {#var com = "";#}
+            {#var groupTxt = "<option value=''>:: 선택 ::</option>";#}
+            {#var dptTxt = "<option value=''>:: 선택 ::</option>";#}
+            {#var comTxt = "<option value=''>:: 선택 ::</option>";#}
+            {#var cboClassTxt = "<option value=''>:: 선택 ::</option>";#}
+            {##}
+            {#$("#cboGroup").html("");#}
+            {#$("#cboDpt").html("");#}
+            {#$("#cboClass").html("");#}
+            {##}
+            {##}
+            {#var empType = "";#}
+            {##}
+            {#let data = {'empType': empType}#}
+            {##}
+            {#$.ajax({#}
+            {#    type: "post",#}
+            {#    data: data,#}
+            {#    url: '{% url "base_emp_search" %}',#}
+            {#    headers: {#}
+            {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
+            {#    },#}
+            {#    dataType: 'json',#}
+            {#    success: function (data) {#}
+            {#        $("#txtEmpNo").val("");#}
+            {#        $("#txtEmpName").val("");#}
+            {#        $("#txtEmpPw").val("");#}
+            {#        $("#cboDpt").html("");#}
+            {#        $("#cboGroup").html("");#}
+            {#        $("#cboCom").val("");#}
+            {#        $("#txtEmpTel").val("");#}
+            {#        $("#txtEmployDate").val("");#}
+            {#        $("#txtQuitDate").val("");#}
+            {#        $("#txtEmp").val("");#}
+            {#        $("#txtLimit").val("");#}
+            {#        $(`#chkPermit`).prop("checked",false);#}
+            {##}
                     {#$(`#chkPermit`).checked = false;#}
-
-                    var combolist = data.jjoCombo;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == group) {
-                            groupTxt = groupTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                        } else {
-                            groupTxt = groupTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist1 = data.dptCombo;
-                    for (var i = 0; i < combolist1.length; i++) {
-                        if (combolist1[i][0] == dpt) {
-                            dptTxt = dptTxt + "<option value='" + combolist1[i][0] + "' selected>" + combolist1[i][1] + "</option>";
-                        } else {
-                            dptTxt = dptTxt + "<option value='" + combolist1[i][0] + "'>" + combolist1[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist2 = data.comClass;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboClass) {
-                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    $("#cboGroup").append(groupTxt);
-                    $("#cboDpt").append(dptTxt);
-                    $("#cboClass").append(cboClassTxt);
-                }
-            })
+            {##}
+            {#        var combolist = data.jjoCombo;#}
+            {#        for (var i = 0; i < combolist.length; i++) {#}
+            {#            if (combolist[i][0] == group) {#}
+            {#                groupTxt = groupTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                groupTxt = groupTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist1 = data.dptCombo;#}
+            {#        for (var i = 0; i < combolist1.length; i++) {#}
+            {#            if (combolist1[i][0] == dpt) {#}
+            {#                dptTxt = dptTxt + "<option value='" + combolist1[i][0] + "' selected>" + combolist1[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                dptTxt = dptTxt + "<option value='" + combolist1[i][0] + "'>" + combolist1[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist2 = data.comClass;#}
+            {#        for (var i = 0; i < combolist2.length; i++) {#}
+            {#            if (combolist2[i][0] == cboClass) {#}
+            {#                cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboClassTxt = cboClassTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        $("#cboGroup").append(groupTxt);#}
+            {#        $("#cboDpt").append(dptTxt);#}
+            {#        $("#cboClass").append(cboClassTxt);#}
+            {#    }#}
+            {#})#}
         });
     </script>
 

@@ -276,7 +276,7 @@ def custViews_save(request):
 
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE CUST_NBR = '" + custCode + "' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
 
     if result:

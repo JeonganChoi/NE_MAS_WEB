@@ -532,74 +532,76 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
-            var cboBank = "";
-            var cboActNum = "";
-            var cboType = "";
-            var cboDay = "";
-            var cboBankTxt = "<option value=''>:: 선택 ::</option>";
-            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
-            var cboTypeTxt = "<option value=''>:: 선택 ::</option>";
-            var cboDayTxt = "<option value=''> :: 선택 :: </option>";
+            location.reload();
 
-            $("#cboBank").html("");
-            $("#cboActNum").html("");
-            $("#cboType").html("");
-            $("#cboDay").html("");
-
-            $.ajax({
-                type: "post",
-                url: '{% url "base_card_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    $("#txtCardNum").val("");
-                    $("#txtPayDate").val("");
-                    $("#txtRemark").val("");
-
-
-                    var combolist2 = data.cboBank;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboBank) {
-                            cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist3 = data.cboAct;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == cboActNum) {
-                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][0] + "</option>";
-                        } else {
-                            cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][0] + "</option>";
-                        }
-                    }
-
-                    var combolist4 = data.cboType;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboType) {
-                            cboTypeTxt = cboTypeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
-                        } else {
-                            cboTypeTxt = cboTypeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
-                        }
-                    }
-
-                    cboDayTxt = cboDayTxt + "<option value=''></option>";
-                    for (var i = 1; i < 32; i++) {
-                        cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";
-                    }
-                    cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
-
-                    $("#cboBank").append(cboBankTxt);
-                    $("#cboActNum").append(cboActNumTxt);
-                    $("#cboType").append(cboTypeTxt);
-                    $("#cboDay").append(cboDayTxt);
-
-                }
-            })
+            {#var cboBank = "";#}
+            {#var cboActNum = "";#}
+            {#var cboType = "";#}
+            {#var cboDay = "";#}
+            {#var cboBankTxt = "<option value=''>:: 선택 ::</option>";#}
+            {#var cboActNumTxt = "<option value=''>:: 선택 ::</option>";#}
+            {#var cboTypeTxt = "<option value=''>:: 선택 ::</option>";#}
+            {#var cboDayTxt = "<option value=''> :: 선택 :: </option>";#}
+            {##}
+            {#$("#cboBank").html("");#}
+            {#$("#cboActNum").html("");#}
+            {#$("#cboType").html("");#}
+            {#$("#cboDay").html("");#}
+            {##}
+            {#$.ajax({#}
+            {#    type: "post",#}
+            {#    url: '{% url "base_card_search" %}',#}
+            {#    headers: {#}
+            {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
+            {#    },#}
+            {#    dataType: 'json',#}
+            {#    success: function (data) {#}
+            {##}
+            {#        $("#txtCardNum").val("");#}
+            {#        $("#txtPayDate").val("");#}
+            {#        $("#txtRemark").val("");#}
+            {##}
+            {##}
+            {#        var combolist2 = data.cboBank;#}
+            {#        for (var i = 0; i < combolist2.length; i++) {#}
+            {#            if (combolist2[i][0] == cboBank) {#}
+            {#                cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboBankTxt = cboBankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist3 = data.cboAct;#}
+            {#        for (var i = 0; i < combolist3.length; i++) {#}
+            {#            if (combolist3[i][0] == cboActNum) {#}
+            {#                cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][0] + "</option>";#}
+            {#            } else {#}
+            {#                cboActNumTxt = cboActNumTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][0] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        var combolist4 = data.cboType;#}
+            {#        for (var i = 0; i < combolist4.length; i++) {#}
+            {#            if (combolist4[i][0] == cboType) {#}
+            {#                cboTypeTxt = cboTypeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";#}
+            {#            } else {#}
+            {#                cboTypeTxt = cboTypeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";#}
+            {#            }#}
+            {#        }#}
+            {##}
+            {#        cboDayTxt = cboDayTxt + "<option value=''></option>";#}
+            {#        for (var i = 1; i < 32; i++) {#}
+            {#            cboDayTxt = cboDayTxt + "<option value='" + i + "'>" + i + "일</option>";#}
+            {#        }#}
+            {#        cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";#}
+            {##}
+            {#        $("#cboBank").append(cboBankTxt);#}
+            {#        $("#cboActNum").append(cboActNumTxt);#}
+            {#        $("#cboType").append(cboTypeTxt);#}
+            {#        $("#cboDay").append(cboDayTxt);#}
+            {##}
+            {#    }#}
+            {#})#}
         });
 
     </script>
