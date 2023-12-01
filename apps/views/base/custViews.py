@@ -348,13 +348,13 @@ def custViews_save(request):
     else:
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(MAX(CUST_NBR) + 1, 1) AS COUNTED FROM MIS1TB003 A "
+            cursor.execute(" SELECT IFNULL(MAX(CUST_NBR) + 1, 0) AS COUNTED FROM MIS1TB003 A "
                            "    WHERE CUST_GBN = '" + str(custType) + "' AND ICUST = '" + str(iCust) + "' ")
             custresult = cursor.fetchall()
             cust = int(custresult[0][0])
 
         if len(str(cust)) < 5:
-            custnumber = str(cust) + '0001'
+            custnumber = str(custType) + '0001'
             print(custnumber)
         else:
             custnumber = cust
