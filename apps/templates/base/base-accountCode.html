@@ -117,11 +117,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-6 col-6">
+                                                    <div class="col-6 addGbn">
                                                         <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>구 분</label>
                                                         <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn_M" id="cboGbn_M"></select>
                                                     </div>
-                                                    <div class="col-lg-6 col-6">
+                                                    <div class="col-6">
                                                         <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-info text-sm"></i>구 분2</label>
                                                         <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn2_M" id="cboGbn2_M"></select>
                                                     </div>
@@ -225,7 +225,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-6 col-6">
+                                                    <div class="col-lg-6 col-6 gbn2">
                                                         <label class="mt-4" style="font-size: 1rem"><i class="fas fa-clone me-2 text-success text-sm"></i>구 분</label>
                                                         <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboGbn_A" id="cboGbn_A"></select>
                                                     </div>
@@ -297,6 +297,9 @@
 
             let mCodeType = document.getElementById('cboCodeType').value;
             let aCodeType = document.getElementById('cboCodeType2').value;
+
+            $('.addGbn').hide();
+
             let data = {'cboCodeType': mCodeType, 'cboCodeType2': aCodeType}
 
             $.ajax({
@@ -408,6 +411,14 @@
 
             let mCodeType = document.getElementById('cboCodeType').value;
             let aCodeType = document.getElementById('cboCodeType2').value;
+
+            if(mCodeType == '4'){
+                $('.addGbn').hide();
+            }
+            if(mCodeType == '5'){
+                $('.addGbn').show();
+            }
+
             let data = {'cboCodeType': mCodeType, 'cboCodeType2': aCodeType}
 
             $.ajax({
@@ -443,6 +454,7 @@
 
             let mCodeType = document.getElementById('cboCodeType').value;
             let aCodeType = document.getElementById('cboCodeType2').value;
+
             let data = {'cboCodeType': mCodeType,'cboCodeType2': aCodeType}
 
             $.ajax({

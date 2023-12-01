@@ -269,7 +269,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div hidden class="table-responsive-sm overflow-auto">
+                                        <div  class="table-responsive-sm overflow-auto">
                                             <table class="table mb-0 align-items-center justify-content-center" id="signTb">
                                               <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
 
@@ -511,11 +511,11 @@
 
                     $("#modalSubTd").append(
                         "<tr id='modalSubTr" + empNbr + "' class='modalSubTr_tr'>" +
-                        "<td hidden class='text-start p-1' id='empDpt_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empDpt + "</td>" +
-                        "<td hidden class='text-start p-1' id='empGbn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empGbn + "</td> " +
-                        "<td hidden class='text-start p-1' name='empNbr' id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
+                        "<td hidden class='text-start p-1 empDpt' id='empDpt_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empDpt + "</td>" +
+                        "<td hidden class='text-start p-1 empGbn' id='empGbn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empGbn + "</td> " +
+                        "<td hidden class='text-start p-1 empNbr' name='empNbr' id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
                         "<td class='text-start p-1'  id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
-                        "<td class='text-start p-1' id='empNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNme + "</td> " +
+                        "<td class='text-start p-1 empNme' id='empNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNme + "</td> " +
                         "</tr> ");
 
                 }
@@ -531,15 +531,14 @@
 
 
 
-            const tbRow = $('#modalSubTd tr').length;
+            const tbRow = $('#modalSubTd tr');
 
             var empArr = [];
-            for (var i = 0; i < tbRow; i++) {
-
-                var empDpt = $('#empDpt_' + i).text();
-                var empGbn = $('#empGbn_' + i).text();
-                var empNbr = $('#empNbr_' + i).text();
-                var empNme = $('#empNme_' + i).text();
+            tbRow.each(function() {
+                var empDpt = $(this).find('.empDpt').text();
+                var empGbn = $(this).find('.empGbn').text();
+                var empNbr = $(this).find('.empNbr').text();
+                var empNme = $(this).find('.empNme').text();
 
                 let data = {
                     'empDpt': empDpt,
@@ -549,8 +548,8 @@
                 };
 
                 empArr.push(data);
+            });
 
-            }
 
             $("#signTd").html("");
             $("#signTd").append("<tr id='signTdTr' class='signTdTr_tr'>" + + " </tr>" );
