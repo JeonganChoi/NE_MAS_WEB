@@ -574,6 +574,12 @@
 
             if (saveresult == true) {
 
+                var custType = document.getElementById('cboCustType').value;
+                if(custType == ''){
+                    alert('업체 분류를 선택해주세요.')
+                    return false
+                }
+
                 var Count = 0;
                 $("#custTb tr td input[name='custBank']").each(function (index, ele) {
                     var ele_val = $(ele).val();
