@@ -155,7 +155,7 @@
                             bal += parseInt(list[i][2])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
@@ -167,10 +167,10 @@
                         }
                         if(list[i][0] == '1'){
                             {# 출금 #}
-                            bal -= parseInt(list[i][2])
+                            bal -= parseInt(list[i][3])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
@@ -257,7 +257,7 @@
                             bal += parseInt(list[i][2])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
@@ -269,10 +269,10 @@
                         }
                         if(list[i][0] == '1'){
                             {# 출금 #}
-                            bal -= parseInt(list[i][2])
+                            bal -= parseInt(list[i][3])
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +

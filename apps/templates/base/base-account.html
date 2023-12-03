@@ -375,7 +375,8 @@
                             });
                         }
                         if(saveresult == false){
-                            alert('수정을 취소 하였습니다..')
+                            alert('수정을 취소 하였습니다.')
+                            return false;
                         }
                     }
                     else{
@@ -384,21 +385,28 @@
                             , 'eprDate': eprDate, 'actNme': actNme, 'amts': amts, 'remark': remark, 'user': user
                         }
 
-                        $.ajax({
-                            type: "post",
-                            data: data2,
-                            dataType: "json",
-                            url: '{% url "base_account_save" %}',
-                            headers: {
-                                'X-CSRFTOKEN': '{{ csrf_token }}'
-                            },
-                            success: function (data) {
-                                if (data.sucYn === 'Y') {
-                                    alert('저장 되었습니다.')
-                                    location.href = "{% url 'base_account' %}";
+                        var confirmresult = confirm("저장하시겠습니까?")
+                        if(confirmresult == true){
+                            $.ajax({
+                                type: "post",
+                                data: data2,
+                                dataType: "json",
+                                url: '{% url "base_account_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('저장 되었습니다.')
+                                        location.href = "{% url 'base_account' %}";
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                        if(confirmresult == false){
+                            alert('저장을 취소 하였습니다.')
+                            return false;
+                        }
                     }
                 }
             });

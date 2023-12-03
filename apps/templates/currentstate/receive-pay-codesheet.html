@@ -83,8 +83,8 @@
         <div class="row mt-n1">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
-                    <div class="card-body">
+                <div class="card bg-gradient-primary">
+                    <div class="card-body bg-transparent">
                         <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>계정별 내역서</h5>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                             </div>
                           </div>
                           <div class="p-2 col-lg-1 col-1 text-start">
-                            <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                            <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fa fa-search fs-6 me-2"></i>조회</button>
                           </div>
                           <div class="p-2 col-lg-6 col-6 text-start">
                           </div>
@@ -272,24 +272,16 @@
                     count = list.length;
                     {# 통장 이월 #}
                     var total = 0;
-                    for (var i = 0; i < count; i++) {
-                        total += Number(list2[i][0])
-                        $("#sheetTb").append(
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list2[i][0]) + "</td>");
+                    for (var i = 0; i < list2.length; i++) {
+                        total = Number(list2[i][0])
+                         $("#sheetTb").append(
+                             "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'</td> " +
+                             "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td>");
                     }
-                    var num = 0;
-                    num = count
-                    num += (count - list2.length)
-                    for (var i = 0; i < num; i++) {
-                        total += Number(list2[i][0])
-                        $("#sheetTb").append(
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>0</td>");
-                    }
-                     $("#sheetTb").append(
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td>");
 
                     {# 계정별 #}
                     for (var i = 0; i < list3.length; i++) {
@@ -306,7 +298,7 @@
                             }
                             $("#sheetTb").append(
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total + list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(parseInt(total) + parseInt(list3[i][12])) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + (Math.round((list3[i][12] / list4 )* 100).toFixed(2)) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> ");
                         }
@@ -324,7 +316,7 @@
                             }
                             $("#sheetTb").append(
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total - list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(parseInt(total) - parseInt(list3[i][12])) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + (Math.round((list3[i][12] / list5 )* 100).toFixed(2)) + "</td> ");
                         }
@@ -392,34 +384,26 @@
                     count = list.length;
                     {# 통장 이월 #}
                     var total = 0;
+
                     for (var i = 0; i < list2.length; i++) {
-                        total += Number(list2[i][0])
-                        if(list2[i][0]){
-                            $("#sheetTb").append(
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list2[i][0]) + "</td>");
-                        }
+                        total = Number(list2[i][0])
+                         $("#sheetTb").append(
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'</td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td>");
                     }
-                    var num = 0;
-                    num = count;
-                    num += (count - list2.length)
-                    for (var i = 0; i < num; i++) {
-                        $("#sheetTb").append(
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>0</td>");
-                    }
-                     $("#sheetTb").append(
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td>");
 
                     {# 계정별 #}
                     for (var i = 0; i < list3.length; i++) {
                         {#입금#}
                         if(list3[i][10].startsWith('4') === true) {
-                            $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");
+                            $("#sheetTb").append("<tr  id='#sheetTrs' class='sheetTr_tr'>" +"</tr> ");
                             for (var j = 0; j < count; j++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list3[i][j]) + "</td>");
+                                    "<td class='text-start border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list3[i][j]) + "</td>");
                             }
                             for (var j = 0; j < count; j++) {
                                 $("#sheetTb").append(
@@ -427,7 +411,7 @@
                             }
                             $("#sheetTb").append(
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total + list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total + parseInt(list3[i][12])) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + (Math.round((list3[i][12] / list4 )* 100).toFixed(2)) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> ");
                         }
@@ -444,7 +428,7 @@
                             }
                             $("#sheetTb").append(
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total - list3[i][12]) + "</td> " +
+                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total - parseInt(list3[i][12])) + "</td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
                                 "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + (Math.round((list3[i][12] / list5 )* 100).toFixed(2)) + "</td> ");
                         }
@@ -452,5 +436,22 @@
                 }
             })
         });
+    </script>
+
+    <script>
+            {#for (var i = 0; i < list2.length; i++) {#}
+        {#    total += Number(list2[i][0])#}
+        {#    if(list2[i][0]){#}
+        {#        $("#sheetTb").append(#}
+        {#        "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list2[i][0]) + "</td>");#}
+        {#    }#}
+        {#}#}
+        {#var num = 0;#}
+        {#num = count;#}
+        {#num += (count - list2.length)#}
+        {#for (var i = 0; i < num; i++) {#}
+        {#    $("#sheetTb").append(#}
+        {#        "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>0</td>");#}
+        {#}#}
     </script>
 {% endblock %}

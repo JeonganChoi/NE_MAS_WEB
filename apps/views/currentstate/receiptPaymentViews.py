@@ -42,7 +42,7 @@ def receiptPaymentViews_search(request):
             #                "    WHERE ACDATE > '" + strDate + "' AND ACCUST = '" + cust + "' AND ACACNUMBER = '" + act + "' ")
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
+            cursor.execute("  SELECT IFNULL(ACIOGB, ''), IFNULL(ACDATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0), IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '') FROM "
                            " ( "
                            "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
                            "     FROM SISACCTT A "
@@ -92,7 +92,7 @@ def receiptPaymentViews_search(request):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
+                "  SELECT IFNULL(ACIOGB, ''), IFNULL(ACDATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0), IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '') FROM "
                 " ( "
                 "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
                 "     FROM SISACCTT A "
@@ -125,14 +125,14 @@ def receiptPaymentViews_search(request):
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
                            " (SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
                            " UNION ALL "
-                           " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE ACIOGB = '2' AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
                            " UNION ALL "
-                           " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT WHERE ACIOGB = '1' AND ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
                            " ) AA ")
             balresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute("  SELECT ACIOGB, ACDATE, IN_ACAMTS, OUT_ACAMTS, ACCUST, CUST_NME, ACACNUMBER, ACNUM_NAME FROM "
+            cursor.execute("  SELECT IFNULL(ACIOGB, ''), IFNULL(ACDATE, ''), IFNULL(IN_ACAMTS, 0), IFNULL(OUT_ACAMTS, 0), IFNULL(ACCUST, ''), IFNULL(CUST_NME, ''), IFNULL(ACACNUMBER, ''), IFNULL(ACNUM_NAME, '') FROM "
                             " ( "
                             "     SELECT A.ACIOGB, A.ACDATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME, A.ACACNUMBER, C.ACNUM_NAME "
                             "     FROM SISACCTT A "

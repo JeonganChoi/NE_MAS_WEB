@@ -93,7 +93,7 @@ def receivepaySheetViews_search(request):
                            "         ) UN "
                            " LEFT OUTER JOIN ACNUMBER CC "
                            " ON UN.ACACNUMBER = CC.ACNUMBER "
-                           " WHERE UN.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND CC.ACBKCD = '" + str(cboBank) + "'  ORDER BY UN.ACDATE ")
+                           " WHERE UN.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND CC.ACBKCD = '" + str(cboBank) + "'  ORDER BY UN.ACDATE ")
 
             mainresult = cursor.fetchall()
 
@@ -103,7 +103,7 @@ def receivepaySheetViews_search(request):
                            " ON A.MCODE = B.MCODE "
                            " LEFT OUTER JOIN ACNUMBER C "
                            " ON A.ACACNUMBER = C.ACNUMBER "
-                           " WHERE A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND C.ACBKCD = '" + str(cboBank) + "' AND A.ICUST = '" + str(iCust) + "' "
+                           " WHERE A.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND C.ACBKCD = '" + str(cboBank) + "' AND A.ICUST = '" + str(iCust) + "' "
                            " GROUP BY A.MCODE, B.MCODENM ")
 
             subresult = cursor.fetchall()
@@ -119,7 +119,7 @@ def receivepaySheetViews_search(request):
                            "         ,(SELECT IFNULL(SUM(ACAMTS), 0) AS OAMTS FROM SISACCTT WHERE ACIOGB = '1' AND ACDATE < '" + strDate + "' AND ACACNUMBER = '" + str(cboAccount) + "' AND ICUST = '" + str(iCust) + "') AS OAMTS "
                            "         ,(SELECT IFNULL(SUM(ACAMTS), 0) AS IAMTS FROM SISACCTT WHERE ACIOGB = '2' AND ACDATE < '" + strDate + "' AND ACACNUMBER = '" + str(cboAccount) + "' AND ICUST = '" + str(iCust) + "') AS IAMTS "
                            "          FROM ACBALANCE"
-                           "          WHERE ACDATE < '" + strDate + "' AND ACNUMBER = '" + str(cboAccount) + "' AND ICUST = '" + str(iCust) + "' "
+                           "          WHERE ACDATE < '" + str(strDate) + "' AND ACNUMBER = '" + str(cboAccount) + "' AND ICUST = '" + str(iCust) + "' "
                            " ) A ")
 
             totalresult = cursor.fetchall()
@@ -168,7 +168,7 @@ def receivepaySheetViews_search(request):
                            "         WHERE A.ACIOGB = '2' "
                            "         AND A.ICUST = '" + str(iCust) + "' "
                            "         ) UN "
-                           " WHERE UN.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND UN.ACACNUMBER = '" + str(cboAccount) + "'  ORDER BY UN.ACDATE ")
+                           " WHERE UN.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND UN.ACACNUMBER = '" + str(cboAccount) + "'  ORDER BY UN.ACDATE ")
 
             mainresult = cursor.fetchall()
 
@@ -176,7 +176,7 @@ def receivepaySheetViews_search(request):
             cursor.execute(" SELECT A.MCODE, B.MCODENM, SUM(A.ACAMTS) FROM SISACCTT A "
                            " LEFT OUTER JOIN OSCODEM B "
                            " ON A.MCODE = B.MCODE "
-                           " WHERE A.ACDATE BETWEEN '" + strDate + "' AND '" + endDate + "' AND A.ACACNUMBER = '" + str(cboAccount) + "' AND A.ICUST = '" + str(iCust) + "' "
+                           " WHERE A.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND A.ACACNUMBER = '" + str(cboAccount) + "' AND A.ICUST = '" + str(iCust) + "' "
                            " GROUP BY A.MCODE, B.MCODENM ")
 
         subresult = cursor.fetchall()
