@@ -344,7 +344,7 @@ def empViews_save(request):
 
         uploaded_file = destination
 
-    if charge != 'CHARGE':
+    if charge != '111':
         charge = ''
 
     if limit == '' or limit is None:

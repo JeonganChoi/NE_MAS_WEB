@@ -50,10 +50,16 @@
                         <div class="row p-0">
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>은행명</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-0" name="inputBank" id="inputBank" style="font-size: 0.8rem; height: 2rem"></select>
+                                </div>
+                            </div>
+                            <!--<div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>거래처</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌번호</label>
@@ -196,8 +202,8 @@
                                         <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>지급정보</label>
+                                    <div class="col-6 writer">
+                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>수정인 정보</label>
                                         <input class="form-control text-start" type="text" id="txtInfo" name="txtInfo" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -258,7 +264,7 @@
                                         <div><span id="file_name"></span></div>
                                     </div>
                                     <div class="col-6 text-start line">
-                                        <label class="form-label"><i class="fas fa-pen me-2"></i>결재선 지정</label>
+                                        <label class="form-label"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
                                         <div class="form-group mt-2 mb-0">
                                             <div class="row">
                                                 <div class="col-6 text-start">
@@ -572,7 +578,7 @@
 
     <script>
         $(document).ready(function () {
-
+            var inputBank = "";
             var cboCust = "";
             var cboAct = "";
             var cboWitCust2 = "";
@@ -582,6 +588,7 @@
             var cboWitActNum = "";
             var cboWitCard = "";
             var cboBank = "";
+            var inputBankTxt = "<option value=''>:: 선택 ::</option>";
             var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboActTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";
@@ -592,7 +599,8 @@
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
             var cboBankTxt = "<option value=''>:: 선택 ::</option>";
 
-            $("#inputCust").html("");
+            {#$("#inputCust").html("");#}
+            $("#inputActName").html("");
             $("#inputAct").html("");
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
@@ -611,7 +619,7 @@
             $('.basic').show();
             $('.replace').hide();
             {#$('.method').show();#}
-            {#$('.cboCard').hide();#}
+            {#$('.writer').hide();#}
             {#$('.cboBank').hide();#}
             {#$('.cboAct').hide();#}
 
@@ -725,13 +733,13 @@
 
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
-            var cboCust = document.getElementById('inputCust').value;
+            var inputBank = document.getElementById('inputBank').value;
             var cboAct = document.getElementById('inputAct').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust, "cboAct": cboAct}
+            let data = {"strDate": strDate, "endDate": endDate, "inputBank": inputBank, "cboAct": cboAct}
 
             $.ajax({
                 type: "post",
@@ -834,12 +842,12 @@
                     total = addComma(total)
                     document.getElementById("inputBal").value = total;
 
-                    var combolist = data.cboCust;
+                    var combolist = data.inputBank;
                     for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboCust) {
-                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        if (combolist[i][0] == inputBank) {
+                            inputBankTxt = inputBankTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                         } else {
-                            cboCustTxt = cboCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                            inputBankTxt = inputBankTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
 
@@ -851,7 +859,7 @@
                             cboActTxt = cboActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
                         }
                     }
-                    $("#inputCust").append(cboCustTxt);
+                    $("#inputBank").append(inputBankTxt);
                     $("#inputAct").append(cboActTxt);
 
 
@@ -863,13 +871,13 @@
         $(document).on('click', '#btnSearch', function () {
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
-            var cboCust = document.getElementById('inputCust').value;
+            var inputBank = document.getElementById('inputBank').value;
             var cboAct = document.getElementById('inputAct').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "cboCust": cboCust, "cboAct": cboAct}
+            let data = {"strDate": strDate, "endDate": endDate, "inputBank": inputBank, "cboAct": cboAct}
 
             $.ajax({
                 type: "post",
@@ -952,6 +960,41 @@
             })
         });
 
+        {# 결제방법 선택시 계좌명 바인딩 #}
+        $('#inputBank').change(function () {
+
+            var inputAct = "";
+            var inputActTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#inputAct").html("");
+
+            var inputBank = document.getElementById('inputBank').value;
+
+            let data = {"inputBank": inputBank}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "cboBank" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist2 = data.cboAct;
+                    for (var i = 0; i < combolist2.length; i++) {
+                        if (combolist2[i][0] == inputAct) {
+                            inputActTxt = inputActTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        } else {
+                            inputActTxt = inputActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#inputAct").append(inputActTxt);
+                }
+            })
+        });
 
         {# 파일 선택 버튼 클릭시 #}
         $(document).on('click', '#btnFile', function () {
@@ -1174,12 +1217,27 @@
                 $('.cboCard').show();
                 $('.cboAct').show();
                 $('.cboBank').show();
+                $('.writer').hide();
             }
-            else{
+            if(method == '2'){
                 $('.cboCard').hide();
                 $('.cboBank').show();
                 $('.cboAct').show();
+                $('.writer').hide();
             }
+            if(method == '1'){
+                $('.cboCard').hide();
+                $('.cboBank').show();
+                $('.cboAct').show();
+                $('.writer').show();
+            }
+            else{
+                $('.cboCard').show();
+                $('.cboBank').show();
+                $('.cboAct').show();
+                $('.writer').show();
+            }
+
         });
 
 

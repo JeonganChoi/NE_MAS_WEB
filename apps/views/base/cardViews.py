@@ -19,14 +19,16 @@ def cardViews_search(request):
     cardNum = request.POST.get('cardNum')
     actNum = request.POST.get('actNum')
     bankCode = request.POST.get('bankCode')
+    cardType = request.POST.get('cardType')
+    cardName = request.POST.get('cardName')
     user = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
-    if cardNum and actNum:
+    if cardType != '' and cardName != '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
                            "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
-                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '') "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
@@ -34,6 +36,70 @@ def cardViews_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.GBN = C.RESKEY "
                            " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
+                           " WHERE A.GBN = '" + str(cardType) + "' "
+                           "   AND A.CARDTYPE = '" + str(cardName) + "' "
+                           "   AND A.ICUST = '" + str(iCust) + "' ")
+            cardresult = cursor.fetchall()
+        return JsonResponse({'cardList': cardresult})
+
+    if cardType != '' and cardName == '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
+                           "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '') "
+                           " FROM ACCARD A "
+                           " LEFT OUTER JOIN OSREFCP B "
+                           " ON A.ACBKCD = B.RESKEY "
+                           " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.GBN = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
+                           " WHERE A.GBN = '" + str(cardType) + "' "
+                           "   AND A.ICUST = '" + str(iCust) + "' ")
+            cardresult = cursor.fetchall()
+        return JsonResponse({'cardList': cardresult})
+
+    if cardType == '' and cardName != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
+                           "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '') "
+                           " FROM ACCARD A "
+                           " LEFT OUTER JOIN OSREFCP B "
+                           " ON A.ACBKCD = B.RESKEY "
+                           " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.GBN = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
+                           " WHERE A.CARDTYPE = '" + str(cardName) + "' "
+                           "   AND A.ICUST = '" + str(iCust) + "' ")
+            cardresult = cursor.fetchall()
+        return JsonResponse({'cardList': cardresult})
+
+    if cardNum != '' and actNum != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
+                           "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '') "
+                           " FROM ACCARD A "
+                           " LEFT OUTER JOIN OSREFCP B "
+                           " ON A.ACBKCD = B.RESKEY "
+                           " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.GBN = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
                            " WHERE A.CARDNUM = '" + str(cardNum) + "' "
                            "   AND A.ACNUMBER = '" + str(actNum) + "' "
                            "   AND A.ACBKCD = '" + str(bankCode) + "' "
@@ -52,13 +118,17 @@ def cardViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' AND ICUST = '" + str(iCust) + "' ")
             cboType = cursor.fetchall()
 
-        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cboCardName = cursor.fetchall()
 
-    elif bankCode:
+        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType, "cboCardName": cboCardName})
+
+    elif bankCode != '' and actNum == '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
                            "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
-                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '') "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
@@ -66,6 +136,9 @@ def cardViews_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.GBN = C.RESKEY "
                            " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
                            " WHERE A.ACBKCD = '" + str(bankCode) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()
@@ -80,7 +153,7 @@ def cardViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, '')"
                            "        , IFNULL(B.RESNAM, ''), IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '')"
-                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, '')  "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '')  "
                            " FROM ACCARD A "
                            " LEFT OUTER JOIN OSREFCP B "
                            " ON A.ACBKCD = B.RESKEY "
@@ -88,6 +161,9 @@ def cardViews_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.GBN = C.RESKEY "
                            " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
                            " WHERE A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()
 
@@ -103,7 +179,12 @@ def cardViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' AND ICUST = '" + str(iCust) + "' ")
             cboType = cursor.fetchall()
 
-        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType})
+        # 카드종류
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cboCardName = cursor.fetchall()
+
+        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType, "cboCardName": cboCardName})
 
 
 def chkCard_search(request):
@@ -122,17 +203,19 @@ def cardViews_save(request):
     payDate = request.POST.get('cboDay')
     acRemark = request.POST.get('txtRemark')
     cardType = request.POST.get('cboType')
+    cardName = request.POST.get('cardName')
     user = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDNUM = '" + cardNum + "' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDNUM = '" + cardNum + "'  AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
 
     if result:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE ACCARD SET"
                            "     ACNUMBER = '" + str(actNum) + "' "
+                           ",    CARDTYPE = '" + str(cardName) + "' "
                            ",    GBN = '" + str(cardType) + "' "
                            ",    ACBKCD = '" + str(cboBank) + "' "
                            ",    ACPAYDTE = '" + str(payDate) + "' "
@@ -156,6 +239,7 @@ def cardViews_save(request):
                            ",    ACBKCD "
                            ",    ACPAYDTE "
                            ",    ACDESC "
+                           ",    CARDTYPE "
                            ",    CRE_USER " 
                            ",    CRE_DT "
                            ",    ICUST "
@@ -168,6 +252,7 @@ def cardViews_save(request):
                            ",   '" + str(cboBank) + "' "
                            ",   '" + str(payDate) + "' "
                            ",   '" + str(acRemark) + "' "
+                           ",   '" + str(cardName) + "' "
                            ",   '" + user + "' "
                            ",   date_format(now(), '%Y%m%d') "
                            ",   '" + str(iCust) + "' "

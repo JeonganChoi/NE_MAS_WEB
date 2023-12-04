@@ -57,6 +57,7 @@
                                         <col width="6%">
                                         <col width="6%">
                                         <col width="6%">
+                                        <col width="6%">
                                     </colgroup>
                                     <thead class="bg-dark text-white text-center font-weight-bolder">
                                     <tr>
@@ -73,6 +74,7 @@
                                         <th style="font-size: 0.85rem" class="p-1">10월</th>
                                         <th style="font-size: 0.85rem" class="p-1">11월</th>
                                         <th style="font-size: 0.85rem" class="p-1">12월</th>
+                                        <th style="font-size: 0.85rem" class="p-1">합 계</th>
                                     </tr>
                                     <tbody class="list" id="targetTb">
                                     <tr id="targetTr" class="targetTr_tr">
@@ -111,6 +113,11 @@
                     $("#targetTb").html("");
                     for (var i = 0; i < list.length; i++) {
 
+                        var total = 0;
+                        for (var j = 1; j < 13; j++) {
+                            total += parseInt(list[i][j])
+                        }
+
                         $("#targetTb").append(
                             "<tr id='#targetTr'>" +
                             "<td hidden><input style='width: 5rem' class='border-0 text-sm text-center' type='text' id='iCode_" + i + "' name='iCode' value='" + list[i][13] + "'></td>" +
@@ -128,6 +135,7 @@
                             "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='month10_" + i + "' name='month10' value='" + addComma(list[i][10]) + "'></td> " +
                             "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='month11_" + i + "' name='month11' value='" + addComma(list[i][11]) + "'></td> " +
                             "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='month12_" + i + "' name='month12' value='" + addComma(list[i][12]) + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='total_" + i + "' name='total' value='" + addComma(total) + "'></td> " +
                             "</tr> ");
                     }
 
@@ -158,6 +166,12 @@
                     var list = data.targetList;
                     $("#targetTb").html("");
                     for (var i = 0; i < list.length; i++) {
+
+                        var total = 0;
+                        for (var j = 1; j < 13; j++) {
+                            total += parseInt(list[i][j])
+                        }
+
                         $("#targetTb").append(
                             "<tr id='#targetTr'>" +
                             "<td hidden><input style='width: 5rem' class='border-0 text-sm text-center' type='text' id='iCode_" + i + "' name='iCode' value='" + list[i][13] + "'></td>" +
@@ -175,6 +189,7 @@
                             "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='month10_" + i + "' name='month10' value='" + addComma(list[i][10]) + "'></td> " +
                             "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='month11_" + i + "' name='month11' value='" + addComma(list[i][11]) + "'></td> " +
                             "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='month12_" + i + "' name='month12' value='" + addComma(list[i][12]) + "'></td> " +
+                            "<td class='p-0'><input class='form-control border-0 text-dark text-end shadow-none p-1' type='text' id='total_" + i + "' name='total' value='" + addComma(total) + "'></td> " +
                             "</tr> ");
                     }
                 }

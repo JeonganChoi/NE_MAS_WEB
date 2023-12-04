@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="col-6 text-end">
                                     <label class="text-danger mt-4 me-2" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승 인</label>
-                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="charge"/>
+                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="111"/>
                                 </div>
                             </div>
                             <div class="row mt-4">
@@ -520,7 +520,7 @@
                         {#document.getElementById("sign").dataset.origin = imglc + itemimg;#}
                     }
 
-                    if(chkPermit == 'CHARGE'){
+                    if(chkPermit == '111'){
                         {#$(`#chkPermit`).trigger('click');#}
                         $(`#chkPermit`).prop("checked",true);
                     }
@@ -686,7 +686,20 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
-            location.reload();
+            $("#txtEmpNo").val("");
+            $("#txtEmpName").val("");
+            $("#txtEmpPw").val("");
+            $("#cboDpt").val("");
+            $("#cboGroup").val("");
+            $("#cboCom").val("");
+            $("#txtEmpTel").val("");
+            $("#txtEmployDate").val("");
+            $("#txtQuitDate").val("");
+            $("#txtEmp").val("");
+            $("#txtLimit").val("");
+            $(`#chkPermit`).prop("checked",false);
+
+            {#location.reload();#}
             {#var group = "";#}
             {#var dpt = "";#}
             {#var cboClass = "";#}

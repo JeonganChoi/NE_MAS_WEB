@@ -41,7 +41,7 @@ def loginView(request):
                     if result[0][5] != '':
                         USER_CHARGE = result[0][5]
                     else:
-                        USER_CHARGE = 'NO'
+                        USER_CHARGE = '0'
                     request.session['userId'] = userId
                     request.session['USER_NM'] = USER_NM
                     request.session['USER_GBN'] = USER_GBN
