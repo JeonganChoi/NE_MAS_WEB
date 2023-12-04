@@ -91,78 +91,77 @@ def empViews_search(request):
         return JsonResponse({"empList": empresult})
 
     if empCode != '' and empType != '':
-        if empCode != '' and empType == '':
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT "
-                    "       A.EMP_NBR "
-                    "     , IFNULL(A.EMP_GBN, '') "
-                    "     , IFNULL(A.EMP_NME, '') "
-                    "     , IFNULL(A.EMP_PASS, '') "
-                    "     , IFNULL(A.EMP_IPSA, '') "
-                    "     , IFNULL(A.EMP_TESA, '') "
-                    "     , IFNULL(A.EMP_JO, '') "
-                    "     , IFNULL(C.RESNAM, '') "
-                    "     , IFNULL(A.EMP_DEPT, '') "
-                    "     , IFNULL(B.RESNAM, '') "
-                    "     , IFNULL(A.EMP_TEL, '') "
-                    "     , IFNULL(A.EMP_COM, '') "
-                    "     , IFNULL(H.RESNAM, '') "
-                    "     , IFNULL(A.ICUST, '') "
-                    "     , IFNULL(A.EMP_CLS, '')"
-                    "     , IFNULL(A.EMP_FOLDER, '') "
-                    "     , IFNULL(A.EMP_LIMIT, '') "
-                    "     , IFNULL(D.CUST_NME, '') "
-                    "     , IFNULL(A.EMP_CHARGE, '') "
-                    "   FROM pis1tb001 A "
-                    "   LEFT OUTER JOIN osrefcp B "
-                    "   ON B.RECODE = 'DPT' "
-                    "   AND A.EMP_DEPT = B.RESKEY "
-                    "   LEFT OUTER JOIN osrefcp C "
-                    "   ON C.RECODE = 'JJO' "
-                    "   AND A.EMP_JO = C.RESKEY "
-                    "   LEFT OUTER JOIN osrefcp H "
-                    "   ON H.RECODE = 'COM' "
-                    "   AND A.EMP_COM = H.RESKEY "
-                    "   LEFT OUTER JOIN ACCOMLIST D "
-                    "   ON A.ICUST = D.CUST_NBR "
-                    "   WHERE A.EMP_NBR LIKE '%" + empCode + "%' "
-                     "   OR A.EMP_NME LIKE '%" + empCode + "%' "
-                      "   AND A.ICUST = '" + str(iCust) + "' "
-                )
-                empresult = cursor.fetchall()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT "
+                "       A.EMP_NBR "
+                "     , IFNULL(A.EMP_GBN, '') "
+                "     , IFNULL(A.EMP_NME, '') "
+                "     , IFNULL(A.EMP_PASS, '') "
+                "     , IFNULL(A.EMP_IPSA, '') "
+                "     , IFNULL(A.EMP_TESA, '') "
+                "     , IFNULL(A.EMP_JO, '') "
+                "     , IFNULL(C.RESNAM, '') "
+                "     , IFNULL(A.EMP_DEPT, '') "
+                "     , IFNULL(B.RESNAM, '') "
+                "     , IFNULL(A.EMP_TEL, '') "
+                "     , IFNULL(A.EMP_COM, '') "
+                "     , IFNULL(H.RESNAM, '') "
+                "     , IFNULL(A.ICUST, '') "
+                "     , IFNULL(A.EMP_CLS, '')"
+                "     , IFNULL(A.EMP_FOLDER, '') "
+                "     , IFNULL(A.EMP_LIMIT, '') "
+                "     , IFNULL(D.CUST_NME, '') "
+                "     , IFNULL(A.EMP_CHARGE, '') "
+                "   FROM pis1tb001 A "
+                "   LEFT OUTER JOIN osrefcp B "
+                "   ON B.RECODE = 'DPT' "
+                "   AND A.EMP_DEPT = B.RESKEY "
+                "   LEFT OUTER JOIN osrefcp C "
+                "   ON C.RECODE = 'JJO' "
+                "   AND A.EMP_JO = C.RESKEY "
+                "   LEFT OUTER JOIN osrefcp H "
+                "   ON H.RECODE = 'COM' "
+                "   AND A.EMP_COM = H.RESKEY "
+                "   LEFT OUTER JOIN ACCOMLIST D "
+                "   ON A.ICUST = D.CUST_NBR "
+                "   WHERE A.EMP_NBR LIKE '%" + empCode + "%' "
+                 "   OR A.EMP_NME LIKE '%" + empCode + "%' "
+                  "   AND A.ICUST = '" + str(iCust) + "' "
+            )
+            empresult = cursor.fetchall()
 
-            # 근무조 - 콤보박스
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'JJO' AND ICUST = '" + str(iCust) + "' ")
-                jjoCombo = cursor.fetchall()
+        # 근무조 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'JJO' AND ICUST = '" + str(iCust) + "' ")
+            jjoCombo = cursor.fetchall()
 
-            # 부서 - 콤보박스
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' AND ICUST = '" + str(iCust) + "' ")
-                dptCombo = cursor.fetchall()
+        # 부서 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'DPT' AND ICUST = '" + str(iCust) + "' ")
+            dptCombo = cursor.fetchall()
 
-            # 공정 - 콤보박스
-            # with connection.cursor() as cursor:
-            #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'POP' ")
-            #     bomCombo = cursor.fetchall()
+        # 공정 - 콤보박스
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'POP' ")
+        #     bomCombo = cursor.fetchall()
 
-            # 사업장 - 콤보박스
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' AND ICUST = '" + str(iCust) + "' ")
-                comCombo = cursor.fetchall()
+        # 사업장 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COM' AND ICUST = '" + str(iCust) + "' ")
+            comCombo = cursor.fetchall()
 
-            # 등급 - 콤보박스
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
-                comClass = cursor.fetchall()
+        # 등급 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
+            comClass = cursor.fetchall()
 
-            return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass
-                                    , "empList": empresult})
+        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass
+                                , "empList": empresult})
 
     if empCode != '' and empType == '':
         with connection.cursor() as cursor:

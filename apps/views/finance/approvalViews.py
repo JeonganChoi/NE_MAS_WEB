@@ -23,7 +23,6 @@ def approvalViews_search(request):
     acIogb = request.POST.get('acIogb')
 
     # 미결재
-
     if gbn == '2':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"

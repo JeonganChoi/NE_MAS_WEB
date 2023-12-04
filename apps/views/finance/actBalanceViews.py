@@ -145,6 +145,7 @@ def actBalRegViews_save(request):
                                "     ACAMTS  = '" + str(actAmts) + "' "
                                ",    ACDESC = '" + str(actDesc) + "' "
                                ",    UPD_USER = '" + str(user) + "' "
+                               ",    ACDATE = '" + str(actDate) + "' "
                                ",    UPD_DT = date_format(now(), '%Y%m%d') "
                                "     WHERE ACNUMBER = '" + str(actNum) + "' "
                                "       AND ICUST = '" + str(iCust) + "'"
