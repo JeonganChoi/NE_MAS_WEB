@@ -170,112 +170,140 @@
                 success: function (data) {
                     var list = data.headerList;
                     {# 매입/매출 #}
-                    var list2 = data.headList;
-                    {# 출금/입금 #}
-                    var list3 = data.headList2;
+                    var list2 = data.inheadList;
+                    var list3 = data.outheadList;
+                    {# 입금/출금 #}
+                    var list4 = data.deheadList;
+                    var list5 = data.wiheadList;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
-
+                    {# 입금/매출/매입/출금 #}
                     {# 1번째줄 헤더 #}
+                    var hCount = list2.length;
+                    var hCount2 = list3.length;
+                    var hCount3 = list4.length;
+                    var hCount4 = list5.length;
                     $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem; background-color: rgb(0, 92, 151);' rowspan='3'>구분</td>");
                     for (var i = 0; i < list.length; i++) {
-                        if (list[i][0] === '1') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('4') === true){
-                                    hCount += 1;
-                                    hDeposit += 1;
-                                }
+                        if(hCount3 > 0){
+                            for (var j = 0; j < list4.length; i++) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount3 + "'>" + list[i][1] + "</td>");
                             }
-                            if(hCount > 0) {
+                        }
+                        if(hCount2 > 0) {
+                            for (var h = 0; h < list3.length; i++) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount2 + "'>" + list[i][1] + "</td>");
+                            }
+                        }
+                        if(hCount > 0) {
+                            for (var k = 0; k < list2.length; i++) {
                                 $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount + "'>" + list[i][1] + "</td>");
                             }
                         }
-                        hCount = 0;
-                        if (list[i][0] === '2') {
-                            for (var j = 0; j < list2.length; j++) {
-                                if (list2[j][0].startsWith('4') === true) {
-                                    hCount += 1;
-                                    hSaleBuy += 1;
-                                }
-                            }
-                            if (hCount > 0) {
-                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                        if(hCount4 > 0) {
+                            for (var p = 0; p < list5.length; i++) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount4 + "'>" + list[i][1] + "</td>");
                             }
                         }
-                        hCount = 0;
-                        if (list[i][0] === '3') {
-                            for (var j = 0; j < list2.length; j++) {
-                                if(list2[j][0].startsWith('5') === true){
-                                    hCount += 1;
-                                    hSaleBuy += 1;
-                                }
-                            }
-                            if(hCount > 0) {
-                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
-                            }
-                        }
-                        hCount = 0;
-                        if (list[i][0] === '4') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('5') === true && list3[j][2] == '4'){
-                                    hCount += 1;
-                                    hTotal += 1;
-                                }
-                            }
-                            if(hCount > 0) {
-                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
-                            }
-                        }
-                        hCount = 0;
-                        if (list[i][0] === '5') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('5') === true && list3[j][2] == '5'){
-                                    hCount += 1;
-                                    hTotal += 1;
-                                }
-                            }
-                            if(hCount > 0) {
-                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
-                            }
-                        }
-                        hCount = 0;
-                        if (list[i][0] === '6') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('5') === true && list3[j][2] == '6'){
-                                    hCount += 1;
-                                    hTotal += 1;
-                                }
-                            }
-                            if(hCount > 0){
-                               $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
-                            }
-                        }
+
                     }
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    if (list[i][0] === '401') {#}
+                    {#        for (var j = 0; j < list4.length; j++) {#}
+                    {#            if(list4[j][0].startsWith('43') === true){#}
+                    {#                hCount += 1;#}
+                    {#                hDeposit += 1;#}
+                    {#            }#}
+                    {#        }#}
+                    {#        if(hCount > 0) {#}
+                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount + "'>" + list[i][1] + "</td>");#}
+                    {#        }#}
+                    {#    }#}
+                    {#    hCount = 0;#}
+                    {#    if (list[i][0] === '402') {#}
+                    {#        for (var j = 0; j < list3.length; j++) {#}
+                    {#            if (list3[j][0].startsWith('41') === true && list3[j][2] == '402') {#}
+                    {#                hCount += 1;#}
+                    {#                hSaleBuy += 1;#}
+                    {#            }#}
+                    {#        }#}
+                    {#        if (hCount > 0) {#}
+                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
+                    {#        }#}
+                    {#    }#}
+                    {#    hCount = 0;#}
+                    {#    if (list[i][0] === '403') {#}
+                    {#        for (var j = 0; j < list3.length; j++) {#}
+                    {#            if(list3[j][0].startsWith('41') === true && list3[j][2] == '403'){#}
+                    {#                hCount += 1;#}
+                    {#                hSaleBuy += 1;#}
+                    {#            }#}
+                    {#        }#}
+                    {#        if(hCount > 0) {#}
+                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
+                    {#        }#}
+                    {#    }#}
+                    {#    hCount = 0;#}
+                    {#    if (list[i][0] === '501') {#}
+                    {#        for (var j = 0; j < list2.length; j++) {#}
+                    {#            if(list2[j][0].startsWith('5') === true && list2[j][2] == '501'){#}
+                    {#                hCount += 1;#}
+                    {#                hTotal += 1;#}
+                    {#            }#}
+                    {#        }#}
+                    {#        if(hCount > 0) {#}
+                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
+                    {#        }#}
+                    {#    }#}
+                    {#    hCount = 0;#}
+                    {#    if (list[i][0] === '502') {#}
+                    {#        for (var j = 0; j < list3.length; j++) {#}
+                    {#            if(list3[j][0].startsWith('5') === true && list2[j][2] == '502'){#}
+                    {#                hCount += 1;#}
+                    {#                hTotal += 1;#}
+                    {#            }#}
+                    {#        }#}
+                    {#        if(hCount > 0) {#}
+                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
+                    {#        }#}
+                    {#    }#}
+                    {#    hCount = 0;#}
+                    {#    if (list[i][0] === '503') {#}
+                    {#        for (var j = 0; j < list5.length; j++) {#}
+                    {#            if(list5[j][0].startsWith('51') === true && list2[j][2] == '503'){#}
+                    {#                hCount += 1;#}
+                    {#                hTotal += 1;#}
+                    {#            }#}
+                    {#        }#}
+                    {#        if(hCount > 0){#}
+                    {#           $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
+                    {#        }#}
+                    {#    }#}
+                    {#}#}
 
                     {# 2번째줄 헤더 #}
                     $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
-                        if (list[i][0] === '1') {
-                            for (var j = 0; j < list3.length; j++) {
-
-                                if (list3[j][0].startsWith('4') === true) {
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list4.length; j++) {
+                                if (list4[j][0].startsWith('43') === true) {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' rowspan='2'>" + list3[j][1] + "</td>");
                                     {# 환급금/ 수입이자 #}
 
                                 }
                             }
                         }
-                        if (list[i][0] === '2') {
-                            for (var j = 0; j < list2.length; j++) {
-                                if (list2[j][0].startsWith('4') === true) {
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if (list3[j][0].startsWith('41') === true) {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");
                                 {# 상품매출/ 생산매출 #}
 
                                 }
                             }
                         }
-                        if (list[i][0] === '3') {
+                        if (list[i][0] === '403') {
                             for (var j = 0; j < list2.length; j++) {
                                 if (list2[j][0].startsWith('5') === true) {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");
@@ -283,21 +311,21 @@
                                 }
                             }
                         }
-                        if (list[i][0] === '4') {
+                        if (list[i][0] === '501') {
                             for (var j = 0; j < list3.length; j++) {
                                 if (list3[j][0].startsWith('5') === true && list3[j][2] == '4') {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
                                 }
                             }
                         }
-                        if (list[i][0] === '5') {
+                        if (list[i][0] === '502') {
                             for (var j = 0; j < list3.length; j++) {
                                 if (list3[j][0].startsWith('5') === true && list3[j][2] == '5') {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
                                 }
                             }
                         }
-                        if (list[i][0] === '6') {
+                        if (list[i][0] === '503') {
                             for (var j = 0; j < list3.length; j++) {
                                 if (list3[j][0].startsWith('5') === true && list3[j][2] == '6') {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");

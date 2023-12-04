@@ -16,27 +16,64 @@ def montlyCountViews(request):
 
 def montlyCountViews_search(request):
     year = request.POST.get('Year')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND ICUST = '" + str(iCust) + "' ")
         headerresult = cursor.fetchall()
-        print(headerresult)
 
     # 매입/매출
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.OPT, B.MCODENM, B.GBN2 FROM OSBILL A LEFT OUTER JOIN OSCODEM B ON A.OPT = B.MCODE "
-                       "    WHERE YEAR(BAL_DD) = '" + year + "' "
-                       "    GROUP BY A.OPT, B.MCODENM, B.GBN2 ")
-        headresult = cursor.fetchall()
-        print(headresult)
+        cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), IFNULL(B.MCODE_M, '') FROM SISACCTT A "
+                       " LEFT OUTER JOIN OSCODEM B "
+                       " ON A.MCODE = B.MCODE "
+                       " WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.MCODE LIKE '51%' "
+                       " GROUP BY A.MCODE, B.MCODENM, B.MCODE_M ")
+        inheadresult = cursor.fetchall()
 
-    # 입금/출금
+    # 매출
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.MCODE, B.MCODENM, B.GBN2 FROM SISACCTT A LEFT OUTER JOIN OSCODEM B ON A.MCODE = B.MCODE"
-                       "    WHERE YEAR(ACDATE) = '" + year + "' "
-                       "    GROUP BY A.MCODE, B.MCODENM, B.GBN2 ")
-        headresult2 = cursor.fetchall()
-        print(headresult2)
+        cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), IFNULL(B.MCODE_M, '') FROM SISACCTT A "
+                       " LEFT OUTER JOIN OSCODEM B "
+                       " ON A.MCODE = B.MCODE "
+                       " WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.MCODE LIKE  '41%' "
+                       " GROUP BY A.MCODE, B.MCODENM, B.MCODE_M ")
+        outheadresult = cursor.fetchall()
+    # with connection.cursor() as cursor:
+    #     cursor.execute(" SELECT IFNULL(A.OPT, ''), IFNULL(B.MCODENM, ''), IFNULL(B.GBN2, '') FROM OSBILL A LEFT OUTER JOIN OSCODEM B ON A.OPT = B.MCODE "
+    #                    "    WHERE YEAR(BAL_DD) = '" + year + "' AND ICUST = '" + str(iCust) + "'  "
+    #                    "    GROUP BY A.OPT, B.MCODENM, B.GBN2 ")
+    #     headresult = cursor.fetchall()
+    #     print(headresult)
+
+    # 입금
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), IFNULL(B.MCODE_M, '') FROM SISACCTT A "
+                       " LEFT OUTER JOIN OSCODEM B "
+                       " ON A.MCODE = B.MCODE "
+                       " WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
+                       " AND A.ICUST = '" + str(iCust) + "' "
+                       " AND A.MCODE LIKE '43%' "
+                       " GROUP BY A.MCODE, B.MCODENM, B.MCODE_M ")
+        deheadresult = cursor.fetchall()
+
+    # 출금
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), IFNULL(B.MCODE_M, '') FROM SISACCTT A "
+                       " LEFT OUTER JOIN OSCODEM B "
+                       " ON A.MCODE = B.MCODE "
+                       " WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
+                       " AND A.ICUST = '" + str(iCust) + "' "
+                       " AND A.MCODE LIKE '53%' OR A.MCODE LIKE '55%' "
+                       " GROUP BY A.MCODE, B.MCODENM, B.MCODE_M ")
+        wiheadresult = cursor.fetchall()
+    # with connection.cursor() as cursor:
+    #     cursor.execute(" SELECT A.MCODE, B.MCODENM, B.GBN2 FROM SISACCTT A LEFT OUTER JOIN OSCODEM B ON A.MCODE = B.MCODE"
+    #                    "    WHERE YEAR(ACDATE) = '" + year + "' AND ICUST = '" + str(iCust) + "' "
+    #                    "    GROUP BY A.MCODE, B.MCODENM, B.GBN2 ")
+    #     headresult2 = cursor.fetchall()
+    #     print(headresult2)
 
     # 매입/매출
     with connection.cursor() as cursor:
@@ -62,7 +99,7 @@ def montlyCountViews_search(request):
                        "              FROM OSBILL A "
                        "              LEFT OUTER JOIN OSCODEM B "
                        "              ON A.OPT = B.MCODE "
-                       "              WHERE YEAR(BAL_DD) = '" + year + "' "
+                       "              WHERE YEAR(BAL_DD) = '" + year + "' AND A.ICUST = '" + str(iCust) + "' "
                        "              GROUP BY A.OPT, B.MCODENM, B.GBN2, MONTH(A.BAL_DD), BAL_DD "
                        "              ORDER BY MONTH(A.BAL_DD)) AA WHERE AA.YEAR IS NOT NULL AND AA.YEAR = '" + year + "' GROUP BY AA.OPT, AA.MCODENM, AA.GBN2, AA.YEAR ");
         mainresult = cursor.fetchall()
@@ -99,4 +136,5 @@ def montlyCountViews_search(request):
         mainresult2 = cursor.fetchall()
         print(mainresult2)
 
-    return JsonResponse({"headerList": headerresult, "headList": headresult, 'headList2': headresult2, 'mainList': mainresult, 'mainList2': mainresult2})
+    return JsonResponse({"headerList": headerresult, "inheadList": inheadresult, "outheadList": outheadresult
+                            , 'deheadList': deheadresult, 'wiheadList': wiheadresult, 'mainList': mainresult, 'mainList2': mainresult2})

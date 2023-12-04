@@ -150,7 +150,7 @@
             </li>
           </ul>
         </div>
-        <a href="{% url 'reg_cust' %}" class="nav-link  text-white  font-weight-bold px-0">
+        <a hidden href="{% url 'reg_cust' %}" class="nav-link  text-white  font-weight-bold px-0">
             <i class="fa fa-building"></i>
         </a>
       </div>
@@ -164,8 +164,7 @@
             <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownBase" data-bs-toggle="dropdown" aria-expanded="false">
               기초관리
             </a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownBase">
-
+              <ul class="dropdown-menu text-dark" aria-labelledby="dropdownBase">
                   <li class="mb-2">
                       <a href="{% url 'base_code' %}" class="dropdown-item border-radius-md">참조 코드 등록</a>
                   </li>
@@ -184,6 +183,30 @@
                   <li class="mb-2">
                       <a href="{% url 'base_card' %}" class="dropdown-item border-radius-md">사용 카드 등록</a>
                   </li>
+                  <!--<li class="mb-2 nav-item">
+                    <a class="nav-link text-dark opacity-9 " data-bs-toggle="collapse" aria-expanded="false" href="#signinExample">
+                      <span class="sidenav-normal"> 잔액 관리 <b class="caret"></b></span>
+                    </a>
+                    <div class="collapse " id="signinExample">
+                      <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+{#                          <a class="nav-link text-dark opacity-9" href="{% url 'actBalance_reg' %}">#}
+                            <span class="sidenav-normal"> 계좌 잔액 등록 </span>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+{#                          <a class="nav-link text-dark opacity-9" href="{% url 'custBalance_reg' %}">#}
+                            <span class="sidenav-normal"> 거래처 잔액 등록 </span>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+{#                          <a class="nav-link text-dark opacity-9" href="{% url 'cashBalance_reg' %}">#}
+                            <span class="sidenav-normal"> 현금 시재 등록 </span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>-->
                   <li class="mb-2">
                       <a href="{% url 'actBalance_reg' %}" class="dropdown-item border-radius-md">계좌 잔액 등록</a>
                   </li>
@@ -243,10 +266,38 @@
 {#                <a href="{% url 'deposit_reg' %}" class="dropdown-item border-radius-md">입금 등록</a>#}
               </li>-->
               <li class="mb-2">
-                <a href="{% url 'depreciation_reg' %}" class="dropdown-item border-radius-md">감가 상각비 명세서</a>
+                <a href="{% url 'depreciation_reg' %}" class="dropdown-item border-radius-md">감가 상각비</a>
               </li>
               <li class="mb-2">
                 <a href="{% url 'payroll_reg' %}" class="dropdown-item border-radius-md">임금 대장</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
+            <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownCurrentFunds" data-bs-toggle="dropdown" aria-expanded="false">
+              자금 현황
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownCurrentFunds">
+              <li class="mb-2">
+                <a href="{% url 'receipts_payments' %}" class="dropdown-item border-radius-md">입/출금 원장</a>
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'receive_pay' %}" class="dropdown-item border-radius-md">은행 내역서</a>
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'receive_pay_code' %}" class="dropdown-item border-radius-md">계정별 내역서</a>
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'monthly_count' %}" class="dropdown-item border-radius-md">월별 집계</a>
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'breakdown_balance' %}" class="dropdown-item border-radius-md">내역별 잔액</a>
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'monthly_circle_funds' %}" class="dropdown-item border-radius-md">월별 자금 유동 현황</a>
+              </li>
+              <li class="mb-2">
+                <a href="{% url 'monthly_profit_loss' %}" class="dropdown-item border-radius-md">손익 현황</a>
               </li>
             </ul>
           </li>
@@ -305,34 +356,6 @@
               </li>
               <li class="mb-2">
                 <a href="#" class="dropdown-item border-radius-md">TPI SPI BBI 분석</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
-            <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownCurrentFunds" data-bs-toggle="dropdown" aria-expanded="false">
-              자금 현황
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownCurrentFunds">
-              <li class="mb-2">
-                <a href="{% url 'receipts_payments' %}" class="dropdown-item border-radius-md">입/출금 원장</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'receive_pay' %}" class="dropdown-item border-radius-md">은행 내역서</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'receive_pay_code' %}" class="dropdown-item border-radius-md">계정별 내역서</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'monthly_circle_funds' %}" class="dropdown-item border-radius-md">월별 자금 유동 현황</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'monthly_profit_loss' %}" class="dropdown-item border-radius-md">손익 계산서</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'monthly_count' %}" class="dropdown-item border-radius-md">월별 집계</a>
-              </li>
-              <li class="mb-2">
-                <a href="{% url 'breakdown_balance' %}" class="dropdown-item border-radius-md">내역별 잔액</a>
               </li>
             </ul>
           </li>
