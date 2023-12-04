@@ -307,24 +307,34 @@
                 return false
             }
 
-            let data = {'cboCustCode': cboCustCode,'txtNonGet': txtNonGet,'txtNonPay': txtNonPay
-            , 'txtRemark': txtRemark, 'txtUser': txtUser, 'txtRegDate': txtRegDate}
+            var saveresult = confirm("저장 하시겠습니까?")
 
-            $.ajax({
-                type: "post",
-                data: data,
-                dataType: "json",
-                url: '{% url "custBalance_reg_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('저장 되었습니다.')
-                        location.href = "{% url 'custBalance_reg' %}";
-                    }
+            if(saveresult == true){
+                let data = {
+                    'cboCustCode': cboCustCode, 'txtNonGet': txtNonGet, 'txtNonPay': txtNonPay
+                    , 'txtRemark': txtRemark, 'txtUser': txtUser, 'txtRegDate': txtRegDate
                 }
-            });
+
+                $.ajax({
+                    type: "post",
+                    data: data,
+                    dataType: "json",
+                    url: '{% url "custBalance_reg_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('저장 되었습니다.')
+                            location.href = "{% url 'custBalance_reg' %}";
+                        }
+                    }
+                });
+            }
+            if(saveresult == false) {
+                alert("취소되었습니다.")
+                return false
+            }
 
         });
 

@@ -292,8 +292,9 @@
             $("#cboClass").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
+            var empCode = "";
 
-            let data = {'empType': empType}
+            let data = {'empType': empType, "empCode": empCode}
 
             $.ajax({
                 type: "post",
@@ -519,7 +520,7 @@
                         {#document.getElementById("sign").dataset.origin = imglc + itemimg;#}
                     }
 
-                    if(chkPermit == 'charge'){
+                    if(chkPermit == 'CHARGE'){
                         {#$(`#chkPermit`).trigger('click');#}
                         $(`#chkPermit`).prop("checked",true);
                     }
@@ -716,8 +717,8 @@
             {#        $("#txtEmpNo").val("");#}
             {#        $("#txtEmpName").val("");#}
             {#        $("#txtEmpPw").val("");#}
-            {#        $("#cboDpt").html("");#}
-            {#        $("#cboGroup").html("");#}
+            {#        $("#cboDpt").val("");#}
+            {#        $("#cboGroup").val("");#}
             {#        $("#cboCom").val("");#}
             {#        $("#txtEmpTel").val("");#}
             {#        $("#txtEmployDate").val("");#}
@@ -726,7 +727,7 @@
             {#        $("#txtLimit").val("");#}
             {#        $(`#chkPermit`).prop("checked",false);#}
             {##}
-                    {#$(`#chkPermit`).checked = false;#}
+            {#        $(`#chkPermit`).checked = false;#}
             {##}
             {#        var combolist = data.jjoCombo;#}
             {#        for (var i = 0; i < combolist.length; i++) {#}

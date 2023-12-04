@@ -135,37 +135,11 @@ def actBalRegViews_save(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER, ACDATE FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' AND ACDATE = '" + str(actDate) + "' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT ACNUMBER, ACDATE FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
 
         if chkresult:
             actNum = chkresult[0][0]
-            actAmts2 = chkresult[0][1]
-            # if actNum and actAmts != actAmts2:
-            #     with connection.cursor() as cursor:
-            #         cursor.execute("INSERT INTO ACBALANCE "
-            #                        "   ("
-            #                        "     ACNUMBER "
-            #                        ",    ACDATE "
-            #                        ",    ACAMTS "
-            #                        ",    ACDESC "
-            #                        ",    CRE_USER "
-            #                        ",    CRE_DT "
-            #                        ",    ICUST "
-            #                        ") "
-            #                        "    VALUES "
-            #                        "    ("
-            #                        "    '" + actNum + "' "
-            #                        ",   '" + str(actDate) + "' "
-            #                        ",   '" + str(actAmts) + "' "
-            #                        ",   '" + str(actDesc) + "' "
-            #                        ",   '" + str(user) + "' "
-            #                        ",   date_format(now(), '%Y%m%d') "
-            #                        ",   '" + str(iCust) + "' "
-            #                        "    ) "
-            #                        )
-            #         connection.commit()
-
             with connection.cursor() as cursor:
                 cursor.execute("    UPDATE ACBALANCE SET "
                                "     ACAMTS  = '" + str(actAmts) + "' "
@@ -173,7 +147,6 @@ def actBalRegViews_save(request):
                                ",    UPD_USER = '" + str(user) + "' "
                                ",    UPD_DT = date_format(now(), '%Y%m%d') "
                                "     WHERE ACNUMBER = '" + str(actNum) + "' "
-                               "       AND ACDATE = '" + str(actDate) + "' "
                                "       AND ICUST = '" + str(iCust) + "'"
                                )
                 connection.commit()
