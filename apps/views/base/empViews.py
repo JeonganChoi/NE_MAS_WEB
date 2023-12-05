@@ -113,6 +113,10 @@ def empViews_search(request):
                 "     , IFNULL(A.EMP_LIMIT, '') "
                 "     , IFNULL(D.CUST_NME, '') "
                 "     , IFNULL(A.EMP_CHARGE, '') "
+                "     , IFNULL(A.EMP_WOT, '') "
+                "     , IFNULL(I.RESNAM, '') "
+                "     , IFNULL(A.EMP_SOT, '') "
+                "     , IFNULL(J.RESNAM, '') "
                 "   FROM pis1tb001 A "
                 "   LEFT OUTER JOIN osrefcp B "
                 "   ON B.RECODE = 'DPT' "
@@ -125,6 +129,13 @@ def empViews_search(request):
                 "   AND A.EMP_COM = H.RESKEY "
                 "   LEFT OUTER JOIN ACCOMLIST D "
                 "   ON A.ICUST = D.CUST_NBR "
+                "   AND A.EMP_JO = C.RESKEY "
+                "   LEFT OUTER JOIN osrefcp I "
+                "   ON I.RECODE = 'WOT' "
+                "   AND A.EMP_WOT = I.RESKEY "
+                "   LEFT OUTER JOIN osrefcp J "
+                "   ON J.RECODE = 'SOT' "
+                "   AND A.EMP_SOT = J.RESKEY "
                 "   WHERE A.EMP_NBR LIKE '%" + empCode + "%' "
                  "   OR A.EMP_NME LIKE '%" + empCode + "%' "
                   "   AND A.ICUST = '" + str(iCust) + "' "
@@ -160,8 +171,20 @@ def empViews_search(request):
                 " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
             comClass = cursor.fetchall()
 
+        # 직종 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'WOT' AND ICUST = '" + str(iCust) + "' ")
+            cboWorkType = cursor.fetchall()
+
+        # 구분 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'SOT' AND ICUST = '" + str(iCust) + "' ")
+            cboSalGbn = cursor.fetchall()
+
         return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass
-                                , "empList": empresult})
+                                , "empList": empresult, "cboWorkType": cboWorkType, "cboSalGbn": cboSalGbn})
 
     if empCode != '' and empType == '':
         with connection.cursor() as cursor:
@@ -230,8 +253,20 @@ def empViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
             comClass = cursor.fetchall()
 
+        # 직종 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'WOT' AND ICUST = '" + str(iCust) + "' ")
+            cboWorkType = cursor.fetchall()
+
+        # 구분 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'SOT' AND ICUST = '" + str(iCust) + "' ")
+            cboSalGbn = cursor.fetchall()
+
         return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass
-                                , "empList": empresult})
+                                , "empList": empresult, "cboWorkType": cboWorkType, "cboSalGbn": cboSalGbn})
 
     else:
         with connection.cursor() as cursor:
@@ -290,7 +325,20 @@ def empViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'EOC' AND ICUST = '" + str(iCust) + "' ")
             comClass = cursor.fetchall()
 
-        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass, "empList": empresult})
+        # 직종 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'WOT' AND ICUST = '" + str(iCust) + "' ")
+            cboWorkType = cursor.fetchall()
+
+        # 구분 - 콤보박스
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'SOT' AND ICUST = '" + str(iCust) + "' ")
+            cboSalGbn = cursor.fetchall()
+
+        return JsonResponse({"jjoCombo": jjoCombo, "dptCombo": dptCombo, "comCombo": comCombo, "comClass": comClass
+                                , "empList": empresult, "cboWorkType": cboWorkType, "cboSalGbn": cboSalGbn})
 
 
 def empViews_save(request):
@@ -306,6 +354,8 @@ def empViews_save(request):
     empTesa = request.POST.get('txtQuitDate').replace('-', '')
     # usage = request.POST.get('usage')
     empClass = request.POST.get('cboClass')
+    empWOT = request.POST.get('cboWorkType')
+    empSOT = request.POST.get('cboSalGbn')
 
     charge = request.POST.get('chkPermit')
     user = request.session.get('userId')
@@ -373,6 +423,8 @@ def empViews_save(request):
                            ",    EMP_CLS = '" + str(empClass) + "'  "
                            ",    EMP_LIMIT = '" + str(limit) + "'  "
                            ",    EMP_CHARGE = '" + str(charge) + "'  "
+                           ",    EMP_WOT = '" + str(empWOT) + "'  "
+                           ",    EMP_SOT = '" + str(empSOT) + "'  "
                            ",    EMP_FOLDER = '" + str(uploaded_file) + "'  "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            ",    UPD_USER = '" + str(user) + "' "
@@ -401,6 +453,8 @@ def empViews_save(request):
                            ",    EMP_LIMIT "
                            ",    EMP_CLS "
                            ",    EMP_CHARGE "
+                           ",    EMP_WOT "
+                           ",    EMP_SOT "
                            ",    EMP_FOLDER "
                            ",    CRE_DT "
                            ",    CRE_USER "
@@ -421,6 +475,8 @@ def empViews_save(request):
                            ",   '" + str(limit) + "' "
                            ",   '" + str(empClass) + "' "
                            ",   '" + str(charge) + "' "
+                           ",   '" + str(empWOT) + "' "
+                           ",   '" + str(empSOT) + "' "
                            ",   '" + str(uploaded_file) + "' "
                            ",   date_format(now(), '%Y%m%d') "
                            ",   '" + str(user) + "' "

@@ -168,30 +168,39 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>직 종</label>
+                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboWorkType" id="cboWorkType"></select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>구 분</label>
+                                    <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboSalGbn" id="cboSalGbn"></select>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>등 급</label>
                                     <select style="height: 2rem; font-size: 0.8rem; width: 5rem" class="form-control border border-light rounded-1 text-center p-0" name="cboClass" id="cboClass"></select>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <label class="text-danger mt-4 me-2" style="font-size: 1rem"><i class="fa fa-check-square-o me-2 text-danger text-sm"></i>승 인</label>
+                                    <label class="text-danger mt-4 me-2" style="font-size: 1rem">승 인</label>
                                     <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="111"/>
                                 </div>
                             </div>
-                            <div class="row mt-4">
-                                <!--<div class="col-6">
+                            <!--<div class="row mt-4">
+                                <div class="col-6">
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>사용 유무</label>
                                     <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="usage" id="usage">
                                         <option value="0">사용</option>
                                         <option value="1">미사용</option>
                                     </select>
-                                </div>-->
+                                </div>
                                 <div class="col-6"></div>
-
-                            </div>
+                            </div>-->
                             <div class="row">
                                 <div class="col-6"></div>
                                 <div class="col-6 text-end">
                                     <div class="form-group">
-                                        <label class="mt-4 form-label" style="font-size: 1rem"><i class="fas fa-signature me-2"></i>Signature</label>
+                                        <label class="form-label" style="font-size: 1rem"><i class="fas fa-signature me-2"></i>Signature</label>
                                         <input name="file" id="file" type="file" class="" style="display: none;" />
                                         <div class="form-group text-end mt-2 text-sm">
                                             <a class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem" type="button" id="btnFile">파일 선택</a>
@@ -279,10 +288,14 @@
             var dpt = "";
             var com = "";
             var cboClass = "";
+            var cboWorkType = "";
+            var cboSalGbn = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
             var cboClassTxt = "<option value=''>:: 선택 ::</option>";
+            var cboWorkTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboSalGbnTxt = "<option value=''>:: 선택 ::</option>";
             {#document.getElementById('txtEmployDate').valueAsDate = new Date#}
             {#document.getElementById('txtQuitDate').valueAsDate = new Date#}
 
@@ -290,6 +303,8 @@
             $("#cboDpt").html("");
             $("#inputEmpNum").html("");
             $("#cboClass").html("");
+            $("#cboWorkType").html("");
+            $("#cboSalGbn").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
             var empCode = "";
@@ -355,9 +370,29 @@
                         }
                     }
 
+                    var combolist3 = data.cboWorkType;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboWorkType) {
+                            cboWorkTypeTxt = cboWorkTypeTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboWorkTypeTxt = cboWorkTypeTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboSalGbn;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboSalGbn) {
+                            cboSalGbnTxt = cboSalGbnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboSalGbnTxt = cboSalGbnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboClass").append(cboClassTxt);
+                    $("#cboWorkType").append(cboWorkTypeTxt);
+                    $("#cboSalGbn").append(cboSalGbnTxt);
 
                 }
             })
@@ -373,15 +408,21 @@
             var dpt = "";
             var com = "";
             var cboClass = "";
+            var cboWorkType = "";
+            var cboSalGbn = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
             var cboClassTxt = "<option value=''>:: 선택 ::</option>";
+            var cboWorkTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboSalGbnTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
             $("#inputEmpNum").html("");
             $("#cboClass").html("");
+            $("#cboWorkType").html("");
+            $("#cboSalGbn").html("");
 
             var empType = $('input[name=inputEmpCount]:checked').val();
             let empCode = document.getElementById('inputEmpNo').value;
@@ -445,9 +486,29 @@
                         }
                     }
 
+                    var combolist3 = data.cboWorkType;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboWorkType) {
+                            cboWorkTypeTxt = cboWorkTypeTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboWorkTypeTxt = cboWorkTypeTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboSalGbn;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboSalGbn) {
+                            cboSalGbnTxt = cboSalGbnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboSalGbnTxt = cboSalGbnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboClass").append(cboClassTxt);
+                    $("#cboWorkType").append(cboWorkTypeTxt);
+                    $("#cboSalGbn").append(cboSalGbnTxt);
                 }
             })
         });
@@ -472,14 +533,20 @@
             var com = "";
             var cboClass = "";
             var chkPermit = "";
+            var cboWorkType = "";
+            var cboSalGbn = "";
             var groupTxt = "<option value=''>:: 선택 ::</option>";
             var dptTxt = "<option value=''>:: 선택 ::</option>";
             var comTxt = "<option value=''>:: 선택 ::</option>";
             var cboClassTxt = "<option value=''>:: 선택 ::</option>";
+            var cboWorkTypeTxt = "<option value=''>:: 선택 ::</option>";
+            var cboSalGbnTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboGroup").html("");
             $("#cboDpt").html("");
             $("#cboClass").html("");
+            $("#cboWorkType").html("");
+            $("#cboSalGbn").html("");
 
             let empCode = $(this).attr('main_code');
             var empType = $(this).children().eq(2).text()
@@ -511,6 +578,8 @@
                         dpt = list[i][8];
                         cboClass = list[i][14];
                         chkPermit = list[i][18];
+                        cboWorkType = list[i][19];
+                        cboSalGbn = list[i][21];
 
                         {#imglc = '/static'#}
                         {#itemimg = list[i][15]#}
@@ -555,9 +624,29 @@
                         }
                     }
 
+                    var combolist3 = data.cboWorkType;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboWorkType) {
+                            cboWorkTypeTxt = cboWorkTypeTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboWorkTypeTxt = cboWorkTypeTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist4 = data.cboSalGbn;
+                    for (var i = 0; i < combolist4.length; i++) {
+                        if (combolist4[i][0] == cboSalGbn) {
+                            cboSalGbnTxt = cboSalGbnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        } else {
+                            cboSalGbnTxt = cboSalGbnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboGroup").append(groupTxt);
                     $("#cboDpt").append(dptTxt);
                     $("#cboClass").append(cboClassTxt);
+                    $("#cboWorkType").append(cboWorkTypeTxt);
+                    $("#cboSalGbn").append(cboSalGbnTxt);
                 }
             })
 

@@ -142,6 +142,7 @@ urlpatterns = [
     path('checkLimit/', paymentViews.checkLimit_search, name='checkLimit'),
     path('cboAct/', paymentViews.cboActNum_search, name='cboAct'),
     path('cboBank/', paymentViews.cboBank_search, name='cboBank'),
+    path('chkDate/', paymentViews.chkDate, name='chkDate'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),

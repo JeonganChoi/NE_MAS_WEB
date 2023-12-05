@@ -79,6 +79,7 @@
                               <colgroup>
                                   <col width="3%">
                                   <col width="8%">
+                                  <col width="6%">
                                   <col width="10%">
                                   <col width="10%">
                                   <col width="4%">
@@ -94,6 +95,7 @@
                               <tr>
                                 <th style="font-size: 0.85rem" class="p-1">선택</th>
                                 <th style="font-size: 0.85rem" class="p-1">거래일시</th>
+                                <th style="font-size: 0.85rem" class="p-1">적용년월</th>
                                 <th style="font-size: 0.85rem" class="p-1">계정 명</th>
                                 <th style="font-size: 0.85rem" class="p-1">회계 계정명</th>
                                 <th style="font-size: 0.85rem" class="p-1">구 분</th>
@@ -771,6 +773,7 @@
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
@@ -809,6 +812,7 @@
                                 "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                                 "<td class='text-center p-1' style='font-size: 0.8rem'><input disabled class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
@@ -828,6 +832,7 @@
                                 "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                                 "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
@@ -912,6 +917,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -945,6 +951,7 @@
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
                             "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
@@ -1329,7 +1336,98 @@
                     $("#cboWitActNum").append(cboWitActNumTxt);
                 }
             });
+
+            var method = document.getElementById('cboWitMethod').value
+            var custCode = "";
+
+            let data2 = {"method": method, "cardNum": card, "custCode": custCode}
+
+            var date = 0;
+            if(method == '3'){
+
+                $.ajax({
+                    type: "post",
+                    data: data2,
+                    url: '{% url "chkDate" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if(data.chkDate != ''){
+                            date = data.chkDate;
+
+                            if(date < 10){
+                                date = '0' + date
+                            }
+
+                            var newDate = new Date;
+                            var year = newDate.getFullYear()
+                            var month = newDate.getMonth() + 1
+                            var exDate = year + "-" + month + "-" + date
+                            alert(exDate)
+                            $("#txtExDate").val(exDate);
+                        }
+                        else{
+                            $("#txtExDate").val("");
+                        }
+                    }
+                });
+            }
+
         });
+
+       $('#cboWitActNum').change(function () {
+
+            var method = document.getElementById('cboWitMethod').value
+            var cardNum = "";
+            var custCode = document.getElementById('cboWitCust').value;
+
+            let data2 = {"method": method, "cardNum": cardNum, "custCode": custCode}
+
+            var date = 0;
+            if(method == '2'){
+
+                if(custCode == ''){
+                    alert('거래처를 선택해주세요.')
+                    return false;
+                }
+                if(custCode != ''){
+                    $.ajax({
+                        type: "post",
+                        data: data2,
+                        url: '{% url "chkDate" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data.chkDate != ''){
+                                date = data.chkDate;
+
+                                if(date < 10){
+                                    date = '0' + date
+                                }
+
+                                var newDate = new Date;
+                                var year = newDate.getFullYear()
+                                var month = newDate.getMonth() + 1
+                                var exDate = year + "-" + month + "-" + date
+
+                                $("#txtExDate").val(exDate);
+                            }
+                            else{
+                                $("#txtExDate").val("");
+                            }
+
+                        }
+                    });
+                }
+
+            }
+       });
+
 
         {# 입력란 계좌번호 선택시 계좌명 바인딩 #}
         $('#cboWitGbn').change(function () {
@@ -1840,123 +1938,27 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
-            location.reload();
+            $("#cboWitCust").val("");
+            $("#cboWitGbn").val("");
+            $("#txtTitle").val("");
+            $("#cboAdminCode").val("");
+            $("#cboWitMethod").val("");
+            $("#cboWitActNum").val("");
+            $("#cboWitCard").val("");
+            $("#cboWitIssueCust").html("");
+            $("#txtWitRegDate").val("");
+            $("#txtWitSeq").val("");
+            $("#txtWitRecn").val("");
+            $("#txtWitPrice").val("");
+            $("#txtWitCashNum").val("");
+            $("#txtWitRemark").val("");
+            $("#txtExDate").val("");
+            $("#txtInfo").val("");
+            $("#txtWhere").val("");
+            $("#txtApplyDate").val("");
+            $("#cboBank").val("");
 
-            {#var cboWitCust2 = "";#}
-            {#var cboWitGbn = "";#}
-            {#var cboAdminCode = "";#}
-            {#var cboWitMethod = "";#}
-            {#var cboWitActNum = "";#}
-            {#var cboWitCard = "";#}
-            {#var cboWitCustTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboWitGbnTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboAdminCodeTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboWitMethodTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";#}
-            {##}
-            {#$("#cboWitCust").html("");#}
-            {#$("#cboWitGbn").html("");#}
-            {#$("#txtTitle").val("");#}
-            {#$("#cboAdminCode").html("");#}
-            {#$("#cboWitMethod").html("");#}
-            {#$("#cboWitActNum").html("");#}
-            {#$("#cboWitCard").html("");#}
-            {#$("#cboWitIssueCust").html("");#}
-            {#$("#txtWitRegDate").val("");#}
-            {#$("#txtWitSeq").val("");#}
-            {#$("#txtWitRecn").val("");#}
-            {#$("#txtWitPrice").val("");#}
-            {#$("#txtWitCashNum").val("");#}
-            {#$("#txtWitRemark").val("");#}
-            {#$("#txtExDate").val("");#}
-            {#$("#txtInfo").val("");#}
-            {##}
-            {#cboWitGbn = '1'#}
-            {#var cboGbn = '1';#}
-            {##}
-            {#document.getElementById('txtWitRegDate').valueAsDate = new Date#}
-            {#var acIogb = "";#}
-            {#var acDate = "";#}
-            {#var acNum = "";#}
-            {#var acCust = "";#}
-            {#var acMcode = "";#}
-            {##}
-            {#let data = {'acIogb': acIogb, 'acDate': acDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn}#}
-            {##}
-            {#$.ajax({#}
-            {#    type: "post",#}
-            {#    data: data,#}
-            {#    url: '{% url "payment_search" %}',#}
-            {#    headers: {#}
-            {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
-            {#    },#}
-            {#    dataType: 'json',#}
-            {#    success: function (data) {#}
-            {##}
-            {#        var combolist = data.cboCust;#}
-            {#        for (var i = 0; i < combolist.length; i++) {#}
-            {#            if (combolist[i][0] == cboWitCust2) {#}
-            {#                cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist2 = data.cboGgn;#}
-            {#        for (var i = 0; i < combolist2.length; i++) {#}
-            {#            if (combolist2[i][0] == cboWitGbn) {#}
-            {#                cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist3 = data.cboPay;#}
-            {#        for (var i = 0; i < combolist3.length; i++) {#}
-            {#            if (combolist3[i][0] == cboWitMethod) {#}
-            {#                cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist4 = data.cboMCode;#}
-            {#        for (var i = 0; i < combolist4.length; i++) {#}
-            {#            if (combolist4[i][0] == cboAdminCode) {#}
-            {#                cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist5 = data.cboAcnumber;#}
-            {#        for (var i = 0; i < combolist5.length; i++) {#}
-            {#            if (combolist5[i][0] == cboWitActNum) {#}
-            {#                cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";#}
-            {#            } else {#}
-            {#                cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist6 = data.cboCard;#}
-            {#        for (var i = 0; i < combolist6.length; i++) {#}
-            {#            if (combolist6[i][0] == cboWitCard) {#}
-            {#                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";#}
-            {#            } else {#}
-            {#                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        $("#cboWitCust").append(cboWitCustTxt);#}
-            {#        $("#cboWitGbn").append(cboWitGbnTxt);#}
-            {#        $("#cboWitMethod").append(cboWitMethodTxt);#}
-            {#        $("#cboAdminCode").append(cboAdminCodeTxt);#}
-            {#        $("#cboWitActNum").append(cboWitActNumTxt);#}
-            {#        $("#cboWitCard").append(cboWitCardTxt);#}
-            {##}
-            {#    }#}
-            {#})#}
+
         });
 
         {#체크한 내용 삭제#}
