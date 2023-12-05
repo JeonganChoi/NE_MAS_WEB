@@ -121,7 +121,8 @@ def receivePay_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
                            " ( "
-                           "    SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           "    SELECT SUM(IFNULL(A.ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE A    "
+                           "          LEFT OUTER JOIN ACNUMBER B ON A.ACNUMBER = B.ACNUMBER WHERE A.ACDATE < '" + str(strDate) + "' AND B.ACBKCD = '" + str(inputBank) + "' AND A.ICUST = '" + str(iCust) + "' "
                            "     UNION ALL "
                            "    SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT A"
                            "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
@@ -200,7 +201,8 @@ def receivePay_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
                            " (  "
-                           "    SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           "    SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE "
+                           "            WHERE ACDATE < '" + str(strDate) + "' AND ACNUMBER = '" + str(cboAct) + "' AND ICUST = '" + str(iCust) + "' "
                            "     UNION ALL "
                            "    SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT A"
                            "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
@@ -272,7 +274,9 @@ def receivePay_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
                            " ("
-                           "    SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                           "    SELECT SUM(IFNULL(A.ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE A "
+                           "            LEFT OUTER JOIN ACNUMBER B ON A.ACNUMBER = B.ACNUMBER "
+                           "            WHERE A.ACDATE < '" + str(strDate) + "' AND B.ACBKCD = '" + str(inputBank) + "' AND A.ACNUMBER = '" + str(cboAct) + "' AND A.ICUST = '" + str(iCust) + "' "
                            "     UNION ALL "
                            "    SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT A"
                            "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
@@ -577,7 +581,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')  "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, ''), IFNULL(A.APPLYDT, '')   "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -664,7 +668,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACAMTS, 0), IFNULL(A.IODATE,''), IFNULL(A.ACACNUMBER,'') "
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
-                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')  "
+                           "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, ''), IFNULL(A.APPLYDT, '')   "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -881,6 +885,7 @@ def paymentViews_save(request):
     acCard = request.POST.get("cboWitCard")
     acDesc = request.POST.get("txtWitRemark")     # 비고
     acUse = request.POST.get("txtWhere")  # 사용처
+    acApply = request.POST.get("txtApplyDate")  # 적용년월
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
@@ -964,6 +969,7 @@ def paymentViews_save(request):
                            ",    ACUSE = '" + str(acUse) + "' "
                            ",    ACINFO = '" + str(acInfo) + "' "
                            ",    ACCUST = '" + str(acCust) + "' "
+                           ",    APPLYDT = '" + str(acApply).replace('-', '') + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE IODATE = '" + str(ioDate) + "' "
@@ -1063,6 +1069,7 @@ def paymentViews_save(request):
                                ",    ACDATE "
                                ",    ACCARD "
                                ",    ACUSE "
+                               ",    APPLYDT "
                                ",    ACINFO "
                                ",    FIN_OPT "
                                "    ) "
@@ -1089,6 +1096,7 @@ def paymentViews_save(request):
                                ",    '" + str(acDate) + "'"
                                ",    '" + str(acCard) + "'"
                                ",    '" + str(acUse) + "'"
+                               ",    '" + str(acApply).replace('-', '') + "'"
                                ",    '" + str(acInfo) + "'"
                                ",    'N' "
                                "    )   "
