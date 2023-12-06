@@ -59,18 +59,30 @@ def receivePay_search(request):
 
     if strDate and endDate and inputBank == '' and cboAct == '':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
-                           " ("
-                           " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
-                           " UNION ALL "
-                           " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
-                           "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
-                           " UNION ALL "
-                           " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
-                           "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
-                           " ) AA ")
-            # cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ICUST = '" + str(iCust) + "' ")
-            balresult = cursor.fetchall()
+            cursor.execute(" SELECT EMP_CLS FROM PIS1TB001 WHERE EMP_NBR = '" + str(creUser) + "' ")
+            chkEmp = cursor.fetchall()
+
+        # 등급이 1이거나 비어있으면 총금액은 조회되지 않는다.
+        if chkEmp[0][0] != '':
+            if int(chkEmp[0][0]) > 2:
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                                   " ("
+                                   " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                   " UNION ALL "
+                                   " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                                   "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                   " UNION ALL "
+                                   " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                                   "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                   " ) AA ")
+                    # cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ICUST = '" + str(iCust) + "' ")
+                    balresult = cursor.fetchall()
+            if int(chkEmp[0][0]) <= 2:
+                balresult = ''
+
+        if chkEmp[0][0] == '':
+            balresult = ''
 
         with connection.cursor() as cursor:
             cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
@@ -97,6 +109,7 @@ def receivePay_search(request):
                            "    AND G.RECODE = 'CGB' "
                            "     WHERE A.ACIOGB = '2' "
                            "     AND A.ICUST = '" + str(iCust) + "'"
+                           "     AND A.CRE_USER = '" + str(creUser) + "'"
                            "     UNION ALL "
                            "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT "
@@ -114,9 +127,10 @@ def receivePay_search(request):
                            "    ON A.MCODE = F.MCODE "
                            "    LEFT OUTER JOIN OSREFCP G "
                            "    ON F.GBN = G.RESKEY "
-                           "    AND G.RECODE = 'CGB' "                               
+                           "    AND G.RECODE = 'CGB' "                                   
                            "     WHERE A.ACIOGB = '1' "
                            "     AND A.ICUST = '" + str(iCust) + "'"
+                           "     AND A.CRE_USER = '" + str(creUser) + "'"
                            " ) AA "
                            " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
                            " ORDER BY AA.IODATE ")
@@ -565,6 +579,22 @@ def apvLine_modal_search(request):
 #
 #     return JsonResponse({'arrList': "Y", 'empList': empresult})
 
+def chkWriter(request):
+    acIogb = request.POST.get('acIogb')
+    ioDate = request.POST.get('ioDate')
+    acMcode = request.POST.get('acMcode')
+    cboGbn = request.POST.get('cboGbn')
+    acSeqn = request.POST.get("acSeqn")
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
+
+    # 은행명
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT * FROM SISACCTT WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' "
+                       "                        AND MCODE = '" + str(acMcode) + "' AND CRE_USER = '" + str(creUser) + "' ")
+        chkEmp = cursor.fetchall()
+
+    return JsonResponse({'chkEmp': chkEmp})
 
 def paymentViews_search(request):
     acIogb = request.POST.get('acIogb')
@@ -768,6 +798,7 @@ def paymentViews_search(request):
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
                 cboBank = cursor.fetchall()
+
 
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
                                 , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
