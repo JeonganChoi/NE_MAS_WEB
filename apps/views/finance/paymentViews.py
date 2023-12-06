@@ -457,6 +457,10 @@ def receivePay_search(request):
 def apvLine_modal_search(request):
     empList = json.loads(request.POST.get('empList'))
     cboDpt = request.POST.get('cboDpt')
+    # ioDate = request.POST.get('ioDate').replace("-", "")
+    # acIogb = request.POST.get('acIogb')
+    # acSeq = request.POST.get('acSeq')
+    # mCode = request.POST.get('mCode')
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
@@ -483,7 +487,7 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE A.EMP_LIMIT != '' "
+                           " WHERE A.EMP_LIMIT > 0 "
                            " AND A.ICUST = '" + iCust + "'"
                            " AND A.EMP_DEPT = '" + cboDpt + "' ")
             mainresult = cursor.fetchall()
@@ -501,7 +505,7 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE A.EMP_LIMIT != '' "
+                           " WHERE A.EMP_LIMIT > 0 "
                            " AND A.EMP_NBR != '" + str(creUser) + "' "
                            " AND A.ICUST = '" + iCust + "'")
             mainresult = cursor.fetchall()
@@ -1009,7 +1013,7 @@ def paymentViews_save(request):
             cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
                            "        AND ICUST = '" + str(iCust) + "'  ")
             result = cursor.fetchall()
-
+        #
         if (len(result) != 0):
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM OSSIGN "
@@ -1023,34 +1027,47 @@ def paymentViews_save(request):
         opt = 'N'
         empArrayLists = list(filter(len, empArray))
         for data in range(len(empArrayLists)):
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
-                               "        AND EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' AND ICUST = '" + str(iCust) + "'  ")
-                result3 = cursor.fetchall()
+            # with connection.cursor() as cursor:
+            #     cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
+            #                    "        AND EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' AND ICUST = '" + str(iCust) + "'  ")
+            #     result3 = cursor.fetchall()
 
-                with connection.cursor() as cursor:
-                    cursor.execute(" INSERT INTO OSSIGN "
-                                   "    ( "
-                                   "     ACDATE "
-                                   "   , ACSEQN "
-                                   "   , SEQ "
-                                   "   , EMP_NBR "
-                                   "   , OPT "
-                                   "   , ACIOGB "
-                                   "   , ICUST "                                                    
-                                   "    ) "
-                                   "    VALUES "
-                                   "    ( "
-                                   "     '" + str(acDate) + "' "
-                                   "     , '" + str(acSeqn) + "' "
-                                   "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
-                                   "     , '" + empArrayLists[data]["empNbr"] + "' "
-                                   "     , '" + opt + "' "
-                                   "     , '" + str(acIogb) + "' "
-                                   "     , '" + str(iCust) + "' "
-                                   "     ) "
-                    )
-                    connection.commit()
+                # if (len(result3) == 0):
+                #     with connection.cursor() as cursor:
+                #         cursor.execute("    UPDATE  OSSIGN SET"
+                #                        "     OPT = '" + str(opt) + "' "
+                #                        ",    ACIOGB = (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "') "
+                #                        "     WHERE ACDATE = '" + str(acDate) + "' "
+                #                        "     AND ACSEQN = '" + str(acSeqn) + "' "
+                #                        "     AND SEQ = '" + str(acSeqn) + "' "
+                #                        "     AND ICUST = '" + str(iCust) + "' "
+                #                        "     AND EMP_NBR = '" + empArrayLists[data]["empNbr"] + "' "
+                #                        )
+                #
+                #         connection.commit()
+            with connection.cursor() as cursor:
+                cursor.execute(" INSERT INTO OSSIGN "
+                               "    ( "
+                               "     ACDATE "
+                               "   , ACSEQN "
+                               "   , SEQ "
+                               "   , EMP_NBR "
+                               "   , OPT "
+                               "   , ACIOGB "
+                               "   , ICUST "                                                    
+                               "    ) "
+                               "    VALUES "
+                               "    ( "
+                               "     '" + str(acDate) + "' "
+                               "     , '" + str(acSeqn) + "' "
+                               "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
+                               "     , '" + empArrayLists[data]["empNbr"] + "' "
+                               "     , '" + opt + "' "
+                               "     , '" + str(acIogb) + "' "
+                               "     , '" + str(iCust) + "' "
+                               "     ) "
+                )
+                connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 

@@ -209,7 +209,7 @@
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-6 writer">
-                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>수정인 정보</label>
+                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>수령인 정보</label>
                                         <input class="form-control text-start" type="text" id="txtInfo" name="txtInfo" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -274,16 +274,16 @@
                                         <div class="form-group mt-2 mb-0">
                                             <div class="row">
                                                 <div class="col-6 text-start">
-                                                    <button type="button" class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>결재선 지정</button>
+                                                    <button type="button" class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
                                                 </div>
                                                 <div class="col-6 text-start">
                                                     <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div hidden class="table-responsive-sm overflow-auto">
-                                            <table class="table mb-0 align-items-center justify-content-center" id="signTb">
-                                              <tbody class="bg-warning text-center font-weight-bolder text-white" id="signTd">
+                                        <div class="table-responsive-sm overflow-auto bg-transparent">
+                                            <table class="table mb-0 border-0 text-white align-items-center justify-content-center" id="signTb">
+                                              <tbody class="bg-transparent text-center border-0 text-white" id="signTd">
 
                                               </tbody>
                                             </table>
@@ -306,8 +306,8 @@
             <div class="modal-content">
                 <form method="post">
                     {% csrf_token %}
-                    <div class="modal-header bg-dark text-end" style="height: 5vh">
-                        <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
+                    <div class="modal-header bg-dark" style="height: 5vh">
+                        <a class="text-white" type="button" id="btnClose" name="btnClose" style="float:leftright;"><i class="fa fa-xmark fs-6"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="row p-2">
@@ -416,6 +416,12 @@
             var cboDpt = "";
             var cboDptTxt = "<option value=''>:: 선택 ::</option>";
 
+            var empArr = [];
+            var ioDate = $('#txtWitRegDate').val();
+            var acIogb = $('#cboWitGbn').val();
+            var acSeq = $('#txtWitSeq').val();
+            var mCode = $('#cboAdminCode').val();
+
             $("#cboDpt").html("");
 
             $.ajax({
@@ -423,6 +429,10 @@
                 data: {
                     'empList': JSON.stringify(chk_cust_id_arr),
                     "cboDpt": cboDpt,
+                    {#'ioDate': ioDate,#}
+                    {#'acIogb': acIogb,#}
+                    {#'acSeq': acSeq,#}
+                    {#'mCode': mCode,#}
                 },
                 url: '{% url "apvLine_modal" %}',
                 headers: {
@@ -536,6 +546,12 @@
             }
         });
 
+        {# close 버튼 클릭시 #}
+        $(document).on('click', '#btnClose', function () {
+            $('#DecisionModal').modal('hide');
+        });
+
+
         {# 확인 버튼 클릭시 #}
         $(document).on('click', '#btnSave2', function () {
 
@@ -577,6 +593,7 @@
             }
 
             $('#DecisionModal').modal('hide');
+
 
         });
 
@@ -1361,6 +1378,10 @@
                             if(date < 10){
                                 date = '0' + date
                             }
+                            if(date == 'last'){
+                                var now = new Date;
+                                date = now.getDate()
+                            }
 
                             var newDate = new Date;
                             var year = newDate.getFullYear()
@@ -1408,6 +1429,10 @@
 
                                 if(date < 10){
                                     date = '0' + date
+                                }
+                                if(date == 'last'){
+                                    var now = new Date;
+                                    date = now.getDate()
                                 }
 
                                 var newDate = new Date;

@@ -181,13 +181,13 @@
                         <div class="form-group">
                             <div class="row px-4 py-2">
                                 <div class="col-3 text-start">
-                                    <button class="btn btn-sm btn-success" id="btnApv" name="btnApv"><i class="fas fa-file-signature pe-3"></i>결 재</button>
+                                    <button class="btn btn-sm btn-success" id="btnApv" name="btnApv"><i class="fa fa-file-signature fs-6 pe-3"></i>결 재</button>
                                 </div>
                                 <div class="col-3 text-start">
-                                    <button class="btn btn-sm btn-instagram" id="btnAbt" name="btnAbt"><i class="fas fa-file-signature pe-3"></i>전 결</button>
+                                    <button class="btn btn-sm btn-instagram" id="btnAbt" name="btnAbt"><i class="fa fa-file-signature fs-6 pe-3"></i>전 결</button>
                                 </div>
                                 <div class="col-3 text-start">
-                                    <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fas fa-file-signature pe-3"></i>반 려</button>
+                                    <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fa fa-file-signature fs-6 pe-3"></i>반 려</button>
                                 </div>
                             </div>
                             <!--<div class="row p-0">
@@ -293,10 +293,11 @@
             var gbn = document.getElementById('inputGbn').value
 
             document.getElementById('txtWitRegDate').valueAsDate = new Date
-            document.getElementById('txtExDate').valueAsDate = new Date
-
-            var sDate = document.getElementById('txtWitRegDate').value
-            var ioDate = sDate.replace(/\-/g, '')
+            {#document.getElementById('txtExDate').valueAsDate = new Date#}
+            {##}
+            {#var sDate = document.getElementById('txtWitRegDate').value#}
+            {#var ioDate = sDate.replace(/\-/g, '')#}
+            var ioDate = document.getElementById('txtWitRegDate').value
 
             let data = {'empNbr': empNbr, 'gbn': gbn, "ioDate": ioDate}
 
@@ -316,11 +317,11 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>미결재</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
@@ -360,11 +361,11 @@
                             text = '미결재'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
@@ -373,11 +374,11 @@
                             text = '결재'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
@@ -386,11 +387,11 @@
                             text = '미승인'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
                             "</tr> ");
@@ -399,11 +400,11 @@
                             text = '승인'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
                             "</tr> ");
@@ -576,30 +577,36 @@
             var acIogb = document.getElementById('modalIogb').value
             var gbn = '1'
 
-            $.ajax({
-                type: "post",
-                data: {
-                    'seq': seq,
-                    'empNbr': empNbr,
-                    'folder': folder,
-                    'reason': reason,
-                    'ioDate': ioDate,
-                    'acSeqn': acSeqn,
-                    'acIogb': acIogb,
-                    'gbn': gbn
-                },
-                dataType: "json",
-                url: '{% url "approval_reg_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('결재 되었습니다.')
-                        location.href = "{% url 'approval_reg' %}";
+            var saveresult = confirm("결재하시겠습니까?")
+
+            if(saveresult == true){
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'seq': seq,
+                        'empNbr': empNbr,
+                        'folder': folder,
+                        'reason': reason,
+                        'ioDate': ioDate,
+                        'acSeqn': acSeqn,
+                        'acIogb': acIogb,
+                        'gbn': gbn
+                    },
+                    dataType: "json",
+                    url: '{% url "approval_reg_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('결재 되었습니다.')
+                            location.href = "{% url 'approval_reg' %}";
+                        }
                     }
-                }
-            });
+                });
+            }
+            if(saveresult == false){}
+
 
             {# 선택된 특정위치에 이미지를 뿌려줘야함. #}
             {#$("#subTb").append(#}
@@ -619,30 +626,36 @@
             var acIogb = document.getElementById('modalIogb').value
             var gbn = '2'
 
-            $.ajax({
-                type: "post",
-                data: {
-                    'seq': seq,
-                    'empNbr': empNbr,
-                    'folder': folder,
-                    'reason': reason,
-                    'ioDate': ioDate,
-                    'acSeqn': acSeqn,
-                    'acIogb': acIogb,
-                    'gbn': gbn
-                },
-                dataType: "json",
-                url: '{% url "approval_reg_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('전결 되었습니다.')
-                        location.href = "{% url 'approval_reg' %}";
+            var saveresult = confirm("전결하시겠습니까?")
+
+            if(saveresult == true){
+
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'seq': seq,
+                        'empNbr': empNbr,
+                        'folder': folder,
+                        'reason': reason,
+                        'ioDate': ioDate,
+                        'acSeqn': acSeqn,
+                        'acIogb': acIogb,
+                        'gbn': gbn
+                    },
+                    dataType: "json",
+                    url: '{% url "approval_reg_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('전결 되었습니다.')
+                            location.href = "{% url 'approval_reg' %}";
+                        }
                     }
-                }
-            });
+                });
+            }
+            if(saveresult == false){}
 
         });
 
@@ -658,31 +671,39 @@
             var acIogb = document.getElementById('modalIogb').value
             var gbn = '3'
 
+            if(reason == ''){
+                alert('반려사유를 입력해주세요.')
+                return false
+            }
+            var saveresult = confirm("반려하시겠습니까?")
 
-            $.ajax({
-                type: "post",
-                data: {
-                    'seq': seq,
-                    'empNbr': empNbr,
-                    'folder': folder,
-                    'reason': reason,
-                    'ioDate': ioDate,
-                    'acSeqn': acSeqn,
-                    'acIogb': acIogb,
-                    'gbn': gbn
-                },
-                dataType: "json",
-                url: '{% url "approval_reg_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('반려 되었습니다.')
-                        location.href = "{% url 'approval_reg' %}";
+            if(saveresult == true){
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'seq': seq,
+                        'empNbr': empNbr,
+                        'folder': folder,
+                        'reason': reason,
+                        'ioDate': ioDate,
+                        'acSeqn': acSeqn,
+                        'acIogb': acIogb,
+                        'gbn': gbn
+                    },
+                    dataType: "json",
+                    url: '{% url "approval_reg_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('반려 되었습니다.')
+                            location.href = "{% url 'approval_reg' %}";
+                        }
                     }
-                }
-            });
+                });
+            }
+            if(saveresult == false){}
 
         });
     </script>

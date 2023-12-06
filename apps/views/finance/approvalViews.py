@@ -18,7 +18,7 @@ def approvalViews_search(request):
     empNbr = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
     gbn = request.POST.get('gbn')
-    ioDate = request.POST.get('ioDate')
+    ioDate = request.POST.get('ioDate').replace("-", "")
     acSeqn = request.POST.get('acSeqn')
     acIogb = request.POST.get('acIogb')
 
@@ -27,7 +27,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '')"
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -35,6 +35,8 @@ def approvalViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
+                           " LEFT OUTER JOIN PIS1TB001 D "
+                           " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
@@ -48,7 +50,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -56,6 +58,8 @@ def approvalViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
+                           " LEFT OUTER JOIN PIS1TB001 D "
+                           " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
@@ -69,7 +73,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '') "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -77,6 +81,8 @@ def approvalViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
+                           " LEFT OUTER JOIN PIS1TB001 D "
+                           " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
@@ -90,7 +96,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '')  "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')  "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -98,6 +104,8 @@ def approvalViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
+                           " LEFT OUTER JOIN PIS1TB001 D "
+                           " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
@@ -110,7 +118,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, '')  "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')  "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -118,6 +126,8 @@ def approvalViews_search(request):
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
+                           " LEFT OUTER JOIN PIS1TB001 D "
+                           " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
