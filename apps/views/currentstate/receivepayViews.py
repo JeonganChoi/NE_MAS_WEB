@@ -23,7 +23,7 @@ def receivepaySheetViews_search(request):
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
-    if cboBank != '':
+    if cboBank != '' and cboAccount == '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "' ")
 
@@ -98,7 +98,7 @@ def receivepaySheetViews_search(request):
             mainresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.MCODE, B.MCODENM, SUM(A.ACAMTS) FROM SISACCTT A "
+            cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), IFNULL(SUM(A.ACAMTS), 0) FROM SISACCTT A "
                            " LEFT OUTER JOIN OSCODEM B "
                            " ON A.MCODE = B.MCODE "
                            " LEFT OUTER JOIN ACNUMBER C "
@@ -173,7 +173,7 @@ def receivepaySheetViews_search(request):
             mainresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.MCODE, B.MCODENM, SUM(A.ACAMTS) FROM SISACCTT A "
+            cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), IFNULL(SUM(A.ACAMTS), 0) FROM SISACCTT A "
                            " LEFT OUTER JOIN OSCODEM B "
                            " ON A.MCODE = B.MCODE "
                            " WHERE A.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND A.ACACNUMBER = '" + str(cboAccount) + "' AND A.ICUST = '" + str(iCust) + "' "

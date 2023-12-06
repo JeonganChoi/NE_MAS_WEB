@@ -245,9 +245,9 @@
                             "<td class='text-end p-2' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-2' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                             "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                            "<td hidden class='text-start p-2' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "<td class='text-center p-2' style='font-size: 0.85rem'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
                             "</tr> ");
@@ -292,8 +292,8 @@
             var acAmts = tr.children().eq(4).text()
             var acEmp = tr.children().eq(5).text()
             var acNme = tr.children().eq(6).text()
-            var acSeqn = tr.children().eq(7).text()
-            var acIogb = tr.children().eq(8).text()
+            var acSeqn = tr.children().eq(8).text()
+            var acIogb = tr.children().eq(9).text()
 
             var count = $(this).closest('tr').prevAll().length;
 
@@ -342,12 +342,12 @@
 
                     $("#subTb").append(
                         "<tr id='subTr" + count + "' class='subTr_tr'>" +
-                        "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate + "</td>" +
+                        "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                         "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
-                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
+                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
@@ -404,8 +404,8 @@
             var acAmts = tr.children().eq(4).text()
             var acEmp = tr.children().eq(5).text()
             var acNme = tr.children().eq(6).text()
-            var acSeqn = tr.children().eq(7).text()
-            var acIogb = tr.children().eq(8).text()
+            var acSeqn = tr.children().eq(8).text()
+            var acIogb = tr.children().eq(9).text()
 
             var count = $(this).closest('tr').prevAll().length;
 
@@ -454,12 +454,12 @@
 
                     $("#subTb").append(
                         "<tr id='subTr" + count + "' class='subTr_tr'>" +
-                        "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate + "</td>" +
+                        "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                         "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
-                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
+                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
@@ -517,6 +517,8 @@
             var offSet = $('input[name=inputOffSet]:checked').val();
             var permitGbn = document.getElementById('inputPermit').value;
 
+
+
             let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn}
 
             $.ajax({
@@ -555,7 +557,6 @@
                     document.getElementById('inputPrice').value = addComma(total)
                 }
             })
-
         });
 
 
@@ -597,7 +598,7 @@
                         var act = "";
                         if (data.balance < acAmts) {
                             alert('선택한 통장의 잔고가 부족합니다.')
-                            return;
+                            return false;
                         }
                     }
                 });
@@ -614,26 +615,34 @@
                 pmtArr.push(data);
             }
 
-            $.ajax({
-                type: "post",
-                data: {
-                    'pmtArrList': JSON.stringify(pmtArr),
-                    'offSet': offSet,
-                    'actNum': actNum,
-                    'perDate': perDate
-                },
-                dataType: "json",
-                url: '{% url "permit_reg_save" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.sucYn === 'Y') {
-                        alert('승인 되었습니다.')
-                        location.href = "{% url 'permit_reg' %}";
+            var saveresult = confirm("저장하시겠습니까?")
+
+            if(saveresult == true){
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'pmtArrList': JSON.stringify(pmtArr),
+                        'offSet': offSet,
+                        'actNum': actNum,
+                        'perDate': perDate
+                    },
+                    dataType: "json",
+                    url: '{% url "permit_reg_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('승인 되었습니다.')
+                            location.href = "{% url 'permit_reg' %}";
+                        }
                     }
-                }
-            });
+                });
+            }
+            if(saveresult == false){
+                alert('취소되었습니다.')
+                return false;
+            }
         });
 
     </script>

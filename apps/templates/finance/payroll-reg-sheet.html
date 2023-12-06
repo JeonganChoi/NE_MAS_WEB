@@ -78,15 +78,18 @@
         <div class="modal-content">
           <form method="post">
           {% csrf_token %}
-          <div class="modal-header bg-warning text-end" style="height: 5vh">
-              <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
-          </div>
+          <!--<div class="modal-header text-end border-0" style="height: 5vh"></div>-->
           <div class="modal-body">
+              <div class="row p-0">
+                  <div class="col-12 text-end">
+                      <a class="text-dark" type="button" id="btnClose" name="btnClose" style="float:right;"><i class="fa fa-xmark fs-6"></i></a>
+                  </div>
+              </div>
               <div class="form-group">
                   <div class="row p-0">
                       <div class="col-2"></div>
                       <div class="col-8">
-                          <label class="h6 text-dark"><i class="fas fa-file-invoice-dollar me-2"></i>계좌 번호</label>
+                          <label class="text-dark" style="font-size: 0.8rem"><i class="fas fa-file-invoice-dollar me-2"></i>계좌 번호</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboActNum" id="cboActNum"></select>
                       </div>
@@ -94,7 +97,7 @@
                   <div class="row p-0">
                       <div class="col-2"></div>
                       <div class="col-8">
-                          <label class="mt-4 h6 text-dark"><i class="fas fa-bars me-2"></i>계정 과목</label>
+                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="fas fa-bars me-2"></i>계정 과목</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboMCode" id="cboMCode"></select>
                       </div>
@@ -102,12 +105,12 @@
                   <div class="row p-0">
                       <div class="col-2"></div>
                       <div class="col-4">
-                          <label class="mt-4 h6 text-dark"><i class="far fa-calendar me-2"></i>출금 일자</label>
+                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="far fa-calendar me-2"></i>출금 일자</label>
                           <input class="form-control border border-light rounded-1 text-center" type="date"
                                   name="txtWithDate" id="txtWithDate"/>
                       </div>
                       <div class="col-4">
-                          <label class="mt-4 h6 text-dark"><i class="far fa-square-check me-2"></i>구 분</label>
+                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="far fa-square-check me-2"></i>구 분</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboGbn" id="cboGbn">
                               <option value="1">일괄</option>
@@ -118,7 +121,7 @@
               </div>
           </div>
           <div class="modal-footer border-0">
-            <button type="button" class="btn btn-linkedin text-sm vw-100" id="btnSave" name="btnSave">보내기</button>
+              <button type="button" class="btn btn-warning text-sm vw-100" id="btnSave" name="btnSave">보내기</button>
           </div>
           </form>
         </div>
@@ -128,6 +131,13 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    <script>
+        {# close 버튼 클릭시 #}
+        $(document).on('click', '#btnClose', function () {
+            $('#sendModalLabel').modal('hide');
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

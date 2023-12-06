@@ -49,12 +49,18 @@
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="height: 2rem; max-width: 10rem">
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-3">
-                                <button type="button" class="btn btn-sm btn-success text-white" id="btnSearch" name="btnSearch">조회</button>
+                            <div class="col-lg-3 col-3 text-start">
+                                <button type="button" class="btn btn-sm btn-success text-white" id="btnSearch" name="btnSearch"><i class="fa fa-search fs-6 me-2"></i>조회</button>
                             </div>
+                            <!--<div class="col-lg-6 col-6 text-end">
+                                <label class="mx-2">
+                                    <a style="float: right" class="text-warning" id="btnEra" name="btnEra"><i class="fa fs-4 fa-square-minus"></i></a>
+                                    <a style="float: right" class="text-success me-2" id="btnAdd" name="btnAdd"><i class="fa fs-4 fa-circle-plus"></i></a>
+                                </label>
+                            </div>-->
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body mt-0">
                         <div class="table-responsive-sm height-500 overflow-auto border border-light">
                           <table class="table mb-0 align-items-center justify-content-center" id="grid">
                               <colgroup>
@@ -109,6 +115,18 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    <script>
+        {# 지우기 버튼 #}
+        $(document).on('click', "#btnEra", function () {
+
+        });
+
+        {# 추가 버튼 #}
+        $(document).on('click', "#btnAdd", function () {
+
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

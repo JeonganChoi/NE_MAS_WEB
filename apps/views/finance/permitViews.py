@@ -92,14 +92,13 @@ def permitViews_search(request):
                                " ON B.EMP_NBR = C.EMP_NBR "
                                " LEFT OUTER JOIN OSCODEM D "
                                " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + user + "' "
-                               " AND A.IODATE <= '" + perDate + "' "
+                               " WHERE B.EMP_NBR = '" + str(user) + "' "
+                               " AND A.IODATE <= '" + str(perDate) + "' "
                                " AND A.OFF_GBN = 'off'"
-                               " AND A.ICUST = '" + iCust + "' "
-                               " AND A.ACCUST like '%" + custCode + "%' "
+                               " AND A.ICUST = '" + str(iCust) + "' "
+                               " AND A.ACCUST like '%" + str(custCode) + "%' "
                                " ORDER BY A.ACSEQN ASC ")
                 mainresult = cursor.fetchall()
-            # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
             return JsonResponse({"mainList": mainresult})
 
@@ -118,11 +117,11 @@ def permitViews_search(request):
                                " ON B.EMP_NBR = C.EMP_NBR "
                                " LEFT OUTER JOIN OSCODEM D "
                                " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + user + "' "
-                               " AND A.IODATE <= '" + perDate + "' "
+                               " WHERE B.EMP_NBR = '" + str(user) + "' "
+                               " AND A.IODATE <= '" + str(perDate) + "' "
                                " AND A.OFF_GBN = 'off'"
-                               " AND A.ICUST = '" + iCust + "' "
-                               " AND A.ACCUST like '%" + custCode + "%' "
+                               " AND A.ICUST = '" + str(iCust) + "' "
+                               " AND A.ACCUST like '%" + str(custCode) + "%' "
                                " ORDER BY A.ACSEQN ASC ")
                 mainresult = cursor.fetchall()
             # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
@@ -145,25 +144,25 @@ def permitViews_search(request):
                                " ON B.EMP_NBR = C.EMP_NBR "
                                " LEFT OUTER JOIN OSCODEM D "
                                " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + user + "' "
-                               " AND A.IODATE <= '" + perDate + "' "
-                               " AND A.ICUST = '" + iCust + "' "
-                               " AND A.ACCUST like '%" + custCode + "%' "
+                               " WHERE B.EMP_NBR = '" + str(user) + "' "                             
+                               " AND A.IODATE <= '" + str(perDate) + "' "
+                               " AND A.ICUST = '" + str(iCust) + "' "
+                               " AND A.ACCUST like '%" + str(custCode) + "%' "
                                " ORDER BY A.ACSEQN ASC ")
                 mainresult = cursor.fetchall()
             # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + iCust + "'")
+                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
                 cboCust = cursor.fetchall()
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "'")
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
                 cboAct = cursor.fetchall()
 
             return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct})
 
-        if (permitGbn != ''):
+        if permitGbn != '':
             with connection.cursor() as cursor:
                 cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
                                "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
@@ -178,20 +177,20 @@ def permitViews_search(request):
                                " ON B.EMP_NBR = C.EMP_NBR "
                                " LEFT OUTER JOIN OSCODEM D "
                                " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + user + "' "
-                               " AND A.IODATE <= '" + perDate + "' "
-                               " AND A.ICUST = '" + iCust + "' "
-                               " AND A.ACCUST like '%" + custCode + "%' "
+                               " WHERE B.EMP_NBR = '" + str(user) + "' "
+                               " AND A.IODATE <= '" + str(perDate) + "' "
+                               " AND A.ICUST = '" + str(iCust) + "' "
+                               " AND A.ACCUST like '%" + str(custCode) + "%' "
                                " ORDER BY A.ACSEQN ASC ")
                 mainresult = cursor.fetchall()
             # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + iCust + "'")
+                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
                 cboCust = cursor.fetchall()
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "'")
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
                 cboAct = cursor.fetchall()
 
             return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct})

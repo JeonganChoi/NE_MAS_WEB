@@ -131,22 +131,22 @@
                                     </div>
                                     <div class="col-6">
                                         <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
-                                        <input class="form-control text-center" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-center bg-danger-soft" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
-                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
+                                        <select class="form-control border border-light rounded-1 text-center p-1 bg-danger-soft" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-6">
                                         <label class="mt-2 text-sm"><i class="far fa-edit me-2"></i>제 목</label>
-                                        <input class="form-control text-start" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-start bg-danger-soft" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group basic">
-                                <div class="row mt-2">
+                                <div class="row">
                                     <div class="col-6">
                                         <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>거래처</label>
                                         <select class="form-control text-center p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
@@ -215,7 +215,7 @@
                                 </div>
                             </div>
                             <div class="form-group replace">
-                                <div class="row mt-4">
+                                <div class="row">
                                     <div class="col-4">
                                         <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
                                         <input class="form-control text-center" type="date" id="txtWitRegDate2" name="txtWitRegDate2" style="height: 2rem; font-size: 0.8rem"/>
@@ -1907,17 +1907,26 @@
             var cboWitGbn = document.getElementById('cboWitGbn').value
             {#var txtTitle = document.getElementById('txtTitle').value#}
             {#var cboWitCust = document.getElementById('cboWitCust').value#}
-            {#var txtWitRegDate = document.getElementById('txtWitRegDate').value#}
+            var txtWitRegDate = document.getElementById('txtWitRegDate').value
             {#var txtExDate = document.getElementById('txtExDate').value#}
             {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
             {#var txtWitRecn = document.getElementById('txtWitRecn').value#}
-            {#var cboAdminCode = document.getElementById('cboAdminCode').value#}
+            var cboAdminCode = document.getElementById('cboAdminCode').value
             {#var txtWitPrice = document.getElementById('txtWitPrice').value#}
             {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
             {#var cboWitMethod = document.getElementById('cboWitMethod').value#}
             {#var cboWitCard = document.getElementById('cboWitCard').value#}
             {#var txtWitRemark = document.getElementById('txtWitRemark').value#}
             {#var file = document.getElementById('file').value#}
+
+            if(txtWitRegDate == ''){
+                alert('등록 일자를 입력해주세요.')
+                return false;
+            }
+            if(cboAdminCode == ''){
+                alert('관리 계정을 입력해주세요.')
+                return false;
+            }
 
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             if(cboWitGbn == '3'){
