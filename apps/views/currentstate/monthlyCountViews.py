@@ -23,6 +23,10 @@ def montlyCountViews_search(request):
         cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND ICUST = '" + str(iCust) + "' ")
         headerresult = cursor.fetchall()
 
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT MCODE_M, MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ")
+        mCoderesult = cursor.fetchall()
+
     # 매입
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(MCODE, ''), IFNULL(MCODENM, ''), IFNULL(MCODE_M, '') FROM OSCODEM  "
@@ -171,6 +175,6 @@ def montlyCountViews_search(request):
 
         mainresult4 = cursor.fetchall()
 
-    return JsonResponse({"headerList": headerresult, "inheadList": inheadresult, "outheadList": outheadresult
+    return JsonResponse({"headerList": headerresult, "mCodeList": mCoderesult, "inheadList": inheadresult, "outheadList": outheadresult
                             , 'deheadList': deheadresult, 'wiheadList': wiheadresult
                             , 'mainList': mainresult, 'mainList2': mainresult2, "mainList3": mainresult3, "mainList4": mainresult4})

@@ -117,18 +117,18 @@
                                   <div class="m-2 table-responsive-sm overflow-auto height-600">
                                       <table class="table mb-0 align-items-center justify-content-center">
                                           <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);"  id="codeHead">
-                                          <tr id="#codeTr" class="codeTr_tr">
+                                              <tr id="#codeTr" class="codeTr_tr">
 
-                                          </tr>
+                                              </tr>
                                           </thead>
                                           <tbody id="sheetTb">
-                                            <tr id="#sheetTr" class="sheetTr_tr">
+                                              <tr id="#sheetTr" class="sheetTr_tr">
 
-                                            </tr>
+                                              </tr>
                                           </tbody>
                                           <tfoot id="totalTb">
-                                          <tr id="#totalTr" class="totalTr_tr">
-                                          </tr>
+                                              <tr id="#totalTr" class="totalTr_tr">
+                                              </tr>
                                           </tfoot>
                                       </table>
                                   </div>
@@ -145,6 +145,68 @@
 
 {% block javascripts %}
     <script>
+
+        {#$(document).ready(function () {#}
+        {#    var hCount = 0;#}
+        {#    var hTotal = 0;#}
+        {#    var hSaleBuy = 0;#}
+        {#    var hDeposit = 0;#}
+        {#    var now = new Date();#}
+        {#    var Year = now.getFullYear()#}
+        {#    document.getElementById('inputYear').value = Year#}
+        {##}
+        {#    var year = document.getElementById('inputYear').value#}
+        {##}
+        {#    let data = {'Year': year}#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        data: data,#}
+        {#        url: '{% url "monthly_count_search" %}',#}
+        {#        headers: {#}
+        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+        {#        },#}
+        {#        dataType: 'json',#}
+        {#        success: function (data) {#}
+        {#            var list = data.headerList;#}
+        {#            var list6 = data.mCodeList;#}
+                    {#매입/매출 #}
+        {#            var list2 = data.inheadList;#}
+        {#            var list3 = data.outheadList;#}
+                    {#입금/출금 #}
+        {#            var list4 = data.deheadList;#}
+        {#            var list5 = data.wiheadList;#}
+        {##}
+        {#            $("#codeHead").html("");#}
+        {#            $("#sheetTb").html("");#}
+        {##}
+                    {# 1번째줄 헤더 #}
+        {#            $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem' rowspan='3'>구분</td>");#}
+        {#            for (var i = 0; i < list.length; i++) {#}
+        {#                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>");#}
+        {#            }#}
+        {##}
+        {#            $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");#}
+        {#            for (var j = 0; j < list6.length; j++) {#}
+        {#                if (list6[j][0] === '402') {#}
+        {#                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list6[i][2] + "</td>");#}
+        {#                }#}
+        {#                if (list6[j][0] === '401') {#}
+        {#                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list6[i][2] + "</td>");#}
+        {#                }#}
+        {#                if (list6[j][0] === '501') {#}
+        {#                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list6[i][2] + "</td>");#}
+        {#                }#}
+        {#                if (list6[j][0] === '502') {#}
+        {#                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list6[i][2] + "</td>");#}
+        {#                }#}
+        {#                if (list6[j][0] === '503') {#}
+        {#                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list6[i][2] + "</td>");#}
+        {#                }#}
+        {#            }#}
+        {#        }#}
+        {#    })#}
+        {#});#}
 
         $(document).ready(function () {
             var hCount = 0;
@@ -169,366 +231,234 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.headerList;
-                     {#매입/매출 #}
+                    var list6 = data.mCodeList;
+                     {#매입/매출#}
                     var list2 = data.inheadList;
                     var list3 = data.outheadList;
-                     {#입금/출금 #}
+                     {#입금/출금#}
                     var list4 = data.deheadList;
                     var list5 = data.wiheadList;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
-                     {#입금/매출/매입/출금 #}
-                     {#1번째줄 헤더 #}
-                    var hCount = list2.length;
-                    var hCount2 = list3.length;
-                    var hCount3 = list4.length;
-                    var hCount4 = list5.length;
 
-
-                    $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
-                    $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem; background-color: rgb(0, 92, 151);' rowspan='3'>구분</td>");
+                     {#1번째줄 헤더#}
+                    $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem' rowspan='3'>구분</td>");
                     for (var i = 0; i < list.length; i++) {
-                        $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>");
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list4.length; j++) {
+                                if(list4[j][0].startsWith('41') === true){
+                                    hCount += 1;
+                                    hDeposit += 1;
+                                }
+                            }
+                            if(hCount > 0) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount + "'>" + list[i][1] + "</td>");
+                            }
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if (list3[j][0].startsWith('43') === true) {
+                                    hCount += 1;
+                                    hSaleBuy += 1;
+                                }
+                            }
+                            if (hCount > 0) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                            }
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '501') {
+                            for (var j = 0; j < list2.length; j++) {
+                                if(list2[j][0].startsWith('51') === true){
+                                    hCount += 1;
+                                    hSaleBuy += 1;
+                                }
+                            }
+                            if(hCount > 0) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                            }
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '502') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if(list5[j][0].startsWith('53') === true){
+                                    hCount += 1;
+                                    hTotal += 1;
+                                }
+                            }
+                            if(hCount > 0) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                            }
+                        }
+                        hCount = 0;
+                        if (list[i][0] === '503') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if(list5[j][0].startsWith('55') === true){
+                                    hCount += 1;
+                                    hTotal += 1;
+                                }
+                            }
+                            if(hCount > 0) {
+                                $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
+                            }
+                        }
                     }
 
+                     {#2번째줄 헤더#}
+                    $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list4.length; j++) {
+                                if (list4[j][0].startsWith('41') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' rowspan='2'>" + list4[j][1] + "</td>");
+
+                                }
+                            }
+                        }
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if (list3[j][0].startsWith('43') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
+
+                                }
+                            }
+                        }
+                        if (list[i][0] === '501') {
+                            for (var j = 0; j < list2.length; j++) {
+                                if (list2[j][0].startsWith('51') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");
+                                }
+                            }
+                        }
+                        if (list[i][0] === '502') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if (list5[j][0].startsWith('53') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list5[j][1] + "</td>");
+                                }
+                            }
+                        }
+                        if (list[i][0] === '503') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if (list5[j][0].startsWith('55') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list5[j][1] + "</td>");
+                                }
+                            }
+                        }
+                    }
 
                     $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < 1; i++) {
-                        for (var j = 0; j < list4.length; i++) {
-                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list4[i][1] + "</td>");
-                        }
-                        for (var h = 0; h < list3.length; i++) {
-                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list3[i][1] + "</td>");
-                        }
-                        for (var k = 0; k < list2.length; i++) {
-                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list2[i][1] + "</td>");
-                        }
-                        for (var p = 0; p < list5.length; i++) {
-                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + list5[i][1] + "</td>");
-                        }
+                    $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem'></td> ");
+                    for (var h = 0; h < hDeposit; h++) {
+                        $("#codeHead").append(
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>금 액</td> ");
                     }
+                    for (var h = 0; h < hSaleBuy; h++) {
+                        $("#codeHead").append(
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>금 액</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>목표 대비</td>");
+                    }
+                    for (var h = 0; h < hTotal; h++) {
+                        $("#codeHead").append(
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>금 액</td> " +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출 대비</td>");
+                    }
+
+                        {#데이터#}
+                     {#매입/매출#}
+                    var list7 = data.mainList;
+                    var list9 = data.mainList3;
+                     {#출금/입금#}
+                    var list8 = data.mainList2;
+                    var list10 = data.mainList4;
+
+                    for (var d = 1; d < 13; d++) {
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center border border-top text-white p-1' style='font-size: 0.8rem; width: 3rem; background-color: rgb(0, 92, 151)'>" + d + "월</td> " +
+                            "</tr> ");
+                    }
+
+                    var saleTotal = 0;
+                    var buyTotal = 0;
+                    var withTotal = 0;
+
+
+                     {#메인데이터#}
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list8.length; j++) {
+                                if(list8[j][12].startsWith('41') === true){
+                                    $("#sheetTb").insertCell(-1);
+                                    for (var d = 0; d < 12; d++) {
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list8[j][d]) + "</td>" );
+                                        alert(list4[j][d])
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list9.length; j++) {
+                                if (list9[j][12].startsWith('43') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list9[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출대비(매출)</td>");
+                                        alert(list5[j][d])
+                                        saleTotal += list9[j][d]
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '501') {
+                           for (var j = 0; j < list7.length; j++) {
+                                if (list7[j][12].startsWith('51') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        buyTotal += list4[j][d]
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list7[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list7[j][d] / saleTotal).toFixed(2)) + "%</td>");
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '502') {
+                           for (var j = 0; j < list10.length; j++) {
+                                if (list10[j][12].startsWith('53') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        withTotal += list4[j][d]
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list10[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list10[j][d] / saleTotal).toFixed(2)) + "%</td>");
+                                    }
+                                }
+                            }
+                        }
+                        if (list[i][0] === '503') {
+                           for (var j = 0; j < list10.length; j++) {
+                                if (list10[j][12].startsWith('55') === true) {
+                                    for (var d = 0; d < 12; d++) {
+                                        withTotal += list4[j][d]
+                                        $(".sheetTr_tr").eq(d).append(
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list10[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(parseInt(list10[j][d]) / parseInt(saleTotal)).toFixed(2)) + "%</td>");
+                                    }
+                                }
+                            }
+                        }
+
+                        {#소계#}
+                        $(".sheetTr_tr").eq(d).append(
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'></td>" +
+                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출대비금(소계)</td>");
+                    }
+
                 }
             })
 
         });
 
-
-        {#$(document).ready(function () {#}
-        {##}
-        {#    var hCount = 0;#}
-        {#    var hTotal = 0;#}
-        {#    var hSaleBuy = 0;#}
-        {#    var hDeposit = 0;#}
-        {#    var now = new Date();#}
-        {#    var Year = now.getFullYear()#}
-        {#    document.getElementById('inputYear').value = Year#}
-        {##}
-        {#    var year = document.getElementById('inputYear').value#}
-        {##}
-        {#    let data = {'Year': year}#}
-        {##}
-        {#    $.ajax({#}
-        {#        type: "post",#}
-        {#        data: data,#}
-        {#        url: '{% url "monthly_count_search" %}',#}
-        {#        headers: {#}
-        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
-        {#        },#}
-        {#        dataType: 'json',#}
-        {#        success: function (data) {#}
-        {#            var list = data.headerList;#}
-                    {# 매입/매출 #}
-        {#            var list2 = data.inheadList;#}
-        {#            var list3 = data.outheadList;#}
-                    {# 입금/출금 #}
-        {#            var list4 = data.deheadList;#}
-        {#            var list5 = data.wiheadList;#}
-        {##}
-        {#            $("#codeHead").html("");#}
-        {#            $("#sheetTb").html("");#}
-                    {# 입금/매출/매입/출금 #}
-                    {# 1번째줄 헤더 #}
-        {#            var hCount = list2.length;#}
-        {#            var hCount2 = list3.length;#}
-        {#            var hCount3 = list4.length;#}
-        {#            var hCount4 = list5.length;#}
-        {#            $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem; background-color: rgb(0, 92, 151);' rowspan='3'>구분</td>");#}
-        {#            for (var i = 0; i < list.length; i++) {#}
-        {#                if(hCount3 > 0){#}
-        {#                    for (var j = 0; j < list4.length; i++) {#}
-        {#                        $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount3 + "'>" + list[i][1] + "</td>");#}
-        {#                    }#}
-        {#                }#}
-        {#                if(hCount2 > 0) {#}
-        {#                    for (var h = 0; h < list3.length; i++) {#}
-        {#                        $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount2 + "'>" + list[i][1] + "</td>");#}
-        {#                    }#}
-        {#                }#}
-        {#                if(hCount > 0) {#}
-        {#                    for (var k = 0; k < list2.length; i++) {#}
-        {#                        $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount + "'>" + list[i][1] + "</td>");#}
-        {#                    }#}
-        {#                }#}
-        {#                if(hCount4 > 0) {#}
-        {#                    for (var p = 0; p < list5.length; i++) {#}
-        {#                        $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount4 + "'>" + list[i][1] + "</td>");#}
-        {#                    }#}
-        {#                }#}
-        {##}
-        {#            }#}
-                    {#for (var i = 0; i < list.length; i++) {#}
-                    {#    if (list[i][0] === '401') {#}
-                    {#        for (var j = 0; j < list4.length; j++) {#}
-                    {#            if(list4[j][0].startsWith('43') === true){#}
-                    {#                hCount += 1;#}
-                    {#                hDeposit += 1;#}
-                    {#            }#}
-                    {#        }#}
-                    {#        if(hCount > 0) {#}
-                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount + "'>" + list[i][1] + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#    hCount = 0;#}
-                    {#    if (list[i][0] === '402') {#}
-                    {#        for (var j = 0; j < list3.length; j++) {#}
-                    {#            if (list3[j][0].startsWith('41') === true && list3[j][2] == '402') {#}
-                    {#                hCount += 1;#}
-                    {#                hSaleBuy += 1;#}
-                    {#            }#}
-                    {#        }#}
-                    {#        if (hCount > 0) {#}
-                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#    hCount = 0;#}
-                    {#    if (list[i][0] === '403') {#}
-                    {#        for (var j = 0; j < list3.length; j++) {#}
-                    {#            if(list3[j][0].startsWith('41') === true && list3[j][2] == '403'){#}
-                    {#                hCount += 1;#}
-                    {#                hSaleBuy += 1;#}
-                    {#            }#}
-                    {#        }#}
-                    {#        if(hCount > 0) {#}
-                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#    hCount = 0;#}
-                    {#    if (list[i][0] === '501') {#}
-                    {#        for (var j = 0; j < list2.length; j++) {#}
-                    {#            if(list2[j][0].startsWith('5') === true && list2[j][2] == '501'){#}
-                    {#                hCount += 1;#}
-                    {#                hTotal += 1;#}
-                    {#            }#}
-                    {#        }#}
-                    {#        if(hCount > 0) {#}
-                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#    hCount = 0;#}
-                    {#    if (list[i][0] === '502') {#}
-                    {#        for (var j = 0; j < list3.length; j++) {#}
-                    {#            if(list3[j][0].startsWith('5') === true && list2[j][2] == '502'){#}
-                    {#                hCount += 1;#}
-                    {#                hTotal += 1;#}
-                    {#            }#}
-                    {#        }#}
-                    {#        if(hCount > 0) {#}
-                    {#            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#    hCount = 0;#}
-                    {#    if (list[i][0] === '503') {#}
-                    {#        for (var j = 0; j < list5.length; j++) {#}
-                    {#            if(list5[j][0].startsWith('51') === true && list2[j][2] == '503'){#}
-                    {#                hCount += 1;#}
-                    {#                hTotal += 1;#}
-                    {#            }#}
-                    {#        }#}
-                    {#        if(hCount > 0){#}
-                    {#           $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#}#}
-        {##}
-                    {# 2번째줄 헤더 #}
-        {#            $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");#}
-        {#            for (var i = 0; i < list.length; i++) {#}
-        {#                if (list[i][0] == list4[i][2]) {#}
-        {#                    for (var j = 0; j < list4.length; j++) {#}
-        {#                        if (list4[j][0].startsWith('43') === true) {#}
-        {#                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' rowspan='2'>" + list4[j][1] + "</td>");#}
-                                    {# 환급금/ 수입이자 #}
-        {##}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '402') {#}
-        {#                    for (var j = 0; j < list3.length; j++) {#}
-        {#                        if (list3[j][0].startsWith('41') === true) {#}
-        {#                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");#}
-                                {# 상품매출/ 생산매출 #}
-        {##}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '403') {#}
-        {#                    for (var j = 0; j < list2.length; j++) {#}
-        {#                        if (list2[j][0].startsWith('5') === true) {#}
-        {#                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");#}
-                                {# 원재료/ 상품매입 #}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '501') {#}
-        {#                    for (var j = 0; j < list3.length; j++) {#}
-        {#                        if (list3[j][0].startsWith('5') === true && list3[j][2] == '4') {#}
-        {#                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '502') {#}
-        {#                    for (var j = 0; j < list3.length; j++) {#}
-        {#                        if (list3[j][0].startsWith('5') === true && list3[j][2] == '5') {#}
-        {#                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '503') {#}
-        {#                    for (var j = 0; j < list3.length; j++) {#}
-        {#                        if (list3[j][0].startsWith('5') === true && list3[j][2] == '6') {#}
-        {#                            $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#            }#}
-        {##}
-        {#            $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");#}
-        {#            $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem'></td> ");#}
-        {#            for (var h = 0; h < hDeposit; h++) {#}
-        {#                $("#codeHead").append(#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>금 액</td> ");#}
-        {#            }#}
-        {#            for (var h = 0; h < hSaleBuy; h++) {#}
-        {#                $("#codeHead").append(#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>금 액</td> " +#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>목표 대비</td>");#}
-        {#            }#}
-        {#            for (var h = 0; h < hTotal; h++) {#}
-        {#                $("#codeHead").append(#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>금 액</td> " +#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출 대비</td>");#}
-        {#            }#}
-        {##}
-        {##}
-        {##}
-        {##}
-        {##}
-        {##}
-        {##}
-                {#    데이터     #}
-                    {# 매입/매출 #}
-        {#            var list4 = data.mainList;#}
-                    {# 출금/입금 #}
-        {#            var list5 = data.mainList2;#}
-        {##}
-        {#            for (var d = 1; d < 13; d++) {#}
-        {#                $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +#}
-        {#                    "<td class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.8rem; width: 3rem'>" + d + "월</td> " +#}
-        {#                    "</tr> ");#}
-        {#            }#}
-        {##}
-        {##}
-        {#            var saleTotal = 0;#}
-        {#            var buyTotal = 0;#}
-        {#            var withTotal = 0;#}
-        {##}
-        {##}
-                    {# 메인데이터 #}
-        {#            for (var i = 0; i < list.length; i++) {#}
-        {#                if (list[i][0] === '1') {#}
-        {#                    for (var j = 0; j < list5.length; j++) {#}
-        {#                        if(list5[j][12].startsWith('4') === true){#}
-                                    {#$("#sheetTb").insertCell(-1);#}
-        {#                            for (var d = 0; d < 12; d++) {#}
-        {#                                $(".sheetTr_tr").eq(d).append(#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" );#}
-                                        {#alert(list4[j][d])#}
-        {#                            }#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '2') {#}
-        {#                    for (var j = 0; j < list4.length; j++) {#}
-        {#                        if (list4[j][12].startsWith('4') === true) {#}
-        {#                            for (var d = 0; d < 12; d++) {#}
-        {#                                $(".sheetTr_tr").eq(d).append(#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list4[j][d]) + "</td>" +#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출대비(매출)</td>");#}
-                                        {#alert(list5[j][d])#}
-        {#                                saleTotal += list4[j][d]#}
-        {#                            }#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '3') {#}
-        {#                   for (var j = 0; j < list4.length; j++) {#}
-        {#                        if (list4[j][12].startsWith('5') === true) {#}
-        {#                            for (var d = 0; d < 12; d++) {#}
-                                        {#buyTotal += list4[j][d]#}
-        {#                                $(".sheetTr_tr").eq(d).append(#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list4[j][d]) + "</td>" +#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list4[j][d] / saleTotal).toFixed(2)) + "%</td>");#}
-        {#                            }#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '4') {#}
-        {#                   for (var j = 0; j < list5.length; j++) {#}
-        {#                        if (list5[j][12].startsWith('5') === true && list5[j][14] == '4') {#}
-        {#                            for (var d = 0; d < 12; d++) {#}
-                                        {#withTotal += list4[j][d]#}
-        {#                                $(".sheetTr_tr").eq(d).append(#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" +#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list5[j][d] / saleTotal).toFixed(2)) + "%</td>");#}
-        {#                            }#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '5') {#}
-        {#                   for (var j = 0; j < list5.length; j++) {#}
-        {#                        if (list5[j][12].startsWith('5') === true && list5[j][14] == '5') {#}
-        {#                            for (var d = 0; d < 12; d++) {#}
-                                        {#withTotal += list4[j][d]#}
-        {#                                $(".sheetTr_tr").eq(d).append(#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" +#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list5[j][d] / saleTotal).toFixed(2)) + "%</td>");#}
-        {#                            }#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {#                if (list[i][0] === '6') {#}
-        {#                   for (var j = 0; j < list5.length; j++) {#}
-        {#                        if (list5[j][12].startsWith('5') === true && list5[j][14] == '6') {#}
-        {#                            for (var d = 0; d < 12; d++) {#}
-                                        {#withTotal += list4[j][d]#}
-        {#                                $(".sheetTr_tr").eq(d).append(#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" +#}
-        {#                                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list5[j][d] / saleTotal).toFixed(2)) + "%</td>");#}
-        {#                            }#}
-        {#                        }#}
-        {#                    }#}
-        {#                }#}
-        {##}
-                    {#    소계   #}
-        {#                $(".sheetTr_tr").eq(d).append(#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'></td>" +#}
-        {#                    "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출대비금(소계)</td>");#}
-        {#            }#}
-        {##}
-        {#        }#}
-        {#    })#}
-        {#});#}
 
 
         {# 조회 버튼 누를시 #}
@@ -552,10 +482,13 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.headerList;
-                    {# 매입/매출 #}
-                    var list2 = data.headList;
-                    {# 출금/입금 #}
-                    var list3 = data.headList2;
+                    var list6 = data.mCodeList;
+                     {#매입/매출 #}
+                    var list2 = data.inheadList;
+                    var list3 = data.outheadList;
+                     {#입금/출금 #}
+                    var list4 = data.deheadList;
+                    var list5 = data.wiheadList;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
@@ -563,9 +496,9 @@
                     {# 1번째줄 헤더 #}
                     $("#codeHead").append("<td class='text-center p-1' style='font-size: 0.8rem' rowspan='3'>구분</td>");
                     for (var i = 0; i < list.length; i++) {
-                        if (list[i][0] === '1') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('4') === true){
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list4.length; j++) {
+                                if(list4[j][0].startsWith('41') === true){
                                     hCount += 1;
                                     hDeposit += 1;
                                 }
@@ -575,9 +508,9 @@
                             }
                         }
                         hCount = 0;
-                        if (list[i][0] === '2') {
-                            for (var j = 0; j < list2.length; j++) {
-                                if (list2[j][0].startsWith('4') === true) {
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if (list3[j][0].startsWith('43') === true) {
                                     hCount += 1;
                                     hSaleBuy += 1;
                                 }
@@ -587,9 +520,9 @@
                             }
                         }
                         hCount = 0;
-                        if (list[i][0] === '3') {
+                        if (list[i][0] === '501') {
                             for (var j = 0; j < list2.length; j++) {
-                                if(list2[j][0].startsWith('5') === true){
+                                if(list2[j][0].startsWith('51') === true){
                                     hCount += 1;
                                     hSaleBuy += 1;
                                 }
@@ -599,9 +532,9 @@
                             }
                         }
                         hCount = 0;
-                        if (list[i][0] === '4') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('5') === true && list3[j][2] == '4'){
+                        if (list[i][0] === '502') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if(list5[j][0].startsWith('53') === true){
                                     hCount += 1;
                                     hTotal += 1;
                                 }
@@ -611,27 +544,15 @@
                             }
                         }
                         hCount = 0;
-                        if (list[i][0] === '5') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('5') === true && list3[j][2] == '5'){
+                        if (list[i][0] === '503') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if(list5[j][0].startsWith('55') === true){
                                     hCount += 1;
                                     hTotal += 1;
                                 }
                             }
                             if(hCount > 0) {
                                 $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
-                            }
-                        }
-                        hCount = 0;
-                        if (list[i][0] === '6') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if(list3[j][0].startsWith('5') === true && list3[j][2] == '6'){
-                                    hCount += 1;
-                                    hTotal += 1;
-                                }
-                            }
-                            if(hCount > 0){
-                               $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='" + hCount * 2 + "'>" + list[i][1] + "</td>");
                             }
                         }
                     }
@@ -639,51 +560,40 @@
                     {# 2번째줄 헤더 #}
                     $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
-                        if (list[i][0] === '1') {
-                            for (var j = 0; j < list3.length; j++) {
-
-                                if (list3[j][0].startsWith('4') === true) {
-                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' rowspan='2'>" + list3[j][1] + "</td>");
-                                    {# 환급금/ 수입이자 #}
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list4.length; j++) {
+                                if (list4[j][0].startsWith('41') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' rowspan='2'>" + list4[j][1] + "</td>");
 
                                 }
                             }
                         }
-                        if (list[i][0] === '2') {
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list3.length; j++) {
+                                if (list3[j][0].startsWith('43') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
+
+                                }
+                            }
+                        }
+                        if (list[i][0] === '501') {
                             for (var j = 0; j < list2.length; j++) {
-                                if (list2[j][0].startsWith('4') === true) {
+                                if (list2[j][0].startsWith('51') === true) {
                                     $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");
-                                {# 상품매출/ 생산매출 #}
-
                                 }
                             }
                         }
-                        if (list[i][0] === '3') {
-                            for (var j = 0; j < list2.length; j++) {
-                                if (list2[j][0].startsWith('5') === true) {
-                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list2[j][1] + "</td>");
-                                {# 원재료/ 상품매입 #}
+                        if (list[i][0] === '502') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if (list5[j][0].startsWith('53') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list5[j][1] + "</td>");
                                 }
                             }
                         }
-                        if (list[i][0] === '4') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if (list3[j][0].startsWith('5') === true && list3[j][2] == '4') {
-                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
-                                }
-                            }
-                        }
-                        if (list[i][0] === '5') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if (list3[j][0].startsWith('5') === true && list3[j][2] == '5') {
-                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
-                                }
-                            }
-                        }
-                        if (list[i][0] === '6') {
-                            for (var j = 0; j < list3.length; j++) {
-                                if (list3[j][0].startsWith('5') === true && list3[j][2] == '6') {
-                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list3[j][1] + "</td>");
+                        if (list[i][0] === '503') {
+                            for (var j = 0; j < list5.length; j++) {
+                                if (list5[j][0].startsWith('55') === true) {
+                                    $("#codeHead").append("<td class='text-center border border-light p-1' style='font-size: 0.8rem' colspan='2'>" + list5[j][1] + "</td>");
                                 }
                             }
                         }
@@ -709,21 +619,17 @@
 
 
 
-
-
-
                 {#    데이터     #}
                     {# 매입/매출 #}
-                    var list4 = data.mainList;
+                    var list7 = data.mainList;
                     {# 출금/입금 #}
-                    var list5 = data.mainList2;
+                    var list8 = data.mainList2;
 
                     for (var d = 1; d < 13; d++) {
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.8rem; width: 3rem'>" + d + "월</td> " +
+                            "<td class='text-center border border-top text-white p-1' style='font-size: 0.8rem; width: 3rem; background-color: rgb(0, 92, 151)'>" + d + "월</td> " +
                             "</tr> ");
                     }
-
 
                     var saleTotal = 0;
                     var buyTotal = 0;
@@ -732,75 +638,63 @@
 
                     {# 메인데이터 #}
                     for (var i = 0; i < list.length; i++) {
-                        if (list[i][0] === '1') {
-                            for (var j = 0; j < list5.length; j++) {
-                                if(list5[j][12].startsWith('4') === true){
+                        if (list[i][0] === '402') {
+                            for (var j = 0; j < list8.length; j++) {
+                                if(list8[j][12].startsWith('41') === true){
                                     {#$("#sheetTb").insertCell(-1);#}
                                     for (var d = 0; d < 12; d++) {
                                         $(".sheetTr_tr").eq(d).append(
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" );
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list8[j][d]) + "</td>" );
                                         {#alert(list4[j][d])#}
                                     }
                                 }
                             }
                         }
-                        if (list[i][0] === '2') {
-                            for (var j = 0; j < list4.length; j++) {
-                                if (list4[j][12].startsWith('4') === true) {
+                        if (list[i][0] === '401') {
+                            for (var j = 0; j < list7.length; j++) {
+                                if (list7[j][12].startsWith('43') === true) {
                                     for (var d = 0; d < 12; d++) {
                                         $(".sheetTr_tr").eq(d).append(
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list4[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list7[j][d]) + "</td>" +
                                             "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>매출대비(매출)</td>");
                                         {#alert(list5[j][d])#}
-                                        saleTotal += list4[j][d]
+                                        saleTotal += list7[j][d]
                                     }
                                 }
                             }
                         }
-                        if (list[i][0] === '3') {
-                           for (var j = 0; j < list4.length; j++) {
-                                if (list4[j][12].startsWith('5') === true) {
+                        if (list[i][0] === '501') {
+                           for (var j = 0; j < list7.length; j++) {
+                                if (list7[j][12].startsWith('51') === true) {
                                     for (var d = 0; d < 12; d++) {
                                         {#buyTotal += list4[j][d]#}
                                         $(".sheetTr_tr").eq(d).append(
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list4[j][d]) + "</td>" +
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list4[j][d] / saleTotal).toFixed(2)) + "%</td>");
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list7[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list7[j][d] / saleTotal).toFixed(2)) + "%</td>");
                                     }
                                 }
                             }
                         }
-                        if (list[i][0] === '4') {
-                           for (var j = 0; j < list5.length; j++) {
-                                if (list5[j][12].startsWith('5') === true && list5[j][14] == '4') {
+                        if (list[i][0] === '502') {
+                           for (var j = 0; j < list8.length; j++) {
+                                if (list8[j][12].startsWith('53') === true) {
                                     for (var d = 0; d < 12; d++) {
                                         {#withTotal += list4[j][d]#}
                                         $(".sheetTr_tr").eq(d).append(
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" +
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list5[j][d] / saleTotal).toFixed(2)) + "%</td>");
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list8[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list8[j][d] / saleTotal).toFixed(2)) + "%</td>");
                                     }
                                 }
                             }
                         }
-                        if (list[i][0] === '5') {
-                           for (var j = 0; j < list5.length; j++) {
-                                if (list5[j][12].startsWith('5') === true && list5[j][14] == '5') {
+                        if (list[i][0] === '503') {
+                           for (var j = 0; j < list8.length; j++) {
+                                if (list8[j][12].startsWith('55') === true) {
                                     for (var d = 0; d < 12; d++) {
                                         {#withTotal += list4[j][d]#}
                                         $(".sheetTr_tr").eq(d).append(
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" +
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list5[j][d] / saleTotal).toFixed(2)) + "%</td>");
-                                    }
-                                }
-                            }
-                        }
-                        if (list[i][0] === '6') {
-                           for (var j = 0; j < list5.length; j++) {
-                                if (list5[j][12].startsWith('5') === true && list5[j][14] == '6') {
-                                    for (var d = 0; d < 12; d++) {
-                                        {#withTotal += list4[j][d]#}
-                                        $(".sheetTr_tr").eq(d).append(
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list5[j][d]) + "</td>" +
-                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list5[j][d] / saleTotal).toFixed(2)) + "%</td>");
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + addComma(list8[j][d]) + "</td>" +
+                                            "<td class='text-center border border-light p-1' style='font-size: 0.8rem'>" + (Math.round(list8[j][d] / saleTotal).toFixed(2)) + "%</td>");
                                     }
                                 }
                             }
