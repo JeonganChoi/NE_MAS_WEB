@@ -1482,20 +1482,21 @@ def paymentViews_save(request):
         uploaded_file = destination
 
     if acSeqn:
-        # with connection.cursor() as cursor:
-        #     cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(acAcnumber) + "' AND ICUST = '" + str(iCust) + "' ")
-        #     result = cursor.fetchall()  # 계좌 은행
-        #
-        #     bnk = result[0][0]
 
         if acDate == '' or acDate is None:
             acDate = ioDate
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()
+            aCode = result[0][0]
 
         with connection.cursor() as cursor:
             iCust = request.session.get("USER_ICUST")
             cursor.execute("    UPDATE  SISACCTT SET"
                            "     ACGUBN = '" + str(acGubn) + "' "
                            ",    MCODE = '" + str(mCode) + "' "
+                           ",    ACODE = '" + str(aCode) + "' "
                            ",    GBN = (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "') "
                            ",    ACTITLE = '" + str(acTitle) + "' "
                            ",    ACAMTS = '" + str(acAmts) + "' "
@@ -1520,12 +1521,7 @@ def paymentViews_save(request):
 
             connection.commit()
 
-        # with connection.cursor() as cursor:
-        #     cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' ")
-        #     result2 = cursor.fetchall()  # 계좌 은행
-        #
-        #     seq = result2[0][0]
-        # with connection.cursor() as cursor:
+
         with connection.cursor() as cursor:
             cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
                            "        AND ICUST = '" + str(iCust) + "'  ")
@@ -1589,12 +1585,14 @@ def paymentViews_save(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-        # with connection.cursor() as cursor:
-        #     cursor.execute(" SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(acAcnumber) + "' AND ICUST = '" + str(iCust) + "' ")
-        #     result = cursor.fetchall()  # 계좌 은행
 
         if acDate == '' or acDate is None:
             acDate = ioDate
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()
+            aCode = result[0][0]
 
         if acSeqn == '' or acSeqn is None:
             with connection.cursor() as cursor:
@@ -1607,6 +1605,7 @@ def paymentViews_save(request):
                                ",    ACCUST "
                                ",    ACGUBN "
                                ",    MCODE "
+                               ",    ACODE "
                                ",    GBN "
                                ",    ACAMTS "
                                ",    ACACNUMBER "
@@ -1634,6 +1633,7 @@ def paymentViews_save(request):
                                ",   '" + str(acCust) + "'"
                                ",   '" + str(acGubn) + "'"
                                ",   '" + str(mCode) + "'"
+                               ",   '" + str(aCode) + "'"
                                ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "')"
                                ",   '" + str(acAmts) + "'"
                                ",   '" + str(acAcnumber) + "'"
@@ -1696,6 +1696,7 @@ def offSetViews_save(request):
     empArray = json.loads(request.POST.get('empArrList'))
     ioDate = request.POST.get("txtWitRegDate2").replace('-', '') # 등록일자
     acSeqn = request.POST.get("txtWitSeq2")               # 순번
+    mCode = request.POST.get("cboAdminCode")
     acTitle = request.POST.get("txtTitle")
     acIogb = request.POST.get("cboWitGbn")  # 구분(입금2/출금1)
     acAmts = request.POST.get("txtWitPrice2").replace(',', '')      # 금액
@@ -1757,6 +1758,12 @@ def offSetViews_save(request):
     if result:
         acSeqn = result[0][0]
 
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()  # 계좌 은행
+            aCode = result[0][0]
+
         # 출금정보
         if outAct:
             with connection.cursor() as cursor:
@@ -1773,6 +1780,8 @@ def offSetViews_save(request):
                 cursor.execute( " UPDATE SISACCTT SET "
                                 "     ACTITLE = '" + str(acTitle) + "' "
                                 "     , ACAMTS = '" + str(acAmts) + "' "
+                                "     , MCODE = '" + str(mCode) + "' "
+                                "     , ACODE = '" + str(aCode) + "' "
                                 "     , ACDESC = '" + str(acDesc) + "' "
                                 "     , UPD_USER = '" + str(creUser) + "' "
                                 "     , UPD_DT = date_format(now(), '%Y%m%d') "
@@ -1803,6 +1812,8 @@ def offSetViews_save(request):
                 cursor.execute( " UPDATE SISACCTT SET "
                                 "     ACTITLE = '" + str(acTitle) + "' "
                                 "     , ACAMTS = '" + str(acAmts) + "' "
+                                "     , MCODE = '" + str(mCode) + "' "
+                                "     , ACODE = '" + str(aCode) + "' "
                                 "     , ACDESC = '" + str(acDesc) + "' "
                                 "     , UPD_USER = '" + str(creUser) + "' "
                                 "     , UPD_DT = date_format(now(), '%Y%m%d') "
@@ -1822,6 +1833,8 @@ def offSetViews_save(request):
             cursor.execute( " UPDATE SISACCTT SET "
                             "     ACTITLE = '" + str(acTitle) + "' "
                             "     , ACAMTS = '" + str(acAmts) + "' "
+                            "     , MCODE = '" + str(mCode) + "' "
+                            "     , ACODE = '" + str(aCode) + "' "
                             "     , ACDESC = '" + str(acDesc) + "' "
                             "     , UPD_USER = '" + str(creUser) + "' "
                             "     , UPD_DT = date_format(now(), '%Y%m%d') "
@@ -1861,11 +1874,19 @@ def offSetViews_save(request):
                 offDate = ioDate
 
             with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
+                result = cursor.fetchall()
+                aCode = result[0][0]
+
+            with connection.cursor() as cursor:
                 cursor.execute( "INSERT INTO SISACCTT "
                                 "   (    "
                                 "     IODATE "
                                 ",    ACSEQN "
                                 ",    ACIOGB "
+                                ",    MCODE "
+                                ",    ACODE "
                                 ",    ACTITLE "
                                 ",    ACAMTS "
                                 ",    ACACNUMBER "
@@ -1886,6 +1907,8 @@ def offSetViews_save(request):
                                 "    '" + str(ioDate) + "'"
                                 ",   '" + str(seq) + "' "
                                 ",   '1'"
+                                ",   '" + str(mCode) + "'"
+                                ",   '" + str(aCode) + "'"
                                 ",   '" + str(acTitle) + "'"
                                 ",   '" + str(acAmts) + "'"
                                 ",   '" + str(outAct) + "'"
@@ -1916,11 +1939,19 @@ def offSetViews_save(request):
                 offDate = ioDate
 
             with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
+                result = cursor.fetchall()
+                aCode = result[0][0]
+
+            with connection.cursor() as cursor:
                 cursor.execute("INSERT INTO SISACCTT "
                                    "   (    "
                                    "     IODATE "
                                    ",    ACSEQN "
                                    ",    ACIOGB "
+                                   ",    MCODE "
+                                   ",    ACODE "
                                    ",    ACTITLE "
                                    ",    ACAMTS "
                                    ",    ACACNUMBER "
@@ -1941,6 +1972,8 @@ def offSetViews_save(request):
                                    "    '" + str(ioDate) + "'"
                                    ",   '" + str(seq) + "' "
                                    ",   '2'"
+                                   ",   '" + str(mCode) + "'"
+                                   ",   '" + str(aCode) + "'"
                                    ",   '" + str(acTitle) + "'"
                                    ",   '" + str(acAmts) + "'"
                                    ",   '" + str(inAct) + "'"
@@ -1966,6 +1999,8 @@ def offSetViews_save(request):
                            "     IODATE "
                            ",    ACSEQN "
                            ",    ACIOGB "
+                           ",    MCODE "
+                           ",    ACODE "
                            ",    ACTITLE "
                            ",    ACAMTS "
                            ",    ACACNUMBER "
@@ -1987,6 +2022,8 @@ def offSetViews_save(request):
                            "    '" + str(ioDate) + "' "
                            ",   '" + str(seq) + "' "
                            ",   '" + str(acIogb) + "' "
+                           ",   '" + str(mCode) + "' "
+                           ",   '" + str(aCode) + "' "
                            ",   '" + str(acTitle) + "' "
                            ",   '" + str(acAmts) + "' "
                            ",   '" + str(acAcnumber) + "' "
