@@ -62,7 +62,7 @@ def receivePay_search(request):
         chkEmp = cursor.fetchall()
 
     if chkEmp[0][0] != '':
-        if int(chkEmp[0][0]) > 2:
+        if int(chkEmp[0][0]) < 2:
             if strDate and endDate and inputBank == '' and cboAct == '':
                 with connection.cursor() as cursor:
                     cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
@@ -377,7 +377,7 @@ def receivePay_search(request):
 
         # 등급이 1이거나 비어있으면 총금액은 조회되지 않는다.
 
-        if int(chkEmp[0][0]) <= 2:
+        if int(chkEmp[0][0]) >= 2:
             if strDate and endDate and inputBank == '' and cboAct == '':
                 balresult = ''
                 with connection.cursor() as cursor:
