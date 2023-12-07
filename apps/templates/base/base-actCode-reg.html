@@ -391,7 +391,7 @@
                     for (var i = 0; i < combolist3.length; i++) {
                         if (combolist3[i][0] == cboMCode_M) {
                             cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
+                        } if(combolist3[i][0].charAt(0) == cboMCode_M.charAt(0) && combolist3[i][0] !== cboMCode_M) {
                             cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
                         }
                     }
