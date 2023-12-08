@@ -21,6 +21,8 @@ def permitViews_search(request):
     # 미시행 ''/ 시행 = 1
     permitGbn = request.POST.get('permitGbn','')
     custCode = request.POST.get('custCode','')
+    bankCode = request.POST.get('bankCode','')
+    actCode = request.POST.get('actCode','')
     # value = off
     offSet = request.POST.get('offSet','')
     user = request.session.get('userId')
@@ -78,122 +80,270 @@ def permitViews_search(request):
     # 상계
     if offSet:
         if permitGbn == '':
-            with connection.cursor() as cursor:
-                cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
-                               " FROM SISACCTT A "
-                               " LEFT OUTER JOIN OSSIGN B "
-                               " ON A.IODATE = B.ACDATE "
-                               " AND A.ACSEQN = B.ACSEQN "
-                               " AND A.ICUST = B.ICUST "
-                               " AND A.FIN_OPT = 'N' "
-                               " LEFT OUTER JOIN PIS1TB001 C "
-                               " ON B.EMP_NBR = C.EMP_NBR "
-                               " LEFT OUTER JOIN OSCODEM D "
-                               " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + str(user) + "' "
-                               " AND A.IODATE <= '" + str(perDate) + "' "
-                               " AND A.OFF_GBN = 'off'"
-                               " AND A.ICUST = '" + str(iCust) + "' "
-                               " AND A.ACCUST like '%" + str(custCode) + "%' "
-                               " ORDER BY A.ACSEQN ASC ")
-                mainresult = cursor.fetchall()
+            if actCode == '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'N'  "
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.OFF_GBN = 'off'"
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
 
-            return JsonResponse({"mainList": mainresult})
+                return JsonResponse({"mainList": mainresult})
+
+            if actCode != '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'N'  "
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.OFF_GBN = 'off'"
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " AND A.ACACNUMBER = '" + str(actCode) + "' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult})
 
         if permitGbn != '':
-            with connection.cursor() as cursor:
-                cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
-                               " FROM SISACCTT A "
-                               " LEFT OUTER JOIN OSSIGN B "
-                               " ON A.IODATE = B.ACDATE "
-                               " AND A.ACSEQN = B.ACSEQN "
-                               " AND A.ICUST = B.ICUST "
-                               " AND A.FIN_OPT = 'Y' "
-                               " LEFT OUTER JOIN PIS1TB001 C "
-                               " ON B.EMP_NBR = C.EMP_NBR "
-                               " LEFT OUTER JOIN OSCODEM D "
-                               " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + str(user) + "' "
-                               " AND A.IODATE <= '" + str(perDate) + "' "
-                               " AND A.OFF_GBN = 'off'"
-                               " AND A.ICUST = '" + str(iCust) + "' "
-                               " AND A.ACCUST like '%" + str(custCode) + "%' "
-                               " ORDER BY A.ACSEQN ASC ")
-                mainresult = cursor.fetchall()
-            # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+            if actCode == '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'Y'  "
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.OFF_GBN = 'off'"
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+                # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
-            return JsonResponse({"mainList": mainresult})
+                return JsonResponse({"mainList": mainresult})
+            if actCode != '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'Y'  "
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.OFF_GBN = 'off'"
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+                # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+
+                return JsonResponse({"mainList": mainresult})
 
     else:
         if permitGbn == '':
-            with connection.cursor() as cursor:
-                cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
-                               " FROM SISACCTT A "
-                               " LEFT OUTER JOIN OSSIGN B "
-                               " ON A.IODATE = B.ACDATE "
-                               " AND A.ACSEQN = B.ACSEQN "
-                               " AND A.ICUST = B.ICUST "
-                               " AND A.FIN_OPT = 'N' "
-                               " LEFT OUTER JOIN PIS1TB001 C "
-                               " ON B.EMP_NBR = C.EMP_NBR "
-                               " LEFT OUTER JOIN OSCODEM D "
-                               " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + str(user) + "' "                             
-                               " AND A.IODATE <= '" + str(perDate) + "' "
-                               " AND A.ICUST = '" + str(iCust) + "' "
-                               " AND A.ACCUST like '%" + str(custCode) + "%' "
-                               " ORDER BY A.ACSEQN ASC ")
-                mainresult = cursor.fetchall()
-            # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+            if actCode == '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'N'  "                         
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+                # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
-                cboCust = cursor.fetchall()
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
+                    cboCust = cursor.fetchall()
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
-                cboAct = cursor.fetchall()
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
+                    cboAct = cursor.fetchall()
 
-            return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct})
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cboBank = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
+
+            if actCode != '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'N'  "                         
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " AND A.ACACNUMBER = '" + str(actCode) + "' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+                # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
+                    cboCust = cursor.fetchall()
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
+                    cboAct = cursor.fetchall()
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cboBank = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
 
         if permitGbn != '':
-            with connection.cursor() as cursor:
-                cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
-                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                               "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACINFO, '') "
-                               " FROM SISACCTT A "
-                               " LEFT OUTER JOIN OSSIGN B "
-                               " ON A.IODATE = B.ACDATE "
-                               " AND A.ACSEQN = B.ACSEQN "
-                               " AND A.ICUST = B.ICUST "
-                               " AND A.FIN_OPT = 'Y' "
-                               " LEFT OUTER JOIN PIS1TB001 C "
-                               " ON B.EMP_NBR = C.EMP_NBR "
-                               " LEFT OUTER JOIN OSCODEM D "
-                               " ON A.MCODE = D.MCODE "
-                               " WHERE B.EMP_NBR = '" + str(user) + "' "
-                               " AND A.IODATE <= '" + str(perDate) + "' "
-                               " AND A.ICUST = '" + str(iCust) + "' "
-                               " AND A.ACCUST like '%" + str(custCode) + "%' "
-                               " ORDER BY A.ACSEQN ASC ")
-                mainresult = cursor.fetchall()
-            # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+            if actCode == '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'Y'  "    
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+                # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
-                cboCust = cursor.fetchall()
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
+                    cboCust = cursor.fetchall()
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
-                cboAct = cursor.fetchall()
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
+                    cboAct = cursor.fetchall()
 
-            return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct})
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cboBank = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
+
+            if actCode != '':
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                                   "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+                                   "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
+                                   "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, '') "
+                                   " FROM SISACCTT A "
+                                   " LEFT OUTER JOIN PIS1TB001 C "
+                                   " ON A.CRE_USER = C.EMP_NBR "
+                                   " LEFT OUTER JOIN OSCODEM D "
+                                   " ON A.MCODE = D.MCODE "
+                                   " LEFT OUTER JOIN ACNUMBER E "
+                                   " ON A.ACACNUMBER = E.ACNUMBER "
+                                   " LEFT OUTER JOIN OSREFCP F "
+                                   " ON E.ACBKCD = F.RESKEY "
+                                   " AND F.RECODE = 'BNK' "
+                                   " WHERE A.FIN_OPT = 'Y'  "    
+                                   # " AND A.IODATE <= '" + str(perDate) + "' "
+                                   " AND A.ICUST = '" + str(iCust) + "' "
+                                   " AND A.ACCUST like '%" + str(custCode) + "%' "
+                                   " AND A.ACACNUMBER = '" + str(actCode) + "' "
+                                   " ORDER BY A.ACSEQN ASC ")
+                    mainresult = cursor.fetchall()
+                # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
+                    cboCust = cursor.fetchall()
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
+                    cboAct = cursor.fetchall()
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cboBank = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
 
 
 
@@ -211,7 +361,11 @@ def cboActNum_search(request):
         cursor.execute(" SELECT ACNUMBER, ACNUM_NAME FROM ACNUMBER WHERE ICUST = '" + iCust + "' ORDER BY ACNUMBER ")
         cboActNum = cursor.fetchall()
 
-        return JsonResponse({'cboActNum': cboActNum})
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+        cboBank = cursor.fetchall()
+
+        return JsonResponse({'cboActNum': cboActNum, "cboBank": cboBank})
 
 
 

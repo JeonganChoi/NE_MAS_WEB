@@ -181,9 +181,12 @@
                                     <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>등 급</label>
                                     <select style="height: 2rem; font-size: 0.8rem; width: 5rem" class="form-control border border-light rounded-1 text-center p-0" name="cboClass" id="cboClass"></select>
                                 </div>
-                                <div class="col-6 text-end">
-                                    <label class="text-danger mt-4 me-2" style="font-size: 1rem">승 인</label>
-                                    <input class="text-danger bg-danger-soft" type="checkbox" id="chkPermit" name="chkPermit" value="111"/>
+                                <div class="col-6">
+                                    <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>시행자</label>
+                                    <select style="height: 2rem; font-size: 0.8rem; width: 5rem" class="form-control border border-light rounded-1 text-center p-0" name="chkPermit" id="chkPermit">
+                                        <option value="" selected>:: 선택 ::</option>
+                                        <option value="111">Y</option>
+                                    </select>
                                 </div>
                             </div>
                             <!--<div class="row mt-4">
@@ -591,10 +594,12 @@
 
                     if(chkPermit == '111'){
                         {#$(`#chkPermit`).trigger('click');#}
-                        $(`#chkPermit`).prop("checked",true);
+                        {#$(`#chkPermit`).prop("checked",true);#}
+                        $('#chkPermit').val('111').prop("selected",true);
                     }
                     else{
-                        $(`#chkPermit`).prop("checked",false);
+                        {#$(`#chkPermit`).prop("checked",false);#}
+                        $('#chkPermit').val('').prop("selected",true);
                     }
 
                     var combolist = data.jjoCombo;

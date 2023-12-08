@@ -377,7 +377,13 @@ def receivePay_search(request):
 
         # 등급이 1이거나 비어있으면 총금액은 조회되지 않는다.
 
-        if int(chkEmp[0][0]) >= 2:
+        if int(chkEmp[0][0]) == 2:
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT EMP_DEPT FROM PIS1TB001 WHERE EMP_NBR = '" + str(creUser) + "' AND ICUST = '" + str(iCust) + "' ")
+                emp = cursor.fetchall()
+
+                empDept = emp[0][0]
+
             if strDate and endDate and inputBank == '' and cboAct == '':
                 balresult = ''
                 with connection.cursor() as cursor:
@@ -403,19 +409,22 @@ def receivePay_search(request):
                                    "    LEFT OUTER JOIN OSREFCP G "
                                    "    ON F.GBN = G.RESKEY "
                                    "    AND G.RECODE = 'CGB' "
-                                   "     WHERE A.ACIOGB = '2' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
-                                   "     UNION ALL "
-                                   "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
-                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT "
-                                   "     FROM SISACCTT A "
-                                   "     LEFT OUTER JOIN MIS1TB003 B "
-                                   "     ON A.ACCUST = B.CUST_NBR "
-                                   "     LEFT OUTER JOIN ACNUMBER C "
-                                   "     ON A.ACACNUMBER = C.ACNUMBER "
-                                   "     LEFT OUTER JOIN OSCODEM D "
-                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "
+                                   "    WHERE A.ACIOGB = '2' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "'"
+                                   "    UNION ALL "
+                                   "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT "
+                                   "    FROM SISACCTT A "
+                                   "    LEFT OUTER JOIN MIS1TB003 B "
+                                   "    ON A.ACCUST = B.CUST_NBR "
+                                   "    LEFT OUTER JOIN ACNUMBER C "
+                                   "    ON A.ACACNUMBER = C.ACNUMBER "
+                                   "    LEFT OUTER JOIN OSCODEM D "
+                                   "    ON A.MCODE = D.MCODE "
                                    "    LEFT OUTER JOIN OSREFCP E "
                                    "    ON A.ACODE = E.RESKEY "
                                    "    AND E.RECODE = 'ACD' "
@@ -423,10 +432,13 @@ def receivePay_search(request):
                                    "    ON A.MCODE = F.MCODE "
                                    "    LEFT OUTER JOIN OSREFCP G "
                                    "    ON F.GBN = G.RESKEY "
-                                   "    AND G.RECODE = 'CGB' "                                   
-                                   "     WHERE A.ACIOGB = '1' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
+                                   "    AND G.RECODE = 'CGB' "
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "                                        
+                                   "    WHERE A.ACIOGB = '1' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "' "
                                    " ) AA "
                                    " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
                                    " ORDER BY AA.IODATE ")
@@ -477,19 +489,22 @@ def receivePay_search(request):
                                    "    LEFT OUTER JOIN OSREFCP H"
                                    "    ON C.ACBKCD = H.RESKEY"
                                    "    AND H.RECODE = 'BNK'"
-                                   "     WHERE A.ACIOGB = '2' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
-                                   "     UNION ALL "
-                                   "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
-                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, C.ACBKCD, H.RESNAM AS BANKNM, A.APPLYDT   "
-                                   "     FROM SISACCTT A "
-                                   "     LEFT OUTER JOIN MIS1TB003 B "
-                                   "     ON A.ACCUST = B.CUST_NBR "
-                                   "     LEFT OUTER JOIN ACNUMBER C "
-                                   "     ON A.ACACNUMBER = C.ACNUMBER "
-                                   "     LEFT OUTER JOIN OSCODEM D "
-                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "    
+                                   "    WHERE A.ACIOGB = '2' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "' "
+                                   "    UNION ALL "
+                                   "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, C.ACBKCD, H.RESNAM AS BANKNM, A.APPLYDT   "
+                                   "    FROM SISACCTT A "
+                                   "    LEFT OUTER JOIN MIS1TB003 B "
+                                   "    ON A.ACCUST = B.CUST_NBR "
+                                   "    LEFT OUTER JOIN ACNUMBER C "
+                                   "    ON A.ACACNUMBER = C.ACNUMBER "
+                                   "    LEFT OUTER JOIN OSCODEM D "
+                                   "    ON A.MCODE = D.MCODE "
                                    "    LEFT OUTER JOIN OSREFCP E "
                                    "    ON A.ACODE = E.RESKEY "
                                    "    AND E.RECODE = 'ACD' "
@@ -501,9 +516,12 @@ def receivePay_search(request):
                                    "    LEFT OUTER JOIN OSREFCP H"
                                    "    ON C.ACBKCD = H.RESKEY"
                                    "    AND H.RECODE = 'BNK'"
-                                   "     WHERE A.ACIOGB = '1' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "    
+                                   "    WHERE A.ACIOGB = '1' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "' "
                                    " ) AA "
                                    " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
                                    " AND AA.ACBKCD = '" + str(inputBank) + "' "
@@ -538,19 +556,22 @@ def receivePay_search(request):
                                    "    LEFT OUTER JOIN OSREFCP G "
                                    "    ON F.GBN = G.RESKEY "
                                    "    AND G.RECODE = 'CGB' "
-                                   "     WHERE A.ACIOGB = '2' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
-                                   "     UNION ALL "
-                                   "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
-                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT   "
-                                   "     FROM SISACCTT A "
-                                   "     LEFT OUTER JOIN MIS1TB003 B "
-                                   "     ON A.ACCUST = B.CUST_NBR "
-                                   "     LEFT OUTER JOIN ACNUMBER C "
-                                   "     ON A.ACACNUMBER = C.ACNUMBER "
-                                   "     LEFT OUTER JOIN OSCODEM D "
-                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "    
+                                   "    WHERE A.ACIOGB = '2' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "' "
+                                   "    UNION ALL "
+                                   "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT   "
+                                   "    FROM SISACCTT A "
+                                   "    LEFT OUTER JOIN MIS1TB003 B "
+                                   "    ON A.ACCUST = B.CUST_NBR "
+                                   "    LEFT OUTER JOIN ACNUMBER C "
+                                   "    ON A.ACACNUMBER = C.ACNUMBER "
+                                   "    LEFT OUTER JOIN OSCODEM D "
+                                   "    ON A.MCODE = D.MCODE "
                                    "    LEFT OUTER JOIN OSREFCP E "
                                    "    ON A.ACODE = E.RESKEY "
                                    "    AND E.RECODE = 'ACD' "
@@ -558,10 +579,13 @@ def receivePay_search(request):
                                    "    ON A.MCODE = F.MCODE "
                                    "    LEFT OUTER JOIN OSREFCP G "
                                    "    ON F.GBN = G.RESKEY "
-                                   "    AND G.RECODE = 'CGB' "                                 
-                                   "     WHERE A.ACIOGB = '1' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
+                                   "    AND G.RECODE = 'CGB' "                 
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "                                          
+                                   "    WHERE A.ACIOGB = '1' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "'"
                                    " ) AA "
                                    " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
                                    " AND AA.ACACNUMBER = '" + str(cboAct) + "' "
@@ -600,19 +624,22 @@ def receivePay_search(request):
                                    "    LEFT OUTER JOIN OSREFCP H"
                                    "    ON C.ACBKCD = H.RESKEY"
                                    "    AND H.RECODE = 'BNK'"
-                                   "     WHERE A.ACIOGB = '2' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
-                                   "     UNION ALL "
-                                   "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
-                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, C.ACBKCD, H.RESNAM AS BANKNM, A.APPLYDT   "
-                                   "     FROM SISACCTT A "
-                                   "     LEFT OUTER JOIN MIS1TB003 B "
-                                   "     ON A.ACCUST = B.CUST_NBR "
-                                   "     LEFT OUTER JOIN ACNUMBER C "
-                                   "     ON A.ACACNUMBER = C.ACNUMBER "
-                                   "     LEFT OUTER JOIN OSCODEM D "
-                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "    
+                                   "    WHERE A.ACIOGB = '2' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "' "
+                                   "    UNION ALL "
+                                   "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN, A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, C.ACBKCD, H.RESNAM AS BANKNM, A.APPLYDT   "
+                                   "    FROM SISACCTT A "
+                                   "    LEFT OUTER JOIN MIS1TB003 B "
+                                   "    ON A.ACCUST = B.CUST_NBR "
+                                   "    LEFT OUTER JOIN ACNUMBER C "
+                                   "    ON A.ACACNUMBER = C.ACNUMBER "
+                                   "    LEFT OUTER JOIN OSCODEM D "
+                                   "    ON A.MCODE = D.MCODE "
                                    "    LEFT OUTER JOIN OSREFCP E "
                                    "    ON A.ACODE = E.RESKEY "
                                    "    AND E.RECODE = 'ACD' "
@@ -624,9 +651,12 @@ def receivePay_search(request):
                                    "    LEFT OUTER JOIN OSREFCP H"
                                    "    ON C.ACBKCD = H.RESKEY"
                                    "    AND H.RECODE = 'BNK'"
-                                   "     WHERE A.ACIOGB = '1' "
-                                   "     AND A.ICUST = '" + str(iCust) + "'"
-                                   "     AND A.CRE_USER = '" + str(creUser) + "'"
+                                   "    LEFT OUTER JOIN PIS1TB001 I "
+                                   "    ON A.CRE_USER = I.EMP_NBR "
+                                   "    AND I.EMP_CLS = '2' "    
+                                   "    WHERE A.ACIOGB = '1' "
+                                   "    AND A.ICUST = '" + str(iCust) + "'"
+                                   "    AND I.EMP_DEPT = '" + str(empDept) + "' "
                                    " ) AA "
                                    " WHERE AA.IODATE BETWEEN '" + strDate + "' AND '" + endDate + "' "
                                    " AND AA.ACACNUMBER = '" + str(cboAct) + "' "
@@ -636,7 +666,7 @@ def receivePay_search(request):
 
                 return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
-    if chkEmp[0][0] == '':
+    if chkEmp[0][0] == '' or int(chkEmp[0][0]) > 2:
         if strDate and endDate and inputBank == '' and cboAct == '':
             balresult = ''
             with connection.cursor() as cursor:
@@ -1196,8 +1226,13 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
                 cboBank = cursor.fetchall()
 
+            # 카드명
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+                cardName = cursor.fetchall()
+
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
-                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName})
 
     if acIogb and acCust:
         with connection.cursor() as cursor:
@@ -1285,9 +1320,14 @@ def paymentViews_search(request):
                 cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
                 cboBank = cursor.fetchall()
 
+            # 카드명
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+                cardName = cursor.fetchall()
+
 
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
-                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
+                                , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName})
 
     # 출금
     if cboGbn == '1':
@@ -1326,7 +1366,12 @@ def paymentViews_search(request):
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
             cboBank = cursor.fetchall()
 
-        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
+        # 카드명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cardName = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName})
 
     # 입금
     else:
@@ -1365,25 +1410,34 @@ def paymentViews_search(request):
             cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
             cboBank = cursor.fetchall()
 
-        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank})
+        # 카드명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cardName = cursor.fetchall()
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName})
 
 
 def cboActNum_search(request):
+    cboCardName = request.POST.get("cboCardName")
     cboBank = request.POST.get("cboBank")
     card = request.POST.get("card")
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
+
+    if cboCardName:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDTYPE = '" + str(cboCardName) + "' AND ICUST = '" + str(iCust) + "' ")
+            cboCard = cursor.fetchall()
+
+        return JsonResponse({"cboCard": cboCard})
 
     if cboBank:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "'")
             cboAct = cursor.fetchall()
 
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "' ")
-            cboCard = cursor.fetchall()
-
-        return JsonResponse({'cboAct': cboAct, "cboCard": cboCard})
+        return JsonResponse({'cboAct': cboAct})
 
     if card:
         with connection.cursor() as cursor:
@@ -1585,9 +1639,12 @@ def paymentViews_save(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-
+        finOpt = 'N'
         if acDate == '' or acDate is None:
             acDate = ioDate
+
+        if acGubn == '4':
+            finOpt = 'Y'
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -1650,7 +1707,7 @@ def paymentViews_save(request):
                                ",    '" + str(acUse) + "'"
                                ",    '" + str(acApply).replace('-', '') + "'"
                                ",    '" + str(acInfo) + "'"
-                               ",    'N' "
+                               ",    '" + str(finOpt) + "' "
                                "    )   "
                                )
                 connection.commit()

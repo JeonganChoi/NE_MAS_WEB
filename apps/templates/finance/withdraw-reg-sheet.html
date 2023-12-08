@@ -179,7 +179,7 @@
                                     </div>
                                     <div class="col-3"></div>
                                     <div class="col-6">
-                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>예정 일자</label>
+                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>결재 예정 일자</label>
                                         <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -188,8 +188,12 @@
                                         <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboBank" id="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
+                                    <div class="col-4 cardName">
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>카드 명</label>
+                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboCardName" id="cboCardName" style="height: 2rem; font-size: 0.8rem"></select>
+                                    </div>
                                     <div class="col-4 cboCard">
-                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>카드</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>카드 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 cboAct">
@@ -612,6 +616,7 @@
             var cboWitActNum = "";
             var cboWitCard = "";
             var cboBank = "";
+            var cboCardName = "";
             var inputBankTxt = "<option value=''>:: 선택 ::</option>";
             var cboCustTxt = "<option value=''>:: 선택 ::</option>";
             var cboActTxt = "<option value=''>:: 선택 ::</option>";
@@ -622,6 +627,7 @@
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
             var cboBankTxt = "<option value=''>:: 선택 ::</option>";
+            var cboCardNameTxt = "<option value=''>:: 선택 ::</option>";
 
             {#$("#inputCust").html("");#}
             $("#inputActName").html("");
@@ -633,6 +639,7 @@
             $("#cboWitActNum").html("");
             $("#cboWitCard").html("");
             $("#cboBank").html("");
+            $("#cboCardName").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
@@ -642,10 +649,11 @@
 
             $('.basic').show();
             $('.replace').hide();
-            {#$('.method').show();#}
-            {#$('.writer').hide();#}
-            {#$('.cboBank').hide();#}
-            {#$('.cboAct').hide();#}
+            $('.method').show();
+            $('.cardName').hide();
+            $('.cboBank').hide();
+            $('.cboAct').hide();
+            $('.cboCard').hide();
 
             var date = new Date();
             date.setMonth(date.getMonth() - 3);
@@ -743,6 +751,15 @@
                         }
                     }
 
+                    var combolist8 = data.cardName;
+                    for (var i = 0; i < combolist8.length; i++) {
+                        if (combolist8[i][0] == cboCardName) {
+                            cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
+                        } else {
+                            cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "'>" + combolist8[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboWitCust").append(cboWitCustTxt);
                     $("#cboWitGbn").append(cboWitGbnTxt);
                     $("#cboWitMethod").append(cboWitMethodTxt);
@@ -750,6 +767,7 @@
                     $("#cboWitActNum").append(cboWitActNumTxt);
                     $("#cboWitCard").append(cboWitCardTxt);
                     $("#cboBank").append(cboBankTxt);
+                    $("#cboCardName").append(cboCardNameTxt);
                 }
             })
 
@@ -822,9 +840,9 @@
                             if(list[i][9] == 'Y' ){
                                 check = '승인';
                             }
-                            if(list[i][9] == 'N'){
-                                check = '반려';
-                            }
+                            {#if(list[i][9] == 'N'){#}
+                            {#    check = '반려';#}
+                            {#}#}
                             if(list[i][9] == 'N'){
                                 check = '미승인';
                             }
@@ -1091,7 +1109,8 @@
             })
         });
 
-        {# 결제방법 선택시 계좌명 바인딩 #}
+
+        {# 조회 조건 은행명 선택시 계좌명 바인딩 #}
         $('#inputBank').change(function () {
 
             var inputAct = "";
@@ -1162,6 +1181,7 @@
             var cboWitActNum = "";
             var cboWitCard = "";
             var cboBank = "";
+            var cboCardName = "";
 
             var folder = "";
             var permit = "";
@@ -1172,6 +1192,7 @@
             var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
             var cboBankTxt = "<option value=''>:: 선택 ::</option>";
+            var cboCardNameTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
@@ -1180,6 +1201,7 @@
             $("#cboWitActNum").html("");
             $("#cboWitCard").html("");
             $("#cboBank").html("");
+            $("#cboCardName").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
@@ -1215,6 +1237,7 @@
                     if(data.chkEmp == ''){
                         check = 'N'
                     }
+
                 }
             });
 
@@ -1247,13 +1270,17 @@
                             $("#txtTitle").val("")
                             $("#txtInfo").val("")
                             $("#txtApplyDate").val("")
-                            const btn = document.getElementById('btnDst');
-                            btn.style.display = 'none';
+                            $('.line').hide();
                         }
                         else{
 
+                            $('.line').show();
+
                             if(check == 'N'){
                                 document.getElementById('btnDst').setAttribute('disabled', 'true')
+                            }
+                            if(check == 'Y'){
+                                document.getElementById('btnDst').setAttribute('disabled', 'false')
                             }
 
                             $("#txtWitSeq").val(list[i][0])
@@ -1275,6 +1302,7 @@
                             cboWitActNum = list[i][12];
                             cboWitCard = list[i][22];
                             cboBank = list[i][26]
+                            cboCardName = list[i][26]
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
@@ -1339,6 +1367,15 @@
                                 }
                             }
 
+                            var combolist8 = data.cardName;
+                            for (var i = 0; i < combolist8.length; i++) {
+                                if (combolist8[i][0] == cboCardName) {
+                                    cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
+                                } else {
+                                    cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "'>" + combolist8[i][1] + "</option>";
+                                }
+                            }
+
                             $("#cboWitCust").append(cboWitCustTxt);
                             $("#cboWitGbn").append(cboWitGbnTxt);
                             $("#cboWitMethod").append(cboWitMethodTxt);
@@ -1346,8 +1383,40 @@
                             $("#cboWitActNum").append(cboWitActNumTxt);
                             $("#cboWitCard").append(cboWitCardTxt);
                             $("#cboBank").append(cboBankTxt);
+                            $("#cboCardName").append(cboCardNameTxt);
 
-
+                            if(cboWitMethod == '4'){
+                                $('.cboBank').hide();
+                                $('.cardName').show();
+                                $('.cboCard').show();
+                                $('.cboAct').show();
+                                $('.writer').hide();
+                                $('.line').hide();
+                            }
+                            if(cboWitMethod == '3'){
+                                $('.cboBank').hide();
+                                $('.cardName').show();
+                                $('.cboCard').show();
+                                $('.cboAct').show();
+                                $('.writer').hide();
+                                $('.line').show();
+                            }
+                            if(cboWitMethod == '2'){
+                                $('.cboCard').hide();
+                                $('.cardName').hide();
+                                $('.writer').hide();
+                                $('.cboBank').show();
+                                $('.cboAct').show();
+                                $('.line').show();
+                            }
+                            if(cboWitMethod == '1'){
+                                $('.cboCard').hide();
+                                $('.cboBank').hide();
+                                $('.cboAct').hide();
+                                $('.writer').show();
+                                $('.cardName').hide();
+                                $('.line').show();
+                            }
 
                         }
                     }
@@ -1370,53 +1439,65 @@
         {# 결제방법 선택시 계좌명 바인딩 #}
         $('#cboWitMethod').change(function () {
 
-            $("#cboCard").html("");
-            $("#cboAct").html("");
+            {#$("#cboCard").html("");#}
+            {#$("#cboAct").html("");#}
+            {#$("#cboAct").html("");#}
 
             var method = document.getElementById('cboWitMethod').value
 
-            if(method == '3'){
+            if(method == '4'){
+                $('.cboBank').hide();
+                $('.cardName').show();
                 $('.cboCard').show();
                 $('.cboAct').show();
-                $('.cboBank').show();
                 $('.writer').hide();
+                $('.line').hide();
+            }
+            if(method == '3'){
+                $('.cboBank').hide();
+                $('.cardName').show();
+                $('.cboCard').show();
+                $('.cboAct').show();
+                $('.writer').hide();
+                $('.line').show();
             }
             if(method == '2'){
                 $('.cboCard').hide();
+                $('.cardName').hide();
+                $('.writer').hide();
                 $('.cboBank').show();
                 $('.cboAct').show();
-                $('.writer').hide();
+                $('.line').show();
             }
             if(method == '1'){
                 $('.cboCard').hide();
-                $('.cboBank').show();
-                $('.cboAct').show();
+                $('.cboBank').hide();
+                $('.cboAct').hide();
                 $('.writer').show();
+                $('.cardName').hide();
+                $('.line').show();
             }
             else{
                 $('.cboCard').show();
                 $('.cboBank').show();
                 $('.cboAct').show();
                 $('.writer').show();
+                $('.cardName').show();
             }
 
         });
 
-
         {# 결제방법 선택시 계좌명 바인딩 #}
-        $('#cboBank').change(function () {
+        $('#cboCardName').change(function () {
 
             var cboWitCard = "";
-            var cboWitActNum = "";
-            var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
             var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
 
-            $("#cboWitActNum").html("");
             $("#cboWitCard").html("");
 
-            var cboBank = document.getElementById('cboBank').value
+            var cboCardName = document.getElementById('cboCardName').value
 
-            var data = {"cboBank": cboBank}
+            var data = {"cboCardName": cboCardName}
 
             $.ajax({
                 type: "post",
@@ -1437,6 +1518,36 @@
                         }
                     }
 
+                    $("#cboWitCard").append(cboWitCardTxt);
+
+                }
+            });
+
+        });
+
+
+        {# 결제방법 선택시 계좌명 바인딩 #}
+        $('#cboBank').change(function () {
+
+            var cboWitActNum = "";
+            var cboWitActNumTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#cboWitActNum").html("");
+
+            var cboBank = document.getElementById('cboBank').value
+
+            var data = {"cboBank": cboBank}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cboAct" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
                     var combolist5 = data.cboAct;
                     for (var i = 0; i < combolist5.length; i++) {
                         if (combolist5[i][0] == cboWitActNum) {
@@ -1446,7 +1557,6 @@
                         }
                     }
 
-                    $("#cboWitCard").append(cboWitCardTxt);
                     $("#cboWitActNum").append(cboWitActNumTxt);
                 }
             });
@@ -1520,7 +1630,7 @@
                             var year = newDate.getFullYear()
                             var month = newDate.getMonth() + 1
                             var exDate = year + "-" + month + "-" + date
-                            alert(exDate)
+
                             $("#txtExDate").val(exDate);
                         }
                         else{
