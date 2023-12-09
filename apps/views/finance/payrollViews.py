@@ -17,6 +17,7 @@ def payrollViews(request):
 def payrollViews_search(request):
     modal = request.POST.get('modal')
     yyyymm = request.POST.get('yyyymm')
+    empType = request.POST.get('empType')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
@@ -39,6 +40,7 @@ def payrollViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT EMP_NBR, EMP_NME FROM PIS1TB001 WHERE EMP_TESA  IS NULL OR EMP_TESA = '' AND ICUST = '" + str(iCust) + "' ")
             empresult = cursor.fetchall()
+
 
         # 날짜/사업장/사원번호/사원명/직책/기본시급/기본일급/기본시간/기본급/연장시간/휴계시간/휴일근로시간/휴일연장근로시간/주차지산/유급시간/
         # 심야시간/연장근로수당/휴계수당/휴일수당/휴일연장수당/심야수당/주차수당/유급수당/기타수당1,2,3,4,5/지급총액
@@ -78,7 +80,11 @@ def payrollViews_search(request):
 
             mainresult = cursor.fetchall()
 
-        return JsonResponse({"headList": headresult, "empList": empresult, "mainList": mainresult})
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'WOT' AND ICUST = '" + str(iCust) + "'  ")
+            cboEmp = cursor.fetchall()
+
+        return JsonResponse({"headList": headresult, "empList": empresult, "mainList": mainresult, "cboEmp": cboEmp})
 
 def payrollViews_save(request):
     payArray = json.loads(request.POST.get('payArrList'))

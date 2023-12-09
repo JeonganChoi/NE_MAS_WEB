@@ -526,6 +526,18 @@
             }
         });
 
+        $('input[name=txtLimit]').on('input', function () {
+            var txtRegNum = Number($(this).val().replaceAll(',',''));
+
+            if(isNaN(txtRegNum)) {
+                txtRegNum = 0;
+            }
+
+            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(this).val(regex_txtRegNum);
+
+        });
+
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#empMainTb .empMainTr_tr', function () {
             var itemimg = "";

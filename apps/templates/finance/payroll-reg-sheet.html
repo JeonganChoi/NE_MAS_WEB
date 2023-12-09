@@ -17,7 +17,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-6 text-start">
                                 <div class="input-group shadow-none">
-                                    <input readonly class="form-control border-0 bg-transparent rounded-1 text-center text-dark text-lg font-weight-bolder" type="month" name="inputMonth" id="inputMonth" style="height: 2rem; max-width: 8rem">
+                                    <input readonly class="form-control border-0 bg-transparent rounded-1 text-center text-dark text-lg font-weight-bolder" type="month" name="inputMonth" id="inputMonth" style="height: 2rem; max-width: 10rem">
                                     <h4 class="text-lg mt-1">임금대장</h4>
                                 </div>
                             </div>
@@ -40,10 +40,16 @@
                 <div class="card border border-white shadow-xs">
                     <div class="card-header pb-0">
                         <div class="row p-0">
-                            <div class="col-lg-4 col-4">
+                            <div class="col-lg-2 col-2">
                                 <div class="input-group shadow-none">
-                                    <label class="text-sm" style="width: 5rem"><i class="far fa-calendar me-2"></i>년월</label>
+                                    <label class="text-sm" style="width: 5rem"><i class="fa fa-calendar me-2"></i>적용 년월</label>
                                     <input class="form-control border border-light rounded-1 text-center me-2" type="month" name="inputYM" id="inputYM" style="height: 2rem; max-width: 10rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2">
+                                <div class="input-group shadow-none">
+                                    <label class="text-sm" style="width: 5rem"><i class="fa fa-search me-2"></i>직 종</label>
+                                    <select style="height: 2rem; max-width: 12rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="inputEmp" id="inputEmp"></select>
                                 </div>
                             </div>
                             <div class="col-lg-8 col-8 text-end">
@@ -72,7 +78,7 @@
         </div>
     </div>
 
-        <!-- Modal -->
+   <!-- Modal -->
     <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="sendModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 30vw">
         <div class="modal-content">
@@ -96,27 +102,27 @@
                   </div>
                   <div class="row p-0">
                       <div class="col-2"></div>
-                      <div class="col-8">
+                      <div class="col-4">
                           <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="fas fa-bars me-2"></i>계정 과목</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboMCode" id="cboMCode"></select>
                       </div>
-                  </div>
-                  <div class="row p-0">
-                      <div class="col-2"></div>
                       <div class="col-4">
                           <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="far fa-calendar me-2"></i>출금 일자</label>
                           <input class="form-control border border-light rounded-1 text-center" type="date"
                                   name="txtWithDate" id="txtWithDate"/>
                       </div>
-                      <div class="col-4">
+                  </div>
+                  <div class="row p-0">
+                      <div class="col-2"></div>
+                      <!--<div class="col-4">
                           <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="far fa-square-check me-2"></i>구 분</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboGbn" id="cboGbn">
                               <option value="1">일괄</option>
                               <option value="2">개별</option>
                           </select>
-                      </div>
+                      </div>-->
                   </div>
               </div>
           </div>
@@ -141,6 +147,12 @@
 
     <script>
         $(document).ready(function () {
+
+            var inputEmp = "";
+            var inputEmpTxt = "<option value=''>:: 전체 ::</option>";
+
+            $("#inputEmp").html("");
+
             var date = new Date().toISOString().slice(0,7);
 
             {#document.getElementById("inputYYYYMM").valueAsDate = yyyy;#}
@@ -169,6 +181,7 @@
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
                         "<tr>" +
+                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -226,6 +239,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
+                            "<td class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></td>" +
                             "<td hidden class='text-start p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
@@ -280,6 +294,17 @@
                                 "<td class='text-center border-bottom border-end p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
 
                     }
+
+                    var combolist = data.cboEmp;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputEmp) {
+                            inputEmpTxt = inputEmpTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputEmpTxt = inputEmpTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
+
+                    $("#inputEmp").append(inputEmpTxt);
                 }
             })
         });
@@ -314,6 +339,7 @@
 
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
+                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -369,6 +395,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
+                            "<td class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
@@ -434,7 +461,9 @@
             document.getElementById("inputMonth").value = yyyymm
             yyyymm = yyyymm.replace("-", "")
 
-            let data = {"yyyymm": yyyymm}
+            var empType = document.getElementById("inputEmp").value;
+
+            let data = {"yyyymm": yyyymm, "empType": empType}
 
             $.ajax({
                 type: "post",
@@ -452,6 +481,7 @@
 
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
+                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -506,6 +536,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
+                            "<td class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +

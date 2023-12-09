@@ -179,6 +179,18 @@
 
         });
 
+        $('input[name=txtAmount]').on('input', function () {
+            var txtRegNum = Number($(this).val().replaceAll(',',''));
+
+            if(isNaN(txtRegNum)) {
+                txtRegNum = 0;
+            }
+
+            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(this).val(regex_txtRegNum);
+
+        });
+
 
         $(document).on('click', '#btnSearch', function () {
 

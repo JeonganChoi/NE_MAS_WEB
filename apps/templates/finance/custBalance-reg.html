@@ -38,7 +38,7 @@
                           <div class="p-2 col-lg-3 mt-lg-0">
                             <div class="input-group shadow-none">
                                 <span class="input-group-text text-body bg-transparent border-0 shadow-none">
-                                    <label style="font-size: 0.8rem"><i class="fas fa-search me-2"></i>거래처</label>
+                                    <label style="font-size: 0.8rem"><i class="fa fa-search me-2"></i>거래처</label>
                                 </span>
                                 <select style="height: 2rem; width: 10rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="inputCustCode" id="inputCustCode" style="font-size: 0.85rem">
 
@@ -338,6 +338,31 @@
 
         });
 
+        $('input[name=txtNonGet]').on('input', function () {
+            var txtRegNum = Number($(this).val().replaceAll(',',''));
+
+            if(isNaN(txtRegNum)) {
+                txtRegNum = 0;
+            }
+
+            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(this).val(regex_txtRegNum);
+
+        });
+
+        $('input[name=txtNonPay]').on('input', function () {
+            var txtRegNum = Number($(this).val().replaceAll(',',''));
+
+            if(isNaN(txtRegNum)) {
+                txtRegNum = 0;
+            }
+
+            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(this).val(regex_txtRegNum);
+
+        });
+
+
         {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
@@ -382,38 +407,14 @@
 
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
-            var cboCustCode = "";
-            var cboCustCodeTxt = "<option value=''>:: 전체 ::</option>";
 
-            $("#cboCustCode").html("");
+            $("#txtRegDate").val("");
+            $("#txtNonGet").val("");
+            $("#txtNonPay").val("");
+            $("#txtUser").val("");
+            $("#txtRemark").val("");
+            $("#cboCustCode").val("");
 
-            $.ajax({
-                type: "post",
-                url: '{% url "custBalance_reg_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-
-                    $("#txtRegDate").val("");
-                    $("#txtNonGet").val("");
-                    $("#txtNonPay").val("");
-                    $("#txtUser").val("");
-                    $("#txtRemark").val("");
-
-                    var combolist2 = data.inputCustType;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboCustCode) {
-                            cboCustCodeTxt = cboCustCodeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboCustCodeTxt = cboCustCodeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    $("#cboCustCode").append(cboCustCodeTxt);
-                }
-            })
         });
 
 

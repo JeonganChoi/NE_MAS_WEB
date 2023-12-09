@@ -377,6 +377,18 @@
             })
         });
 
+        $('input[name=txtBalance]').on('input', function () {
+            var txtRegNum = Number($(this).val().replaceAll(',',''));
+
+            if(isNaN(txtRegNum)) {
+                txtRegNum = 0;
+            }
+
+            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(this).val(regex_txtRegNum);
+
+        });
+
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
@@ -456,41 +468,14 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
-            var cboBankName = "";
-            var cboActNum = "";
-            var cboBankNameTxt = "<option value=''>:: 전체 ::</option>";
-            var cboActNumTxt = "<option value=''>:: 선택 ::</option>";
-
-            $("#cboBankName").html("");
-            $("#cboActNum").html("");
-
-            $.ajax({
-                type: "post",
-                url: '{% url "actBalance_reg_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    $("#txtActName").val("");
-                    $("#txtDate").val("");
-                    $("#txtBalance").val("");
-                    $("#txtRemark").val("");
+            $("#txtActName").val("");
+            $("#txtDate").val("");
+            $("#txtBalance").val("");
+            $("#txtRemark").val("");
+            $("#cboBankName").val("");
+            $("#cboActNum").val("");
 
 
-                    var combolist2 = data.inputBankType;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboBankName) {
-                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
-                        } else {
-                            cboBankNameTxt = cboBankNameTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
-                        }
-                    }
-
-                    $("#cboBankName").append(cboBankNameTxt);
-                    $("#cboActNum").append(cboActNumTxt);
-                }
-            })
         });
 
     </script>

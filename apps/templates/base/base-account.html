@@ -413,6 +413,18 @@
 
         });
 
+        $('input[name=txtAmount]').on('input', function () {
+            var txtRegNum = Number($(this).val().replaceAll(',',''));
+
+            if(isNaN(txtRegNum)) {
+                txtRegNum = 0;
+            }
+
+            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(this).val(regex_txtRegNum);
+
+        });
+
         {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
@@ -459,44 +471,15 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
-            location.reload();
+            $("#txtActNum").val("");
+            $("#txtActName").val("");
+            $("#txtAmount").val("");
+            $("#txtRemark").val("");
+            $("#txtUser").val("");
+            $("#txtRegDate").val("");
+            $("#txtExpireDate").val("");
+            $("#inputbankType").val("");
 
-            {#var bankType = "";#}
-            {#var bankTypeTxt = "<option value=''>:: 선택 ::</option>";#}
-            {##}
-            {#$("#inputbankType").html("");#}
-            {##}
-            {#$.ajax({#}
-            {#    type: "post",#}
-            {#    url: '{% url "base_account_search" %}',#}
-            {#    headers: {#}
-            {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
-            {#    },#}
-            {#    dataType: 'json',#}
-            {#    success: function (data) {#}
-            {##}
-            {#        $("#txtActNum").val("");#}
-            {#        $("#txtActName").val("");#}
-            {#        $("#txtAmount").val("");#}
-            {#        $("#txtRemark").val("");#}
-            {#        $("#txtUser").val("");#}
-            {#        $("#txtRegDate").val("");#}
-            {#        $("#txtExpireDate").val("");#}
-            {##}
-            {##}
-            {#        var combolist = data.bankCombo;#}
-            {#        for (var i = 0; i < combolist.length; i++) {#}
-            {#            if (combolist[i][0] == bankType) {#}
-            {#                bankTypeTxt = bankTypeTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                bankTypeTxt = bankTypeTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        $("#inputbankType").append(bankTypeTxt);#}
-            {##}
-            {#    }#}
-            {#})#}
         });
     </script>
 {% endblock %}
