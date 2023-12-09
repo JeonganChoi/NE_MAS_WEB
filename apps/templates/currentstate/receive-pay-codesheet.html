@@ -113,11 +113,10 @@
                       </div>
                     </div>
                       <div class="px-0 py-0 card-body height-600">
-                          <div class="row">
-                              <div class="col-lg-2 col-2"></div>
-                              <div class="col-lg-8 col-8">
+                          <div class="row m-1">
+                              <div class="col-lg-12 col-12">
                                   <label class="mx-3 my-2 text-sm"><i class="ni ni-books me-3"></i>계정별 내역서</label>
-                                  <div class="m-2 table-responsive-sm overflow-auto height-500">
+                                  <div class="table-responsive-sm overflow-auto height-500 border border-light">
                                       <table class="table mb-0 align-items-center justify-content-center">
                                           <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);" id="codeHead">
                                           <tr id="#codeTr" class="codeTr_tr">
@@ -138,76 +137,7 @@
                                       </tbody>
                                   </table>
                               </div>
-                              <!--<div class="col-lg-3 col-3">
-                                  <div class="card m-3">
-                                      <div class="card-body">
-                                          <div class="row">
-                                              <div class="col-lg-5 col-5">
-                                                  <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>외한 은행 잔고</label>
-                                              </div>
-                                              <div class="col-lg-7 col-7">
-                                                  <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtBankBal" name="txtBankBal"/>
-                                              </div>
-                                          </div>
-                                          <div class="row mt-2">
-                                              <div class="col-lg-5 col-5">
-                                                  <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>국민 은행 잔고</label>
-                                              </div>
-                                              <div class="col-lg-7 col-7">
-                                                  <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtBankBal1" name="txtBankBal1"/>
-                                              </div>
-                                          </div>
-                                          <div class="row mt-2">
-                                              <div class="col-lg-5 col-5">
-                                                  <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>기업 은행 잔고</label>
-                                              </div>
-                                              <div class="col-lg-7 col-7">
-                                                  <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtBankBal2" name="txtBankBal2"/>
-                                              </div>
-                                          </div>
-                                          <div class="row mt-2">
-                                              <div class="col-lg-5 col-5">
-                                                  <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>하나 은행 잔고</label>
-                                              </div>
-                                              <div class="col-lg-7 col-7">
-                                                  <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtBankBal3" name="txtBankBal3"/>
-                                              </div>
-                                          </div>
-                                          <div class="row mt-2">
-                                              <div class="col-lg-5 col-5">
-                                                  <label class="" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-info text-sm"></i>잔고계</label>
-                                              </div>
-                                              <div class="col-lg-7 col-7">
-                                                  <input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="txtBankBal4" name="txtBankBal4"/>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>-->
-                              <!--<div class="col-lg-3 col-3">
-                                  <h6 class="mx-3 my-2"><i class="ni ni-books me-3"></i>계정별 총액</h6>
-                                  <div class="m-2 table-responsive-sm overflow-auto" style="height: 60vh">
-                                      <table class="table mb-0 align-items-center justify-content-center">
-                                          <colgroup>
-                                              <col width="8%"/>
-                                              <col width="8%"/>
-                                          </colgroup>
-                                          <thead class="bg-dark text-white font-weight-bolder">
-                                          <tr>
-                                              <th class="text-center p-2" style="font-size: 0.8rem;">계정</th>
-                                              <th class="text-center p-2" style="font-size: 0.8rem;">총 금액</th>
-                                          </tr>
-                                          </thead>
-                                        <tbody id="acTb">
-                                          <tr id="#acTr" class="acTr_tr">
-
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                  </div>
-                              </div>-->
                           </div>
-
                       </div>
                   </div>
             </div>
@@ -222,8 +152,6 @@
         $(document).ready(function () {
 
             var date = new Date();
-            {#var Year = now.getFullYear()#}
-            {#var date = Year + '-01-01'#}
             date.setDate(1);
             document.getElementById('inputStrDate').valueAsDate = date
             document.getElementById('inputEndDate').valueAsDate = new Date
@@ -250,23 +178,35 @@
                     var list3 = data.tbList;
                     var list4 = data.inTotal;
                     var list5 = data.outTotal;
+                    var list6 = data.codeList;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
 
-                    for (var h = 0; h < list.length; h++) {
-                        $("#codeHead").append(
-                            "<th class='text-center p-1' style='font-size: 0.8rem'>" + list[h][0] + " 입금액</th>");
-                    }
-                    for (var h = 0; h < list.length; h++) {
-                        $("#codeHead").append(
-                            "<th class='text-center p-1' style='font-size: 0.8rem'>" + list[h][0] + " 지출액</th>");
-                    }
+                    $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" +"</tr> ");
                     $("#codeHead").append(
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>계 정</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>잔 액</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>입금 대비 점유</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>지출 대비 점유</th> " );
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>상위 계정</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>회계 계정</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>관리 계정</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>잔 액</th> " );
+                    for (var h = 0; h < list.length; h++) {
+                        $("#codeHead").append(
+                            "<th class='text-center p-1' style='font-size: 0.8rem'>" + list[h][1] + " 입금액</th>");
+                    }
+                    for (var h = 0; h < list.length; h++) {
+                        $("#codeHead").append(
+                            "<th class='text-center p-1' style='font-size: 0.8rem'>" + list[h][1] + " 지출액</th>");
+                    }
+
+
+                    for (var d = 1; d < list6.length; d++) {
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
+                            "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
+                            "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(list6[d][6]) + "</td> " +
+                            "</tr> ");
+                    }
 
                     var count = 0;
                     count = list.length;
@@ -278,9 +218,7 @@
                              "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'</td> " +
                              "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
                             "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td>");
+                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> ");
                     }
 
                     {# 계정별 #}
@@ -323,17 +261,17 @@
                     }
 
                     {#총계#}
-                    $("#subTb").append(
-                    "<tr id='#subTr' class='subTr_tr'>" +
-                    "<td class='text-center p-1' style='font-size: 0.8rem'></td>" +
-                    "<td class='text-end p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-end p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-end p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                    "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                    "</tr> ");
+                    {#$("#subTb").append(#}
+                    {#"<tr id='#subTr' class='subTr_tr'>" +#}
+                    {#"<td class='text-center p-1' style='font-size: 0.8rem'></td>" +#}
+                    {#"<td class='text-end p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-end p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-end p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"</tr> ");#}
                 }
             })
         });

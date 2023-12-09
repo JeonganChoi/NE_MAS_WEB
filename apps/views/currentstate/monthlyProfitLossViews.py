@@ -25,10 +25,13 @@ def montlyProfitLossViews_search(request):
         mheadresult = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute("  SELECT A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM FROM OSCODEM A "
+        cursor.execute("  SELECT A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACCODE, C.RESNAM FROM OSCODEM A "
                        " LEFT OUTER JOIN OSREFCP B "
                        " ON A.MCODE_M = B.RESKEY "
-                       " AND B.RECODE = 'MCD' ")
+                       " AND B.RECODE = 'MCD' "
+                       " LEFT OUTER JOIN OSREFCP C "
+                       " ON A.ACCODE = C.RESKEY "
+                       " AND C.RECODE = 'ACD' ")
         headresult = cursor.fetchall()
 
     with connection.cursor() as cursor:
