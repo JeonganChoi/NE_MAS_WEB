@@ -32,6 +32,67 @@ def payrollViews_search(request):
 
         return JsonResponse({"cboAct": cboAct, "cboMCode": cboMCode})
 
+
+    if empType:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PNM' AND ICUST = '" + str(iCust) + "' ORDER BY CAST(RESKEY AS UNSIGNED ) ASC ")
+            headresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT EMP_NBR, EMP_NME FROM PIS1TB001 WHERE EMP_TESA  IS NULL OR EMP_TESA = '' AND ICUST = '" + str(iCust) + "' ")
+            empresult = cursor.fetchall()
+
+
+        # 날짜/사업장/사원번호/사원명/직책/기본시급/기본일급/기본시간/기본급/연장시간/휴계시간/휴일근로시간/휴일연장근로시간/주차지산/유급시간/
+        # 심야시간/연장근로수당/휴계수당/휴일수당/휴일연장수당/심야수당/주차수당/유급수당/기타수당1,2,3,4,5/지급총액
+        # 국민연급/의료보험/갑근세/주민세/고용보험/공제1,2,3/공제총액/실지급액
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT "
+                           "     IFNULL(A.EMP_NBR, ''), IFNULL(A.EMP_NME, ''), IFNULL(B.PMYYMM,'') AS PMYYMM, IFNULL(B.ICUST,'') AS ICUST "
+                           "    ,IFNULL(B.PMGRAD, '') AS PMGRAD, IFNULL(B.PMTPAY, '') AS PMTPAY, IFNULL(B.PMDPAY, '') AS PMDPAY "
+                           "     , IFNULL(B.PMKBTM, '') AS PMKBTM, IFNULL(PMKBON, '') AS PMKBON "
+                           "    ,IFNULL(B.PMOTTM, '') AS PMOTTM, IFNULL(B.PMOTOTM, '') AS PMOTOTM,IFNULL(B.PMHOTM, '') AS PMHOTM "
+                           "     , IFNULL(B.PMHOOTM, '') AS PMHOOTM,IFNULL(B.PMOTOPY, '') AS PMOTOPY "
+                           "    ,IFNULL(B.PMOTOPY,'') AS PMOTOPY,IFNULL(B.PMHOPY, '') AS PMHOPY,IFNULL(B.PMHOOPY, '') AS PMHOOPY "
+                           "     , IFNULL(B.PMSYPY, '') AS PMSYPY, IFNULL(B.PMWWTM, '') AS PMWWTM "
+                           "    ,IFNULL(B.PMWWPY, '') AS PMWWPY, IFNULL(PMYUTM, '') AS PMYUTM, IFNULL(PMYUPY, '') AS PMYUPY "
+                           "     , IFNULL(B.PMGSU1, '') AS PMGSU1, IFNULL(B.PMGSU2, '') AS PMGSU2 "
+                           "    ,IFNULL(B.PMGSU3, '') AS PMGSU3, IFNULL(B.PMGSU4, '') AS PMGSU4,  IFNULL(PMGSU5, '') AS PMGSU5 "
+                           "     , IFNULL(B.PMPYTT, '') AS PMPYTT, IFNULL(B.PMKUPS, '') AS PMKUPS "
+                           "    ,IFNULL(B.PMMEPS, '') AS PMMEPS, IFNULL(B.PMTAX1, '') AS PMTAX1, IFNULL(PMTAX3, '') AS PMTAX3 "
+                           "     , IFNULL(B.PMGOPS, '') AS PMGOPS, IFNULL(B.PMGTG1, '') AS PMGTG1 "
+                           "    ,IFNULL(B.PMGTG2, '') AS PMGTG2 , IFNULL(B.PMGTG3, '') AS PMGTG3 ,  IFNULL(PMGOTT, '') AS PMGOTT "
+                           "     ,  IFNULL(PMJITT, '') AS PMJITT, IFNULL(A.EMP_WOT, '') "
+                           " FROM pis1tb001 A "
+                           " LEFT OUTER JOIN "
+                           "    ( "
+                           "        SELECT "
+                           "         PMYYMM, ICUST, PMGRAD, PMTPAY, PMDPAY, PMKBTM, PMKBON "
+                           "        ,PMOTTM ,PMOTOTM ,PMHOTM ,PMHOOTM, PMSYTM ,PMOTPY ,PMOTOPY ,PMHOPY "
+                           "        ,PMHOOPY, PMSYPY,PMWWTM,PMWWPY, PMYUTM,PMYUPY,PMGSU1, PMGSU2 "
+                           "        ,PMGSU3,  PMGSU4, PMGSU5,PMPYTT, PMKUPS,PMMEPS, PMTAX1, PMTAX3 "
+                           "        ,PMGOPS,  PMGTG1,  PMGTG2,  PMGTG3, PMGOTT, PMJITT, EMP_NBR "
+                           "        FROM OSMONTHP "
+                           "        WHERE PMYYMM = '" + str(yyyymm) + "' "
+                           "    ) B "
+                           " ON A.EMP_NBR = B.EMP_NBR "
+                           " AND A.ICUST = B.ICUST "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.EMP_WOT = C.RESKEY"
+                           " AND C.RECODE = 'WOT' "
+                           " WHERE A.ICUST = '" + str(iCust) + "' "
+                           "   AND A.EMP_WOT = '" + str(empType) + "'")
+
+            mainresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'WOT' AND ICUST = '" + str(iCust) + "'  ")
+            cboEmp = cursor.fetchall()
+
+        return JsonResponse({"headList": headresult, "empList": empresult, "mainList": mainresult, "cboEmp": cboEmp})
+
+
+
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PNM' AND ICUST = '" + str(iCust) + "' ORDER BY CAST(RESKEY AS UNSIGNED ) ASC ")
@@ -47,7 +108,7 @@ def payrollViews_search(request):
         # 국민연급/의료보험/갑근세/주민세/고용보험/공제1,2,3/공제총액/실지급액
         with connection.cursor() as cursor:
             cursor.execute(" SELECT "
-                           "     A.EMP_NBR, A.EMP_NME, IFNULL(B.PMYYMM,'') AS PMYYMM, IFNULL(B.ICUST,'') AS ICUST "
+                           "     IFNULL(A.EMP_NBR, ''), IFNULL(A.EMP_NME, ''), IFNULL(B.PMYYMM,'') AS PMYYMM, IFNULL(B.ICUST,'') AS ICUST "
                            "    ,IFNULL(B.PMGRAD, '') AS PMGRAD, IFNULL(B.PMTPAY, '') AS PMTPAY, IFNULL(B.PMDPAY, '') AS PMDPAY "
                            "     , IFNULL(B.PMKBTM, '') AS PMKBTM, IFNULL(PMKBON, '') AS PMKBON "
                            "    ,IFNULL(B.PMOTTM, '') AS PMOTTM, IFNULL(B.PMOTOTM, '') AS PMOTOTM,IFNULL(B.PMHOTM, '') AS PMHOTM "
@@ -304,5 +365,78 @@ def payrollViews_save(request):
                                     " ) "
                     )
                     connection.commit()
+
+    return JsonResponse({'arrList': "Y"})
+
+
+
+
+def payroll_final_save(request):
+    payArray = json.loads(request.POST.get('payArrList'))
+    actNum = request.POST.get('actNum')
+    mCode = request.POST.get('mCode')
+    withDate = request.POST.get('withDate').replace("-", "")
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+    acIogb = '1'
+    finOpt = 'Y'
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            " SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
+        result = cursor.fetchall()
+        aCode = result[0][0]
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            " SELECT ACBKCD FROM ACNUMBER WHERE ACACNUMBER = '" + str(actNum) + "' AND ICUST = '" + str(iCust) + "' ")
+        result2 = cursor.fetchall()
+        bankCode = result2[0][0]
+
+    payArrayLists = list(filter(len, payArray))
+    for data in range(len(payArrayLists)):
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO SISACCTT "
+                           "   (    "
+                           "     IODATE "
+                           ",    ACSEQN "
+                           ",    ACIOGB "
+                           ",    ACCUST "
+                           ",    MCODE "
+                           ",    ACODE "
+                           ",    GBN "
+                           ",    ACAMTS "
+                           ",    ACACNUMBER "
+                           ",    ACRECN "
+                           ",    CRE_USER "
+                           ",    CRE_DT "
+                           ",    ICUST "
+                           ",    ACGUNO_BK "
+                           ",    EXDATE "
+                           ",    ACDATE "
+                           ",    FIN_OPT "
+                           "    ) "
+                           "    VALUES "
+                           "    (   "
+                           "    '" + str(withDate) + "'"
+                           ",   (SELECT IFNULL (MAX(ACSEQN) + 1,1) AS COUNTED FROM SISACCTT A WHERE IODATE = '" + str(withDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "') "
+                           ",   '" + str(acIogb) + "'"
+                           ",   ''"
+                           ",   '" + str(mCode) + "'"
+                           ",   '" + str(aCode) + "'"
+                           ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "')"
+                           ",   '" + payArrayLists[data]["acAmts"] + "'"
+                           ",   '" + str(actNum) + "'"
+                           ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(withDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
+                           ",   '" + str(user) + "'"
+                           ",   date_format(now(), '%Y%m%d') "
+                           ",   '" + str(iCust) + "'"
+                           ",   '" + str(bankCode) + "'"
+                           ",    ''"
+                           ",    '" + str(withDate) + "'"
+                           ",    '" + str(finOpt) + "' "
+                           "    )   "
+                           )
+            connection.commit()
 
     return JsonResponse({'arrList': "Y"})

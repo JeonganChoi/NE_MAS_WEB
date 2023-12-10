@@ -445,6 +445,7 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
+                        "<td hidden class='text-center p-1' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "</tr> ");
 
 
@@ -573,6 +574,7 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
+                        "<td hidden class='text-center p-1' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "</tr> ");
 
 
@@ -692,7 +694,7 @@
                 var acSeqn = $('#acSeqn_' + i).text();
                 var acIogb = $('#acIogb_' + i).text();
                 var acAmts = $('#acAmts_' + i).text();
-                var acNum = $('#acNum_' + i).text();
+                var acNum = $('#acNumber_' + i).text();
 
                 if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
@@ -729,7 +731,7 @@
                 pmtArr.push(data);
             }
 
-            var saveresult = confirm("저장하시겠습니까?")
+            var saveresult = confirm("승인하시겠습니까?")
 
             if(saveresult == true){
                 $.ajax({

@@ -15,7 +15,7 @@
             <div class="col-lg-10 col-10">
                 <div class="card bg-gradient-primary">
                     <div class="card-body bg-transparent">
-                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>월 손익 계산서</h5>
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>손익 현황</h5>
                     </div>
                 </div>
             </div>
@@ -42,15 +42,15 @@
                     </div>
                     <div class="px-0 py-0 card-body">
                         <div class="row">
-                            <div class="col-lg-9 col-9">
+                            <div class="col-lg-6 col-6">
                                 <div class="m-2 table-responsive-sm overflow-auto height-500">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
-                                            <col width="8%"/>
-                                            <col width="20%"/>
-                                            <col width="8%"/>
+                                            <col width="6%"/>
+                                            <col width="10%"/>
+                                            <col width="6%"/>
                                         </colgroup>
-                                        <thead id="headTb" style="background-color: rgb(0, 92, 151)">
+                                        <thead id="headTb" style="background-color: rgb(0, 92, 151); position: sticky; top: 0">
                                         <tr id="#headTr" class="headTr_tr">
 
                                         </tr>
@@ -78,42 +78,176 @@
 
         $(document).ready(function () {
 
-            date = new Date();
-            var year = date.getFullYear()
-            var month = date.getMonth() + 1
-            var fdate = year + month
-            document.getElementById("strYM").valueAsDate = fdate;
-            document.getElementById("endYM").valueAsDate = fdate;
+            var date = new Date();
+            date.setMonth(date.getMonth() - 3);
+            {#var year = date.getFullYear()#}
+            {#var monthT = date.setMonth(date.getMonth() + 1)#}
+            {#var monthF = date.setMonth(date.getMonth() - 2)#}
+            {#var fdate = year + "-" +  monthF#}
+            {#var tdate = year + "-" + monthT#}
+            document.getElementById("strYM").valueAsDate = date;
+            document.getElementById("endYM").valueAsDate = new Date();
 
 
-            var input = document.getElementById('strYM').value
-            var ym = input.replace(/\-/g, '')
-            var yyyy = ym.slice(0,4);
-            var mm = ym.slice(4,6);
-            var dd = date.getDate()
+            var strDate = document.getElementById('strYM').value
+            var endDate = document.getElementById('endYM').value
 
-            var data = {'ym': ym, 'yyyy': yyyy, 'mm': mm}
+
+            var data = {'strDate': strDate, 'endDate': endDate}
 
             $.ajax({
-            type: "post",
-            data: data,
-            url: '{% url "monthly_profit_loss_search" %}',
-            headers: {
-                'X-CSRFTOKEN': '{{ csrf_token }}'
-            },
-            dataType: 'json',
-            success: function (data) {
-                var list = data.mheadList;
+                type: "post",
+                data: data,
+                url: '{% url "monthly_profit_loss_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mCodeList;
+                    var list2 = data.aCodeList;
 
-                $("#headTb").html("");
-                $("#sheetTb").html("");
+                    $("#headTb").html("");
+                    $("#sheetTb").html("");
 
-                $("#headTb").append(
-                    "<tr id='#headTr' class='headTr_tr'>" +
-                    "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' colspan='2'>과 목</th> " +
-                    "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem'>금 액</th> " +
-                    "</tr> ");
+                    $("#headTb").append(
+                        "<tr id='#headTr' class='headTr_tr'>" +
+                        "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' colspan='2'>과 목</th> " +
+                        "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem'>금 액</th> " +
+                        "</tr> ");
 
+                    {# 리스트 2 의 값이 402인것의 길이를 찾아서 rowspan 으로 지정 #}
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] == '401'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>매출액</td> " +
+                            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var j = 0; j < list2.length; j++) {
+                        if(list2[j][0] == '401'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] == '501'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>매출 원가</td> " +
+                            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var j = 0; j < list2.length; j++) {
+                        if(list2[j][0] == '501'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>매출총이익</td> " +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>금 액</td> " +
+                        "</tr> ");
+
+
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] == '502'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>판매비와관리비</td> " +
+                            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var j = 0; j < list2.length; j++) {
+                        if(list2[j][0] == '502'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>영업이익</td> " +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>금 액</td> " +
+                        "</tr> ");
+
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] == '402'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>영업외수익</td> " +
+                            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var j = 0; j < list2.length; j++) {
+                        if(list2[j][0] == '402'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var i = 0; i < list.length; i++) {
+                        if(list[i][0] == '503'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>영업외비용</td> " +
+                            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    for (var j = 0; j < list2.length; j++) {
+                        if(list2[j][0] == '503'){
+                            $("#sheetTb").append(
+                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                            "</tr> ");
+                        }
+                    }
+
+                    $("#sheetTb").append(
+                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>순이익</td> " +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>금 액</td> " +
+                        "</tr> ");
 
                 }
             })
@@ -121,104 +255,8 @@
 
         {# 조회 버튼 누를시 #}
         $(document).on('click', '#btnSearch', function () {
-            var input = document.getElementById('inputYM').value
-            var ym = input.replace(/\-/g, '')
-            var yyyy = ym.slice(0,4);
-            var mm = ym.slice(4,6);
 
-            var data = {'ym': ym, 'yyyy': yyyy, 'mm': mm}
-
-            $.ajax({
-            type: "post",
-            data: data,
-            url: '{% url "monthly_profit_loss_search" %}',
-            headers: {
-                'X-CSRFTOKEN': '{{ csrf_token }}'
-            },
-            dataType: 'json',
-            success: function (data) {
-                var list = data.mheadList;
-                var list2 = data.headList;
-                var list3 = data.mainList;
-
-                $("#headTb").html("");
-                $("#sheetTb").html("");
-
-                $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem' colspan='6'>" + mm + "월</th> " +
-                    "</tr> ");
-
-                $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>항목</th> " +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>금액</th> " +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>매출 대비</th> " +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>일평균</th> " +
-                    "<th class='text-center bg-dark border border-top text-white p-1' style='font-size: 0.85rem; width: 3rem'>비 고</th> " +
-                    "</tr> ");
-
-
-                for (var d = 0; d < list3.length; d++) {
-                    {#상위 세팅#}
-                    let $sheetTr_tr_title = $(`.sheetTr_tr_title_${list3[d][0]}`);
-                    let sheetTr_tr_title_len = $sheetTr_tr_title.length;
-
-                    if(sheetTr_tr_title_len == 0) {
-                        $("#sheetTb").append("<tr id='sheetTr' class='sheetTr_tr_title_" + list3[d][0] + "'>" +
-                            "<td class='text-center bg-dark text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][1] + "</td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
-                            "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td>" +
-                            "</tr> ");
-
-                        {#환급금#}
-                    } else {
-                        let remarks = $sheetTr_tr_title.children().eq(4).text();
-                        let new_remarks = remarks + ',' + list3[d][3]; {#환급금,수입이자#}
-
-                        $sheetTr_tr_title.children().eq(4).text(new_remarks);
-                    }
-
-                    var sale = 0;
-                    if(list3[d][0] == '1'){
-                        sale += list3[d][4]
-                    }
-
-                    {#하위세팅#}
-                    $("#sheetTb").append("<tr id='sheetTr' class='sheetTr_tr_" + list3[d][0] + "'>" +
-                        "<td class='text-center bg-gray-700 text-white border border-light p-1' style='font-size: 0.85rem'>" + list3[d][3] + "</td> " +
-                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][4]) + "</td> " +
-                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + (Math.round((list3[d][4] / sale) * 100).toFixed(2)) + "%</td> " +
-                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + addComma(list3[d][5]) + "</td>" +
-                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'></td>" +
-                        "</tr> ");
-
-                    let $sheetTr_tr = $(`.sheetTr_tr_${list3[d][0]}`);
-                    let sheetTr_tr_len = $sheetTr_tr.length;
-
-                    if(sheetTr_tr_len > 0) {
-                        let children = $(`.sheetTr_tr_title_${list3[d][0]}`).children();
-                        let child_1 = children.eq(1); {# 금액 #}
-                        let child_2 = children.eq(2); {# 매출대비 #}
-                        let child_3 = children.eq(3); {# 일평균 #}
-
-                        let new_value_1 = 0;
-                        let new_value_2 = 0;
-                        let new_value_3 = 0;
-
-                        for(let i=0; i<sheetTr_tr_len; i++) {
-                            new_value_1 += Number($sheetTr_tr.eq(i).children().eq(1).text().replace(/\D/g, ""));
-                            new_value_2 += Number($sheetTr_tr.eq(i).children().eq(2).text().replace(/\D/g, ""));
-                            new_value_3 += Number($sheetTr_tr.eq(i).children().eq(3).text().replace(/\D/g, ""));
-                        }
-
-                        child_1.text(addComma(new_value_1));
-                        child_2.text(new_value_2 + "%");
-                        child_3.text(addComma(new_value_3));
-                    }
-                }
-                }
-            })
         });
+
     </script>
 {% endblock %}

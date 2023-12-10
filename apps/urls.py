@@ -154,6 +154,7 @@ urlpatterns = [
     path('payroll_reg/', payrollViews.payrollViews, name='payroll_reg'),
     path('payroll_search/', payrollViews.payrollViews_search, name='payroll_search'),
     path('payroll_save/', payrollViews.payrollViews_save, name='payroll_save'),
+    path('payroll_final_save/', payrollViews.payroll_final_save, name='payroll_final_save'),
 
     # 거래처원장
     path('custLedger_report/', financeSearchViews.custLedgerViews, name='custLedger_report'),

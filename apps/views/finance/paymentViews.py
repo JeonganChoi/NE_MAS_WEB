@@ -1694,7 +1694,7 @@ def paymentViews_save(request):
                                ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "')"
                                ",   '" + str(acAmts) + "'"
                                ",   '" + str(acAcnumber) + "'"
-                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ICUST = '" + str(iCust) + "' ) "
+                               ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "'AND ICUST = '" + str(iCust) + "' ) "
                                ",   '" + str(acDesc) + "'"
                                ",   '" + str(creUser) + "'"
                                ",   date_format(now(), '%Y%m%d') "

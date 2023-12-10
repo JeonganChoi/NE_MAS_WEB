@@ -127,7 +127,7 @@
               </div>
           </div>
           <div class="modal-footer border-0">
-              <button type="button" class="btn btn-warning text-sm vw-100" id="btnSave" name="btnSave">보내기</button>
+              <button type="button" class="btn btn-warning text-sm vw-100" id="btnConfirm" name="btnConfirm">보내기</button>
           </div>
           </form>
         </div>
@@ -181,7 +181,7 @@
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
                         "<tr>" +
-                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></th>" +
+                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAll[]' name='chkAll[]' value=''/></div></th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -227,8 +227,7 @@
 
                     $("#mainHd tr").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>공재금액</th>" +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center border-end text-white p-0 excel-hidden' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> ");
 
 
 
@@ -239,7 +238,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
-                            "<td class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></td>" +
+                            "<td class='text-center border-bottom border-end p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> " +
                             "<td hidden class='text-start p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
@@ -290,8 +289,7 @@
 
                             $("#mainTr_" + i).append(
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>" +
-                                "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
-                                "<td class='text-center border-bottom border-end p-0 excel-hidden' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
+                                "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> ");
 
                     }
 
@@ -339,7 +337,7 @@
 
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
-                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></th>" +
+                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAll[]' name='chkAll[]' value=''/></div></th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -384,8 +382,7 @@
 
                     $("#mainHd").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>공재금액</th>" +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center border-end text-white p-0 excel-hidden' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> ");
 
 
 
@@ -395,7 +392,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
-                            "<td class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></td>" +
+                            "<td class='text-center border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> " +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
@@ -446,8 +443,7 @@
 
                             $("#mainTr_" + i).append(
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>" +
-                                "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
-                                "<td class='text-center border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
+                                "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> ");
 
                     }
                 }
@@ -481,7 +477,7 @@
 
                     {# 헤더 그려주기 #}
                     $("#mainHd").append(
-                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></th>" +
+                        "<th class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkAll[]' name='chkAll[]' value=''/></div></th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>성 명</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 시급</th>" +
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>기본 입금</th> " +
@@ -526,8 +522,7 @@
 
                     $("#mainHd").append(
                         "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>공재금액</th>" +
-                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> " +
-                        "<th class='text-center border-end text-white p-0 excel-hidden' style='font-size: 0.85rem'>선택</th> ");
+                        "<th class='text-center border-end text-white p-0' style='font-size: 0.85rem'>실지급액</th> ");
 
 
 
@@ -536,7 +531,7 @@
                         {# 새로운줄 #}
                         $("#mainTb").append("<tr id='mainTr_" + i + "' class='mainTr_tr'>" + "</tr> ");
                         $("#mainTr_" + i).append(
-                            "<td class='text-center border-bottom border-end p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkEmp[]' name='chkEmp[]' value=''/></div></td>" +
+                            "<td class='text-center border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> " +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmEmp_" + i + "' name='txtPmEmp' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][0] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmNme_" + i + "' name='txtPmNme' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][1] + "' style='height: 1rem; font-size: 0.85rem; width: 8rem' /></td>" +
                             "<td hidden class='text-start p-0' style='font-size: 0.85rem'><input id='txtPmDate_" + i + "' name='txtPmDate' class='form-control border-0 text-dark text-start shadow-none' type='text' value='" + list3[i][2] + "' style='height: 1.5rem; font-size: 0.85rem; width: 8rem' /></td>" +
@@ -587,8 +582,7 @@
 
                             $("#mainTr_" + i).append(
                                 "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmGott_" + i + "' name='txtPmGott' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][37] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td>" +
-                                "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> " +
-                                "<td class='text-center border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmChk_" + i + "[]' name='txtPmChk[]' type='checkbox' value='" + list3[i][0] + "," + list3[i][1] + "," + list3[i][2] + "' style='height: 1rem; font-size: 0.85rem' /></td> ");
+                                "<td class='text-start border-bottom border-end p-0' style='font-size: 0.85rem'><input id='txtPmJitt_" + i + "' name='txtPmJitt' class='form-control border-0 text-dark text-end shadow-none' type='number' value='" + list3[i][38] + "' style='height: 1rem; font-size: 0.85rem; width: 6rem' /></td> ");
 
                     }
                 }
@@ -596,10 +590,15 @@
         });
 
 
+        {# 결제방법 선택시 계좌명 바인딩 #}
+        $('#inputEmp').change(function () {
+            $("#btnSearch").trigger('click');
+        });
+
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var saveresult = confirm("저장 하시겠습니까? 입력한 정보가 맞다면 확인 버튼을 눌러주세요.")
+            var saveresult = confirm("저장하시겠습니까?")
 
             if (saveresult == true) {
                 var mainTableCount = 0;
@@ -706,23 +705,23 @@
 
 
                 $.ajax({
-                method: "POST",
-                async: false,
-                dataType: "json",
-                data: {
-                    'payArrList': JSON.stringify(payArr),
-                },
-                url: "{% url 'payroll_save' %}",
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    if (data.arrList === "Y") {
-                        alert("저장되었습니다.")
-                        location.href = "{% url 'payroll_reg' %}";
+                    method: "POST",
+                    async: false,
+                    dataType: "json",
+                    data: {
+                        'payArrList': JSON.stringify(payArr),
+                    },
+                    url: "{% url 'payroll_save' %}",
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.arrList === "Y") {
+                            alert("저장되었습니다.")
+                            location.href = "{% url 'payroll_reg' %}";
+                        }
                     }
-                }
-            });
+                });
             }
 
         });
@@ -784,6 +783,60 @@
             $('#sendModal').show();
         });
 
+
+        {# 보내기 확인 버튼 #}
+        $(document).on('click', "#btnConfirm", function () {
+
+            var chk_cust_id_arr = [];
+            $('input[name="txtPmChk[]"]:checked').each(function (i) {
+                chk_cust_id_arr.push($(this).val());
+            })
+
+            //체크가 1개라도 안되있을때
+            let chk_count = $("input[name='txtPmChk[]']").filter(":checked").length;
+            if (chk_count < 1) {
+                alert('임금대장을 보내실 직원을 체크 해주세요.');
+                return false;
+            }
+
+            {# 체크한 값이랑 그 라인에 마지막 값을 리스트에 포함시켜서 #}
+
+            var actNum = document.getElementById('cboActNum').value;
+            var mCode = document.getElementById('cboMCode').value;
+            var withDate = document.getElementById('txtWithDate').value;
+
+            var saveresult = confirm("출금하시겠습니까?")
+
+            if (saveresult == true) {
+
+                $.ajax({
+                    method: "POST",
+                    async: false,
+                    dataType: "json",
+                    data: {
+                        'payArrList': JSON.stringify(payArr),
+                        'actNum': actNum,
+                        'mCode': mCode,
+                        'withDate': withDate
+                    },
+                    url: "{% url 'payroll_final_save' %}",
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.arrList === "Y") {
+                            alert("저장되었습니다.")
+                            location.href = "{% url 'payroll_reg' %}";
+                        }
+                    }
+                });
+
+            }
+
+            if (saveresult == false) {
+                alert('취소되었습니다.')
+            }
+        });
 
         {# 엑셀 버튼 누를시 #}
         $(document).on('click', '#btnExcel', function () {
