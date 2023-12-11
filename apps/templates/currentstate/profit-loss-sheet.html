@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} 월 손익 계산서 {% endblock %}
+{% block title %} 손익 현황 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
@@ -46,7 +46,7 @@
                                 <div class="m-2 table-responsive-sm overflow-auto height-500">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
-                                            <col width="6%"/>
+                                            <col width="4%"/>
                                             <col width="10%"/>
                                             <col width="6%"/>
                                         </colgroup>
@@ -78,6 +78,14 @@
 
         $(document).ready(function () {
 
+            var total = 0;
+            var total2 = 0;
+            var total3 = 0;
+            var total4 = 0;
+            var total5 = 0;
+            var total6 = 0;
+            var total7 = 0;
+            var total8 = 0;
             var date = new Date();
             date.setMonth(date.getMonth() - 3);
             {#var year = date.getFullYear()#}
@@ -126,14 +134,15 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
                         }
+                        total = parseInt(list[i][2]);
                     }
 
                     for (var j = 0; j < list2.length; j++) {
-                        if(list2[j][0] == '401'){
+                        if(list2[j][0] == '401' && list2[j][6] > 0){
                             $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                             "</tr> ");
                         }
@@ -148,26 +157,27 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
                         }
+                        total2 = parseInt(list[i][2])
                     }
 
                     for (var j = 0; j < list2.length; j++) {
-                        if(list2[j][0] == '501'){
+                        if(list2[j][0] == '501' && list2[j][6] > 0){
                             $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                             "</tr> ");
                         }
                     }
 
+                    total3 = total - total2
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>매출총이익</td> " +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>금 액</td> " +
+                        "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>매출총이익</td> " +
+                        "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total3) + "</td> " +
                         "</tr> ");
-
 
                     for (var i = 0; i < list.length; i++) {
                         if(list[i][0] == '502'){
@@ -178,24 +188,26 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
                         }
+                        total4 = parseInt(list[i][2])
                     }
 
                     for (var j = 0; j < list2.length; j++) {
-                        if(list2[j][0] == '502'){
+                        if(list2[j][0] == '502' && list2[j][6] > 0){
                             $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                             "</tr> ");
                         }
                     }
 
+                    total5 = total3 + total4
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>영업이익</td> " +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>금 액</td> " +
+                        "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>영업이익</td> " +
+                        "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total5) + "</td> " +
                         "</tr> ");
 
                     for (var i = 0; i < list.length; i++) {
@@ -207,14 +219,15 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
                         }
+                        total6 = parseInt(list[i][2])
                     }
 
                     for (var j = 0; j < list2.length; j++) {
-                        if(list2[j][0] == '402'){
+                        if(list2[j][0] == '402' && list2[j][6] > 0){
                             $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                             "</tr> ");
                         }
@@ -226,27 +239,29 @@
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>영업외비용</td> " +
                             "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>-" + addComma(list[i][2]) + "</td> " +
                             "</tr> ");
                         }
+                        total7 = parseInt(list[i][2])
                     }
 
                     for (var j = 0; j < list2.length; j++) {
-                        if(list2[j][0] == '503'){
+                        if(list2[j][0] == '503' && list2[j][6] > 0){
                             $("#sheetTb").append(
                             "<tr id='#sheetTr' class='sheetTr_tr'>" +
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][1] + "," + list2[j][3] + "," + list2[j][5] + "</td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                             "</tr> ");
                         }
                     }
 
+                    total8 = total5 + total6 - total7
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>순이익</td> " +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-center border border-light text-danger p-1' style='font-size: 0.85rem'>금 액</td> " +
+                        "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>순이익</td> " +
+                        "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total8) + "</td> " +
                         "</tr> ");
 
                 }

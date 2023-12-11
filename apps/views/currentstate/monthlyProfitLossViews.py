@@ -39,13 +39,21 @@ def montlyProfitLossViews_search(request):
 
     # 대분류별 총 금액
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)) FROM OSCODEM A "
-                       " LEFT OUTER JOIN SISACCTT D "
-                       " ON A.ACODE = D.ACODE "
-                       " LEFT OUTER JOIN OSREFCP B "
-                       " ON A.MCODE_M = B.RESKEY "
-                       " AND B.RECODE = 'MCD' "
-                       " GROUP BY A.MCODE_M, B.RESNAM ")
+        cursor.execute(" SELECT A.RESKEY, A.RESNAM, SUM(IFNULL(C.ACAMTS, 0)) "
+                       " FROM OSREFCP A "
+                       " LEFT OUTER JOIN OSCODEM B "
+                       " ON A.RESKEY = B.MCODE_M "
+                       " LEFT OUTER JOIN SISACCTT C "
+                       " ON B.MCODE = C.MCODE "
+                       " WHERE RECODE = 'MCD' "
+                       " GROUP BY A.RESKEY, A.RESNAM ")
+        # cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)) FROM OSCODEM A "
+        #                " LEFT OUTER JOIN SISACCTT D "
+        #                " ON A.MCODE = D.MCODE "
+        #                " LEFT OUTER JOIN OSREFCP B "
+        #                " ON A.MCODE_M = B.RESKEY "
+        #                " AND B.RECODE = 'MCD' "
+        #                " GROUP BY A.MCODE_M, B.RESNAM ")
         mCoderesult = cursor.fetchall()
 
     # 회계코드별 총 금액

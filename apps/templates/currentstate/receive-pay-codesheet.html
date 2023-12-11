@@ -152,6 +152,8 @@
         $(document).ready(function () {
 
             var date = new Date();
+            {#var year = date.getFullYear()#}
+            {#date = year + '-01-01'#}
             date.setDate(1);
             document.getElementById('inputStrDate').valueAsDate = date
             document.getElementById('inputEndDate').valueAsDate = new Date
@@ -175,10 +177,8 @@
                 success: function (data) {
                     var list = data.headList;
                     var list2 = data.mainList;
-                    var list3 = data.tbList;
-                    var list4 = data.inTotal;
-                    var list5 = data.outTotal;
                     var list6 = data.codeList;
+                    var list3 = data.itembomlist4;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
@@ -206,6 +206,18 @@
                             "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
                             "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(list6[d][6]) + "</td> " +
                             "</tr> ");
+                    }
+
+                    for (var d = 1; d < list6.length; d++) {
+
+                        $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
+                        for (var i = 1; i < list3.length; i++) {
+
+                            if(list6[d][4] == list3[i][0]){
+                            $("#sheetTb").append("<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(list3[i][2]) + "</td> ");
+                            }
+
+                        }
                     }
 
                     var count = 0;

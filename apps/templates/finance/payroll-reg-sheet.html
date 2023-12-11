@@ -93,24 +93,27 @@
               </div>
               <div class="form-group">
                   <div class="row p-0">
-                      <div class="col-2"></div>
-                      <div class="col-8">
-                          <label class="text-dark" style="font-size: 0.8rem"><i class="fas fa-file-invoice-dollar me-2"></i>계좌 번호</label>
+                      <div class="col-1"></div>
+                      <div class="col-5">
+                          <label class="text-dark" style="font-size: 0.8rem"><i class="fa fa-file-invoice-dollar me-2"></i>계좌 번호</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboActNum" id="cboActNum"></select>
                       </div>
-                  </div>
-                  <div class="row p-0">
-                      <div class="col-2"></div>
-                      <div class="col-4">
-                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="fas fa-bars me-2"></i>계정 과목</label>
+                      <div class="col-5">
+                          <label class="text-dark" style="font-size: 0.8rem"><i class="fa fa-bars me-2"></i>계정 과목</label>
                           <select class="form-control border border-light rounded-1 text-center"
                                   name="cboMCode" id="cboMCode"></select>
                       </div>
-                      <div class="col-4">
-                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="far fa-calendar me-2"></i>출금 일자</label>
-                          <input class="form-control border border-light rounded-1 text-center" type="date"
-                                  name="txtWithDate" id="txtWithDate"/>
+                  </div>
+                  <div class="row p-0">
+                      <div class="col-1"></div>
+                      <div class="col-5">
+                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="fa fa-calendar me-2"></i>출금 일자</label>
+                          <input class="form-control border border-light rounded-1 text-center" type="date" name="txtWithDate" id="txtWithDate"/>
+                      </div>
+                      <div class="col-5">
+                          <label class="mt-2 text-dark" style="font-size: 0.8rem"><i class="fa fa-calendar me-2"></i>적용 년월</label>
+                          <input class="form-control border border-light rounded-1 text-center" type="month" name="txtMonth" id="txtMonth"/>
                       </div>
                   </div>
                   <div class="row p-0">
@@ -127,7 +130,7 @@
               </div>
           </div>
           <div class="modal-footer border-0">
-              <button type="button" class="btn btn-warning text-sm vw-100" id="btnConfirm" name="btnConfirm">보내기</button>
+              <button type="button" class="btn btn-warning text-sm vw-100 font-weight-bold" id="btnConfirm" name="btnConfirm"><i class="fa fa-arrow-right-from-bracket fs-6 me-2"></i>보내기</button>
           </div>
           </form>
         </div>
@@ -804,6 +807,7 @@
             var actNum = document.getElementById('cboActNum').value;
             var mCode = document.getElementById('cboMCode').value;
             var withDate = document.getElementById('txtWithDate').value;
+            var applyMonth = document.getElementById('txtMonth').value;
 
             var saveresult = confirm("출금하시겠습니까?")
 
@@ -817,7 +821,8 @@
                         'payArrList': JSON.stringify(payArr),
                         'actNum': actNum,
                         'mCode': mCode,
-                        'withDate': withDate
+                        'withDate': withDate,
+                        'applyMonth': applyMonth,
                     },
                     url: "{% url 'payroll_final_save' %}",
                     headers: {
