@@ -808,6 +808,34 @@
             var mCode = document.getElementById('cboMCode').value;
             var withDate = document.getElementById('txtWithDate').value;
             var applyMonth = document.getElementById('txtMonth').value;
+            var payArr = []
+
+            {#let Table = document.getElementById('grid')#}
+            {#var TableCount = Table.rows.length#}
+            {##}
+            {#for(var i = 0; i < TableCount; i++){#}
+            {#    var ChkVal = $("input[name='txtPmChk[]']").val()#}
+            {#    var PmJitt = $(".txtPmJitt").val()#}
+            {#}#}
+
+            $('#grid .mainTr_tr').each(function() {
+                var ChkEle = $(this).find("input[name='txtPmChk[]']");
+
+                if(ChkEle.is(':checked')) {
+
+                    var ChkVal = ChkEle.val();
+                    var PmJitt = $(this).find("input[name='txtPmJitt']").val();
+
+                    let data = {
+                        'ChkVal': ChkVal,
+                        'PmJitt': PmJitt
+                    }
+
+                    payArr.push(data);
+                }
+            });
+
+
 
             var saveresult = confirm("출금하시겠습니까?")
 

@@ -1456,6 +1456,8 @@
                 $('.cboAct').show();
                 $('.writer').hide();
                 $('.line').hide();
+                $("#txtExDate").val("");
+                $("#cboWitActNum").val("");
             }
             {# 신용카드 #}
             else if(method == '3'){
@@ -1465,6 +1467,8 @@
                 $('.cboAct').show();
                 $('.writer').hide();
                 $('.line').show();
+                $("#txtExDate").val("");
+                $("#cboWitActNum").val("");
             }
             {#계산서#}
             else if(method == '2'){
@@ -1474,6 +1478,8 @@
                 $('.cboBank').show();
                 $('.cboAct').show();
                 $('.line').show();
+                $("#txtExDate").val("");
+                $("#cboWitActNum").val("");
             }
             {#현금#}
             else if(method == '1'){
@@ -1483,6 +1489,8 @@
                 $('.writer').show();
                 $('.cardName').hide();
                 $('.line').show();
+                $("#txtExDate").val("");
+                $("#cboWitActNum").val("");
             }
             else{
                 $('.cboCard').show();
@@ -1490,6 +1498,8 @@
                 $('.cboAct').show();
                 $('.writer').show();
                 $('.cardName').show();
+                $("#txtExDate").val("");
+                $("#cboWitActNum").val("");
             }
 
         });
@@ -1610,6 +1620,7 @@
             let data2 = {"method": method, "cardNum": card, "custCode": custCode}
 
             var date = 0;
+            var gbn = "";
             if(method == '3'){
 
                 $.ajax({
@@ -1636,6 +1647,10 @@
                             var newDate = new Date;
                             var year = newDate.getFullYear()
                             var month = newDate.getMonth() + 1
+                            if(month > 12){
+                                year = year + 1
+                                month = '0' + (month - 12)
+                            }
                             var exDate = year + "-" + month + "-" + date
 
                             $("#txtExDate").val(exDate);
@@ -1649,15 +1664,16 @@
 
         });
 
-       $('#cboWitActNum').change(function () {
+       $('#cboWitCust').change(function () {
 
-            var method = document.getElementById('cboWitMethod').value
+            var method = '2'
             var cardNum = "";
             var custCode = document.getElementById('cboWitCust').value;
 
             let data2 = {"method": method, "cardNum": cardNum, "custCode": custCode}
 
             var date = 0;
+            var gbn = "";
             if(method == '2'){
 
                 if(custCode == ''){
@@ -1674,8 +1690,11 @@
                         },
                         dataType: 'json',
                         success: function (data) {
+                            var list = data.chkDate
+
                             if(data.chkDate != ''){
-                                date = data.chkDate;
+                                date = list[0][0];
+                                gbn = list[0][1];
 
                                 if(date < 10){
                                     date = '0' + date
@@ -1685,10 +1704,108 @@
                                     date = now.getDate()
                                 }
 
-                                var newDate = new Date;
-                                var year = newDate.getFullYear()
-                                var month = newDate.getMonth() + 1
-                                var exDate = year + "-" + month + "-" + date
+                                 {# 당월 #}
+                                if(gbn == '0'){
+                                    var newDate = new Date;
+                                    var year = newDate.getFullYear()
+                                    var month = newDate.getMonth() + 1
+                                    if(month > 12){
+                                        year = year + 1
+                                        month = '0' + (month - 12)
+                                    }
+                                    var exDate = year + "-" + month + "-" + date
+
+                                }
+                                {# 익월 #}
+                                if(gbn == '1'){
+                                    var newDate = new Date;
+                                    var year = newDate.getFullYear()
+                                    var month = newDate.getMonth() + 2
+                                    if(month > 12){
+                                        year = year + 1
+                                        month = '0' + (month - 12)
+                                    }
+                                    var exDate = year + "-" + month + "-" + date
+
+                                }
+
+                                $("#txtExDate").val(exDate);
+                            }
+                            else{
+                                $("#txtExDate").val("");
+                            }
+
+                        }
+                    });
+                }
+
+            }
+
+       });
+
+
+       $('#cboWitActNum').change(function () {
+
+            var method = document.getElementById('cboWitMethod').value
+            var cardNum = "";
+            var custCode = document.getElementById('cboWitCust').value;
+
+            let data2 = {"method": method, "cardNum": cardNum, "custCode": custCode}
+
+            var date = 0;
+            var gbn = "";
+            if(method == '2'){
+
+                if(custCode == ''){
+                    alert('거래처를 선택해주세요.')
+                    return false;
+                }
+                if(custCode != ''){
+                    $.ajax({
+                        type: "post",
+                        data: data2,
+                        url: '{% url "chkDate" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            var list = data.chkDate
+
+                            if(data.chkDate != ''){
+                                date = list[0][0];
+                                gbn = list[0][1];
+
+                                if(date < 10){
+                                    date = '0' + date
+                                }
+                                if(date == 'last'){
+                                    var now = new Date;
+                                    date = now.getDate()
+                                }
+
+                                 {# 당월 #}
+                                if(gbn == '0'){
+                                    var newDate = new Date;
+                                    var year = newDate.getFullYear()
+                                    var month = newDate.getMonth() + 1
+                                    if(month > 12){
+                                        year = year + 1
+                                        month = '0' + (month - 12)
+                                    }
+                                    var exDate = year + "-" + month + "-" + date
+                                }
+                                {# 익월 #}
+                                if(gbn == '1'){
+                                    var newDate = new Date;
+                                    var year = newDate.getFullYear()
+                                    var month = newDate.getMonth() + 2
+                                    if(month > 12){
+                                        year = year + 1
+                                        month = '0' + (month - 12)
+                                    }
+                                    var exDate = year + "-" + month + "-" + date
+                                }
 
                                 $("#txtExDate").val(exDate);
                             }

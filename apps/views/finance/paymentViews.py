@@ -28,7 +28,7 @@ def chkDate(request):
 
     if method == '2' and custCode != '':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_PAY_DAY FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "'")
+            cursor.execute(" SELECT CUST_PAY_DAY, CUST_PAY FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "'")
         chkDate = cursor.fetchall()
         return JsonResponse({'chkDate': chkDate})
 

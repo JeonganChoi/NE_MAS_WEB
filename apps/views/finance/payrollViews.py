@@ -381,6 +381,16 @@ def payroll_final_save(request):
     acIogb = '1'
     finOpt = 'Y'
 
+    # for p in payArray:
+    #
+    #     code = p['ChkVal'].split(',')[0]
+    #     name = p['ChkVal'].split(',')[1]
+    #     jitt = p['PmJitt']
+    #
+    #     print(code)
+    #     print(name)
+    #     print(jitt)
+
     with connection.cursor() as cursor:
         cursor.execute(
             " SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -389,12 +399,19 @@ def payroll_final_save(request):
 
     with connection.cursor() as cursor:
         cursor.execute(
-            " SELECT ACBKCD FROM ACNUMBER WHERE ACACNUMBER = '" + str(actNum) + "' AND ICUST = '" + str(iCust) + "' ")
+            " SELECT ACBKCD FROM ACNUMBER WHERE ACNUMBER = '" + str(actNum) + "' AND ICUST = '" + str(iCust) + "' ")
         result2 = cursor.fetchall()
         bankCode = result2[0][0]
 
-    payArrayLists = list(filter(len, payArray))
-    for data in range(len(payArrayLists)):
+    for p in payArray:
+
+        code = p['ChkVal'].split(',')[0]
+        name = p['ChkVal'].split(',')[1]
+        jitt = p['PmJitt']
+        
+    # print(payArray)
+    # payArrayLists = list(filter(len, payArray))
+    # for data in range(len(payArrayLists)):
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO SISACCTT "
                            "   (    "
@@ -425,7 +442,7 @@ def payroll_final_save(request):
                            ",   '" + str(mCode) + "'"
                            ",   '" + str(aCode) + "'"
                            ",   (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "')"
-                           ",   '" + payArrayLists[data]["acAmts"] + "'"
+                           ",   '" + str(jitt) + "'"
                            ",   '" + str(actNum) + "'"
                            ",   (SELECT IFNULL (MAX(ACRECN) + 1,1) AS COUNTED FROM SISACCTT A WHERE ACDATE = '" + str(withDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
                            ",   '" + str(user) + "'"
