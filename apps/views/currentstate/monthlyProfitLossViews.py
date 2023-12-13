@@ -16,6 +16,8 @@ def montlyProfitLossViews(request):
 
 
 def montlyProfitLossViews_search(request):
+    monthArray = json.loads(request.POST.get('monthArrList'))
+    print(monthArray)
     strDate = request.POST.get('strDate')
     endDate = request.POST.get('endDate')
 
@@ -43,9 +45,10 @@ def montlyProfitLossViews_search(request):
                        " FROM OSREFCP A "
                        " LEFT OUTER JOIN OSCODEM B "
                        " ON A.RESKEY = B.MCODE_M "
+                       " AND A.RECODE = 'MCD' "
                        " LEFT OUTER JOIN SISACCTT C "
                        " ON B.MCODE = C.MCODE "
-                       " WHERE RECODE = 'MCD' "
+                       " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
                        " GROUP BY A.RESKEY, A.RESNAM ")
         # cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)) FROM OSCODEM A "
         #                " LEFT OUTER JOIN SISACCTT D "
@@ -59,7 +62,8 @@ def montlyProfitLossViews_search(request):
     # 회계코드별 총 금액
     with connection.cursor() as cursor:
         cursor.execute("  SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, '') "
-                       "       , IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)) FROM OSCODEM A "
+                       "       , IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)), SUBSTRING(D.ACDATE, 1, 6) "
+                       "  FROM OSCODEM A "
                        "  LEFT OUTER JOIN SISACCTT D "
                        "  ON A.ACODE = D.ACODE "
                        "  LEFT OUTER JOIN OSREFCP B "
@@ -68,61 +72,119 @@ def montlyProfitLossViews_search(request):
                        "  LEFT OUTER JOIN OSREFCP C "
                        "  ON A.ACODE = C.RESKEY "
                        "  AND C.RECODE = 'ACD' "
-                       "  GROUP BY A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM ")
+                       "  WHERE SUBSTRING(D.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
+                       "  GROUP BY A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM, D.ACDATE ")
         aCoderesult = cursor.fetchall()
 
-
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(AA.MCODE_M, ''), IFNULL(AA.RESNAM, '')"
-                       "        , IFNULL(AA.OPT, ''), IFNULL(AA.MCODENM, '')"
-                       "        , IFNULL(SUM(AA.TOTAL), 0), IFNULL(AVG(AA.AVG), 0)  "
-                       " FROM ( "
-                       "     SELECT B.MCODE_M, C.RESNAM, A.OPT, B.MCODENM, SUM(A.AMTS) AS TOTAL, AVG(A.AMTS) AS AVG "
-                       "     FROM OSBILL A "
-                       "     LEFT OUTER JOIN OSCODEM B "
-                       "     ON A.OPT = B.MCODE "
-                       "     LEFT OUTER JOIN OSREFCP C "
-                       "     ON B.MCODE_M = C.RESKEY "
-                       "     AND C.RECODE = 'MCD' "
-                       "     WHERE A.OPT LIKE '5%' "
-                       # "     AND YEAR(A.BAL_DD) = '" + yyyy + "' AND MONTH(A.BAL_DD) = '" + mm + "' "
-                       "     GROUP BY A.OPT, B.MCODE_M, C.RESNAM, B.MCODENM "
-                       "     UNION ALL "
-                       "     SELECT B.MCODE_M, C.RESNAM, A.OPT, B.MCODENM, SUM(A.AMTS) AS TOTAL, AVG(A.AMTS) AS AVG "
-                       "     FROM OSBILL A "
-                       "     LEFT OUTER JOIN OSCODEM B "
-                       "     ON A.OPT = B.MCODE "
-                       "     LEFT OUTER JOIN OSREFCP C "
-                       "     ON B.MCODE_M = C.RESKEY "
-                       "     AND C.RECODE = 'MCD' "
-                       "     WHERE A.OPT LIKE '4%' "
-                       # "     AND YEAR(A.BAL_DD) = '" + yyyy + "' AND MONTH(A.BAL_DD) = '" + mm + "' "
-                       "     GROUP BY A.OPT, B.MCODE_M, C.RESNAM, B.MCODENM "
-                       "     UNION ALL "
-                       "     SELECT B.MCODE_M, C.RESNAM, A.MCODE, B.MCODENM, SUM(A.ACAMTS) AS TOTAL, AVG(A.ACAMTS) AS AVG "
-                       "     FROM SISACCTT A "
-                       "     LEFT OUTER JOIN OSCODEM B "
-                       "     ON A.MCODE = B.MCODE "
-                       "     LEFT OUTER JOIN OSREFCP C "
-                       "     ON B.MCODE_M = C.RESKEY "
-                       "     AND C.RECODE = 'MCD' "
-                       "     WHERE A.MCODE LIKE '5%' "
-                       # "     AND YEAR(A.ACDATE) = '" + yyyy + "' AND MONTH(A.ACDATE) = '" + mm + "' "
-                       "     GROUP BY A.MCODE, B.MCODE_M, C.RESNAM, B.MCODENM "
-                       "     UNION ALL "
-                       "     SELECT B.MCODE_M, C.RESNAM, A.MCODE, B.MCODENM, SUM(A.ACAMTS) AS TOTAL, AVG(A.ACAMTS) AS AVG "
-                       "     FROM SISACCTT A "
-                       "     LEFT OUTER JOIN OSCODEM B "
-                       "     ON A.MCODE = B.MCODE "
-                       "     LEFT OUTER JOIN OSREFCP C "
-                       "     ON B.MCODE_M = C.RESKEY "
-                       "     AND C.RECODE = 'MCD' "
-                       "     WHERE A.MCODE LIKE '4%' "
-                       # "     AND YEAR(A.ACDATE) = '" + yyyy + "' AND MONTH(A.ACDATE) = '" + mm + "' "
-                       "     GROUP BY A.MCODE, B.MCODE_M, C.RESNAM, B.MCODENM "
-                       "    ) AA  "
-                       " GROUP BY AA.MCODE_M, AA.RESNAM, AA.OPT, AA.MCODENM ")
-        mainresult = cursor.fetchall()
+        cursor.execute(" SELECT A.RESKEY, A.RESNAM, SUM(IFNULL(C.ACAMTS, 0)), SUBSTRING(C.ACDATE, 5, 2) "
+                       " FROM OSREFCP A "
+                       " LEFT OUTER JOIN OSCODEM B "
+                       " ON A.RESKEY = B.MCODE_M "
+                       " AND A.RECODE = 'MCD' "
+                       " LEFT OUTER JOIN SISACCTT C "
+                       " ON B.MCODE = C.MCODE "
+                       " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
+                       " GROUP BY A.RESKEY, A.RESNAM, C.ACDATE ")
+        itembomlist2 = cursor.fetchall()
+
+    # itembomlist2 = []
+    # monthArrayLists = list(filter(len, monthArray))
+    # for data in range(len(monthArrayLists)):
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" SELECT A.RESKEY, A.RESNAM, SUM(IFNULL(C.ACAMTS, 0)) "
+    #                        " FROM OSREFCP A "
+    #                        " LEFT OUTER JOIN OSCODEM B "
+    #                        " ON A.RESKEY = B.MCODE_M "
+    #                        " AND A.RECODE = 'MCD' "
+    #                        " LEFT OUTER JOIN SISACCTT C "
+    #                        " ON B.MCODE = C.MCODE "
+    #                        " WHERE SUBSTRING(C.ACDATE, 1, 6) = '" + str(monthArrayLists[data]["month"]) + "' "
+    #                        " GROUP BY A.RESKEY, A.RESNAM ")
+    #         mainresult = cursor.fetchall()
+    #
+    #     for data in range(len(mainresult)):
+    #         itembomlist = [mainresult[data][0], mainresult[data][1], mainresult[data][2]]
+    #         itembomlist2 += [itembomlist]
+    #
+    # itembomlist4 = []
+    # monthArrayLists = list(filter(len, monthArray))
+    # for data in range(len(monthArrayLists)):
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(
+    #             "  SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, '') "
+    #             "       , IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)), SUBSTRING(D.ACDATE, 1, 6) "
+    #             "  FROM OSCODEM A "
+    #             "  LEFT OUTER JOIN SISACCTT D "
+    #             "  ON A.ACODE = D.ACODE "
+    #             "  LEFT OUTER JOIN OSREFCP B "
+    #             "  ON A.MCODE_M = B.RESKEY "
+    #             "  AND B.RECODE = 'MCD' "
+    #             "  LEFT OUTER JOIN OSREFCP C "
+    #             "  ON A.ACODE = C.RESKEY "
+    #             "  AND C.RECODE = 'ACD' "
+    #             "  WHERE SUBSTRING(D.ACDATE, 1, 6) = '" + str(monthArrayLists[data]["month"]) + "'"
+    #             "  GROUP BY A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM, D.ACDATE ")
+    #         mainresult2 = cursor.fetchall()
+    #
+    #     for data in range(len(mainresult2)):
+    #         itembomlist3 = [mainresult2[data][4], mainresult2[data][6], mainresult2[data][7]]
+    #         itembomlist4 += [itembomlist3]
+
+
+
 
     return JsonResponse({'mheadList': mheadresult, "mCodeList": mCoderesult, "aCodeList": aCoderesult
-                            , 'headList': headresult, 'mainList': mainresult, "cboAcode": cboAcode})
+                            , 'headList': headresult, "cboAcode": cboAcode
+                            , "monthListM": itembomlist2})
+
+
+# cursor.execute(" SELECT IFNULL(AA.MCODE_M, ''), IFNULL(AA.RESNAM, '')"
+#                "        , IFNULL(AA.OPT, ''), IFNULL(AA.MCODENM, '')"
+#                "        , IFNULL(SUM(AA.TOTAL), 0), IFNULL(AVG(AA.AVG), 0)  "
+#                " FROM ( "
+#                "     SELECT B.MCODE_M, C.RESNAM, A.MCODE, B.MCODENM, SUM(A.ACAMTS) AS TOTAL, AVG(A.ACAMTS) AS AVG "
+#                "     FROM SISACCTT A "
+#                "     LEFT OUTER JOIN OSCODEM B "
+#                "     ON A.MCODE = B.MCODE "
+#                "     LEFT OUTER JOIN OSREFCP C "
+#                "     ON B.MCODE_M = C.RESKEY "
+#                "     AND C.RECODE = 'MCD' "
+#                "     WHERE A.MCODE LIKE '5%' "
+#                # "     AND YEAR(A.BAL_DD) = '" + yyyy + "' AND MONTH(A.BAL_DD) = '" + mm + "' "
+#                "     GROUP BY A.OPT, B.MCODE_M, C.RESNAM, B.MCODENM "
+#                "     UNION ALL "
+#                "     SELECT B.MCODE_M, C.RESNAM, A.MCODE, B.MCODENM, SUM(A.ACAMTS) AS TOTAL, AVG(A.ACAMTS) AS AVG "
+#                "     FROM SISACCTT A "
+#                "     LEFT OUTER JOIN OSCODEM B "
+#                "     ON A.MCODE = B.MCODE "
+#                "     LEFT OUTER JOIN OSREFCP C "
+#                "     ON B.MCODE_M = C.RESKEY "
+#                "     AND C.RECODE = 'MCD' "
+#                "     WHERE A.MCODE LIKE '5%' "
+#                # "     AND YEAR(A.BAL_DD) = '" + yyyy + "' AND MONTH(A.BAL_DD) = '" + mm + "' "
+#                "     GROUP BY A.OPT, B.MCODE_M, C.RESNAM, B.MCODENM "
+#                "     UNION ALL "
+#                "     SELECT B.MCODE_M, C.RESNAM, A.MCODE, B.MCODENM, SUM(A.ACAMTS) AS TOTAL, AVG(A.ACAMTS) AS AVG "
+#                "     FROM SISACCTT A "
+#                "     LEFT OUTER JOIN OSCODEM B "
+#                "     ON A.MCODE = B.MCODE "
+#                "     LEFT OUTER JOIN OSREFCP C "
+#                "     ON B.MCODE_M = C.RESKEY "
+#                "     AND C.RECODE = 'MCD' "
+#                "     WHERE A.MCODE LIKE '5%' "
+#                # "     AND YEAR(A.ACDATE) = '" + yyyy + "' AND MONTH(A.ACDATE) = '" + mm + "' "
+#                "     GROUP BY A.MCODE, B.MCODE_M, C.RESNAM, B.MCODENM "
+#                "     UNION ALL "
+#                "     SELECT B.MCODE_M, C.RESNAM, A.MCODE, B.MCODENM, SUM(A.ACAMTS) AS TOTAL, AVG(A.ACAMTS) AS AVG "
+#                "     FROM SISACCTT A "
+#                "     LEFT OUTER JOIN OSCODEM B "
+#                "     ON A.MCODE = B.MCODE "
+#                "     LEFT OUTER JOIN OSREFCP C "
+#                "     ON B.MCODE_M = C.RESKEY "
+#                "     AND C.RECODE = 'MCD' "
+#                "     WHERE A.MCODE LIKE '4%' "
+#                # "     AND YEAR(A.ACDATE) = '" + yyyy + "' AND MONTH(A.ACDATE) = '" + mm + "' "
+#                "     GROUP BY A.MCODE, B.MCODE_M, C.RESNAM, B.MCODENM "
+#                "    ) AA  "
+#                " GROUP BY AA.MCODE_M, AA.RESNAM, AA.OPT, AA.MCODENM ")

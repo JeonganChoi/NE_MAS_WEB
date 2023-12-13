@@ -231,9 +231,9 @@ def receivepayCodeSheetViews_search(request):
         headresult = cursor.fetchall()
         itembomlist2 = []
 
-        for i in range(len(headresult)):
-            itembomlist = [headresult[i][0]]
-            itembomlist2 += [itembomlist]
+        # for i in range(len(headresult)):
+        #     itembomlist = [headresult[i][0]]
+        #     itembomlist2 += [itembomlist]
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL((BALANCE - OAMTS) + IAMTS, 0) AS TOTAL, BANK FROM( "
@@ -253,42 +253,42 @@ def receivepayCodeSheetViews_search(request):
         mainresult = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY FROM OSREFCP WHERE RECODE = 'ACD' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
-        headresult = cursor.fetchall()
-        print(headresult)
+        cursor.execute(" SELECT MCODE FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ")
+        headresult2 = cursor.fetchall()
         itembomlist2 = []
 
         itembomlist4 = []
-        for i in range(len(headresult)):
-            itembomlist = [headresult[i][0]]
+        for i in range(len(headresult2)):
+            itembomlist = [headresult2[i][0]]
             itembomlist2 += [itembomlist]
 
+        # 관리계정코드, 관리계정명, 금액, 은행코드, 은행명
         for j in range(len(itembomlist2)):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(A.ACODE, ''), IFNULL(B.RESNAM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, '') "
+                cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, '') "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN ACNUMBER C "
                                " ON A.ACACNUMBER = C.ACNUMBER "
-                               " LEFT OUTER JOIN OSREFCP B "
-                               " ON A.ACODE = B.RESKEY "
-                               " AND B.RECODE = 'ACD' "
+                               " LEFT OUTER JOIN OSCODEM B "
+                               " ON A.MCODE = B.MCODE "
                                " LEFT OUTER JOIN OSREFCP D "
                                " ON C.ACBKCD = D.RESKEY "
                                " AND D.RECODE = 'BNK' "
-                               " WHERE A.ACODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "'"
-                               " GROUP BY A.ACODE, B.RESNAM, C.ACBKCD ORDER BY ACBKCD ")
+                               " WHERE A.MCODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "'"
+                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD ORDER BY ACBKCD ")
                 subresult = cursor.fetchall()
 
                 for data in range(len(subresult)):
                     itembomlist3 = [subresult[data][0], subresult[data][1], subresult[data][2], subresult[data][3], subresult[data][4]]
                     itembomlist4 += [itembomlist3]
 
+
     itembomlist2 = sum(itembomlist2, [])
     if itembomlist2:
         if int(max(itembomlist2)) < 10:
             for i in range(10 - int(max(itembomlist2))):
                 itembomlist2 += ['']
-            print(itembomlist2)
+
         with connection.cursor() as cursor:
             cursor.execute(
                 " SELECT IFNULL(A.MCODE_M, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.ACODE, ''), SUM(IFNULL(B.ACAMTS, 0)) "
@@ -304,7 +304,6 @@ def receivepayCodeSheetViews_search(request):
                 " WHERE A.ICUST = '" + str(iCust) + "'"
                 " GROUP BY A.MCODE_M, A.MCODE, A.MCODENM, A.ACODE ")
             tbresult = cursor.fetchall()
-            print(tbresult)
 
         return JsonResponse({"headList": headresult, 'mainList': mainresult, 'tbList': tbresult, "codeList": coderesult, "itembomlist4": itembomlist4})
 
@@ -419,3 +418,17 @@ def receivepayCodeSheetViews_search(request):
     #                "         ) TMP GROUP BY MCODE, MCODENM, 1ACMTS, 2ACMTS, 3ACMTS, 4ACMTS, 5ACMTS, 6ACMTS, 7ACMTS, 8ACMTS, 9ACMTS, 10ACMTS "
     #                "     ) BB "
     #                " GROUP BY MCODE, MCODENM ")
+
+    # cursor.execute(
+    #     " SELECT IFNULL(A.ACODE, ''), IFNULL(B.RESNAM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, '') "
+    #     " FROM SISACCTT A "
+    #     " LEFT OUTER JOIN ACNUMBER C "
+    #     " ON A.ACACNUMBER = C.ACNUMBER "
+    #     " LEFT OUTER JOIN OSREFCP B "
+    #     " ON A.ACODE = B.RESKEY "
+    #     " AND B.RECODE = 'ACD' "
+    #     " LEFT OUTER JOIN OSREFCP D "
+    #     " ON C.ACBKCD = D.RESKEY "
+    #     " AND D.RECODE = 'BNK' "
+    #     " WHERE A.MCODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "'"
+    #                                                                                         " GROUP BY A.ACODE, B.RESNAM, C.ACBKCD ORDER BY ACBKCD ")

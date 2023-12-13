@@ -21,7 +21,8 @@ def accountCodeViews_search(request):
     if mainCode:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, ''), IFNULL(A.OPT, '') "
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
+                           "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
                            "    FROM OSCODEM A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.GBN = B.RESKEY "
@@ -35,6 +36,9 @@ def accountCodeViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP E "
                            "    ON A.ACODE = E.RESKEY "
                            "    AND E.RECODE = 'ACD' "
+                           "    LEFT OUTER JOIN OSREFCP F "
+                           "    ON A.YUD = F.RESKEY "
+                           "    AND F.RECODE = 'YUD' "
                            "    WHERE A.MCODE = '" + mainCode + "' "
                            "    AND A.ICUST = '" + str(iCust) + "'"
                            # "    WHERE MCODE = '" + mainCode + "' "
@@ -61,12 +65,19 @@ def accountCodeViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
             gbn2result = cursor.fetchall()
 
-        return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
+        # 유동항목
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' ")
+            cboYud = cursor.fetchall()
+
+
+        return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, ''), IFNULL(A.OPT, '') "
+                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
+                           "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
                            "    FROM OSCODEM A "
                            "    LEFT OUTER JOIN OSREFCP B "
                            "    ON A.GBN = B.RESKEY "
@@ -80,6 +91,9 @@ def accountCodeViews_search(request):
                            "    LEFT OUTER JOIN OSREFCP E "
                            "    ON A.ACODE = E.RESKEY "
                            "    AND E.RECODE = 'ACD' "
+                           "    LEFT OUTER JOIN OSREFCP F "
+                           "    ON A.YUD = F.RESKEY "
+                           "    AND F.RECODE = 'YUD' "
                            "    WHERE A.MCODE LIKE '" + str(codeType) + "%' AND A.ICUST = '" + str(iCust) + "' ORDER BY MCODE ")
             mresult = cursor.fetchall()
             print(mresult)
@@ -104,7 +118,12 @@ def accountCodeViews_search(request):
             cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
             gbn2result = cursor.fetchall()
 
-        return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result})
+        # 유동항목
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' ")
+            cboYud = cursor.fetchall()
+
+        return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
 def chkcodeM(request):
     codeType = request.POST.get('codeType')
@@ -140,6 +159,7 @@ def accountCodeViews_saveM(request):
     gbn = request.POST.get("cboGbn_M")
     gbn2 = request.POST.get("cboGbn2_M")
     opt = request.POST.get("cboOpt")
+    yud = request.POST.get("cboYud")
     iCust = request.session.get("USER_ICUST")
     user = request.session.get("userId")
 
@@ -158,6 +178,7 @@ def accountCodeViews_saveM(request):
                            "    , GBN = '" + str(gbn) + "' "
                            "    , GBN2 = '" + str(gbn2) + "' "
                            "    , OPT = '" + str(opt) + "' "
+                           "    , YUD = '" + str(yud) + "' "
                            "    , UPD_USER = '" + str(user) + "' "
                            "    , UPD_DT = date_format(now(), '%Y%m%d') "
                            "      WHERE MCODE = '" + str(mCode) + "' "
@@ -210,6 +231,7 @@ def accountCodeViews_saveM(request):
                              ",    GBN "
                              ",    GBN2 "
                              ",    OPT "
+                             ",    YUD "
                              ",    CRE_USER "
                              ",    CRE_DT "
                              ",    ICUST "
@@ -225,6 +247,7 @@ def accountCodeViews_saveM(request):
                              ",   '" + str(gbn) + "' "
                              ",   '" + str(gbn2) + "' "
                              ",   '" + str(opt) + "' "
+                             ",   '" + str(yud) + "' "
                              ",   '" + str(user) + "' "
                              ",   date_format(now(), '%Y%m%d') "
                              ",   '" + str(iCust) + "' "

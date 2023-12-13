@@ -117,7 +117,7 @@
                                         </div>
                                         <div hidden class="col-lg-6 col-6">
                                             <label class="mt-2" style="font-size: 0.85rem"><i class="fas fa-clone me-2 text-info text-sm"></i>결제 여부</label>
-                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboOpt" id="cboOpt">분
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboOpt" id="cboOpt">
                                                 <option value="N">미사용</option>
                                                 <option value="Y" selected>사용</option>
                                             </select>
@@ -133,6 +133,12 @@
                                         <div class="col-lg-12 col-12">
                                             <label hidden class="mt-2" style="font-size: 0.85rem"><i class="fas fa-clone me-2 text-info text-sm"></i>순번</label>
                                             <input hidden class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtSeq_M" name="txtSeq_M"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-2" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-info text-sm"></i>유동 항목</label>
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboYud" id="cboYud"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -156,14 +162,17 @@
             var cboGbn_M = "";
             var cboGbn2_M = "";
             var cboMCode_A = "";
+            var cboYud = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
             var cboGbnTxt_M = "";
             var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
             var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
+            var cboYudTxt = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
             $("#cboGbn_M").html("");
             $("#cboGbn2_M").html("");
             $("#cboMCode_A").html("");
+            $("#cboYud").html("");
 
             let mCodeType = document.getElementById('cboCodeType').value;
             var mainCode = "";
@@ -236,10 +245,20 @@
                         }
                     }
 
+                    var combolist3 = data.cboYud;
+                    for (var i = 0; i < combolist3.length; i++) {
+                        if (combolist3[i][0] == cboYud) {
+                            cboYudTxt = cboYudTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        } else {
+                            cboYudTxt = cboYudTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboMCode_M").append(cboMCodeTxt_M);
                     $("#cboGbn_M").append(cboGbnTxt_M);
                     $("#cboGbn2_M").append(cboGbn2Txt_M);
                     $("#cboMCode_A").append(cboMCodeTxt_A);
+                    $("#cboYud").append(cboYudTxt);
                 }
             })
         });
@@ -348,14 +367,17 @@
             var cboGbn_M = "";
             var cboGbn2_M = "";
             var cboMCode_A = "";
+            var cboYud = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
             var cboGbnTxt_M = "";
             var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
             var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
+            var cboYudTxt = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
             $("#cboGbn_M").html("");
             $("#cboGbn2_M").html("");
             $("#cboMCode_A").html("");
+            $("#cboYud").html("");
             {#$("#cboOpt").html("");#}
 
             let mainCode = $(this).attr('main_code');
@@ -383,6 +405,8 @@
                         cboGbn_M = list[i][6];
                         cboGbn2_M = list[i][8];
                         cboMCode_A = list[i][10]
+                        cboMCode_A = list[i][10]
+                        cboYud = list[i][13]
                     {#    결제여부 값 콤보박스#}
                         $("#cboOpt").val(list[i][12] === 'Y' ? 'Y' : 'N');
                     }
@@ -423,11 +447,20 @@
                         }
                     }
 
+                    var combolist5 = data.cboYud;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == cboYud) {
+                            cboYudTxt = cboYudTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            cboYudTxt = cboYudTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboMCode_M").append(cboMCodeTxt_M);
                     $("#cboGbn_M").append(cboGbnTxt_M);
                     $("#cboGbn2_M").append(cboGbn2Txt_M);
                     $("#cboMCode_A").append(cboMCodeTxt_A);
-
+                    $("#cboYud").append(cboYudTxt);
                 }
             })
 
@@ -448,6 +481,7 @@
             let cboGbn_M = document.getElementById('cboGbn_M').value;
             let cboGbn2_M = document.getElementById('cboGbn2_M').value;
             let mOpt = document.getElementById('cboOpt').value;
+            let yud = document.getElementById('cboYud').value;
 
             if (mCode_M == '') {
                 alert('상위 계정과목을 선택해주세요.')
@@ -472,7 +506,8 @@
                 'txtDesc_M': mDesc,
                 'cboGbn_M': cboGbn_M,
                 'cboGbn2_M': cboGbn2_M,
-                'cboOpt': mOpt
+                'cboOpt': mOpt,
+                'cboYud': yud,
             }
 
             var saveresult = confirm("저장 하시겠습니까?")
@@ -497,6 +532,7 @@
                             $("#cboMCode_M").val("");
                             $("#cboMCode_A").val("");
                             $("#cboGbn_M").val("");
+                            $("#cboYud").val("");
                         }
                     }
                 });
