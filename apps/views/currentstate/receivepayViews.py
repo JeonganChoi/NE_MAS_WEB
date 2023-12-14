@@ -223,7 +223,7 @@ def receivepayCodeSheetViews_search(request):
                        " WHERE A.ICUST = '" + str(iCust) + "'"
                        " GROUP BY A.MCODE_M, A.MCODE, A.MCODENM, A.ACODE ")
         coderesult = cursor.fetchall()
-
+        print(coderesult)
 
     with connection.cursor() as cursor:
         # cursor.execute(" SELECT IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' WHERE A.ICUST = '" + str(iCust) + "' ")
@@ -281,6 +281,8 @@ def receivepayCodeSheetViews_search(request):
                 for data in range(len(subresult)):
                     itembomlist3 = [subresult[data][0], subresult[data][1], subresult[data][2], subresult[data][3], subresult[data][4]]
                     itembomlist4 += [itembomlist3]
+
+                    print(itembomlist4)
 
 
     itembomlist2 = sum(itembomlist2, [])
