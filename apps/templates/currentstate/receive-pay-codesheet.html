@@ -206,16 +206,19 @@
                     for (var d = 0; d < list6.length; d++) {
                         var _html = "<tr id='#sheetTr' class='sheetTr_tr'>";
 
-                        _html += "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
-                            "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
-                            "<td class='text-center border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
+                        _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
                             "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(list6[d][6]) + "</td> ";
 
+                        {# 그림을 그리면서 class에 어느 위치 값인지 잡아준다. #}
+                        {#  입금액 #}
                         for (var h = 0; h < list.length; h++) {
-                            _html += `<td class='text-center border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}' style='font-size: 0.8rem; width: 10rem'>0</td>`;
                         }
+                        {#  지출액 #}
                         for (var h = 0; h < list.length; h++) {
-                            _html += `<td class='text-center border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}' style='font-size: 0.8rem; width: 10rem'>0</td>`;
                         }
 
                         _html += "</tr> ";

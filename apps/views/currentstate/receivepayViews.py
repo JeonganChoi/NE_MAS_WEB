@@ -265,7 +265,7 @@ def receivepayCodeSheetViews_search(request):
         # 관리계정코드, 관리계정명, 금액, 은행코드, 은행명
         for j in range(len(itembomlist2)):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, '') "
+                cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, ''), IFNULL(B.MCODE_M, '') "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN ACNUMBER C "
                                " ON A.ACACNUMBER = C.ACNUMBER "
@@ -275,11 +275,11 @@ def receivepayCodeSheetViews_search(request):
                                " ON C.ACBKCD = D.RESKEY "
                                " AND D.RECODE = 'BNK' "
                                " WHERE A.MCODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "'"
-                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD ORDER BY ACBKCD ")
+                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD, B.MCODE_M ORDER BY ACBKCD ")
                 subresult = cursor.fetchall()
 
                 for data in range(len(subresult)):
-                    itembomlist3 = [subresult[data][0], subresult[data][1], subresult[data][2], subresult[data][3], subresult[data][4]]
+                    itembomlist3 = [subresult[data][0], subresult[data][1], subresult[data][2], subresult[data][3], subresult[data][4], subresult[data][5]]
                     itembomlist4 += [itembomlist3]
 
                     print(itembomlist4)
