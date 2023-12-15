@@ -45,7 +45,7 @@
             </div>
             <div class="col-lg-8 col-md-6">
                 <div class="border shadow-xs card">
-                    <div class="pb-0 card-header border-bottom">
+                    <div class="pb-0 card-header border-0">
                         <div class="mb-0 d-sm-flex align-items-center">
                             <div>
                                 <h6 class="mb-0 text-lg font-weight-semibold"><i class="fa fa-chart-line me-2 text-success"></i>매입/매출 추이도</h6>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="border shadow-xs card mt-2">
-                    <div class="pb-0 card-header border-bottom">
+                    <div class="pb-0 card-header border-0">
                         <div class="mb-0 d-sm-flex align-items-center">
                             <div>
                                 <h6 class="mb-0 text-lg font-weight-semibold"><i class="fa fa-chart-pie me-2 text-warning"></i>수입/비용 비교</h6>
@@ -108,25 +108,19 @@
                 var list2 = data.saleList;
                 var list3 = data.pieList;
 
+                var year = "";
+                var month = "";
                 var score = [];
+                var score2 = [];
                 var buyYear = [];
                 var buyMonth = [];
-                for (var i = 0; i < list.length; i++) {
+                for (var i = 0; i < 12; i++) {
+
                     score.push(list[i][0])
                     buyYear.push(list[i][1])
+                    buyYear = list[i][1]
                     buyMonth.push(list[i][2])
-                    {#if(!list[i][0]){#}
-                    {#    score.push(0)#}
-                    {#    buyYear.push()#}
-                    {#    buyMonth.push()#}
-                    {#}#}
-                }
 
-                var score2 = [];
-                var buyYear2 = [];
-                var buyMonth2 = [];
-                for (var i = 0; i < list2.length; i++) {
-                    score2.push(list2[i][0])
                 }
 
                 // Line chart

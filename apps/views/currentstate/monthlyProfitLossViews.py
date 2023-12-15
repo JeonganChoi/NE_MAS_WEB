@@ -49,14 +49,7 @@ def montlyProfitLossViews_search(request):
                        " LEFT OUTER JOIN SISACCTT C "
                        " ON B.MCODE = C.MCODE "
                        " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
-                       " GROUP BY A.RESKEY, A.RESNAM ")
-        # cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)) FROM OSCODEM A "
-        #                " LEFT OUTER JOIN SISACCTT D "
-        #                " ON A.MCODE = D.MCODE "
-        #                " LEFT OUTER JOIN OSREFCP B "
-        #                " ON A.MCODE_M = B.RESKEY "
-        #                " AND B.RECODE = 'MCD' "
-        #                " GROUP BY A.MCODE_M, B.RESNAM ")
+                       " GROUP BY A.RESKEY, A.RESNAM  ORDER BY A.RESKEY ")
         mCoderesult = cursor.fetchall()
 
     # 회계코드별 총 금액

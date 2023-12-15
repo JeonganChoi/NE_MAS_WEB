@@ -83,9 +83,9 @@
         <div class="row mt-n1">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                <div class="card rounded-2 shadow-none bg-gradient-faded-info">
-                    <div class="card-body">
-                        <h5 class="mb-0 text-white font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>월별 자금 유동 현황</h5>
+                <div class="card bg-gradient-primary">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0 text-white font-weight-bold"><i class="fa fa-credit-card fs-5 me-2"></i>월별 자금 유동 현황</h5>
                     </div>
                 </div>
             </div>
@@ -94,26 +94,26 @@
         <div class="row mt-4">
             <div class="col-lg-1 col-1"></div>
             <div class="col-lg-10 col-10">
-                  <div class="card border shadow-xs">
-                    <div class="pb-0 pt-0 card-header border-bottom">
-                        <div class="row p-2">
+                  <div class="card">
+                    <div class="card-header border-bottom max-height-vh-10 pb-0">
+                        <div class="row p-0">
                             <div class="col-lg-3 col-3 text-start">
                                 <div class="input-group shadow-none">
-                                    <label class="mt-1" style="font-size: 0.85rem; width: 4rem" for="inputYear"><i class="fas fa-search me-2"></i>년도</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2" type="number" name="inputYear" id="inputYear" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
+                                    <label class="" style="font-size: 0.85rem; width: 4rem" for="inputYear"><i class="fa fa-calendar-days me-2"></i>년도</label>
+                                    <input class="form-control border border-light rounded-1 text-center" type="number" name="inputYear" id="inputYear" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                                 </div>
                             </div>
                             <div class="col-lg-3 col-3 text-start">
-                                <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fas fa-search me-2"></i>조회</button>
+                                <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fa fs-6 fa-search me-2"></i>조회</button>
                             </div>
                         </div>
                     </div>
                       <div class="px-0 py-0 card-body">
                           <div class="row">
                               <div class="col-lg-12 col-12">
-                                  <div class="m-2 table-responsive-sm overflow-auto" style="height: 50vh">
+                                  <div class="m-1 table-responsive-sm overflow-auto height-500">
                                       <table class="table mb-0 align-items-center justify-content-center">
-                                          <thead class="bg-dark text-white font-weight-bolder" id="codeHead">
+                                          <thead class="text-white font-weight-bolder" id="codeHead" style="background-color: rgb(0, 92, 151);">
                                           <tr id="#codeTr" class="codeTr_tr">
                                               <th style="font-size: 0.8rem;" class="text-center border border-white p-1" rowspan="2">매출 업체명</th>
                                               <th style="font-size: 0.8rem;" class="text-center border border-white p-1" rowspan="2">계정</th>
@@ -175,7 +175,7 @@
                                           </tfoot>
                                       </table>
                                       <table class="table mb-0 align-items-center justify-content-center">
-                                          <thead class="bg-dark text-white font-weight-bolder" id="codeHead2">
+                                          <thead class="text-white font-weight-bolder" id="codeHead2" style="background-color: rgb(0, 92, 151);">
                                           <tr id="#codeTr2" class="codeTr2_tr">
                                               <th style="font-size: 0.8rem;" class="text-center border border-white p-1" rowspan="2">매입 업체명</th>
                                               <th style="font-size: 0.8rem;" class="text-center border border-white p-1" rowspan="2">계정</th>
@@ -404,14 +404,15 @@
                     $("#subTb").html("");
                     $("#subTb2").html("");
 
+
                     for (var i = 0; i < list.length; i++) {
 
                         {# 미수/미지급금 계산 #}
                         for (var j = 2; j < 26; j++) {
                             if (i % 2 == 0) {
-                                Bill += list[i][j]
+                                Bill += parseInt(list[i][j])
                             } else if (i % 2 == 1) {
-                                Deposit += list[i][j]
+                                Deposit += parseInt(list[i][j])
                             }
                         }
                         Bal = Bill - Deposit
@@ -451,30 +452,30 @@
                             "<td class='text-danger text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal) + "</td> " +
                             "</tr> ");
 
-                        totalBill_01 += list[i][2];
-                        totalDeposit_01 += list[i][3];
-                        totalBill_02 += list[i][4];
-                        totalDeposit_02 += list[i][5];
-                        totalBill_03 += list[i][6];
-                        totalDeposit_03 += list[i][7];
-                        totalBill_04 += list[i][8];
-                        totalDeposit_04 += list[i][9];
-                        totalBill_05 += list[i][10];
-                        totalDeposit_05 += list[i][11];
-                        totalBill_06 += list[i][12];
-                        totalDeposit_06 += list[i][13];
-                        totalBill_07 += list[i][14];
-                        totalDeposit_07 += list[i][15];
-                        totalBill_08 += list[i][16];
-                        totalDeposit_08 += list[i][17];
-                        totalBill_09 += list[i][18];
-                        totalDeposit_09 += list[i][19];
-                        totalBill_10 += list[i][20];
-                        totalDeposit_10 += list[i][21];
-                        totalBill_11 += list[i][22];
-                        totalDeposit_11 += list[i][23];
-                        totalBill_12 += list[i][24];
-                        totalDeposit_12 += list[i][25];
+                        totalBill_01 += parseInt(list[i][2]);
+                        totalDeposit_01 += parseInt(list[i][3]);
+                        totalBill_02 += parseInt(list[i][4]);
+                        totalDeposit_02 += parseInt(list[i][5]);
+                        totalBill_03 += parseInt(list[i][6]);
+                        totalDeposit_03 += parseInt(list[i][7]);
+                        totalBill_04 += parseInt(list[i][8]);
+                        totalDeposit_04 += parseInt(list[i][9]);
+                        totalBill_05 += parseInt(list[i][10]);
+                        totalDeposit_05 += parseInt(list[i][11]);
+                        totalBill_06 += parseInt(list[i][12]);
+                        totalDeposit_06 += parseInt(list[i][13]);
+                        totalBill_07 += parseInt(list[i][14]);
+                        totalDeposit_07 += parseInt(list[i][15]);
+                        totalBill_08 += parseInt(list[i][16]);
+                        totalDeposit_08 += parseInt(list[i][17]);
+                        totalBill_09 += parseInt(list[i][18]);
+                        totalDeposit_09 += parseInt(list[i][19]);
+                        totalBill_10 += parseInt(list[i][20]);
+                        totalDeposit_10 += parseInt(list[i][21]);
+                        totalBill_11 += parseInt(list[i][22]);
+                        totalDeposit_11 += parseInt(list[i][23]);
+                        totalBill_12 += parseInt(list[i][24]);
+                        totalDeposit_12 += parseInt(list[i][25]);
                         totalBill += Bill;
                         totalDeposit += Deposit;
                         totalBal += Bal;
@@ -513,14 +514,15 @@
                         "<td class='text-danger text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal) + "</td> " +
                         "</tr> ");
 
+
                     for (var i = 0; i < list2.length; i++) {
 
                         {# 미수/미지급금 계산 #}
                         for (var j = 2; j < 26; j++) {
                             if (i % 2 == 0) {
-                                Bill2 += list2[i][j]
+                                Bill2 += parseInt(list2[i][j])
                             } else if (i % 2 == 1) {
-                                Deposit2 += list2[i][j]
+                                Deposit2 += parseInt(list2[i][j])
                             }
                         }
                         Bal2 = Bill2 - Deposit2
@@ -560,30 +562,30 @@
                             "<td class='text-danger text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(Bal2) + "</td> " +
                             "</tr> ");
 
-                        totalBill2_01 += list2[i][2];
-                        totalDeposit2_01 += list2[i][3];
-                        totalBill2_02 += list2[i][4];
-                        totalDeposit2_02 += list2[i][5];
-                        totalBill2_03 += list2[i][6];
-                        totalDeposit2_03 += list2[i][7];
-                        totalBill2_04 += list2[i][8];
-                        totalDeposit2_04 += list2[i][9];
-                        totalBill2_05 += list2[i][10];
-                        totalDeposit2_05 += list2[i][11];
-                        totalBill2_06 += list2[i][12];
-                        totalDeposit2_06 += list2[i][13];
-                        totalBill2_07 += list2[i][14];
-                        totalDeposit2_07 += list2[i][15];
-                        totalBill2_08 += list2[i][16];
-                        totalDeposit2_08 += list2[i][17];
-                        totalBill2_09 += list2[i][18];
-                        totalDeposit2_09 += list2[i][19];
-                        totalBill2_10 += list2[i][20];
-                        totalDeposit2_10 += list2[i][21];
-                        totalBill2_11 += list2[i][22];
-                        totalDeposit2_11 += list2[i][23];
-                        totalBill2_12 += list2[i][24];
-                        totalDeposit2_12 += list2[i][25];
+                        totalBill2_01 += parseInt(list2[i][2]);
+                        totalDeposit2_01 += parseInt(list2[i][3]);
+                        totalBill2_02 += parseInt(list2[i][4]);
+                        totalDeposit2_02 += parseInt(list2[i][5]);
+                        totalBill2_03 += parseInt(list2[i][6]);
+                        totalDeposit2_03 += parseInt(list2[i][7]);
+                        totalBill2_04 += parseInt(list2[i][8]);
+                        totalDeposit2_04 += parseInt(list2[i][9]);
+                        totalBill2_05 += parseInt(list2[i][10]);
+                        totalDeposit2_05 += parseInt(list2[i][11]);
+                        totalBill2_06 += parseInt(list2[i][12]);
+                        totalDeposit2_06 += parseInt(list2[i][13]);
+                        totalBill2_07 += parseInt(list2[i][14]);
+                        totalDeposit2_07 += parseInt(list2[i][15]);
+                        totalBill2_08 += parseInt(list2[i][16]);
+                        totalDeposit2_08 += parseInt(list2[i][17]);
+                        totalBill2_09 += parseInt(list2[i][18]);
+                        totalDeposit2_09 += parseInt(list2[i][19]);
+                        totalBill2_10 += parseInt(list2[i][20]);
+                        totalDeposit2_10 += parseInt(list2[i][21]);
+                        totalBill2_11 += parseInt(list2[i][22]);
+                        totalDeposit2_11 += parseInt(list2[i][23]);
+                        totalBill2_12 += parseInt(list2[i][24]);
+                        totalDeposit2_12 += parseInt(list2[i][25]);
                         totalBill2 += Bill2;
                         totalDeposit2 += Deposit2;
                         totalBal2 += Bal2;
@@ -650,7 +652,7 @@
                         }
 
                         for (var t = 3; t < 15; t++) {
-                            gbnTotal += list3[i][t]
+                            gbnTotal += parseInt(list3[i][t])
                         }
 
                         $("#subTb").append(
@@ -675,33 +677,33 @@
 
                         if (gubunName == '매입') {
 
-                            monthTotal_1 -= list3[i][3];
-                            monthTotal_2 -= list3[i][4];
-                            monthTotal_3 -= list3[i][5];
-                            monthTotal_4 -= list3[i][6];
-                            monthTotal_5 -= list3[i][7];
-                            monthTotal_6 -= list3[i][8];
-                            monthTotal_7 -= list3[i][9];
-                            monthTotal_8 -= list3[i][10];
-                            monthTotal_9 -= list3[i][11];
-                            monthTotal_10 -= list3[i][12];
-                            monthTotal_11 -= list3[i][13];
-                            monthTotal_12 -= list3[i][14];
+                            monthTotal_1 -= parseInt(list3[i][3]);
+                            monthTotal_2 -= parseInt(list3[i][4]);
+                            monthTotal_3 -= parseInt(list3[i][5]);
+                            monthTotal_4 -= parseInt(list3[i][6]);
+                            monthTotal_5 -= parseInt(list3[i][7]);
+                            monthTotal_6 -= parseInt(list3[i][8]);
+                            monthTotal_7 -= parseInt(list3[i][9]);
+                            monthTotal_8 -= parseInt(list3[i][10]);
+                            monthTotal_9 -= parseInt(list3[i][11]);
+                            monthTotal_10 -= parseInt(list3[i][12]);
+                            monthTotal_11 -= parseInt(list3[i][13]);
+                            monthTotal_12 -= parseInt(list3[i][14]);
 
                         }
                         if (gubunName == '매출') {
-                            monthTotal_1 += list3[i][3];
-                            monthTotal_2 += list3[i][4];
-                            monthTotal_3 += list3[i][5];
-                            monthTotal_4 += list3[i][6];
-                            monthTotal_5 += list3[i][7];
-                            monthTotal_6 += list3[i][8];
-                            monthTotal_7 += list3[i][9];
-                            monthTotal_8 += list3[i][10];
-                            monthTotal_9 += list3[i][11];
-                            monthTotal_10 += list3[i][12];
-                            monthTotal_11 += list3[i][13];
-                            monthTotal_12 += list3[i][14];
+                            monthTotal_1 += parseInt(list3[i][3]);
+                            monthTotal_2 += parseInt(list3[i][4]);
+                            monthTotal_3 += parseInt(list3[i][5]);
+                            monthTotal_4 += parseInt(list3[i][6]);
+                            monthTotal_5 += parseInt(list3[i][7]);
+                            monthTotal_6 += parseInt(list3[i][8]);
+                            monthTotal_7 += parseInt(list3[i][9]);
+                            monthTotal_8 += parseInt(list3[i][10]);
+                            monthTotal_9 += parseInt(list3[i][11]);
+                            monthTotal_10 += parseInt(list3[i][12]);
+                            monthTotal_11 += parseInt(list3[i][13]);
+                            monthTotal_12 += parseInt(list3[i][14]);
                         }
                     }
                     {# 마지막 분석 집계 #}
@@ -861,6 +863,7 @@
                     $("#sheetTb2").html("");
                     $("#subTb").html("");
                     $("#subTb2").html("");
+
 
                     for (var i = 0; i < list.length; i++) {
 

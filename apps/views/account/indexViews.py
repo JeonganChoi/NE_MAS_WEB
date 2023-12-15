@@ -13,16 +13,22 @@ from datetime import datetime
 def buySale_index(request):
     now = datetime.now()
     nowDate = now.date()
-
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT SUM(ACAMTS), YEAR(ACDATE), MONTH(ACDATE) FROM SISACCTT "
-                       "    WHERE ACDATE BETWEEN '20230101' AND '" + str(nowDate).replace("-", "") + "' "
-                       "    AND MCODE LIKE '51%' "
-                       "    GROUP BY MONTH(ACDATE), YEAR(ACDATE) ")
-        buyresult = cursor.fetchall()
+    sum = str(nowDate).replace("-", "")
+    sum = sum[:6]
+    sum = int(sum) + 1
+    for i in range(12):
+        sum = int(sum) - 1
+        print(sum)
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT SUM(ACAMTS), YEAR(ACDATE), MONTH(ACDATE) FROM SISACCTT "
+                           "    WHERE SUBSTRING(ACDATE, 1, 6) = '" + str(sum) + "' "
+                           "    AND MCODE LIKE '51%' "
+                           "    GROUP BY MONTH(ACDATE), YEAR(ACDATE) ")
+            buyresult = cursor.fetchall()
+
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT SUM(ACAMTS), YEAR(ACDATE), MONTH(ACDATE) FROM SISACCTT "

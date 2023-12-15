@@ -146,7 +146,7 @@
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2'>점유율</th> ");
                     for (var d = parseInt(strDate); d < parseInt(endDate); d++) {
                         $("#headTb").append(
-                            "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' colspan='2'>" + d + "월</th> ");
+                            "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' colspan='2' value='" + d + "'>" + d + "월</th> ");
                     }
 
                     $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" + "</tr> ");
@@ -162,6 +162,24 @@
                     }
 
                     {# 리스트 2 의 값이 402인것의 길이를 찾아서 rowspan 으로 지정 #}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {##}
+                    {#    $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");#}
+                    {#    if(list[i][0] == '401') {#}
+                    {#        $("#sheetTb").append(#}
+                    {#            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +#}
+                    {#            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td>" +#}
+                    {#            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td>");#}
+                    {##}
+                    {#        for (var d = 0; d < term; d++) {#}
+                    {#            $("#sheetTb").append("<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>" +#}
+                    {#                "<td class='text-end border border-light text-dark p-1 ${list[d][0]}_${list[i][2]}' style='font-size: 0.85rem'>0%</td>");#}
+                    {#        }#}
+                    {#        total = parseInt(list[i][2]);#}
+                    {#    }#}
+                    {#}#}
+
                     for (var i = 0; i < list.length; i++) {
 
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
@@ -297,7 +315,7 @@
 
                             for (var d = 0; d < term; d++) {
                                 for (var j = 0; j < list3.length; j++) {
-                                    alert(parseInt(list3[j][3]))
+
                                     if(parseInt(list3[j][3]) == term && list3[j][0] == '502'){
                                         $("#sheetTb").append(
                                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list3[j][2]) + "</td> " +
