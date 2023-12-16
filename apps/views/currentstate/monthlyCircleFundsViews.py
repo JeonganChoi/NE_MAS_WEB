@@ -223,6 +223,7 @@ def montlyCircleFundsViews_search(request):
                            " AND A.RECODE = 'YUD' "
                            " LEFT OUTER JOIN SISACCTT C "
                            " ON B.MCODE = C.MCODE "
+                           " AND YEAR(C.ACDATE) = '" + str(year) + "'"
                            " WHERE B.YUD != NULL OR B.YUD != '' "
                            " GROUP BY B.YUD, C.ACDATE "
                            " ) AA GROUP BY YUD, RESNAM ")

@@ -644,10 +644,10 @@
                     for (var i = 0; i < list3.length; i++) {
                         var gubun = list3[i][0]
                         var exception = list3[i][1]
-                        if (gubun == '1') {
+                        if (gubun.startsWith('1')){
                             gubunName = "매입";
                         }
-                        if (gubun == '2') {
+                        if (gubun.startsWith('2')) {
                             gubunName = "매출";
                         }
 
@@ -657,22 +657,22 @@
 
                         $("#subTb").append(
                             "<tr id='#subTr' class='subTr_tr border border-light'>" +
-                            "<td class='text-start p-0' style='font-size: 0.85rem; min-width: 10rem; max-width: 10rem' >" + list3[i][1] + "</td>" +
-                            "<td class='text-center p-0' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>" + gubunName + "</td>" +
-                            "<td class='text-center p-0' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>당월</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][2]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][3]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][4]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][5]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][6]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][7]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][8]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][9]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][10]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][11]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][12]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][13]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 32rem'>" + addComma(gbnTotal) + "</td> " +
+                            "<td class='text-start p-0 border border-light' style='font-size: 0.85rem; min-width: 10rem; max-width: 10rem' >" + list3[i][1] + "</td>" +
+                            "<td class='text-center p-0 border border-light' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>" + gubunName + "</td>" +
+                            "<td class='text-center p-0 border border-light' style='font-size: 0.85rem; min-width: 4rem; max-width: 4rem;'>당월</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][2]) + "</td> " +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][3]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][4]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][5]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][6]) + "</td> " +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][7]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][8]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][9]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][10]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][11]) + "</td> " +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][12]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(list3[i][13]) + "</td>" +
+                            "<td class='text-end p-0 border border-light' style='font-size: 0.85rem; min-width: 32rem'>" + addComma(gbnTotal) + "</td> " +
                             "</tr> ");
 
                         if (gubunName == '매입') {
