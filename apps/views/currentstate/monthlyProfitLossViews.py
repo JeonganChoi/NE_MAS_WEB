@@ -29,15 +29,24 @@ def montlyProfitLossViews_search(request):
         cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' ")
         mheadresult = cursor.fetchall()
 
-    with connection.cursor() as cursor:
-        cursor.execute("  SELECT A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM FROM OSCODEM A "
-                       " LEFT OUTER JOIN OSREFCP B "
-                       " ON A.MCODE_M = B.RESKEY "
-                       " AND B.RECODE = 'MCD' "
-                       " LEFT OUTER JOIN OSREFCP C "
-                       " ON A.ACODE = C.RESKEY "
-                       " AND C.RECODE = 'ACD' ")
-        headresult = cursor.fetchall()
+    # with connection.cursor() as cursor:
+    #     cursor.execute("  SELECT A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM FROM OSCODEM A "
+    #                    " LEFT OUTER JOIN OSREFCP B "
+    #                    " ON A.MCODE_M = B.RESKEY "
+    #                    " AND B.RECODE = 'MCD' "
+    #                    " LEFT OUTER JOIN OSREFCP C "
+    #                    " ON A.ACODE = C.RESKEY "
+    #                    " AND C.RECODE = 'ACD' ")
+    #     headresult = cursor.fetchall()
+    # with connection.cursor() as cursor:
+    #     cursor.execute("  SELECT A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM FROM OSCODEM A "
+    #                    " LEFT OUTER JOIN OSREFCP B "
+    #                    " ON A.MCODE_M = B.RESKEY "
+    #                    " AND B.RECODE = 'MCD' "
+    #                    " LEFT OUTER JOIN OSREFCP C "
+    #                    " ON A.ACODE = C.RESKEY "
+    #                    " AND C.RECODE = 'ACD' ")
+    #     headresult = cursor.fetchall()
 
     # 대분류별 총 금액
     with connection.cursor() as cursor:
@@ -49,28 +58,37 @@ def montlyProfitLossViews_search(request):
                        " LEFT OUTER JOIN SISACCTT C "
                        " ON B.MCODE = C.MCODE "
                        " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
-                       " GROUP BY A.RESKEY, A.RESNAM  ORDER BY A.RESKEY ")
+                       " GROUP BY A.RESKEY, A.RESNAM ORDER BY A.RESKEY ")
         mCoderesult = cursor.fetchall()
 
-    # 회계코드별 총 금액
     with connection.cursor() as cursor:
-        cursor.execute("  SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, '') "
-                       "       , IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)), SUBSTRING(D.ACDATE, 1, 6) "
-                       "  FROM OSCODEM A "
-                       "  LEFT OUTER JOIN SISACCTT D "
-                       "  ON A.ACODE = D.ACODE "
-                       "  LEFT OUTER JOIN OSREFCP B "
-                       "  ON A.MCODE_M = B.RESKEY "
-                       "  AND B.RECODE = 'MCD' "
-                       "  LEFT OUTER JOIN OSREFCP C "
-                       "  ON A.ACODE = C.RESKEY "
-                       "  AND C.RECODE = 'ACD' "
-                       "  WHERE SUBSTRING(D.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
-                       "  GROUP BY A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM, D.ACDATE ")
+        cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(B.ACAMTS, 0))"
+                       " FROM OSCODEM A "
+                       " LEFT OUTER JOIN SISACCTT B "
+                       " ON A.MCODE = B.MCODE "
+                       " LEFT OUTER JOIN OSREFCP C "
+                       " ON A.ACODE = C.RESKEY "
+                       " AND C.RECODE = 'ACD' "
+                       " WHERE SUBSTRING(B.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "' "
+                       " GROUP BY A.MCODE_M, A.ACODE, C.RESNAM ")
         aCoderesult = cursor.fetchall()
 
+    # 회계별 월별
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT A.RESKEY, A.RESNAM, SUM(IFNULL(C.ACAMTS, 0)), SUBSTRING(C.ACDATE, 5, 2) "
+        cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(B.ACAMTS, 0)), SUBSTRING(B.ACDATE, 1, 6) "
+                       " FROM OSCODEM A "
+                       " LEFT OUTER JOIN SISACCTT B "
+                       " ON A.MCODE = B.MCODE "
+                       " LEFT OUTER JOIN OSREFCP C "
+                       " ON A.ACODE = C.RESKEY "
+                       " AND C.RECODE = 'ACD' "
+                       " WHERE SUBSTRING(B.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "' "
+                       " GROUP BY A.MCODE_M, A.ACODE, C.RESNAM, SUBSTRING(B.ACDATE, 1, 6) ")
+        itembomlist3 = cursor.fetchall()
+
+    # 대분류 월별
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT A.RESKEY, A.RESNAM, SUM(IFNULL(C.ACAMTS, 0)), SUBSTRING(C.ACDATE, 1, 6) "
                        " FROM OSREFCP A "
                        " LEFT OUTER JOIN OSCODEM B "
                        " ON A.RESKEY = B.MCODE_M "
@@ -78,58 +96,13 @@ def montlyProfitLossViews_search(request):
                        " LEFT OUTER JOIN SISACCTT C "
                        " ON B.MCODE = C.MCODE "
                        " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
-                       " GROUP BY A.RESKEY, A.RESNAM, C.ACDATE ")
+                       " GROUP BY A.RESKEY, A.RESNAM, SUBSTRING(C.ACDATE, 1, 6)")
         itembomlist2 = cursor.fetchall()
-
-    # itembomlist2 = []
-    # monthArrayLists = list(filter(len, monthArray))
-    # for data in range(len(monthArrayLists)):
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(" SELECT A.RESKEY, A.RESNAM, SUM(IFNULL(C.ACAMTS, 0)) "
-    #                        " FROM OSREFCP A "
-    #                        " LEFT OUTER JOIN OSCODEM B "
-    #                        " ON A.RESKEY = B.MCODE_M "
-    #                        " AND A.RECODE = 'MCD' "
-    #                        " LEFT OUTER JOIN SISACCTT C "
-    #                        " ON B.MCODE = C.MCODE "
-    #                        " WHERE SUBSTRING(C.ACDATE, 1, 6) = '" + str(monthArrayLists[data]["month"]) + "' "
-    #                        " GROUP BY A.RESKEY, A.RESNAM ")
-    #         mainresult = cursor.fetchall()
-    #
-    #     for data in range(len(mainresult)):
-    #         itembomlist = [mainresult[data][0], mainresult[data][1], mainresult[data][2]]
-    #         itembomlist2 += [itembomlist]
-    #
-    # itembomlist4 = []
-    # monthArrayLists = list(filter(len, monthArray))
-    # for data in range(len(monthArrayLists)):
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(
-    #             "  SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, '') "
-    #             "       , IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)), SUBSTRING(D.ACDATE, 1, 6) "
-    #             "  FROM OSCODEM A "
-    #             "  LEFT OUTER JOIN SISACCTT D "
-    #             "  ON A.ACODE = D.ACODE "
-    #             "  LEFT OUTER JOIN OSREFCP B "
-    #             "  ON A.MCODE_M = B.RESKEY "
-    #             "  AND B.RECODE = 'MCD' "
-    #             "  LEFT OUTER JOIN OSREFCP C "
-    #             "  ON A.ACODE = C.RESKEY "
-    #             "  AND C.RECODE = 'ACD' "
-    #             "  WHERE SUBSTRING(D.ACDATE, 1, 6) = '" + str(monthArrayLists[data]["month"]) + "'"
-    #             "  GROUP BY A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM, D.ACDATE ")
-    #         mainresult2 = cursor.fetchall()
-    #
-    #     for data in range(len(mainresult2)):
-    #         itembomlist3 = [mainresult2[data][4], mainresult2[data][6], mainresult2[data][7]]
-    #         itembomlist4 += [itembomlist3]
+        print(itembomlist2)
 
 
-
-
-    return JsonResponse({'mheadList': mheadresult, "mCodeList": mCoderesult, "aCodeList": aCoderesult
-                            , 'headList': headresult, "cboAcode": cboAcode
-                            , "monthListM": itembomlist2})
+    return JsonResponse({'mheadList': mheadresult, "cboAcode": cboAcode, "mCodeList": mCoderesult
+                            , "aCodeList": aCoderesult, "monthListM": itembomlist2, "monthListA": itembomlist3})
 
 
 # cursor.execute(" SELECT IFNULL(AA.MCODE_M, ''), IFNULL(AA.RESNAM, '')"
@@ -181,3 +154,18 @@ def montlyProfitLossViews_search(request):
 #                "     GROUP BY A.MCODE, B.MCODE_M, C.RESNAM, B.MCODENM "
 #                "    ) AA  "
 #                " GROUP BY AA.MCODE_M, AA.RESNAM, AA.OPT, AA.MCODENM ")
+
+# 회계코드별
+# "  SELECT IFNULL(A.MCODE_M, ''), IFNULL(B.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, '') "
+# "       , IFNULL(A.ACODE, ''), IFNULL(C.RESNAM, ''), SUM(IFNULL(D.ACAMTS, 0)), SUBSTRING(D.ACDATE, 1, 6) "
+# "  FROM OSCODEM A "
+# "  LEFT OUTER JOIN SISACCTT D "
+# "  ON A.ACODE = D.ACODE "
+# "  LEFT OUTER JOIN OSREFCP B "
+# "  ON A.MCODE_M = B.RESKEY "
+# "  AND B.RECODE = 'MCD' "
+# "  LEFT OUTER JOIN OSREFCP C "
+# "  ON A.ACODE = C.RESKEY "
+# "  AND C.RECODE = 'ACD' "
+# "  WHERE SUBSTRING(D.ACDATE, 1, 6) BETWEEN '"
+# "  GROUP BY A.MCODE_M, B.RESNAM, A.MCODE, A.MCODENM, A.ACODE, C.RESNAM, D.ACDATE

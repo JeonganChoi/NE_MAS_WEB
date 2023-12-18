@@ -198,6 +198,16 @@ def montlyCircleFundsViews_search(request):
     #     totalresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
+            cursor.execute(" SELECT (TOTAL + INTOTAL - OUTTOTAL) AS FINAL FROM ( "
+                           " SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '20231101' AND ICUST = '111' "
+                           " UNION ALL "
+                           " SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '43%' AND ICUST ='111' AND YEAR(ACDATE) = '2023' "
+                           " UNION ALL "
+                           " SELECT 0 AS TOTAL, 0 AS INTOTAL, IFNULL(SUM(ACAMTS), 0) AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '53%' OR MCODE LIKE '55%' AND ICUST ='111' AND YEAR(ACDATE) = '2023' "
+                           " ) AA ")
+            lastresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(YUD, ''), IFNULL(RESNAM, '') "
                            "      , IFNULL(SUM(MONTH01), 0), IFNULL(SUM(MONTH02), 0), IFNULL(SUM(MONTH03), 0), IFNULL(SUM(MONTH04), 0) "
                            "      , IFNULL(SUM(MONTH05), 0), IFNULL(SUM(MONTH06), 0), IFNULL(SUM(MONTH07), 0), IFNULL(SUM(MONTH08), 0) "
@@ -229,4 +239,4 @@ def montlyCircleFundsViews_search(request):
                            " ) AA GROUP BY YUD, RESNAM ")
             totalresult = cursor.fetchall()
 
-    return JsonResponse({"mainList": mainresult, 'mainList2': mainresult2, 'totalList': totalresult})
+    return JsonResponse({"mainList": mainresult, 'mainList2': mainresult2, 'totalList': totalresult, "lastList": lastresult})

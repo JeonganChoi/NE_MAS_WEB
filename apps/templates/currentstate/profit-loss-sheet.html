@@ -131,9 +131,10 @@
                     var list3 = data.monthListM;
                     var list4 = data.monthListA;
 
-                    {# 날짜 받아오기 #}
-                    strDate = strDate.substr(5,2)
-                    endDate = endDate.substr(5,2)
+
+                    {#수정했음#}
+                    strDate = strDate.replace("-", "")
+                    endDate = endDate.replace("-", "")
                     var term = parseInt(endDate) - parseInt(strDate)
 
                     $("#headTb").html("");
@@ -144,9 +145,15 @@
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2' colspan='2'>과 목</th> " +
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2'>합 계</th> + " +
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2'>점유율</th> ");
-                    for (var d = parseInt(strDate); d < parseInt(endDate); d++) {
+                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+
+                        {#수정했음#}
+                        var mm = String(d).substr(4, 2);
+
+                        {#d를 mm으로 수정했음#}
                         $("#headTb").append(
-                            "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' colspan='2' value='" + d + "'>" + d + "월</th> ");
+
+                            "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' colspan='2' value='" + mm + "'>" + mm + "월</th> ");
                     }
 
                     $("#headTb").append("<tr id='#headTr' class='headTr_tr'>" + "</tr> ");
@@ -155,30 +162,13 @@
                         "<th class='p-1' style='font-size: 0.85rem'></th> " +
                         "<th class='p-1' style='font-size: 0.85rem'></th>" +
                         "<th class='p-1' style='font-size: 0.85rem'></th> ")
-                    for (var d = parseInt(strDate); d < parseInt(endDate); d++) {
+
+                    {#수정했음#}
+                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#headTb").append(
                             "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' >합 계</th> " +
                             "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' >점유율</th> ");
                     }
-
-                    {# 리스트 2 의 값이 402인것의 길이를 찾아서 rowspan 으로 지정 #}
-                    {#for (var i = 0; i < list.length; i++) {#}
-                    {##}
-                    {#    $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");#}
-                    {#    if(list[i][0] == '401') {#}
-                    {#        $("#sheetTb").append(#}
-                    {#            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +#}
-                    {#            "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +#}
-                    {#            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td>" +#}
-                    {#            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td>");#}
-                    {##}
-                    {#        for (var d = 0; d < term; d++) {#}
-                    {#            $("#sheetTb").append("<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>" +#}
-                    {#                "<td class='text-end border border-light text-dark p-1 ${list[d][0]}_${list[i][2]}' style='font-size: 0.85rem'>0%</td>");#}
-                    {#        }#}
-                    {#        total = parseInt(list[i][2]);#}
-                    {#    }#}
-                    {#}#}
 
                     for (var i = 0; i < list.length; i++) {
 
@@ -190,10 +180,11 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td>" +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list3[d][2]) + "</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + pnt + "%</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '401'){
@@ -203,10 +194,11 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>" +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + pnt + "%</td> ");
+                                    `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         total = parseInt(list[i][2]);
@@ -215,25 +207,26 @@
                     for (var j = 0; j < list2.length; j++) {
 
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
-                        if(list2[j][0] == '401' && list2[j][6] > 0){
+                        if(list2[j][0] == '401' && list2[j][3] > 0){
                             $("#sheetTb").append(
                             "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
-                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                            "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][2] + "</td> " +
+                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][3]) + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + pnt + "%</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> `);
                             }
+
                         }
                     }
 
                     for (var i = 0; i < list.length; i++) {
 
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
-                        if(list[i][0] == '501'){
+                        if(list[i][0] == '501') {
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>매출 원가</td> " +
                                 "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
@@ -241,18 +234,13 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                             pnt = Math.ceil(total2 * 100) / total
-                            for (var j = 0; j < list3.length; j++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
 
-                                if(list3[j][0] == '501') {
-                                    for (var d = 0; d < term; d++) {
-                                        $("#sheetTb").append(
-                                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list3[j][2]) + "</td> " +
-                                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + parseInt(pnt) + "%</td> ");
-                                    }
-                                }
+                                $("#sheetTb").append(
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
-
                         if(list[i][0] != '501'){
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>매출 원가</td> " +
@@ -261,29 +249,30 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                             pnt = Math.ceil(total2 * 100) / total
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + parseInt(pnt) + "%</td> ");
+                                    `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
+
                         total2 = parseInt(list[i][2])
                     }
 
                     for (var j = 0; j < list2.length; j++) {
 
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
-                        if(list2[j][0] == '501' && list2[j][6] > 0){
+                        if(list2[j][0] == '501' && list2[j][3] > 0){
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                                "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][2] + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][3]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++){
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -297,7 +286,7 @@
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total3) + "</td> " +
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = 0; d < term; d++) {
+                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#sheetTb").append(
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>합계</td> " +
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> ");
@@ -313,49 +302,62 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
-                                for (var j = 0; j < list3.length; j++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
 
-                                    if(parseInt(list3[j][3]) == term && list3[j][0] == '502'){
-                                        $("#sheetTb").append(
-                                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list3[j][2]) + "</td> " +
-                                            "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
-                                    }
-                                }
+                                $("#sheetTb").append(
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
+
+                            {#for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {#}
+                            {#    for (var j = 0; j < list3.length; j++) {#}
+                            {##}
+                            {#        if(parseInt(list3[j][3]) == term && list3[j][0] == '502'){#}
+                            {#            $("#sheetTb").append(#}
+                            {#                `<td class='text-end border border-light text-dark p-1 ${list[j][0]}_${d}' style='font-size: 0.85rem'>0</td>#}
+                            {#                 <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);#}
+                            {#        }#}
+                            {#    }#}
+                            {#}#}
                         }
 
                         if(list[i][0] != '502'){
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>판매비와관리비</td> " +
                                 "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         total4 = parseInt(list[i][2])
                     }
 
+
+                    {# 판매비와 관리비 밑에줄들 #}
                     for (var j = 0; j < list2.length; j++) {
 
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
-                        if(list2[j][0] == '502' && list2[j][6] > 0){
+                        if(list2[j][0] == '502' && list2[j][3] > 0){
+
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                                "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][2] + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][3]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+
+                            {#수정했음#}
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> `);
                             }
+
                         }
                     }
 
@@ -368,7 +370,7 @@
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total5) + "</td> " +
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = 0; d < term; d++) {
+                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#sheetTb").append(
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>합계</td> " +
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> ");
@@ -385,10 +387,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '402'){
@@ -398,12 +400,13 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
+
                         total6 = parseInt(list[i][2])
                     }
 
@@ -418,10 +421,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -438,13 +441,12 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>-" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
-
                         if(list[i][0] != '503'){
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>영업외비용</td> " +
@@ -452,12 +454,13 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
+
                         total7 = parseInt(list[i][2])
                     }
 
@@ -465,17 +468,18 @@
                     for (var j = 0; j < list2.length; j++) {
 
                         $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
-                        if(list2[j][0] == '503' && list2[j][6] > 0){
+                        if(list2[j][0] == '503' && list2[j][3] > 0){
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][5] + "</td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
+                                "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>" + list2[j][2] + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][3]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = 0; d < term; d++) {
+
+                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>합계</td> " +
-                                    "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -489,10 +493,18 @@
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total8) + "</td> " +
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = 0; d < term; d++) {
+                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#sheetTb").append(
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>합계</td> " +
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                    }
+
+                    {#수정했음#}
+                    for (var k = 0; k < list3.length; k++) {
+                        $(`.${list3[k][0]}_${list3[k][3]}`).text(addComma(list3[k][2]));
+                    }
+                    for (var k = 0; k < list4.length; k++) {
+                        $(`.${list4[k][0]}_${list4[k][1]}_${list4[k][4]}`).text(addComma(list4[k][3]));
                     }
                 }
             })

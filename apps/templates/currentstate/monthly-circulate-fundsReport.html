@@ -399,6 +399,7 @@
                     var list = data.mainList;
                     var list2 = data.mainList2;
                     var list3 = data.totalList;
+                    var list4 = data.lastList;
                     $("#sheetTb").html("");
                     $("#sheetTb2").html("");
                     $("#subTb").html("");
@@ -706,103 +707,107 @@
                             monthTotal_12 += parseInt(list3[i][14]);
                         }
                     }
+
                     {# 마지막 분석 집계 #}
+                    {# 통장잔액:  #}
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>" +
-                        "<td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>통장잔액</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "<td class='text-start p-0 border border-light' style='font-size: 0.85rem; min-width: 18rem'>통장잔액</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_01 - totalDeposit2_01) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_02 - totalDeposit2_02) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_03 - totalDeposit2_03) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_04 - totalDeposit2_04) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_05 - totalDeposit2_05) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_06 - totalDeposit2_06) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_07 - totalDeposit2_07) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_08 - totalDeposit2_08) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_09 - totalDeposit2_09) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_10 - totalDeposit2_10) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_11 - totalDeposit2_11) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalDeposit_12 - totalDeposit2_12) + "</td>" +
                         "</tr> ");
-                    $("#subTb2").append(
-                        "<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>" +
-                        "<td class='text-start p-1  border border-light' style='font-size: 0.85rem; min-width: 18rem'>월별집계 비교</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
-                        "</tr> ");
+                    {#$("#subTb2").append(#}
+                    {#    "<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>" +#}
+                    {#    "<td class='text-start p-0  border border-light' style='font-size: 0.85rem; min-width: 18rem'>월별집계 비교</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +#}
+                    {#    "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +#}
+                    {#    "</tr> ");#}
+
+                    {# 매출계산서 - 매입계산서: 매출액 합계 - 매입액 합계 #}
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr border border-light bg-gray-100'>" +
-                        "<td class='text-start p-1  border border-light' style='font-size: 0.85rem; min-width: 18rem'>매출계산서 - 매입계산서</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_01 - totalBill2_01) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_02 - totalBill2_02) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_03 - totalBill2_03) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_04 - totalBill2_04) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_05 - totalBill2_05) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_06 - totalBill2_06) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_07 - totalBill2_07) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_08 - totalBill2_08) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_09 - totalBill2_09) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_10 - totalBill2_10) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_11 - totalBill2_11) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_12 - totalBill2_12) + "</td>" +
+                        "<td class='text-start p-0  border border-light' style='font-size: 0.85rem; min-width: 18rem'>매출계산서 - 매입계산서</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_01 - totalBill2_01) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_02 - totalBill2_02) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_03 - totalBill2_03) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_04 - totalBill2_04) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_05 - totalBill2_05) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_06 - totalBill2_06) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_07 - totalBill2_07) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_08 - totalBill2_08) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_09 - totalBill2_09) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_10 - totalBill2_10) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_11 - totalBill2_11) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma(totalBill_12 - totalBill2_12) + "</td>" +
                         "</tr> ");
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>" +
-                        "<td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익(원)</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
+                        "<td class='text-start p-0 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익(원)</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + addComma((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) + "</td>" +
                         "</tr> ");
 
                     $("#subTb2").append(
                         "<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>" +
-                        "<td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익율</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01).toFixed(2)) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05).toFixed(2)) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10).toFixed(2)) + "</td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11).toFixed(2)) + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12).toFixed(2)) + "</td>" +
+                        "<td class='text-start p-0 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익율</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10).toFixed(2)) + "</td> " +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11).toFixed(2)) + "</td>" +
+                        "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12).toFixed(2)) + "</td>" +
                         "</tr> ");
                     $("#subTb2").append(
                         `<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>
-                            <td class='text-start p-1 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익목표율</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11) <= 0 ? '부실경영' : '정상경영'}</td>
-                            <td class='text-end p-1' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-start p-0 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익목표율</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_01 - totalDeposit2_01) + monthTotal_1) / totalDeposit_01) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_02 - totalDeposit2_02) + monthTotal_2) / totalDeposit_02) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_03 - totalDeposit2_03) + monthTotal_3) / totalDeposit_03) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_04 - totalDeposit2_04) + monthTotal_4) / totalDeposit_04) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_05 - totalDeposit2_05) + monthTotal_5) / totalDeposit_05) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_06 - totalDeposit2_06) + monthTotal_6) / totalDeposit_06) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_07 - totalDeposit2_07) + monthTotal_7) / totalDeposit_07) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_08 - totalDeposit2_08) + monthTotal_8) / totalDeposit_08) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_09 - totalDeposit2_09) + monthTotal_9) / totalDeposit_09) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_10 - totalDeposit2_10) + monthTotal_10) / totalDeposit_10) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_11 - totalDeposit2_11) + monthTotal_11) / totalDeposit_11) <= 0 ? '부실경영' : '정상경영'}</td>
+                            <td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>${(((totalDeposit_12 - totalDeposit2_12) + monthTotal_12) / totalDeposit_12) <= 0 ? '부실경영' : '정상경영'}</td>
                         </tr>`);
                 }
             })
