@@ -283,13 +283,13 @@
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>매출총이익</td> " +
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total3) + "</td> " +
+                        "<td class='text-end border border-light text-info p-1 profit profit_sum' style='font-size: 0.85rem'>" + addComma(total3) + "</td> " +
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                     for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#sheetTb").append(
-                            "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>합계</td> " +
-                            "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                            `<td class='text-end border border-light text-info p-1 profit profit_${d}' style='font-size: 0.85rem'>0</td>
+                            <td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     for (var i = 0; i < list.length; i++) {
@@ -299,13 +299,13 @@
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>판매비와관리비</td> " +
                                 "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                             for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
 
@@ -367,13 +367,13 @@
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>영업이익</td> " +
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total5) + "</td> " +
+                        "<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_sum' data-ym='sum' style='font-size: 0.85rem'>" + addComma(total5) + "</td> " +
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                     for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#sheetTb").append(
-                            "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>합계</td> " +
-                            "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> ");
+                            `<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_${d}' data-ym='${d}' style='font-size: 0.85rem'>0</td>
+                            <td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     {# 영업외수익 #}
@@ -506,8 +506,19 @@
                     for (var k = 0; k < list4.length; k++) {
                         $(`.${list4[k][0]}_${list4[k][1]}_${list4[k][4]}`).text(addComma(list4[k][3]));
                     }
+
+                    $('.sale_revenue').each(function() {
+                        var ym = $(this).data('ym');
+
+                        var profit = parseInt($(`.profit_${ym}`).text().replaceAll(',', ''));
+                        var sale_mng_fee = parseInt($(`.sale_mng_fee_${ym}`).text().replaceAll(',', ''));
+                        var sale_revenue = profit + sale_mng_fee;
+
+                        $(this).text(addComma(sale_revenue));
+                    });
+
                 }
-            })
+            });
         });
 
         {# 조회 버튼 누를시 #}

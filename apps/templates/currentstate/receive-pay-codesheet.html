@@ -202,23 +202,29 @@
                             `<th class='text-center p-1' style='font-size: 0.8rem' value='${list[h][0]}'>${list[h][1]} 지출액</th>`);
                     }
 
+                    var balance = 0;
+                    for (var d = 0; d < 1; d++) {
 
-                    for (var d = 0; d < list6.length; d++) {
+                        for (var i = 0; i < list2.length; i++) {
+                            balance += parseInt(list2[i][0])
+                        }
+
                         var _html = "<tr id='#sheetTr' class='sheetTr_tr'>";
 
-                        _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
-                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
-                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
-                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(list6[d][6]) + "</td> ";
+                        _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'></td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'></td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>통장이월</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(balance) + "</td> ";
 
-                        {# 그림을 그리면서 class에 어느 위치 값인지 잡아준다. #}
-                        {#  입금액 #}
+
+                         {#그림을 그리면서 class에 어느 위치 값인지 잡아준다. 은행코드_계정코드#}
+                         {# 입금액 4#}
                         for (var h = 0; h < list.length; h++) {
-                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_4' style='font-size: 0.8rem; width: 10rem'>0</td>`;
                         }
-                        {#  지출액 #}
+                          {#지출액 5#}
                         for (var h = 0; h < list.length; h++) {
-                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_5' style='font-size: 0.8rem; width: 10rem'>0</td>`;
                         }
 
                         _html += "</tr> ";
@@ -226,52 +232,54 @@
                         $("#sheetTb").append(_html);
                     }
 
-                    {# 대구은행 1, 산양화학 6 #}
-                    {#for (var d = 1; d < list6.length; d++) {#}
-                    {##}
-                    {#    for (var i = 0; i < list3.length; i++) {#}
-                            {# 관리계정코드가 맞으면#}
-                    {#        if(list6[d][4] == list3[i][0]){#}
-                                {# 해더값에 은행코드랑 데이터 은행코드가 맞으면#}
-                    {##}
-                    {#            $("#sheetTb").append(#}
-                    {#                "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(list3[i][2]) + "</td> ");#}
-                    {#            }#}
-                                {# 은행코드가 맞지않으면 #}
-                                {#$("#sheetTb").append(#}
-                                {#    "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>0</td> ");#}
-                                {#}#}
-                    {#    }#}
-                    {#}#}
+                    for (var i = 0; i < list2.length; i++) {
 
-                    for (var i = 0; i < list3.length; i++) {
-                        $(`.${list3[i][3]}_${list3[i][0]}`).text(addComma(list3[i][2]));
+                        $(`.${list2[i][1]}_4`).text(addComma(list2[i][0]));
+
                     }
 
-                    {#var count = 0;#}
-                    {#count = list.length;#}
-                    {# 통장 이월 #}
-                    {#var total = 0;#}
-                    {#for (var i = 0; i < list2.length; i++) {#}
-                    {#    total = Number(list2[i][0])#}
-                    {#     $("#sheetTb").append(#}
-                    {#         "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'</td> " +#}
-                    {#         "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +#}
-                    {#        "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +#}
-                    {#        "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> ");#}
-                    {#}#}
+                    var total = 0;
+                    for (var d = 0; d < list6.length; d++) {
 
-                    {# 계정별 #}
-                    {#for (var i = 0; i < list3.length; i++) {#}
-                    {##}
-                    {#    if(list3[i][0] == '') {#}
-                    {#        $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");#}
-                    {#        for (var j = 0; j < list3.length; j++) {#}
-                    {#            $("#sheetTb").append(#}
-                    {#                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list3[i][2]) + "</td>");#}
-                    {#        }#}
-                    {#    }#}
-                    {#}#}
+                        {# 입금 더하기 #}
+                        if(list6[d][0].startsWith('4')){ balance += list6[d][6]}
+                        {# 출금 더하기 #}
+                        if(list6[d][0].startsWith('5')){ balance -= list6[d][6]}
+
+                        var _html = "<tr id='#sheetTr' class='sheetTr_tr'>";
+
+                        _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(balance) + "</td> ";
+
+
+                        {# 그림을 그리면서 class에 어느 위치 값인지 잡아준다. 은행코드_계정코드 #}
+                        {#  입금액 4 #}
+                        for (var h = 0; h < list.length; h++) {
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}_4' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                        }
+                        {#  지출액 5 #}
+                        for (var h = 0; h < list.length; h++) {
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}_5' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                        }
+
+                        _html += "</tr> ";
+
+                        $("#sheetTb").append(_html);
+                    }
+
+                    for (var i = 0; i < list3.length; i++) {
+                        if(list3[i][3].startsWith('4')){
+                            $(`.${list3[i][3]}_${list3[i][0]}_4`).text(addComma(list3[i][2]));
+                        }
+                        else if(list3[i][3].startsWith('5')){
+                            $(`.${list3[i][3]}_${list3[i][0]}_5`).text(addComma(list3[i][2]));
+                        }
+
+                    }
+
+
 
                     {#총계#}
                     {#$("#subTb").append(#}

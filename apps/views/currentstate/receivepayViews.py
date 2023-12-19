@@ -221,7 +221,7 @@ def receivepayCodeSheetViews_search(request):
                        " ON A.MCODE_M = D.RESKEY "
                        " AND D.RECODE = 'MCD' "
                        " WHERE A.ICUST = '" + str(iCust) + "'"
-                       " GROUP BY A.MCODE_M, A.MCODE, A.MCODENM, A.ACODE ")
+                       " GROUP BY A.MCODE_M, D.RESNAM, A.MCODE, A.MCODENM, A.ACODE , C.RESNAM")
         coderesult = cursor.fetchall()
         print(coderesult)
 
@@ -229,19 +229,15 @@ def receivepayCodeSheetViews_search(request):
         # cursor.execute(" SELECT IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' WHERE A.ICUST = '" + str(iCust) + "' ")
         cursor.execute(" SELECT IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' WHERE A.ICUST = '" + str(iCust) + "' ORDER BY A.ACBKCD ")
         headresult = cursor.fetchall()
-        itembomlist2 = []
 
-        # for i in range(len(headresult)):
-        #     itembomlist = [headresult[i][0]]
-        #     itembomlist2 += [itembomlist]
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL((BALANCE - OAMTS) + IAMTS, 0) AS TOTAL, BANK FROM( "
+        cursor.execute(" SELECT IFNULL(BALANCE - OAMTS + IAMTS, 0) AS TOTAL, BANK FROM( "
                        "         SELECT "
                        "          IFNULL(SUM(A.ACAMTS), 0) AS BALANCE "
                        "         ,IFNULL(B.ACNUM_NAME, '') AS BANK "
-                       "         ,(SELECT IFNULL(SUM(A.ACAMTS), 0) AS OAMTS FROM SISACCTT A LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER WHERE A.ACIOGB = '1' AND A.ACDATE < '" + strDate + "' AND A.ICUST = '" + str(iCust) + "') AS OAMTS "
-                       "         ,(SELECT IFNULL(SUM(A.ACAMTS), 0) AS IAMTS FROM SISACCTT A LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER WHERE A.ACIOGB = '2' AND A.ACDATE < '" + strDate + "' AND A.ICUST = '" + str(iCust) + "') AS IAMTS "
+                       "         ,(SELECT IFNULL(SUM(A.ACAMTS), 0) AS OAMTS FROM SISACCTT A LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER WHERE A.MCODE LIKE '53%' OR A.MCODE LIKE '55%' AND A.ACDATE < '" + strDate + "' AND A.ICUST = '" + str(iCust) + "') AS OAMTS "
+                       "         ,(SELECT IFNULL(SUM(A.ACAMTS), 0) AS IAMTS FROM SISACCTT A LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER WHERE A.MCODE LIKE '43%' AND A.ACDATE < '" + strDate + "' AND A.ICUST = '" + str(iCust) + "') AS IAMTS "
                        "          FROM ACBALANCE A "
                        "          LEFT OUTER JOIN ACNUMBER B "
                        "          ON A.ACNUMBER = B.ACNUMBER "
@@ -275,7 +271,7 @@ def receivepayCodeSheetViews_search(request):
                                " ON C.ACBKCD = D.RESKEY "
                                " AND D.RECODE = 'BNK' "
                                " WHERE A.MCODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "'"
-                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD, B.MCODE_M ORDER BY ACBKCD ")
+                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD, D.RESNAM, B.MCODE_M ORDER BY ACBKCD ")
                 subresult = cursor.fetchall()
 
                 for data in range(len(subresult)):
