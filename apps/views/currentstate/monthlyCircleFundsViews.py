@@ -16,6 +16,7 @@ def montlyCircleFundsViews(request):
 
 def montlyCircleFundsViews_search(request):
     year = request.POST.get('Year')
+    iCust = request.session.get("USER_ICUST")
 
     # 매출/ 입금
     with connection.cursor() as cursor:
@@ -56,7 +57,7 @@ def montlyCircleFundsViews_search(request):
                        "    LEFT OUTER JOIN MIS1TB003 B "
                        "    ON A.ACCUST = B.CUST_NBR "
                        "    WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
-                       "    AND A.MCODE LIKE '41%' "
+                       "    AND A.MCODE LIKE '41%' AND A.ACGUBN = '2'"
                        "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE "
                        " UNION ALL "
                        "   SELECT A.ACCUST, B.CUST_NME "
@@ -131,7 +132,7 @@ def montlyCircleFundsViews_search(request):
                        "   LEFT OUTER JOIN MIS1TB003 B "
                        "   ON A.ACCUST = B.CUST_NBR "
                        "   WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
-                       "   AND MCODE LIKE '51%' "
+                       "   AND MCODE LIKE '51%' AND A.ACGUBN = '2' "
                        "   GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE "
                        "UNION ALL "
                        "  SELECT A.ACCUST, B.CUST_NME "
@@ -199,11 +200,11 @@ def montlyCircleFundsViews_search(request):
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT (TOTAL + INTOTAL - OUTTOTAL) AS FINAL FROM ( "
-                           " SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '20231101' AND ICUST = '111' "
+                           " SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE YEAR(ACDATE) = '" + str(year) + "' AND ICUST = '" + str(iCust) + "' "
                            " UNION ALL "
-                           " SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '43%' AND ICUST ='111' AND YEAR(ACDATE) = '2023' "
+                           " SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '43%' AND ICUST ='" + str(iCust) + "' AND YEAR(ACDATE) = '" + str(year) + "' "
                            " UNION ALL "
-                           " SELECT 0 AS TOTAL, 0 AS INTOTAL, IFNULL(SUM(ACAMTS), 0) AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '53%' OR MCODE LIKE '55%' AND ICUST ='111' AND YEAR(ACDATE) = '2023' "
+                           " SELECT 0 AS TOTAL, 0 AS INTOTAL, IFNULL(SUM(ACAMTS), 0) AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '53%' OR MCODE LIKE '55%' AND ICUST ='" + str(iCust) + "' AND YEAR(ACDATE) = '" + str(year) + "' "
                            " ) AA ")
             lastresult = cursor.fetchall()
 
@@ -240,3 +241,17 @@ def montlyCircleFundsViews_search(request):
             totalresult = cursor.fetchall()
 
     return JsonResponse({"mainList": mainresult, 'mainList2': mainresult2, 'totalList': totalresult, "lastList": lastresult})
+
+
+
+
+
+def dailyCircleFunds_search(request):
+    month = request.POST.get('month')
+    iCust = request.session.get("USER_ICUST")
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT * FROM OSREFCP WHERE ICUST = '" + str(iCust) + "' ")
+        totalresult = cursor.fetchall()
+
+        return JsonResponse({"totalList": totalresult})

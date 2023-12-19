@@ -567,100 +567,202 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var formData = new FormData($('#dropzone')[0]);
+            var regNum = document.getElementById('txtRegNum').value
 
-            var saveresult = confirm("저장 하시겠습니까?")
-
-            if (saveresult == true) {
-
-                var custType = document.getElementById('cboCustType').value;
-                if(custType == ''){
-                    alert('업체 분류를 선택해주세요.')
-                    return false
-                }
-
-                var Count = 0;
-                $("#custTb tr td input[name='custBank']").each(function (index, ele) {
-                    var ele_val = $(ele).val();
-
-                    if(ele_val){
-                        Count += 1;
-                    }
-                });
-
-                var Count2 = 0;
-                $("#custTb tr td input[name='custSeq']").each(function (index, ele) {
-                    var ele_val = $(ele).val();
-
-                    if(ele_val){
-                        Count2 += 1;
-                    }
-                });
-
-                if(Count2 > Count){
-                    var custArr = [];
-                    for (var i = 0; i < Count2; i++) {
-
-                        var custBank = $('#custBank_' + i).val();
-                        var custActNum = $('#custActNum_' + i).val();
-                        var custSeq = $('#custSeq_' + i).val();
-
-                        if (custSeq) {
-                            let data = {
-                                'custBank': custBank,
-                                'custActNum': custActNum,
-                                'custSeq': custSeq,
-                            };
-                            custArr.push(data);
-                        }
-                    }
-                    formData.append('custArrList', JSON.stringify(custArr))
-                }
-                else{
-                    var custArr = [];
-                    for (var i = 0; i < Count; i++) {
-
-                        var custBank = $('#custBank_' + i).val();
-                        var custActNum = $('#custActNum_' + i).val();
-                        var custSeq = $('#custSeq_' + i).val();
-
-                        if (custBank) {
-                            let data = {
-                                'custBank': custBank,
-                                'custActNum': custActNum,
-                                'custSeq': custSeq,
-                            };
-                            custArr.push(data);
-                        }
-                    }
-                    formData.append('custArrList', JSON.stringify(custArr))
-                }
-
-
-
-                $.ajax({
-                    type: "post",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    dataType: "json",
-                    url: '{% url "base_cust_save" %}',
-                    headers: {
-                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                    },
-                    success: function (data) {
-                        if (data.sucYn === 'Y') {
-                            alert('저장 되었습니다.')
-                            location.href = "{% url 'base_cust' %}";
-                        }
-                    }
-                });
-            }
-            if(saveresult == false){
-                alert('취소되었습니다.')
+            if(regNum == ''){
+                alert('사업자 번호를 선택해주세요.')
+                return false
             }
 
+            let data = {'regNum': regNum}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "chkCust" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if(data.card != ''){
+                        var saveresult = confirm("이미 존재 하는 거래처 입니다. 카드 정보를 수정하시겠습니까?")
+                        if(saveresult == true){
+
+                            var formData = new FormData($('#dropzone')[0]);
+
+                            var Count = 0;
+                            $("#custTb tr td input[name='custBank']").each(function (index, ele) {
+                                var ele_val = $(ele).val();
+
+                                if (ele_val) {
+                                    Count += 1;
+                                }
+                            });
+
+                            var Count2 = 0;
+                            $("#custTb tr td input[name='custSeq']").each(function (index, ele) {
+                                var ele_val = $(ele).val();
+
+                                if (ele_val) {
+                                    Count2 += 1;
+                                }
+                            });
+
+                            if (Count2 > Count) {
+                                var custArr = [];
+                                for (var i = 0; i < Count2; i++) {
+
+                                    var custBank = $('#custBank_' + i).val();
+                                    var custActNum = $('#custActNum_' + i).val();
+                                    var custSeq = $('#custSeq_' + i).val();
+
+                                    if (custSeq) {
+                                        let data = {
+                                            'custBank': custBank,
+                                            'custActNum': custActNum,
+                                            'custSeq': custSeq,
+                                        };
+                                        custArr.push(data);
+                                    }
+                                }
+                                formData.append('custArrList', JSON.stringify(custArr))
+                            } else {
+                                var custArr = [];
+                                for (var i = 0; i < Count; i++) {
+
+                                    var custBank = $('#custBank_' + i).val();
+                                    var custActNum = $('#custActNum_' + i).val();
+                                    var custSeq = $('#custSeq_' + i).val();
+
+                                    if (custBank) {
+                                        let data = {
+                                            'custBank': custBank,
+                                            'custActNum': custActNum,
+                                            'custSeq': custSeq,
+                                        };
+                                        custArr.push(data);
+                                    }
+                                }
+                                formData.append('custArrList', JSON.stringify(custArr))
+                            }
+
+
+                            $.ajax({
+                                type: "post",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                url: '{% url "base_cust_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('저장 되었습니다.')
+                                        location.href = "{% url 'base_cust' %}";
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    else{
+                        var formData = new FormData($('#dropzone')[0]);
+
+                        var saveresult = confirm("저장 하시겠습니까?")
+
+                        if (saveresult == true) {
+
+                            var custType = document.getElementById('cboCustType').value;
+                            if(custType == ''){
+                                alert('업체 분류를 선택해주세요.')
+                                return false
+                            }
+
+                            var Count = 0;
+                            $("#custTb tr td input[name='custBank']").each(function (index, ele) {
+                                var ele_val = $(ele).val();
+
+                                if(ele_val){
+                                    Count += 1;
+                                }
+                            });
+
+                            var Count2 = 0;
+                            $("#custTb tr td input[name='custSeq']").each(function (index, ele) {
+                                var ele_val = $(ele).val();
+
+                                if(ele_val){
+                                    Count2 += 1;
+                                }
+                            });
+
+                            if(Count2 > Count){
+                                var custArr = [];
+                                for (var i = 0; i < Count2; i++) {
+
+                                    var custBank = $('#custBank_' + i).val();
+                                    var custActNum = $('#custActNum_' + i).val();
+                                    var custSeq = $('#custSeq_' + i).val();
+
+                                    if (custSeq) {
+                                        let data = {
+                                            'custBank': custBank,
+                                            'custActNum': custActNum,
+                                            'custSeq': custSeq,
+                                        };
+                                        custArr.push(data);
+                                    }
+                                }
+                                formData.append('custArrList', JSON.stringify(custArr))
+                            }
+                            else{
+                                var custArr = [];
+                                for (var i = 0; i < Count; i++) {
+
+                                    var custBank = $('#custBank_' + i).val();
+                                    var custActNum = $('#custActNum_' + i).val();
+                                    var custSeq = $('#custSeq_' + i).val();
+
+                                    if (custBank) {
+                                        let data = {
+                                            'custBank': custBank,
+                                            'custActNum': custActNum,
+                                            'custSeq': custSeq,
+                                        };
+                                        custArr.push(data);
+                                    }
+                                }
+                                formData.append('custArrList', JSON.stringify(custArr))
+                            }
+
+                            $.ajax({
+                                type: "post",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                url: '{% url "base_cust_save" %}',
+                                headers: {
+                                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    if (data.sucYn === 'Y') {
+                                        alert('저장 되었습니다.')
+                                        location.href = "{% url 'base_cust' %}";
+                                    }
+                                }
+                            });
+                        }
+                        if(saveresult == false){
+                            alert('취소되었습니다.')
+                        }
+                    }
+                }
+            });
         });
 
         {#체크한 내용 삭제#}
@@ -708,100 +810,33 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
-            location.reload();
+            $("#txtCustName").val("");
+            $("#txtCustCode").val("");
+            $("#txtCeo").val("");
+            $("#txtRegNum").val("");
+            $("#txtCustCat").val("");
+            $("#txtCustType").val("");
+            $("#txtPostCode").val("");
+            $("#txtAddress").val("");
+            $("#txtTelePhone").val("");
+            $("#txtFax").val("");
+            $("#txtEMail").val("");
+            $("#txtWebAddress").val("");
+            $("#txtUser").val("");
+            $("#inputYn").val("");
+            $("#cboCustType").val("");
+            $("#cboDay").val("");
+            $("#cboApv").val("");
+            $("#txtRegDate").val("");
 
-            {#var inputYn = "";#}
-            {#var cboCustType = "";#}
-            {#var cboDay = "";#}
-            {#var cboApv = "";#}
-            {#var inputYnTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboDayTxt = "<option value=''>:: 선택 ::</option>";#}
-            {#var cboApvTxt = "<option value=''>:: 선택 ::</option>";#}
-            {##}
-            {#$("#inputYn").html("");#}
-            {#$("#cboCustType").html("");#}
-            {#$("#cboDay").html("");#}
-            {#$("#cboApv").html("");#}
-            {##}
-            {##}
-            {#$.ajax({#}
-            {#    type: "post",#}
-            {#    url: '{% url "base_cust_search" %}',#}
-            {#    headers: {#}
-            {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
-            {#    },#}
-            {#    dataType: 'json',#}
-            {#    success: function (data) {#}
-            {#        $("#txtCustName").val("");#}
-            {#        $("#txtCustCode").val("");#}
-            {#        $("#txtCeo").val("");#}
-            {#        $("#txtRegNum").val("");#}
-            {#        $("#txtCustCat").val("");#}
-            {#        $("#txtCustType").val("");#}
-            {#        $("#txtPostCode").val("");#}
-            {#        $("#txtAddress").val("");#}
-            {#        $("#txtTelePhone").val("");#}
-            {#        $("#txtFax").val("");#}
-            {#        $("#txtEMail").val("");#}
-            {#        $("#txtWebAddress").val("");#}
-            {#        $("#txtUser").val("");#}
-            {##}
-            {#        $("#txtRegDate").val("");#}
-            {##}
-            {#        var combolist4 = data.cboCustYn;#}
-            {#        for (var i = 0; i < combolist4.length; i++) {#}
-            {#            if (combolist4[i][0] == inputYn) {#}
-            {#                inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                inputYnTxt = inputYnTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist2 = data.inputCustType;#}
-            {#        for (var i = 0; i < combolist2.length; i++) {#}
-            {#            if (combolist2[i][0] == cboCustType) {#}
-            {#                cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                cboCustTypeTxt = cboCustTypeTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        var combolist3 = data.cboPay;#}
-            {#        for (var i = 0; i < combolist3.length; i++) {#}
-            {#            if (combolist3[i][0] == cboApv) {#}
-            {#                cboApvTxt = cboApvTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";#}
-            {#            } else {#}
-            {#                cboApvTxt = cboApvTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";#}
-            {#            }#}
-            {#        }#}
-            {##}
-            {#        cboDayTxt = cboDayTxt + "<option value=''></option>";#}
-            {#        for (var i = 1; i < 32; i++) {#}
-            {#            if (i == cboDay) {#}
-            {#                cboDayTxt = cboDayTxt + "<option value='" + i + "' selected>" + i + "일</option>";#}
-            {#            } else {#}
-            {#                cboDayTxt = cboDayTxt + "<option value='" + i + "'>" +i + "일</option>";#}
-            {#            }#}
-            {#        }#}
-            {#        cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";#}
-            {##}
-            {#        $("#inputYn").append(inputYnTxt);#}
-            {#        $("#cboCustType").append(cboCustTypeTxt);#}
-            {#        $("#cboDay").append(cboDayTxt);#}
-            {#        $("#cboApv").append(cboApvTxt);#}
-            {##}
-            {#        $("#subTb").html("");#}
-            {#        for (var i = 0; i < 3; i++) {#}
-            {#            $("#subTb").append(#}
-            {#                "<tr id='#subTr' class='subTr_tr'>" +#}
-            {#                "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + i + "' name='custBank' value=''/></td>" +#}
-            {#                "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + i + "' name='custActNum' value=''/></td>" +#}
-            {#                "</tr> ");#}
-            {#        }#}
-            {##}
-            {#    }#}
-            {#})#}
+            $("#subTb").html("");
+            for (var i = 0; i < 3; i++) {
+                $("#subTb").append(
+                    "<tr id='#subTr' class='subTr_tr'>" +
+                    "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + i + "' name='custBank' value=''/></td>" +
+                    "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + i + "' name='custActNum' value=''/></td>" +
+                    "</tr> ");
+            }
         });
     </script>
 {% endblock %}

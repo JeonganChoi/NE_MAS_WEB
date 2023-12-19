@@ -251,6 +251,14 @@ def custViews_search(request):
 
         return JsonResponse({"inputCustType": inputCustType, "cboCustYn": cboCustYn, "cboBank": cboBank, "cboPay": cboPay, "custList": custresult})
 
+def chkCust(request):
+    regNum = request.POST.get('regNum')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE CUST_ID_NBR = '" + str(regNum) + "' AND ICUST = '" + str(iCust) + "' ")
+        chkCust = cursor.fetchall()
+        return JsonResponse({"chkCust": chkCust})
 
 def custViews_save(request):
     custArray = json.loads(request.POST.get('custArrList'))

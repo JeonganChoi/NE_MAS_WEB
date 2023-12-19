@@ -54,6 +54,7 @@ urlpatterns = [
     path('base_cust_search/', custViews.custViews_search, name='base_cust_search'),
     path('base_cust_save/', custViews.custViews_save, name='base_cust_save'),
     path('base_cust_dlt/', custViews.custViews_dlt, name='base_cust_dlt'),
+    path('chkCust/', custViews.chkCust, name='chkCust'),
     # 게좌관리
     path('base_account/', accountViews.accountViews, name='base_account'),
     path('base_account_search/', accountViews.accountViews_search, name='base_account_search'),
@@ -189,6 +190,7 @@ urlpatterns = [
     # 월별 자금 유동 현황
     path('monthly_circle_funds/', monthlyCircleFundsViews.montlyCircleFundsViews, name='monthly_circle_funds'),
     path('monthly_circle_funds_search/', monthlyCircleFundsViews.montlyCircleFundsViews_search, name='monthly_circle_funds_search'),
+    path('daily_circle_funds/', monthlyCircleFundsViews.dailyCircleFunds_search, name='daily_circle_funds'),
 
     # 월별 자금 유동 현황
     path('monthly_count/', monthlyCountViews.montlyCountViews, name='monthly_count'),

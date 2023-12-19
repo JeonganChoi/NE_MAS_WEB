@@ -139,6 +139,45 @@ def cardViews_search(request):
                            " LEFT OUTER JOIN OSREFCP D "
                            " ON A.CARDTYPE = D.RESKEY "
                            " AND D.RECODE = 'COC' "
+                           " WHERE A.CARDNUM = '" + str(cardNum) + "' "
+                           "   AND A.ACNUMBER = '" + str(actNum) + "' "
+                           "   AND A.ACBKCD = '" + str(bankCode) + "' "
+                           "   AND A.ICUST = '" + str(iCust) + "' ")
+            cardresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+            cboBank = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
+            cboAct = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COT' AND ICUST = '" + str(iCust) + "' ")
+            cboType = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cboCardName = cursor.fetchall()
+
+        return JsonResponse({'cardList': cardresult, 'cboBank': cboBank, 'cboAct': cboAct, 'cboType': cboType, "cboCardName": cboCardName})
+
+    elif bankCode != '' and cardNum == '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.CARDNUM, ''), IFNULL(A.ACNUMBER, ''), IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') "
+                           "        , IFNULL(A.ACPAYDTE, ''), IFNULL(A.ACDESC, ''), IFNULL(A.CRE_USER, '') "
+                           "        , IFNULL(A.GBN, ''), IFNULL(C.RESNAM, ''), IFNULL(A.CARDTYPE, ''), IFNULL(D.RESNAM, '') "
+                           " FROM ACCARD A "
+                           " LEFT OUTER JOIN OSREFCP B "
+                           " ON A.ACBKCD = B.RESKEY "
+                           " AND B.RECODE = 'BNK' "
+                           " LEFT OUTER JOIN OSREFCP C "
+                           " ON A.GBN = C.RESKEY "
+                           " AND C.RECODE = 'COT' "
+                           " LEFT OUTER JOIN OSREFCP D "
+                           " ON A.CARDTYPE = D.RESKEY "
+                           " AND D.RECODE = 'COC' "
                            " WHERE A.ACBKCD = '" + str(bankCode) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")
             cardresult = cursor.fetchall()

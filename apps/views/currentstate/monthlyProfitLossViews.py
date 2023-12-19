@@ -20,6 +20,8 @@ def montlyProfitLossViews_search(request):
     print(monthArray)
     strDate = request.POST.get('strDate')
     endDate = request.POST.get('endDate')
+    user = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' ")

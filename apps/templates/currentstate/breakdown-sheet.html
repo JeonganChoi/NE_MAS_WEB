@@ -269,7 +269,7 @@
                     $(".headTr_tr").append(
                         "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>구분</td>");
                     for (var i = 0; i < list.length; i++) {
-                        $(".headTr_tr").append("<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + list[i][1] + "수불내역서</td>" );
+                        $(".headTr_tr").append(`<th class='text-center border border-light p-1' style='font-size: 0.8rem' value='${list[i][0]}'>${list[i][1]} 수불내역서</th>`);
                     }
                     $(".headTr_tr").append(
                         "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>수불내역서 계</td>" +
@@ -283,14 +283,13 @@
                     $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
                     $(".sheetTr_tr").append(
                         "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>잔액</td>");
-                    for (var i = 0; i < list2.length; i++) {
-                        if(list[i][0] == list2[i][0]){
-                            total += list2[i][1]
-                            $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(list2[i][1]) + "</td>" );
-                        }
+                    for (var i = 0; i < list.length; i++) {
+                        $(".sheetTr_tr").append(`<td class='text-end border border-top text-dark p-1 ${list[i][0]}' style='font-size: 0.8rem'>0</td>`);
                     }
-                    for (var i = 0; i < list.length - list2.length; i++) {
-                        $(".sheetTr_tr").append("<td class='text-end border border-light p-1' style='font-size: 0.85rem'>0</td>" );
+
+                    for (var i = 0; i < list2.length; i++) {
+                        $(`.${list2[i][0]}`).text(addComma(list2[i][1]));
+                        total += parseInt(list2[i][1])
                     }
 
                     {# 수불내역서 계 #}
@@ -303,10 +302,10 @@
 
                     for (var i = 0; i < list4.length; i++) {
                         if(list4[i][0] == '1'){
-                            codeTotal -= list4[i][1]
+                            codeTotal -= parseInt(list4[i][1])
                         }
                         if(list4[i][0] == '2'){
-                            codeTotal += list4[i][1]
+                            codeTotal += parseInt(list4[i][1])
                         }
                     }
                     {# 계정별내역서 계 #}

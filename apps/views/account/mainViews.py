@@ -29,8 +29,8 @@ def loginView(request):
                 # return render(request, "account/login.html", {'login': "N", "msg": msg})
                 return JsonResponse({'login': "N", "msg": msg})
             else:
-                tesa = result[0][6]
-                if tesa != '':
+                if result[0][6] != '':
+                    tesa = result[0][6]
                     msg = '사용 불가능한 아이디입니다.'
                     # return render(request, "account/login.html", {'login': "N", "msg": msg})
                     return JsonResponse({'login': "N", "msg": msg})
