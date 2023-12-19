@@ -236,7 +236,7 @@ def montlyCircleFundsViews_search(request):
                            " ON B.MCODE = C.MCODE "
                            " AND YEAR(C.ACDATE) = '" + str(year) + "'"
                            " WHERE B.YUD != NULL OR B.YUD != '' "
-                           " GROUP BY B.YUD, C.ACDATE "
+                           " GROUP BY B.YUD, A.RESNAM, C.ACDATE "
                            " ) AA GROUP BY YUD, RESNAM ")
             totalresult = cursor.fetchall()
 
@@ -246,12 +246,12 @@ def montlyCircleFundsViews_search(request):
 
 
 
-def dailyCircleFunds_search(request):
-    month = request.POST.get('month')
-    iCust = request.session.get("USER_ICUST")
-
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT * FROM OSREFCP WHERE ICUST = '" + str(iCust) + "' ")
-        totalresult = cursor.fetchall()
-
-        return JsonResponse({"totalList": totalresult})
+# def dailyCircleFunds_search(request):
+#     month = request.POST.get('month')
+#     iCust = request.session.get("USER_ICUST")
+#
+#     with connection.cursor() as cursor:
+#         cursor.execute(" SELECT * FROM OSREFCP WHERE ICUST = '" + str(iCust) + "' ")
+#         totalresult = cursor.fetchall()
+#
+#         return JsonResponse({"totalList": totalresult})

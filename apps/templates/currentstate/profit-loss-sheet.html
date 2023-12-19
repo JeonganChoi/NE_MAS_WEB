@@ -309,16 +309,6 @@
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
 
-                            {#for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {#}
-                            {#    for (var j = 0; j < list3.length; j++) {#}
-                            {##}
-                            {#        if(parseInt(list3[j][3]) == term && list3[j][0] == '502'){#}
-                            {#            $("#sheetTb").append(#}
-                            {#                `<td class='text-end border border-light text-dark p-1 ${list[j][0]}_${d}' style='font-size: 0.85rem'>0</td>#}
-                            {#                 <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);#}
-                            {#        }#}
-                            {#    }#}
-                            {#}#}
                         }
 
                         if(list[i][0] != '502'){
@@ -384,12 +374,12 @@
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>영업외수익</td> " +
                                 "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                             for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
@@ -438,12 +428,12 @@
                             $("#sheetTb").append(
                                 "<td class='text-start border border-light text-dark p-1' style='font-size: 0.85rem'>영업외비용</td> " +
                                 "<td class='text-center border border-light text-dark p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>-" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_sum' style='font-size: 0.85rem'>-" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                             for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
@@ -490,12 +480,12 @@
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>순이익</td> " +
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>" + addComma(total8) + "</td> " +
+                        "<td class='text-end border border-light text-info p-1 profit_revenue profit_revenue_sum' data-ym='sum' style='font-size: 0.85rem'>" + addComma(total8) + "</td> " +
                         "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>점유율</td> ");
 
                     for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
                         $("#sheetTb").append(
-                            "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>합계</td> " +
+                            "<td class='text-end border border-light text-info p-1 profit_revenue profit_revenue_${d}' data-ym='${d}' style='font-size: 0.85rem'>합계</td> " +
                             "<td class='text-end border border-light text-info p-1' style='font-size: 0.85rem'>매출대비</td> ");
                     }
 
@@ -515,6 +505,18 @@
                         var sale_revenue = profit + sale_mng_fee;
 
                         $(this).text(addComma(sale_revenue));
+                    });
+
+                    $('.profit_revenue').each(function() {
+                        var ym = $(this).data('ym');
+
+                        var profit = parseInt($(`.profit_${ym}`).text().replaceAll(',', ''));
+                        var sale_mng_fee = parseInt($(`.sale_mng_fee_${ym}`).text().replaceAll(',', ''));
+                        var in_mng_fee = parseInt($(`.in_mng_fee_${ym}`).text().replaceAll(',', ''));
+                        var out_mng_fee = parseInt($(`.out_mng_fee_${ym}`).text().replaceAll(',', ''));
+                        var profit_revenue = profit + sale_mng_fee + in_mng_fee - out_mng_fee;
+
+                        $(this).text(addComma(profit_revenue));
                     });
 
                 }

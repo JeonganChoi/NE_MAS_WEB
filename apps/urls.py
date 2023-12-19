@@ -190,7 +190,7 @@ urlpatterns = [
     # 월별 자금 유동 현황
     path('monthly_circle_funds/', monthlyCircleFundsViews.montlyCircleFundsViews, name='monthly_circle_funds'),
     path('monthly_circle_funds_search/', monthlyCircleFundsViews.montlyCircleFundsViews_search, name='monthly_circle_funds_search'),
-    path('daily_circle_funds/', monthlyCircleFundsViews.dailyCircleFunds_search, name='daily_circle_funds'),
+    # path('daily_circle_funds/', monthlyCircleFundsViews.dailyCircleFunds_search, name='daily_circle_funds'),
 
     # 월별 자금 유동 현황
     path('monthly_count/', monthlyCountViews.montlyCountViews, name='monthly_count'),
