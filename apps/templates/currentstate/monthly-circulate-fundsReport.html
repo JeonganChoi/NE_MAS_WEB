@@ -462,7 +462,7 @@
                         }
 
                         $("#sheetTb").append(
-                            "<tr id='#totalTr' class='totalTr_tr border border-light'>" +
+                            "<tr id='#totalTr' class='totalTr_tr border border-light bg-gray-200'>" +
                             "<td class='text-center p-0' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>입금 소계</td>" +
                             "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill_1) + "</td> " +
                             "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit_1) + "</td>" +
@@ -552,7 +552,7 @@
                             totalBal2 += Bal2;
                         }
                         $("#sheetTb2").append(
-                            "<tr id='#totalTr2' class='totalTr2_tr border border-light'>" +
+                            "<tr id='#totalTr2' class='totalTr2_tr border border-light bg-gray-200'>" +
                             "<td class='text-center p-0 border border-light' style='font-size: 0.85rem; min-width: 18rem' colspan='3'>출금 소계</td>" +
                             "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalBill2_1) + "</td> " +
                             "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 8rem'>" + addComma(totalDeposit2_1) + "</td>" +
@@ -720,18 +720,18 @@
                         $("#subTb2").append(
                             "<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>" +
                             "<td class='text-start p-0 border border-light' style='font-size: 0.85rem; min-width: 18rem'>수익율</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_1 - totalDeposit2_1) + inMonthTotal_1 - outMonthTotal_1) / totalDeposit_1).toFixed(2)) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_2 - totalDeposit2_2) + inMonthTotal_2 - outMonthTotal_2) / totalDeposit_2).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_3 - totalDeposit2_3) + inMonthTotal_3 - outMonthTotal_3) / totalDeposit_3).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_4 - totalDeposit2_4) + inMonthTotal_4 - outMonthTotal_4) / totalDeposit_4).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_5 - totalDeposit2_5) + inMonthTotal_5 - outMonthTotal_5) / totalDeposit_5).toFixed(2)) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_6 - totalDeposit2_6) + inMonthTotal_6 - outMonthTotal_6) / totalDeposit_6).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_7 - totalDeposit2_7) + inMonthTotal_7 - outMonthTotal_7) / totalDeposit_7).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_8 - totalDeposit2_8) + inMonthTotal_8 - outMonthTotal_8) / totalDeposit_8).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_9 - totalDeposit2_9) + inMonthTotal_9 - outMonthTotal_9) / totalDeposit_9).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_10 - totalDeposit2_10) + inMonthTotal_10 - outMonthTotal_10) / totalDeposit_10).toFixed(2)) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_11 - totalDeposit2_11) + inMonthTotal_11 - outMonthTotal_11) / totalDeposit_11).toFixed(2)) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((totalDeposit_12 - totalDeposit2_12) + inMonthTotal_12 - outMonthTotal_12) / totalDeposit_12).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_1) - parseInt(totalDeposit2_1)) + parseInt(inMonthTotal_1) - parseInt(outMonthTotal_1)) / parseInt(totalDeposit_1)).toFixed(2)) + "</td> " +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_2) - parseInt(totalDeposit2_2)) + parseInt(inMonthTotal_2) - parseInt(outMonthTotal_2)) / parseInt(totalDeposit_2)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_3) - parseInt(totalDeposit2_3)) + parseInt(inMonthTotal_3) - parseInt(outMonthTotal_3)) / parseInt(totalDeposit_3)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_4) - parseInt(totalDeposit2_4)) + parseInt(inMonthTotal_4) - parseInt(outMonthTotal_4)) / parseInt(totalDeposit_4)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_5) - parseInt(totalDeposit2_5)) + parseInt(inMonthTotal_5) - parseInt(outMonthTotal_5)) / parseInt(totalDeposit_5)).toFixed(2)) + "</td> " +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_6) - parseInt(totalDeposit2_6)) + parseInt(inMonthTotal_6) - parseInt(outMonthTotal_6)) / parseInt(totalDeposit_6)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_7) - parseInt(totalDeposit2_7)) + parseInt(inMonthTotal_7) - parseInt(outMonthTotal_7)) / parseInt(totalDeposit_7)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_8) - parseInt(totalDeposit2_8)) + parseInt(inMonthTotal_8) - parseInt(outMonthTotal_8)) / parseInt(totalDeposit_8)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_9) - parseInt(totalDeposit2_9)) + parseInt(inMonthTotal_9) - parseInt(outMonthTotal_9)) / parseInt(totalDeposit_9)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_10) - parseInt(totalDeposit2_10)) + parseInt(inMonthTotal_10) - parseInt(outMonthTotal_10)) / parseInt(totalDeposit_10)).toFixed(2)) + "</td> " +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_11) - parseInt(totalDeposit2_11)) + parseInt(inMonthTotal_11) - parseInt(outMonthTotal_11)) / parseInt(totalDeposit_11)).toFixed(2)) + "</td>" +
+                            "<td class='text-end p-0' style='font-size: 0.85rem; min-width: 16rem'>" + (Math.round(((parseInt(totalDeposit_12) - parseInt(totalDeposit2_12)) + parseInt(inMonthTotal_12) - parseInt(outMonthTotal_12)) / parseInt(totalDeposit_12)).toFixed(2)) + "</td>" +
                             "</tr> ");
                         $("#subTb2").append(
                             `<tr id='#subTr2' class='subTr2_Tr bg-gray-100'>

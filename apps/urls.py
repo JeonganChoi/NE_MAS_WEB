@@ -4,7 +4,7 @@ from apps.views.base import baseCodeViews, empViews, custViews, accountViews, ac
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews, permitViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
-    , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews
+    , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews, nonPayGetVIews
 
 urlpatterns = [
     # path('', redirectToMain, name="redirectToMain"),
@@ -203,4 +203,8 @@ urlpatterns = [
     # 내역별 잔액
     path('breakdown_balance/', breakdownBalanceViews.breakdownBalanceViews, name='breakdown_balance'),
     path('breakdown_balance_search/', breakdownBalanceViews.breakdownBalanceViews_search, name='breakdown_balance_search'),
+
+    # 계정별내역서
+    path('nonPayment/', nonPayGetVIews.nonPaymentView, name='nonPayment'),
+    path('nonPayment_search/', nonPayGetVIews.nonPaymentView_search, name='nonPayment_search'),
 ]
