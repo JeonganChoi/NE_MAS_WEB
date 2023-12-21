@@ -21,6 +21,10 @@ def nonPaymentView_search(request):
     iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 ORDER BY CUST_NBR ")
+        custresult = cursor.fetchall()
+
+    with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(CASH, 0), IFNULL(INCASH, 0) FROM( "
                        " SELECT A.ACCUST, B.CUST_NME, SUM(IFNULL(A.ACAMTS, 0)) AS CASH, 0 AS INCASH FROM SISACCTT A "
                        " LEFT OUTER JOIN MIS1TB003 B ON A.ACCUST = B.CUST_NBR "
@@ -32,6 +36,7 @@ def nonPaymentView_search(request):
                        " WHERE A.MCODE LIKE '53%' AND A.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND A.ICUST = '" + str(iCust) + "' "
                        " GROUP BY A.ACCUST, B.CUST_NME) AA GROUP BY AA.ACCUST, AA.CUST_NME, CASH, INCASH ")
         inresult = cursor.fetchall()
+        print(inresult)
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(CASH, 0), IFNULL(INCASH, 0) FROM( "
@@ -45,6 +50,7 @@ def nonPaymentView_search(request):
                        " WHERE A.MCODE LIKE '43%' AND A.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' AND A.ICUST = '" + str(iCust) + "' "
                        " GROUP BY A.ACCUST, B.CUST_NME) AA GROUP BY AA.ACCUST, AA.CUST_NME, CASH, INCASH ")
         outresult = cursor.fetchall()
+        print(outresult)
 
 
-    return JsonResponse({"inList": inresult, "outList": outresult})
+    return JsonResponse({"inList": inresult, "outList": outresult, "custList": custresult})

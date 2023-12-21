@@ -220,14 +220,15 @@ def receivepayCodeSheetViews_search(request):
                        " LEFT OUTER JOIN OSREFCP D "
                        " ON A.MCODE_M = D.RESKEY "
                        " AND D.RECODE = 'MCD' "
-                       " WHERE A.ICUST = '" + str(iCust) + "'"
+                       " WHERE A.ICUST = '" + str(iCust) + "' AND B.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
                        " GROUP BY A.MCODE_M, D.RESNAM, A.MCODE, A.MCODENM, A.ACODE , C.RESNAM")
         coderesult = cursor.fetchall()
         print(coderesult)
 
     with connection.cursor() as cursor:
         # cursor.execute(" SELECT IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' WHERE A.ICUST = '" + str(iCust) + "' ")
-        cursor.execute(" SELECT IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' WHERE A.ICUST = '" + str(iCust) + "' ORDER BY A.ACBKCD ")
+        cursor.execute(" SELECT IFNULL(A.ACBKCD, ''), IFNULL(B.RESNAM, '') FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' "
+                       "        WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
         headresult = cursor.fetchall()
 
 
@@ -241,7 +242,7 @@ def receivepayCodeSheetViews_search(request):
                        "          FROM ACBALANCE A "
                        "          LEFT OUTER JOIN ACNUMBER B "
                        "          ON A.ACNUMBER = B.ACNUMBER "
-                       "          WHERE A.ACDATE < '" + strDate + "' "
+                       "          WHERE A.ACDATE < '" + str(strDate) + "' "
                        "            AND A.ICUST = '" + str(iCust) + "'"
                        "          GROUP BY BANK "
                        " ) A ")
@@ -261,7 +262,8 @@ def receivepayCodeSheetViews_search(request):
         # 관리계정코드, 관리계정명, 금액, 은행코드, 은행명
         for j in range(len(itembomlist2)):
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, ''), IFNULL(B.MCODE_M, '') "
+                cursor.execute(" SELECT IFNULL(A.MCODE, ''), IFNULL(B.MCODENM, ''), SUM(A.ACAMTS), IFNULL(C.ACBKCD, ''), IFNULL(D.RESNAM, ''), IFNULL(B.MCODE_M, '')"
+                               "        , IFNULL(B.ACODE, ''), IFNULL(E.RESNAM, ''), IFNULL(F.RESNAM, '')  "
                                " FROM SISACCTT A "
                                " LEFT OUTER JOIN ACNUMBER C "
                                " ON A.ACACNUMBER = C.ACNUMBER "
@@ -270,8 +272,14 @@ def receivepayCodeSheetViews_search(request):
                                " LEFT OUTER JOIN OSREFCP D "
                                " ON C.ACBKCD = D.RESKEY "
                                " AND D.RECODE = 'BNK' "
-                               " WHERE A.MCODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "'"
-                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD, D.RESNAM, B.MCODE_M ORDER BY ACBKCD ")
+                               " LEFT OUTER JOIN OSREFCP E "
+                               " ON B.ACODE = E.RESKEY "
+                               " AND E.RECODE = 'ACD' "
+                               " LEFT OUTER JOIN OSREFCP F "
+                               " ON B.MCODE_M = F.RESKEY "
+                               " AND F.RECODE = 'MCD' "
+                               " WHERE A.MCODE = '" + str(itembomlist2[j][0]) + "' AND A.ICUST = '" + str(iCust) + "' AND A.ACDATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                               " GROUP BY A.MCODE, B.MCODENM, C.ACBKCD, D.RESNAM, B.MCODE_M, F.RESNAM, B.ACODE, E.RESNAM ORDER BY ACBKCD ")
                 subresult = cursor.fetchall()
 
                 for data in range(len(subresult)):

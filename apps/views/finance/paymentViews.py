@@ -1333,7 +1333,7 @@ def paymentViews_search(request):
     if cboGbn == '1':
         # 거래처
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN LIKE '1' AND '3' AND ICUST = '" + str(iCust) + "'")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3'")
             cboCust = cursor.fetchall()
 
         # 입출금구분
@@ -1377,7 +1377,7 @@ def paymentViews_search(request):
     else:
         # 거래처
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE CUST_GBN LIKE '2' AND '3' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '2' OR CUST_GBN = '3' ")
             cboCust = cursor.fetchall()
 
         # 입출금구분

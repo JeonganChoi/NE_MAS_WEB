@@ -46,15 +46,19 @@
                     </div>
                       <div class="px-0 py-0 card-body">
                           <div class="row m-1">
-                              <div class="col-lg-3 col-3"></div>
-                              <div class="col-lg-6 col-6">
-                                  <div class="table-responsive-sm overflow-auto height-300 border border-light">
+                              <div class="col-lg-10 col-10">
+                                  <div class="table-responsive-sm overflow-auto height-500 border border-light">
                                       <table class="table mb-0 align-items-center justify-content-center">
                                           <colgroup>
-                                              <col width="20%"/>
-                                              <col width="20%"/>
-                                              <col width="20%"/>
-                                              <col width="20%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
+                                              <col width="10%"/>
                                           </colgroup>
                                           <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);" id="codeHead">
                                           <tr id="#codeTr" class="codeTr_tr">
@@ -62,25 +66,6 @@
                                           </thead>
                                           <tbody id="sheetTb">
                                             <tr id="#sheetTr" class="sheetTr_tr">
-
-                                            </tr>
-                                          </tbody>
-                                      </table>
-                                  </div>
-                                  <div class="table-responsive-sm overflow-auto height-300 border border-light">
-                                      <table class="table mb-0 align-items-center justify-content-center">
-                                          <colgroup>
-                                              <col width="20%"/>
-                                              <col width="20%"/>
-                                              <col width="20%"/>
-                                              <col width="20%"/>
-                                          </colgroup>
-                                          <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);" id="codeHead2">
-                                          <tr id="#codeTr2" class="codeTr2_tr">
-                                          </tr>
-                                          </thead>
-                                          <tbody id="sheetTb2">
-                                            <tr id="#sheetTr2" class="sheetTr2_tr">
 
                                             </tr>
                                           </tbody>
@@ -122,6 +107,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    var list3 = data.custList;
                     var list = data.inList;
                     var list2 = data.outList;
 
@@ -130,44 +116,45 @@
                     $("#sheetTb").html("");
                     $("#sheetTb2").html("");
 
+{#                    매출 - 매입 : balance#}
                     $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" +
                         "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>거래처명</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>계산서</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>이월</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>매출</th> " +
                         "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>입금</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>미수/미지급</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>미수급</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>매입</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>출금</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>미지급</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>BALANCE</th> " +
                         "</tr> ");
 
                     var total = 0;
-                    for(var i = 0; i < list.length; i++){
-                        total = parseInt(list[i][2]) - parseInt(list[i][3])
-                        $("#sheetTb").append(
-                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center p-0' style='font-size: 0.85rem'>" + addComma(list[i][1]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(total).replace("-", "") + "</td> " +
-                            "</tr> ");
-                    }
-
-                    $("#codeHead2").append("<tr id='#codeTr2' class='codeTr2_tr'>" +
-                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>거래처명</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>계산서</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>출금</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>미수/미지급</th> " +
-                        "</tr> ");
-
                     var total2 = 0;
-                    for(var i = 0; i < list2.length; i++){
-                        total2 = parseInt(list2[i][2]) - parseInt(list2[i][3])
-                        $("#sheetTb2").append(
-                            "<tr id='#sheetTr2' class='sheetTr2_tr'>" +
-                            "<td class='text-center p-0' style='font-size: 0.85rem'>" + addComma(list2[i][1]) + "</td>" +
-                            "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list2[i][2]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list2[i][3]) + "</td> " +
-                            "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(total2).replace("-", "") + "</td> " +
-                            "</tr> ");
-                    }
+                    for (var i = 0; i < list3.length; i++){
+                        for (var j = 0; j < list.length; j++){
+                            if(list3[i][0] == list[j][0]){
+                                total = parseInt(list[j][2]) - parseInt(list[j][3])
+                                $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" + " <tr/>");
+                                $("#sheetTb").append(
+                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                                "<td class='text-start p-0' style='font-size: 0.85rem'>" + addComma(list[j][1]) + "</td>" +
+                                "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list[j][2]) + "</td> " +
+                                "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list[j][3]) + "</td> " +
+                                "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(total).replace("-", "") + "</td> ");
+                            }
 
+                        }
+                        for (var k = 0; k < list.length; k++){
+                            if(list3[i][0] == list2[k][0]){
+                                total2 = parseInt(list2[k][2]) - parseInt(list2[k][3])
+                                $("#sheetTb").append(
+                                    "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list2[k][2]) + "</td> " +
+                                    "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(list2[k][3]) + "</td> " +
+                                    "<td class='text-end p-0' style='font-size: 0.85rem'>" + addComma(total2).replace("-", "") + "</td> ");
+                            }
+                        }
+                    }
                 }
             })
 

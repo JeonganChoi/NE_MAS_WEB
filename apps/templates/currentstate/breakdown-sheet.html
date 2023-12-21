@@ -201,15 +201,15 @@
 
                     var codeTotal = 0;
                     for (var i = 0; i < list3.length; i++) {
-                        codeTotal = list3[i][0]
+                        codeTotal = parseInt(list3[i][0])
                     }
 
                     for (var i = 0; i < list4.length; i++) {
-                        if(list4[i][0] == '1'){
-                            codeTotal -= list4[i][1]
+                        if(list4[i][0].startsWith('5')){
+                            codeTotal -= parseInt(list4[i][1])
                         }
-                        if(list4[i][0] == '2'){
-                            codeTotal += list4[i][1]
+                        if(list4[i][0].startsWith('4')){
+                            codeTotal += parseInt(list4[i][1])
                         }
                     }
                     {# 계정별내역서 계 #}

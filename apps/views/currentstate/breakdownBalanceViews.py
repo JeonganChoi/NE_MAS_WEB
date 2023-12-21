@@ -38,7 +38,7 @@ def breakdownBalanceViews_search(request):
             coderesult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACIOGB, ACAMTS FROM SISACCTT WHERE ACDATE < '" + str(date) + "' ")
+            cursor.execute(" SELECT MCODE, ACAMTS FROM SISACCTT WHERE ACDATE < '" + str(date) + "' ")
             coderesult2 = cursor.fetchall()
 
         # 매입51/매출43/출금53,55/입금41

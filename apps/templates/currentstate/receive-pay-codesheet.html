@@ -244,13 +244,13 @@
                         {# 입금 더하기 #}
                         if(list6[d][0].startsWith('4')){ balance += list6[d][6]}
                         {# 출금 더하기 #}
-                        if(list6[d][0].startsWith('5')){ balance -= list6[d][6]}
+                        if(list3[d][0].startsWith('5')){ balance -= list6[d][6]}
 
                         var _html = "<tr id='#sheetTr' class='sheetTr_tr'>";
 
                         _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
-                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
                             "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
                             "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(balance) + "</td> ";
 
 
@@ -269,12 +269,12 @@
                         $("#sheetTb").append(_html);
                     }
 
-                    for (var i = 0; i < list3.length; i++) {
-                        if(list3[i][3].startsWith('4')){
-                            $(`.${list3[i][3]}_${list3[i][0]}_4`).text(addComma(list3[i][2]));
+                    for (var i = 0; i < list6.length; i++) {
+                        if(list6[i][0].startsWith('4')){
+                            $(`.${list6[i][0]}_${list6[i][2]}_4`).text(addComma(list6[i][6]));
                         }
-                        else if(list3[i][3].startsWith('5')){
-                            $(`.${list3[i][3]}_${list3[i][0]}_5`).text(addComma(list3[i][2]));
+                        else if(list6[i][0].startsWith('5')){
+                            $(`.${list6[i][0]}_${list6[i][2]}_5`).text(addComma(list6[i][6]));
                         }
 
                     }
@@ -302,10 +302,8 @@
 
             var sDate = document.getElementById('inputStrDate').value
             var eDate = document.getElementById('inputEndDate').value
-            var startDate = sDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
 
-            let data = {'startDate': startDate, 'endDate': endDate}
+            let data = {'startDate': sDate, 'endDate': eDate}
 
             $.ajax({
                 type: "post",
@@ -316,82 +314,124 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    {# header 은행명 #}
                     var list = data.headList;
                     var list2 = data.mainList;
-                    var list3 = data.tbList;
-                    var list4 = data.inTotal;
-                    var list5 = data.outTotal;
+                    {# 관리계정코드 리스트(상위계정부터 잔액까지) #}
+                    var list6 = data.codeList;
+                    {# 나머지 값 #}
+                    var list3 = data.itembomlist4;
 
                     $("#codeHead").html("");
                     $("#sheetTb").html("");
 
-                    for (var h = 0; h < list.length; h++) {
-                        $("#codeHead").append(
-                            "<th class='text-center p-1' style='font-size: 0.8rem'>" + list[h][0] + " 입금액</th>");
-                    }
-                    for (var h = 0; h < list.length; h++) {
-                        $("#codeHead").append(
-                            "<th class='text-center p-1' style='font-size: 0.8rem'>" + list[h][0] + " 지출액</th>");
-                    }
+                    $("#codeHead").append("<tr  id='#codeTr' class='codeTr_tr'>" +"</tr> ");
                     $("#codeHead").append(
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>계 정</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>잔 액</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>입금 대비 점유</th> " +
-                        "<th class='text-center p-1' style='font-size: 0.8rem'>지출 대비 점유</th> " );
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>상위 계정</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>회계 계정</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>관리 계정</th> " +
+                        "<th class='text-center p-1' style='font-size: 0.8rem; width: 10rem'>잔 액</th> " );
 
-                    var count = 0;
-                    count = list.length;
-                    {# 통장 이월 #}
-                    var total = 0;
+                    for (var h = 0; h < list.length; h++) {
+                        $("#codeHead").append(
+                            `<th class='text-center p-1' style='font-size: 0.8rem' value='${list[h][0]}'>${list[h][1]} 입금액</th>`);
+                    }
+                    for (var h = 0; h < list.length; h++) {
+                        $("#codeHead").append(
+                            `<th class='text-center p-1' style='font-size: 0.8rem' value='${list[h][0]}'>${list[h][1]} 지출액</th>`);
+                    }
+
+                    var balance = 0;
+                    for (var d = 0; d < 1; d++) {
+
+                        for (var i = 0; i < list2.length; i++) {
+                            balance += parseInt(list2[i][0])
+                        }
+
+                        var _html = "<tr id='#sheetTr' class='sheetTr_tr'>";
+
+                        _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'></td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'></td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>통장이월</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(balance) + "</td> ";
+
+
+                         {#그림을 그리면서 class에 어느 위치 값인지 잡아준다. 은행코드_계정코드#}
+                         {# 입금액 4#}
+                        for (var h = 0; h < list.length; h++) {
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_4' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                        }
+                          {#지출액 5#}
+                        for (var h = 0; h < list.length; h++) {
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_5' style='font-size: 0.8rem; width: 10rem'>0</td>`;
+                        }
+
+                        _html += "</tr> ";
+
+                        $("#sheetTb").append(_html);
+                    }
 
                     for (var i = 0; i < list2.length; i++) {
-                        total = Number(list2[i][0])
-                         $("#sheetTb").append(
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'</td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>통장 이월</td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td>");
+
+                        $(`.${list2[i][1]}_4`).text(addComma(list2[i][0]));
+
                     }
 
-                    {# 계정별 #}
-                    for (var i = 0; i < list3.length; i++) {
-                        {#입금#}
-                        if(list3[i][10].startsWith('4') === true) {
-                            $("#sheetTb").append("<tr  id='#sheetTrs' class='sheetTr_tr'>" +"</tr> ");
-                            for (var j = 0; j < count; j++) {
-                                $("#sheetTb").append(
-                                    "<td class='text-start border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list3[i][j]) + "</td>");
-                            }
-                            for (var j = 0; j < count; j++) {
-                                $("#sheetTb").append(
-                                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>0</td>");
-                            }
-                            $("#sheetTb").append(
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total + parseInt(list3[i][12])) + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + (Math.round((list3[i][12] / list4 )* 100).toFixed(2)) + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> ");
+                    var total = 0;
+                    for (var d = 0; d < list6.length; d++) {
+
+                        {# 입금 더하기 #}
+                        if(list6[d][0].startsWith('4')){ balance += list6[d][6]}
+                        {# 출금 더하기 #}
+                        if(list3[d][0].startsWith('5')){ balance -= list6[d][6]}
+
+                        var _html = "<tr id='#sheetTr' class='sheetTr_tr'>";
+
+                        _html += "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][1] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][3] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + list6[d][5] + "</td> " +
+                            "<td class='text-end border border-top text-dark p-1' style='font-size: 0.8rem; width: 10rem'>" + addComma(balance) + "</td> ";
+
+
+                        {# 그림을 그리면서 class에 어느 위치 값인지 잡아준다. 은행코드_계정코드 #}
+                        {#  입금액 4 #}
+                        for (var h = 0; h < list.length; h++) {
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}_4' style='font-size: 0.8rem; width: 10rem'>0</td>`;
                         }
-                        {#출금#}
-                        if(list3[i][10].startsWith('5') === true){
-                            $("#sheetTb").append("<tr  id='#sheetTr' class='sheetTr_tr'>" +"</tr> ");
-                            for (var j = 0; j < count; j++) {
-                                $("#sheetTb").append(
-                                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>0</td>");
-                            }
-                            for (var j = 0; j < count; j++) {
-                                $("#sheetTb").append(
-                                    "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(list3[i][j]) + "</td>");
-                            }
-                            $("#sheetTb").append(
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + list3[i][11] + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + addComma(total - parseInt(list3[i][12])) + "</td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'></td> " +
-                                "<td class='text-end border-bottom p-1' style='font-size: 0.8rem'>" + (Math.round((list3[i][12] / list5 )* 100).toFixed(2)) + "</td> ");
+                        {#  지출액 5 #}
+                        for (var h = 0; h < list.length; h++) {
+                            _html += `<td class='text-end border border-top text-dark p-1 ${list[h][0]}_${list6[d][2]}_5' style='font-size: 0.8rem; width: 10rem'>0</td>`;
                         }
+
+                        _html += "</tr> ";
+
+                        $("#sheetTb").append(_html);
                     }
+
+                    for (var i = 0; i < list6.length; i++) {
+                        if(list6[i][0].startsWith('4')){
+                            $(`.${list6[i][0]}_${list6[i][2]}_4`).text(addComma(list6[i][6]));
+                        }
+                        else if(list6[i][0].startsWith('5')){
+                            $(`.${list6[i][0]}_${list6[i][2]}_5`).text(addComma(list6[i][6]));
+                        }
+
+                    }
+
+
+
+                    {#총계#}
+                    {#$("#subTb").append(#}
+                    {#"<tr id='#subTr' class='subTr_tr'>" +#}
+                    {#"<td class='text-center p-1' style='font-size: 0.8rem'></td>" +#}
+                    {#"<td class='text-end p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-end p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-end p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"<td class='text-start p-1' style='font-size: 0.8rem'></td> " +#}
+                    {#"</tr> ");#}
                 }
             })
         });
