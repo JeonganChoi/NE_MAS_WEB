@@ -134,9 +134,7 @@
                     var percent = 0;
 
                     {#수정했음#}
-                    strDate = strDate.replace("-", "")
-                    endDate = endDate.replace("-", "")
-                    var term = parseInt(endDate) - parseInt(strDate)
+                    var dates = getYearMonthsBetween(strDate, endDate);
 
                     $("#headTb").html("");
                     $("#sheetTb").html("");
@@ -148,10 +146,10 @@
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2'>점유율</th> ");
 
                     {# 헤더 월수 뿌려주는 곳 #}
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
 
                         {#수정했음#}
-                        var mm = String(d).substr(4, 2);
+                        var mm = String(dates[d]).substr(4, 2);
 
                         {#d를 mm으로 수정했음#}
                         $("#headTb").append(
@@ -167,7 +165,7 @@
                         "<th class='p-1' style='font-size: 0.85rem'></th> ")
 
                     {#수정했음#}
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#headTb").append(
                             "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' >합 계</th> " +
                             "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' >점유율</th> ");
@@ -183,10 +181,10 @@
                             "<td class='text-end border border-light text-dark p-1 salesamount_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td>" +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + percent + "%</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d} salesamount_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${dates[d]} salesamount_${dates[d]}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0%</td> `);
                             }
                         }
@@ -197,10 +195,10 @@
                             "<td class='text-end border border-light text-dark p-1 salesamount_sum' style='font-size: 0.85rem'>0</td>" +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + percent + "%</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 salesamount_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 salesamount_${dates[d]}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0%</td> `);
                             }
                         }
@@ -218,9 +216,9 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][3]) + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1 ' style='font-size: 0.85rem'>매출대비</td> `);
                             }
 
@@ -237,11 +235,11 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '501'){
@@ -252,10 +250,10 @@
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
                             pnt = Math.ceil(total2 * 100) / total
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
 
@@ -274,8 +272,8 @@
 
                             for (var d = parseInt(strDate); d <= parseInt(endDate); d++){
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -289,10 +287,10 @@
                         "<td class='text-end border border-light text-info p-1 profit profit_sum' style='font-size: 0.85rem'>" + addComma(total3) + "</td> " +
                         "<td class='text-end border border-light text-info p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#sheetTb").append(
-                            `<td class='text-end border border-light text-info p-1 profit profit_${d}' style='font-size: 0.85rem'>0</td>
-                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                            `<td class='text-end border border-light text-info p-1 profit profit_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     for (var i = 0; i < list.length; i++) {
@@ -305,11 +303,11 @@
                                 "<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_${dates[d]} ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
 
                         }
@@ -321,10 +319,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         total4 = parseInt(list[i][2])
@@ -345,10 +343,10 @@
 
 
                             {#수정했음#}
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
 
                         }
@@ -363,10 +361,10 @@
                         "<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_sum' data-ym='sum' style='font-size: 0.85rem'>" + addComma(total5) + "</td> " +
                         "<td class='text-end border border-light text-info p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#sheetTb").append(
-                            `<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_${d}' data-ym='${d}' style='font-size: 0.85rem'>0</td>
-                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                            `<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_${dates[d]}' data-ym='${dates[d]}' style='font-size: 0.85rem'>0</td>
+                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     {# 영업외수익 #}
@@ -380,10 +378,10 @@
                                 "<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_${dates[d]} ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '402'){
@@ -393,10 +391,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
 
@@ -414,10 +412,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -434,10 +432,10 @@
                                 "<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_sum' style='font-size: 0.85rem'>-" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_${dates[d]} ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '503'){
@@ -447,10 +445,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
 
@@ -469,10 +467,10 @@
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -486,10 +484,10 @@
                         "<td class='text-end border border-light text-info p-1 profit_revenue profit_revenue_sum' data-ym='sum' style='font-size: 0.85rem'>" + addComma(total8) + "</td> " +
                         "<td class='text-end border border-light text-info p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#sheetTb").append(
-                            `<td class='text-end border border-light text-dark p-1 profit_revenue profit_revenue_${d}' data-ym='${d}' style='font-size: 0.85rem'>합계</td>
-                             <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                            `<td class='text-end border border-light text-dark p-1 profit_revenue profit_revenue_${dates[d]}' data-ym='${dates[d]}' style='font-size: 0.85rem'>합계</td>
+                             <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     {#수정했음#}
@@ -552,7 +550,7 @@
                         if(salesamount != 0)
                             sharerate = sub_sum / salesamount * 100;
 
-                        $(this).text(addComma(sharerate) + '%');
+                        $(this).text(addComma(sharerate.toFixed(2)) + '%');
                     });
 
 
@@ -614,9 +612,7 @@
                     var percent = 0;
 
                     {#수정했음#}
-                    strDate = strDate.replace("-", "")
-                    endDate = endDate.replace("-", "")
-                    var term = parseInt(endDate) - parseInt(strDate)
+                    var dates = getYearMonthsBetween(strDate, endDate);
 
                     $("#headTb").html("");
                     $("#sheetTb").html("");
@@ -626,10 +622,12 @@
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2' colspan='2'>과 목</th> " +
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2'>합 계</th> + " +
                         "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' rowspan='2'>점유율</th> ");
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+
+                    {#for (var d = parseInt(strDate); d <= parseInt(endDate); d++)#}
+                    for (var d = 0; d < dates.length; d++) {
 
                         {#수정했음#}
-                        var mm = String(d).substr(4, 2);
+                        var mm = String(dates[d]).substr(4, 2);
 
                         {#d를 mm으로 수정했음#}
                         $("#headTb").append(
@@ -645,7 +643,7 @@
                         "<th class='p-1' style='font-size: 0.85rem'></th> ")
 
                     {#수정했음#}
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#headTb").append(
                             "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' >합 계</th> " +
                             "<th class='text-center border border-light text-white p-1' style='font-size: 0.85rem' >점유율</th> ");
@@ -661,10 +659,10 @@
                             "<td class='text-end border border-light text-dark p-1 salesamount_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td>" +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + percent + "%</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d} salesamount_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${dates[d]} salesamount_${dates[d]}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0%</td> `);
                             }
                         }
@@ -675,10 +673,10 @@
                             "<td class='text-end border border-light text-dark p-1 salesamount_sum' style='font-size: 0.85rem'>0</td>" +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + percent + "%</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 salesamount_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 salesamount_${dates[d]}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0%</td> `);
                             }
                         }
@@ -696,9 +694,9 @@
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][3]) + "</td> " +
                             "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
                                      <td class='text-end border border-light text-dark p-1 ' style='font-size: 0.85rem'>매출대비</td> `);
                             }
 
@@ -715,11 +713,11 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '501'){
@@ -730,10 +728,10 @@
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
                             pnt = Math.ceil(total2 * 100) / total
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
 
@@ -752,8 +750,8 @@
 
                             for (var d = parseInt(strDate); d <= parseInt(endDate); d++){
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -767,10 +765,10 @@
                         "<td class='text-end border border-light text-info p-1 profit profit_sum' style='font-size: 0.85rem'>" + addComma(total3) + "</td> " +
                         "<td class='text-end border border-light text-info p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#sheetTb").append(
-                            `<td class='text-end border border-light text-info p-1 profit profit_${d}' style='font-size: 0.85rem'>0</td>
-                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                            `<td class='text-end border border-light text-info p-1 profit profit_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     for (var i = 0; i < list.length; i++) {
@@ -783,11 +781,11 @@
                                 "<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
 
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 sale_mng_fee sale_mng_fee_${dates[d]} ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
 
                         }
@@ -799,10 +797,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         total4 = parseInt(list[i][2])
@@ -823,10 +821,10 @@
 
 
                             {#수정했음#}
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
 
                         }
@@ -841,10 +839,10 @@
                         "<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_sum' data-ym='sum' style='font-size: 0.85rem'>" + addComma(total5) + "</td> " +
                         "<td class='text-end border border-light text-info p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#sheetTb").append(
-                            `<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_${d}' data-ym='${d}' style='font-size: 0.85rem'>0</td>
-                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                            `<td class='text-end border border-light text-info p-1 sale_revenue sale_revenue_${dates[d]}' data-ym='${dates[d]}' style='font-size: 0.85rem'>0</td>
+                            <td class='text-end border border-light text-info p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     {# 영업외수익 #}
@@ -858,10 +856,10 @@
                                 "<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_sum' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 in_mng_fee in_mng_fee_${dates[d]} ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '402'){
@@ -871,10 +869,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
 
@@ -892,10 +890,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>" + addComma(list2[j][6]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -912,10 +910,10 @@
                                 "<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_sum' style='font-size: 0.85rem'>-" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_${d} ${list[i][0]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 out_mng_fee out_mng_fee_${dates[d]} ${list[i][0]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
                         if(list[i][0] != '503'){
@@ -925,10 +923,10 @@
                                 "<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td> " +
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
                                     `<td class='text-end border border-light text-dark p-1' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>%</td> `);
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>%</td> `);
                             }
                         }
 
@@ -947,10 +945,10 @@
                                 "<td class='text-end border border-light text-dark p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
 
-                            for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                            for (var d = 0; d < dates.length; d++) {
                                 $("#sheetTb").append(
-                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${d}' style='font-size: 0.85rem'>0</td>
-                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                                    `<td class='text-end border border-light text-dark p-1 ${list2[j][0]}_${list2[j][1]}_${dates[d]}' style='font-size: 0.85rem'>0</td>
+                                     <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                             }
                         }
                     }
@@ -964,10 +962,10 @@
                         "<td class='text-end border border-light text-info p-1 profit_revenue profit_revenue_sum' data-ym='sum' style='font-size: 0.85rem'>" + addComma(total8) + "</td> " +
                         "<td class='text-end border border-light text-info p-1 sharerate' data-ym='sum' style='font-size: 0.85rem'>점유율</td> ");
 
-                    for (var d = parseInt(strDate); d <= parseInt(endDate); d++) {
+                    for (var d = 0; d < dates.length; d++) {
                         $("#sheetTb").append(
-                            `<td class='text-end border border-light text-dark p-1 profit_revenue profit_revenue_${d}' data-ym='${d}' style='font-size: 0.85rem'>합계</td>
-                             <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${d}' style='font-size: 0.85rem'>매출대비</td> `);
+                            `<td class='text-end border border-light text-dark p-1 profit_revenue profit_revenue_${dates[d]}' data-ym='${dates[d]}' style='font-size: 0.85rem'>합계</td>
+                             <td class='text-end border border-light text-dark p-1 sharerate' data-ym='${dates[d]}' style='font-size: 0.85rem'>매출대비</td> `);
                     }
 
                     {#수정했음#}
@@ -1030,7 +1028,7 @@
                         if(salesamount != 0)
                             sharerate = sub_sum / salesamount * 100;
 
-                        $(this).text(addComma(sharerate) + '%');
+                        $(this).text(addComma(sharerate.toFixed(2)) + '%');
                     });
 
 
@@ -1038,6 +1036,24 @@
                 }
             });
         });
+
+
+        function getYearMonthsBetween(start_dt, end_dt) {
+            let startDate = new Date(start_dt);
+            let endDate = new Date(end_dt);
+            let dates = [];
+
+            while (startDate <= endDate) {
+                let year = startDate.getFullYear();
+                let month = String(startDate.getMonth() + 1).padStart(2, '0');
+
+                dates.push(`${year}${month}`);
+
+                startDate.setMonth(startDate.getMonth() + 1);
+            }
+
+            return dates;
+        }
 
     </script>
 {% endblock %}
