@@ -74,5 +74,13 @@
   <!-- Control Center for Corporate UI Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/static/assets/js/corporate-ui-dashboard.min.js?v=1.0.0"></script>
   <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+
+  <script>
+      window.onpageshow = function(e) {
+        if(e.persisted || (window.performance && window.performance.navigation.type == 2)) {
+            window.location.reload();
+        }
+      }
+  </script>
 </body>
 </html>

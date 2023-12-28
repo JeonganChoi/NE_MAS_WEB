@@ -12,7 +12,13 @@ from django.db import connection
 
 def baseCodeViews(request):
 
-    return render(request, "base/base-code.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-code.html")
+
+
 
 def baseCodeViews_search(request):
     mainCode = request.POST.get('mainCode')

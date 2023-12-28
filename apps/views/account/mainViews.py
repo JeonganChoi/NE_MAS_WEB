@@ -80,6 +80,7 @@ def logoutViews(request):
     if request.method == "POST":
 
         request.session.clear()
+
         return JsonResponse({'logout': "Y"})
 
 
@@ -88,11 +89,12 @@ def signupView(request):
 
     return render(request, "account/signup.html")
 
-
-
 def index(request):
-
-    return render(request, "home/index.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "home/index.html")
 
 
 def page404(request):
