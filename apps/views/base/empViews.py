@@ -14,8 +14,11 @@ from urllib.parse import quote
 
 
 def empViews(request):
-
-    return render(request, "base/base-emp.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-emp.html")
 
 def empViews_search(request):
     empCode = request.POST.get('empCode')

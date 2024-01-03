@@ -11,8 +11,11 @@ from django.db import connection
 
 # 임금대장
 def approvalViews(request):
-
-    return render(request, "finance/approval-reg.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/approval-reg.html")
 
 def approvalViews_search(request):
     empNbr = request.session.get('userId')

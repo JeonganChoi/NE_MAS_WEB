@@ -18,7 +18,7 @@ def loginView(request):
 
         with connection.cursor() as cursor:
             cursor.execute("SELECT IFNULL(EMP_NBR, ''), IFNULL(EMP_NME, ''), IFNULL(EMP_DEPT, ''), IFNULL(EMP_GBN, '') "
-                           "        , IFNULL(ICUST, ''), IFNULL(EMP_CHARGE, ''), IFNULL(EMP_TESA, '') "
+                           "        , IFNULL(ICUST, ''), IFNULL(EMP_CHARGE, ''), IFNULL(EMP_TESA, ''), IFNULL(EMP_CLS, '') "
                            "    FROM pis1tb001 "
                            "    WHERE EMP_NBR = '" + str(userId) + "' AND EMP_PASS = '" + str(userPw) + "' ")
             result = cursor.fetchall()
@@ -36,7 +36,7 @@ def loginView(request):
                     return JsonResponse({'login': "N", "msg": msg})
                 else:
                     USER_NM = result[0][1]
-                    USER_GBN = result[0][3]
+                    USER_GBN = result[0][7]
                     USER_ICUST = result[0][4]
                     if result[0][5] != '':
                         USER_CHARGE = result[0][5]

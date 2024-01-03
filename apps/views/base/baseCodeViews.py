@@ -11,7 +11,6 @@ from django.db import connection
 
 
 def baseCodeViews(request):
-
     userId = request.session.get('userId')
     if userId == '' or userId is None:
         return redirect("/page-404/")

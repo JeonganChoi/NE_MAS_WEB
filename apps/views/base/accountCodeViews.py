@@ -10,8 +10,11 @@ from django.http import JsonResponse
 from django.db import connection
 
 def accountCodeViews(request):
-
-    return render(request, "base/base-actCode-reg.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-actCode-reg.html")
 
 def accountCodeViews_search(request):
     mainCode = request.POST.get('mainCode')

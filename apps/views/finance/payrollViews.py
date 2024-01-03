@@ -11,8 +11,11 @@ from django.db import connection
 
 # 임금대장
 def payrollViews(request):
-
-    return render(request, "finance/payroll-reg-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/payroll-reg-sheet.html")
 
 def payrollViews_search(request):
     modal = request.POST.get('modal')

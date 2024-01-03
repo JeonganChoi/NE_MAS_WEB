@@ -11,8 +11,11 @@ from django.db import connection
 
 # 은행내역서
 def receivepaySheetViews(request):
-
-    return render(request, "currentstate/receive-pay-banksheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/receive-pay-banksheet.html")
 
 
 def receivepaySheetViews_search(request):

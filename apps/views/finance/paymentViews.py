@@ -16,8 +16,11 @@ from urllib.parse import quote
 
 # 출금-수불장
 def withRegNewViews(request):
-
-    return render(request, "finance/withdraw-reg-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/withdraw-reg-sheet.html")
 
 def chkDate(request):
     method = request.POST.get('method')

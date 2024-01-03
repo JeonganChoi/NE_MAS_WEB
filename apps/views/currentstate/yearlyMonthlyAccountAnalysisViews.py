@@ -11,8 +11,11 @@ from django.db import connection
 
 
 def yearlyMontlyAccount(request):
-
-    return render(request, "currentstate/yearlyMonthly-accountReport.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/yearlyMonthly-accountReport.html")
 
 def yearlyMontlyAccount_cbo(request):
     with connection.cursor() as cursor:

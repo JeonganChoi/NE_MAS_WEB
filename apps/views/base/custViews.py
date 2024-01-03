@@ -10,8 +10,11 @@ from django.http import JsonResponse
 from django.db import connection
 
 def custViews(request):
-
-    return render(request, "base/base-cust.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-cust.html")
 
 def custViews_search(request):
     custType = request.POST.get('custType')

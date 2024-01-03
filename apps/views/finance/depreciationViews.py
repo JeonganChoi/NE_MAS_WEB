@@ -11,8 +11,11 @@ from django.db import connection
 
 # 감가상각비명세서
 def depreciationViews(request):
-
-    return render(request, "finance/depreciation-reg-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/depreciation-reg-sheet.html")
 
 def dptViews_search(request):
     user = request.session.get("userId")

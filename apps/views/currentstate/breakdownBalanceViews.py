@@ -11,8 +11,11 @@ from django.db import connection
 
 # 내역별
 def breakdownBalanceViews(request):
-
-    return render(request, "currentstate/breakdown-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/breakdown-sheet.html")
 
 def breakdownBalanceViews_search(request):
     date = request.POST.get('date')

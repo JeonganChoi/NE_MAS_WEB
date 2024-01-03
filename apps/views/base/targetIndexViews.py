@@ -5,8 +5,11 @@ from django.db import connection
 from django.contrib import messages
 
 def targetIndexViews(request):
-
-    return render(request, "base/base-targetIndex.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-targetIndex.html")
 
 
 def targetIndexSearchViews(request):

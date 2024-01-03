@@ -11,8 +11,11 @@ from django.db import connection
 
 # 월별 자금 유동 현황
 def montlyProfitLossViews(request):
-
-    return render(request, "currentstate/profit-loss-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/profit-loss-sheet.html")
 
 
 def montlyProfitLossViews_search(request):

@@ -160,6 +160,7 @@
           <li class="px-3 nav-item d-flex align-items-center">
             <a href="{% url 'index' %}" class="p-0 text-xl text-white nav-item">HOME</a>
           </li>
+          {% if request.session.USER_GBN == '1' %}
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownBase" data-bs-toggle="dropdown" aria-expanded="false">
               기초관리
@@ -224,6 +225,7 @@
                   </li>-->
               </ul>
           </li>
+          {% endif %}
           <!--<li class="nav-item dropdown px-3 py-3 border-radius-sm d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white  dropdown-toggle  nav-item" id="dropdownWithDeposits" data-bs-toggle="dropdown" aria-expanded="false">
               매입/ 매출
@@ -254,25 +256,32 @@
               <li class="mb-2">
                 <a href="{% url 'with_reg_sheet' %}" class="dropdown-item border-radius-md">입/출금 등록</a>
               </li>
+              {% if request.session.USER_GBN == '2' %}
               <li class="mb-2">
                 <a href="{% url 'approval_reg' %}" class="dropdown-item border-radius-md">결재 관리</a>
               </li>
-                {% if request.session.USER_CHARGE == '111' %}
+              {% endif %}
+              {% if request.session.USER_CHARGE == '111' %}
               <li class="mb-2">
                 <a href="{% url 'permit_reg' %}" class="dropdown-item border-radius-md">시행 관리</a>
               </li>
-                {% endif %}
+              {% endif %}
               <!--<li class="mb-2">
 {#                <a href="{% url 'deposit_reg' %}" class="dropdown-item border-radius-md">입금 등록</a>#}
               </li>-->
+              {% if request.session.USER_GBN == '1' %}
               <li class="mb-2">
                 <a href="{% url 'depreciation_reg' %}" class="dropdown-item border-radius-md">감가 상각비</a>
               </li>
+              {% endif %}
+              {% if request.session.USER_GBN == '2' %}
               <li class="mb-2">
                 <a href="{% url 'payroll_reg' %}" class="dropdown-item border-radius-md">임금 대장</a>
               </li>
+              {% endif %}
             </ul>
           </li>
+          {% if request.session.USER_GBN == '1' %}
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownCurrentFunds" data-bs-toggle="dropdown" aria-expanded="false">
               자금 현황
@@ -304,6 +313,8 @@
               </li>
             </ul>
           </li>
+          {% endif %}
+          {% if request.session.USER_GBN == '1' %}
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white  dropdown-toggle  nav-item" id="dropdownFunds" data-bs-toggle="dropdown" aria-expanded="false">
               자금 분석
@@ -362,6 +373,7 @@
               </li>
             </ul>
           </li>
+          {% endif %}
         </ul>
         <!--<div class="p-0 ms-md-auto d-flex align-items-center">
           <div class="input-group border-dark">

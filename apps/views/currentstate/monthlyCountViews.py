@@ -11,8 +11,11 @@ from django.db import connection
 
 # 월별집계
 def montlyCountViews(request):
-
-    return render(request, "currentstate/monthly-countReport.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/monthly-countReport.html")
 
 def montlyCountViews_search(request):
     year = request.POST.get('Year')

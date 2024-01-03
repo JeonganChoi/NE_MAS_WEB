@@ -11,12 +11,18 @@ from django.db import connection
 
 
 def yearlyMontlySales(request):
-
-    return render(request, "currentstate/yearlyMonthly-salesReport.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/yearlyMonthly-salesReport.html")
 
 def yearlyMontlyPurs(request):
-
-    return render(request, "currentstate/yearlyMonthly-pursReport.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/yearlyMonthly-pursReport.html")
 
 def yearlyMontlySales_search(request):
     year = request.POST.get('year')

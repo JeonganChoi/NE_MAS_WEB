@@ -12,8 +12,11 @@ from django.core.files.storage import FileSystemStorage
 
 
 def cardViews(request):
-
-    return render(request, "base/base-card.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-card.html")
 
 def cardViews_search(request):
     cardNum = request.POST.get('cardNum')

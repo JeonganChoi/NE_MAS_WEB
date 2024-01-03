@@ -11,8 +11,11 @@ from django.db import connection
 
 # 월별 자금 유동 현황
 def montlyCircleFundsViews(request):
-
-    return render(request, "currentstate/monthly-circulate-fundsReport.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/monthly-circulate-fundsReport.html")
 
 def montlyCircleFundsViews_search(request):
     year = request.POST.get('Year')

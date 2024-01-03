@@ -12,8 +12,11 @@ from django.db import connection
 
 # 임금대장
 def permitViews(request):
-
-    return render(request, "finance/permit-reg.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/permit-reg.html")
 
 
 def permitViews_search(request):

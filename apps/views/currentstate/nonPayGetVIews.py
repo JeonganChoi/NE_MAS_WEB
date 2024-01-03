@@ -11,8 +11,11 @@ from django.db import connection
 
 # 내역별
 def nonPaymentView(request):
-
-    return render(request, "currentstate/non-pay-get-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/non-pay-get-sheet.html")
 
 def nonPaymentView_search(request):
     strDate = request.POST.get('strDate').replace("-", "")

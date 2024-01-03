@@ -11,8 +11,11 @@ from django.db import connection, transaction, IntegrityError
 
 
 def accountViews(request):
-
-    return render(request, "base/base-account.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-account.html")
 
 
 def accountViews_search(request):

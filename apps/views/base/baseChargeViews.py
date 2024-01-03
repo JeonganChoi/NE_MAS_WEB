@@ -11,5 +11,8 @@ from django.db import connection
 
 
 def baseChargeViews(request):
-
-    return render(request, "base/base-charge.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "base/base-charge.html")

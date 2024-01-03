@@ -11,8 +11,11 @@ from django.db import connection
 
 
 def actBalRegViews(request):
-
-    return render(request, "finance/accountBalance-reg.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/accountBalance-reg.html")
 
 def actBalRegViews_search(request):
     actNum = request.POST.get('actNum')

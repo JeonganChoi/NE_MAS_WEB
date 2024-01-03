@@ -11,8 +11,11 @@ from django.db import connection
 
 # 월별 자금 유동 현황
 def receiptPaymentViews(request):
-
-    return render(request, "currentstate/receipts-payments-sheet.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "currentstate/receipts-payments-sheet.html")
 
 def receiptPaymentViews_search(request):
     strDate = request.POST.get('strDate').replace("-", "")

@@ -11,8 +11,11 @@ from django.db import connection
 
 
 def cashBalRegViews(request):
-
-    return render(request, "finance/cash-reg.html")
+    userId = request.session.get('userId')
+    if userId == '' or userId is None:
+        return redirect("/page-404/")
+    else:
+        return render(request, "finance/cash-reg.html")
 
 def cashBalRegBankViews(request):
     with connection.cursor() as cursor:
