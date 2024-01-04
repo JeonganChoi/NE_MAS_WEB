@@ -133,8 +133,7 @@ def approvalViews_search(request):
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND B.RTNGBN != 'N' ")
+                           " AND B.ICUST = '" + str(iCust) + "' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
