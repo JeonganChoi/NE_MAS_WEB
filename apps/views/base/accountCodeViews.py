@@ -171,7 +171,7 @@ def accountCodeViews_saveM(request):
         cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' AND ICUST = '" + str(iCust) + "'")
         result = cursor.fetchall()
 
-    if result[0][0] != '':
+    if result:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODE_M = '" + str(mCode_M) + "' "
