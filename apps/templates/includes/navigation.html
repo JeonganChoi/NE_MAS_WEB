@@ -274,7 +274,7 @@
                 <a href="{% url 'depreciation_reg' %}" class="dropdown-item border-radius-md">감가 상각비</a>
               </li>
               {% endif %}
-              {% if request.session.USER_GBN == '2' %}
+              {% if request.session.USER_GBN == '1' %}
               <li class="mb-2">
                 <a href="{% url 'payroll_reg' %}" class="dropdown-item border-radius-md">임금 대장</a>
               </li>
