@@ -5,6 +5,7 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
+
 {% block content %}
 {#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
     <div class="height-100" style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
@@ -37,7 +38,7 @@
                               <div class="input-group shadow-none">
                                   <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>일자</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="height: 2rem">
-                                  <label class="mt-2 me-4" style="font-size: 1rem">-</label>
+                                  <label class="" style="font-size: 1rem; width: 1rem">-</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="height: 2rem">
                               </div>
                             </div>
@@ -132,56 +133,38 @@
                                     </div>
                                     <div class="col-4 method">
                                         <label class="text-sm"><i class="fa fa-edit me-2"></i>결제방법</label>
-                                        <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
+                                        <select class="form-control border border-light rounded-1 bg-danger-soft text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4">
                                         <label class="text-sm"><i class="far fa-calendar me-2"></i>사용 일자</label>
                                         <input class="form-control text-center bg-danger-soft" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
+                                </div>
+                                <div class="row mt-2">
                                     <div class="col-4">
                                         <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1 bg-danger-soft" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>제 목</label>
+                                        <label class="text-sm"><i class="fa fa-edit me-2"></i>제 목</label>
                                         <input class="form-control text-start bg-danger-soft" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
+                            <hr>
                             <div class="form-group basic">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-6 txtUser">
+                                        <label class="text-sm"><i class="fa fa-edit me-2"></i>사용처</label>
+                                        <input class="form-control text-start" type="text" id="txtWhere" name="txtWhere" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
+                                    <div class="col-6 cboCust">
                                         <label class="text-sm"><i class="fa fa-edit me-2"></i>거래처</label>
                                         <select class="form-control text-center p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-6">
                                         <label class="text-sm"><i class="fa fa-edit me-2"></i>금액</label>
                                         <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-6">
-                                        <label class="text-sm"><i class="fa fa-edit me-2"></i>사용처</label>
-                                        <input class="form-control text-start" type="text" id="txtWhere" name="txtWhere" style="height: 2rem; font-size: 0.8rem"/>
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="text-sm"><i class="far fa-calendar me-2"></i>적용 년월</label>
-                                        <input class="form-control text-center" type="month" id="txtApplyDate" name="txtApplyDate" style="height: 2rem; font-size: 0.8rem"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div hidden class="col-4">
-                                        <input class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
-                                        <input class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-
-                                    <div class="col-4">
-                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>결재 예정 일자</label>
-                                        <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -202,10 +185,20 @@
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                 </div>
-                                <div hidden class="row">
-                                    <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>어음번호</label>
-                                        <input class="form-control text-center" type="text" id="txtWitCashNum" name="txtWitCashNum" style="height: 2rem; font-size: 0.8rem"/>
+                                <div class="row">
+                                    <div hidden class="col-4">
+                                        <input class="form-control text-end" type="number" id="txtWitSeq" name="txtWitSeq"/>
+                                        <input class="form-control text-end" type="number" id="txtWitRecn" name="txtWitRecn"/>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 txtDate">
+                                    <div class="col-4">
+                                        <label class="text-sm"><i class="far fa-calendar me-2"></i>적용 년월</label>
+                                        <input class="form-control text-center" type="month" id="txtApplyDate" name="txtApplyDate" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>결재 예정 일자</label>
+                                        <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -650,9 +643,8 @@
             $("#txtWitCashNum").val("");
             $("#txtWitRemark").val("");
 
-            $('.basic').show();
+            $('.basic').hide();
             $('.replace').hide();
-            $('.method').show();
             $('.cardName').hide();
             $('.cboBank').hide();
             $('.cboAct').hide();
@@ -1264,7 +1256,7 @@
                         cls = list[i][29]
                         if(permit == 'Y'){
                             alert('수정 불가능한 건입니다. ')
-
+                            $('.basic').show();
                             $("#txtWitSeq").val("")
                             $("#txtWitRecn").val("")
                             $("#txtWitRegDate").val("")
@@ -1367,17 +1359,25 @@
                                 $("#cboCardName").append(cboCardNameTxt);
 
                                 $('.line').show();
-                                {#$("#txtWitRegDate").attr("readonly",true);#}
-                                {#$("#txtWitSeq").attr("readonly",true);#}
-                                {#$("#txtWitRecn").attr("readonly",true);#}
-                                {#$("#txtExDate").attr("readonly",true);#}
-                                {#$("#txtWitPrice").attr("readonly",true);#}
-                                {#$("#txtWitCashNum").attr("readonly",true);#}
-                                {#$("#txtWitRemark").attr("readonly",true);#}
-                                {#$("#txtTitle").attr("readonly",true);#}
-                                {#$("#txtInfo").attr("readonly",true);#}
-                                {#$("#txtApplyDate").attr("readonly",true);#}
-                                {#$('#txtWitRegDate').prop('disabled', false);#}
+                                $("#cboWitGbn").attr("disabled",true);
+                                $("#cboWitMethod").attr("disabled",true);
+                                $("#cboWitCust").attr("disabled",true);
+                                $("#cboAdminCode").attr("disabled",true);
+                                $("#cboWitActNum").attr("disabled",true);
+                                $("#cboWitCard").attr("disabled",true);
+                                $("#cboBank").attr("disabled",true);
+                                $("#cboCardName").attr("disabled",true);
+                                $("#txtWitRegDate").attr("readonly",true);
+                                $("#txtWitSeq").attr("readonly",true);
+                                $("#txtWitRecn").attr("readonly",true);
+                                $("#txtExDate").attr("readonly",true);
+                                $("#txtWitPrice").attr("readonly",true);
+                                $("#txtWitCashNum").attr("readonly",true);
+                                $("#txtWitRemark").attr("readonly",true);
+                                $("#txtTitle").attr("readonly",true);
+                                $("#txtInfo").attr("readonly",true);
+                                $("#txtApplyDate").attr("readonly",true);
+                                $("#txtWhere").attr("readonly",true);
                             }
                             else{
                                 {#document.getElementById('txtWitSeq').setAttribute('disabled', 'false')#}
@@ -1497,37 +1497,45 @@
 
                             }
 
-
+                            $('.basic').show();
                             if(cboWitMethod == '4'){
+                                $('.txtUser').show();
                                 $('.cboBank').hide();
                                 $('.cardName').show();
+                                $('.cboCust').hide();
                                 $('.cboCard').show();
                                 $('.cboAct').show();
                                 $('.writer').hide();
                                 $('.line').hide();
                             }
                             else if(cboWitMethod == '3'){
+                                $('.txtUser').show();
                                 $('.cboBank').hide();
                                 $('.cardName').show();
                                 $('.cboCard').show();
                                 $('.cboAct').show();
+                                $('.cboCust').hide();
                                 $('.writer').hide();
                                 $('.line').show();
                             }
                             else if(cboWitMethod == '2'){
+                                $('.txtUser').hide();
                                 $('.cboCard').hide();
                                 $('.cardName').hide();
                                 $('.writer').hide();
                                 $('.cboBank').show();
                                 $('.cboAct').show();
+                                $('.cboCust').show();
                                 $('.line').show();
                             }
                             else if(cboWitMethod == '1'){
+                                $('.txtUser').show();
                                 $('.cboCard').hide();
                                 $('.cboBank').hide();
                                 $('.cboAct').hide();
                                 $('.writer').show();
                                 $('.cardName').hide();
+                                $('.cboCust').hide();
                                 $('.line').show();
                             }
 
@@ -1557,46 +1565,55 @@
             {#$("#cboAct").html("");#}
 
             var method = document.getElementById('cboWitMethod').value
-
+            $('.basic').show();
             {# 체크카드 #}
             if(method == '4'){
+
+                $('.cboCust').hide();
                 $('.cboBank').hide();
                 $('.cardName').show();
                 $('.cboCard').show();
                 $('.cboAct').show();
                 $('.writer').hide();
+                $('.txtUser').show();
                 $('.line').hide();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
             }
             {# 신용카드 #}
             else if(method == '3'){
+                $('.cboCust').hide();
                 $('.cboBank').hide();
                 $('.cardName').show();
                 $('.cboCard').show();
                 $('.cboAct').show();
                 $('.writer').hide();
+                $('.txtUser').show();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
             }
             {#계산서#}
             else if(method == '2'){
+                $('.txtUser').hide();
                 $('.cboCard').hide();
                 $('.cardName').hide();
                 $('.writer').hide();
                 $('.cboBank').show();
                 $('.cboAct').show();
+                $('.cboCust').show();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
             }
             {#현금#}
             else if(method == '1'){
+                $('.cboCust').hide();
                 $('.cboCard').hide();
                 $('.cboBank').hide();
                 $('.cboAct').hide();
                 $('.writer').show();
+                $('.txtUser').show();
                 $('.cardName').hide();
                 $('.line').show();
                 $("#txtExDate").val("");
@@ -1937,10 +1954,13 @@
             var val = $(this).val();
             if(val == "1" || val == "2") {
                 $('.basic').show();
+                $('.method').show();
                 $('.replace').hide();
                 $('.line').show();
 
-                if(val == '2'){$('.cboCard').hide();}
+                if(val == '2'){
+                    $('.cboCard').hide();
+                }
 
                 var cboWitCust2 = "";
                 var cboAdminCode = "";
@@ -2020,6 +2040,7 @@
             } else if(val == "3") {
                 $('.replace').show();
                 $('.basic').hide();
+                $('.method').hide();
                 $('.line').hide();
 
                 var cboOutAct = "";
@@ -2480,16 +2501,25 @@
             $("#txtWhere").val("");
             $("#txtApplyDate").val("");
             $("#cboBank").val("");
-            {#$("#txtWitRegDate").attr("readonly",false);#}
-            {#$("#txtWitSeq").attr("readonly",false);#}
-            {#$("#txtWitRecn").attr("readonly",false);#}
-            {#$("#txtWitPrice").attr("readonly",false);#}
-            {#$("#txtWitCashNum").attr("readonly",false);#}
-            {#$("#txtWitRemark").attr("readonly",false);#}
-            {#$("#txtExDate").attr("readonly",false);#}
-            {#$("#txtInfo").attr("readonly",false);#}
-            {#$("#txtWhere").attr("readonly",false);#}
-            {#$("#txtApplyDate").attr("readonly",false);#}
+            $("#txtTitle").attr("readonly",false);
+            $("#txtWitRegDate").attr("readonly",false);
+            $("#txtWitSeq").attr("readonly",false);
+            $("#txtWitRecn").attr("readonly",false);
+            $("#txtWitPrice").attr("readonly",false);
+            $("#txtWitCashNum").attr("readonly",false);
+            $("#txtWitRemark").attr("readonly",false);
+            $("#txtExDate").attr("readonly",false);
+            $("#txtInfo").attr("readonly",false);
+            $("#txtWhere").attr("readonly",false);
+            $("#txtApplyDate").attr("readonly",false);
+            $("#cboWitGbn").attr("disabled",false);
+            $("#cboWitMethod").attr("disabled",false);
+            $("#cboWitCust").attr("disabled",false);
+            $("#cboAdminCode").attr("disabled",false);
+            $("#cboWitActNum").attr("disabled",true);
+            $("#cboWitCard").attr("disabled",false);
+            $("#cboBank").attr("disabled",false);
+            $("#cboCardName").attr("disabled",false);
         });
 
         {#체크한 내용 삭제#}

@@ -164,7 +164,7 @@ def approvalSubViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.ACIOGB, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACCUST, ''), IFNULL(A.IODATE, ''), IFNULL(A.MCODE, '') "
                            "        , IFNULL(A.EXDATE, ''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACCARD, '') "
-                           "        , IFNULL(A.ACDESC, ''), IFNULL(A.ACSEQN, '') "
+                           "        , IFNULL(A.ACDESC, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACFOLDER, ''), IFNULL(B.SEQ, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "

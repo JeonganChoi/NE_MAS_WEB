@@ -141,6 +141,20 @@
                                             <input readonly class="form-control text-start bg-transparent" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                         </div>
                                     </div>
+                                    <div hidden class="row">
+                                        <div class="col-4">
+                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>직원</label>
+                                            <input class="form-control text-start bg-transparent" type="text" id="txtEmpNbr" name="txtEmpNbr" value="{{ request.session.userId }}" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>폴더</label>
+                                            <input class="form-control text-start bg-transparent" type="text" id="txtFolder" name="txtFolder" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="text-sm"><i class="fas fa-edit me-2"></i>행번</label>
+                                            <input class="form-control text-start bg-transparent" type="text" id="txtSeqn" name="txtSeqn" style="height: 2rem; font-size: 0.8rem"/>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-8"></div>
                                         <div class="col-4">
@@ -150,14 +164,33 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive-sm overflow-auto mt-5">
+                                <div class="form-group buttonLine mt-0">
+                                    <div class="row">
+                                        <div class="col-9 text-start">
+                                            <div class="d-flex">
+                                                <button class="btn btn-sm btn-success me-4" id="btnApv" name="btnApv"><i class="fa fa-file-signature fs-6 pe-3"></i>결 재</button>
+                                                <button class="btn btn-sm btn-instagram me-4" id="btnAbt" name="btnAbt"><i class="fa fa-file-signature fs-6 pe-3"></i>전 결</button>
+                                                <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fa fa-file-signature fs-6 pe-3"></i>반 려</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row p-0">
+                                        <div class="col-9 text-start">
+                                            <div class="form-group">
+                                                <label class="mt-2 text-sm">반려 사유</label>
+                                                <input class="form-control" id="txtReason" name="txtReason" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="table-responsive-sm overflow-auto mt-5">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                       <tbody id="subTb">
                                         <tr id="#subTr" class="subTr_tr">
                                         </tr>
                                       </tbody>
                                     </table>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -288,7 +321,7 @@
 
     <script>
         $(document).ready(function () {
-
+            $('.buttonLine').hide();
             var empNbr = document.getElementById('inputEmp').value
             var gbn = document.getElementById('inputGbn').value
 
@@ -439,6 +472,8 @@
             $("#txtWitSeq").val("");
             $("#txtWitPrice").val("");
             $("#txtWitRemark").val("");
+            $("#txtFolder").val("");
+            $("#txtSeqn").val("");
 
 
             let serials = $(this).attr('main_code');
@@ -462,22 +497,24 @@
                     var list = data.subList;
                     var list2 = data.mainList;
 
-                    $("#subTb").html("");
-                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#subTb").append(
-                            "<td class='text-center p-1 bg-warning font-weight-bolder text-white' style='font-size: 0.85rem'>" + list[i][2] + "</td> ");
-                    }
-                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#subTb").append(
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");
-                    }
-                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#subTb").append(
-                            "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
-                    }
+                    $('.buttonLine').show();
+
+                    {#$("#subTb").html("");#}
+                    {#$("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    $("#subTb").append(#}
+                    {#        "<td class='text-center p-1 bg-warning font-weight-bolder text-white' style='font-size: 0.85rem'>" + list[i][2] + "</td> ");#}
+                    {#}#}
+                    {#$("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    $("#subTb").append(#}
+                    {#        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");#}
+                    {#}#}
+                    {#$("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
+                    {#for (var i = 0; i < list.length; i++) {#}
+                    {#    $("#subTb").append(#}
+                    {#        "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");#}
+                    {#}#}
 
                     for (var i = 0; i < list2.length; i++) {
                         $("#txtWitSeq").val(list2[i][11])
@@ -486,6 +523,8 @@
                         $("#txtWitPrice").val(addComma(list2[i][6]))
                         $("#txtWitRemark").val(list2[i][10])
                         $("#txtTitle").val(list2[i][1])
+                        $("#txtFolder").val(list2[i][13])
+                        $("#txtSeqn").val(list2[i][14])
                         cboWitCust2 = list2[i][2];
                         cboWitGbn = list2[i][0];
                         cboWitMethod = list2[i][8];
@@ -546,14 +585,14 @@
             $("#modalEmp").val("");
             $("#modalFolder").val("");
 
-            let serials = $(this).attr('sub_code');
-            var split = serials.split(',');
-            var seq = split[0]
-            var empNbr = split[1]
-            var folder = split[2]
-            var acDate = split[3]
-            var acSeqn = split[4]
-            var acIogb = split[5]
+            {#let serials = $(this).attr('sub_code');#}
+            {#var split = serials.split(',');#}
+            var seq = document.getElementById('txtWitSeq').value
+            var empNbr = document.getElementById('txtEmpNbr').value
+            var folder = document.getElementById('txtFolder').value
+            var acDate = document.getElementById('txtWitRegDate').value
+            var acSeqn = document.getElementById('txtSeqn').value
+            var acIogb = document.getElementById('cboWitGbn').value
 
             document.getElementById('modalSeq').value = seq
             document.getElementById('modalEmp').value = empNbr
@@ -568,13 +607,13 @@
         {# 결재 버튼 클릭시 #}
         $(document).on('click', '#btnApv', function () {
 
-            var seq = document.getElementById('modalSeq').value
-            var empNbr = document.getElementById('modalEmp').value
-            var folder = document.getElementById('modalFolder').value
-            var reason = document.getElementById('modalReason').value
-            var ioDate = document.getElementById('modalDate').value
-            var acSeqn = document.getElementById('modalSeqn').value
-            var acIogb = document.getElementById('modalIogb').value
+            var seq = document.getElementById('txtWitSeq').value
+            var empNbr = document.getElementById('txtEmpNbr').value
+            var folder = document.getElementById('txtFolder').value
+            var reason = document.getElementById('txtReason').value
+            var ioDate = document.getElementById('txtWitRegDate').value
+            var acSeqn = document.getElementById('txtSeqn').value
+            var acIogb = document.getElementById('cboWitGbn').value
             var gbn = '1'
 
             var saveresult = confirm("결재하시겠습니까?")
@@ -617,13 +656,13 @@
         {# 전결 버튼 클릭시 #}
         $(document).on('click', '#btnAbt', function () {
 
-            var seq = document.getElementById('modalSeq').value
-            var empNbr = document.getElementById('modalEmp').value
-            var folder = document.getElementById('modalFolder').value
-            var reason = document.getElementById('modalReason').value
-            var ioDate = document.getElementById('modalDate').value
-            var acSeqn = document.getElementById('modalSeqn').value
-            var acIogb = document.getElementById('modalIogb').value
+            var seq = document.getElementById('txtWitSeq').value
+            var empNbr = document.getElementById('txtEmpNbr').value
+            var folder = document.getElementById('txtFolder').value
+            var reason = document.getElementById('txtReason').value
+            var ioDate = document.getElementById('txtWitRegDate').value
+            var acSeqn = document.getElementById('txtSeqn').value
+            var acIogb = document.getElementById('cboWitGbn').value
             var gbn = '2'
 
             var saveresult = confirm("전결하시겠습니까?")
@@ -662,13 +701,13 @@
         {# 반려 버튼 클릭시 #}
         $(document).on('click', '#btnReturn', function () {
 
-            var seq = document.getElementById('modalSeq').value
-            var empNbr = document.getElementById('modalEmp').value
-            var folder = document.getElementById('modalFolder').value
-            var reason = document.getElementById('modalReason').value
-            var ioDate = document.getElementById('modalDate').value
-            var acSeqn = document.getElementById('modalSeqn').value
-            var acIogb = document.getElementById('modalIogb').value
+            var seq = document.getElementById('txtWitSeq').value
+            var empNbr = document.getElementById('txtEmpNbr').value
+            var folder = document.getElementById('txtFolder').value
+            var reason = document.getElementById('txtReason').value
+            var ioDate = document.getElementById('txtWitRegDate').value
+            var acSeqn = document.getElementById('txtSeqn').value
+            var acIogb = document.getElementById('cboWitGbn').value
             var gbn = '3'
 
             if(reason == ''){
