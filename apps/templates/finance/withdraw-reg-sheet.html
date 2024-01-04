@@ -1368,19 +1368,30 @@
                                 $("#cboCardName").append(cboCardNameTxt);
 
                                 $('.line').show();
+                                {#$("#txtWitRegDate").attr("readonly",true);#}
+                                {#$("#txtWitSeq").attr("readonly",true);#}
+                                {#$("#txtWitRecn").attr("readonly",true);#}
+                                {#$("#txtExDate").attr("readonly",true);#}
+                                {#$("#txtWitPrice").attr("readonly",true);#}
+                                {#$("#txtWitCashNum").attr("readonly",true);#}
+                                {#$("#txtWitRemark").attr("readonly",true);#}
+                                {#$("#txtTitle").attr("readonly",true);#}
+                                {#$("#txtInfo").attr("readonly",true);#}
+                                {#$("#txtApplyDate").attr("readonly",true);#}
+                                {#$('#txtWitRegDate').prop('disabled', false);#}
                             }
                             else{
-                                document.getElementById('txtWitSeq').setAttribute('disabled', 'false')
-                                document.getElementById('txtWitRecn').setAttribute('disabled', 'false')
-                                document.getElementById('txtWitRegDate').setAttribute('disabled', 'false')
-                                document.getElementById('txtExDate').setAttribute('disabled', 'false')
-                                document.getElementById('txtWitPrice').setAttribute('disabled', 'false')
-                                document.getElementById('txtWitCashNum').setAttribute('disabled', 'false')
-                                document.getElementById('txtWitRemark').setAttribute('disabled', 'false')
-                                document.getElementById('txtTitle').setAttribute('disabled', 'false')
-                                document.getElementById('txtInfo').setAttribute('disabled', 'false')
-                                document.getElementById('txtApplyDate').setAttribute('disabled', 'false')
-                                document.getElementById('line').setAttribute('disabled', 'false')
+                                {#document.getElementById('txtWitSeq').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtWitRecn').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtWitRegDate').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtExDate').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtWitPrice').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtWitCashNum').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtWitRemark').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtTitle').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtInfo').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('txtApplyDate').setAttribute('disabled', 'false')#}
+                                {#document.getElementById('line').setAttribute('disabled', 'false')#}
                                 $('.line').show();
 
                                 $("#txtWitSeq").val(list[i][0])
@@ -2470,7 +2481,16 @@
             $("#txtWhere").val("");
             $("#txtApplyDate").val("");
             $("#cboBank").val("");
-
+            {#$("#txtWitRegDate").attr("readonly",false);#}
+            {#$("#txtWitSeq").attr("readonly",false);#}
+            {#$("#txtWitRecn").attr("readonly",false);#}
+            {#$("#txtWitPrice").attr("readonly",false);#}
+            {#$("#txtWitCashNum").attr("readonly",false);#}
+            {#$("#txtWitRemark").attr("readonly",false);#}
+            {#$("#txtExDate").attr("readonly",false);#}
+            {#$("#txtInfo").attr("readonly",false);#}
+            {#$("#txtWhere").attr("readonly",false);#}
+            {#$("#txtApplyDate").attr("readonly",false);#}
         });
 
         {#체크한 내용 삭제#}
