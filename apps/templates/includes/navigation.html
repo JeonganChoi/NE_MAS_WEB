@@ -256,7 +256,7 @@
               <li class="mb-2">
                 <a href="{% url 'with_reg_sheet' %}" class="dropdown-item border-radius-md">입/출금 등록</a>
               </li>
-              {% if request.session.USER_GBN == '2' %}
+              {% if request.session.USER_GBN == '2' or request.session.USER_GBN == '1' %}
               <li class="mb-2">
                 <a href="{% url 'approval_reg' %}" class="dropdown-item border-radius-md">결재 관리</a>
               </li>
