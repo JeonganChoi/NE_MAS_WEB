@@ -320,8 +320,7 @@ def custViews_save(request):
             connection.commit()
 
             with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+                cursor.execute(" SELECT SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
                 connection.commit()
                 result = cursor.fetchall()
                 print(result)
@@ -332,24 +331,25 @@ def custViews_save(request):
                                    "    AND SEQ = '" + str(custSeq) + "' AND ICUST = '" + str(iCust) + "' ")
                     connection.commit()
 
-            with connection.cursor() as cursor:
-                cursor.execute(" INSERT INTO MIS1TB003_D "
-                               "("
-                               "    CUST_NBR "
-                               "   ,CUST_BKCD "
-                               "   ,CUST_ACNUM "
-                               "   ,SEQ "
-                               "   ,ICUST"
-                               ") "
-                               "VALUES "
-                               "("
-                               "    '" + str(custCode) + "' "
-                               "    ,'" + str(custBank) + "' "
-                               "    ,'" + str(custAct) + "' "
-                               "    ,'1'"
-                               "    ,'" + str(iCust) + "' "
-                               ") ")
-                connection.commit()
+            if custAct != '':
+                with connection.cursor() as cursor:
+                    cursor.execute(" INSERT INTO MIS1TB003_D "
+                                   "("
+                                   "    CUST_NBR "
+                                   "   ,CUST_BKCD "
+                                   "   ,CUST_ACNUM "
+                                   "   ,SEQ "
+                                   "   ,ICUST"
+                                   ") "
+                                   "VALUES "
+                                   "("
+                                   "    '" + str(custCode) + "' "
+                                   "    ,'" + str(custBank) + "' "
+                                   "    ,'" + str(custAct) + "' "
+                                   "    ,'1'"
+                                   "    ,'" + str(iCust) + "' "
+                                   ") ")
+                    connection.commit()
 
         # custArrayLists = list(filter(len, custArray))
         # for data in range(len(custArrayLists)):
@@ -469,25 +469,25 @@ def custViews_save(request):
                 cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
                                "    AND SEQ = '" + str(custSeq) + "' AND ICUST = '" + str(iCust) + "' ")
                 connection.commit()
-
-        with connection.cursor() as cursor:
-            cursor.execute(" INSERT INTO MIS1TB003_D "
-                           "("
-                           "    CUST_NBR "
-                           "   ,CUST_BKCD "
-                           "   ,CUST_ACNUM "
-                           "   ,SEQ "
-                           "   ,ICUST"
-                           ") "
-                           "VALUES "
-                           "("
-                           "    '" + str(custnumber) + "' "
-                           "    ,'" + str(custBank) + "' "
-                           "    ,'" + str(custAct) + "' "
-                           "    ,'1'"
-                           "    ,'" + str(iCust) + "' "
-                           ") ")
-            connection.commit()
+        if custAct != '':
+            with connection.cursor() as cursor:
+                cursor.execute(" INSERT INTO MIS1TB003_D "
+                               "("
+                               "    CUST_NBR "
+                               "   ,CUST_BKCD "
+                               "   ,CUST_ACNUM "
+                               "   ,SEQ "
+                               "   ,ICUST"
+                               ") "
+                               "VALUES "
+                               "("
+                               "    '" + str(custnumber) + "' "
+                               "    ,'" + str(custBank) + "' "
+                               "    ,'" + str(custAct) + "' "
+                               "    ,'1'"
+                               "    ,'" + str(iCust) + "' "
+                               ") ")
+                connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 
