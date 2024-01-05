@@ -33,7 +33,16 @@ def chkDate(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT CUST_PAY_DAY, CUST_PAY FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "'")
         chkDate = cursor.fetchall()
-        return JsonResponse({'chkDate': chkDate})
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_BKCD FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+        chkBank = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CUST_ACNUM FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+        chkAct = cursor.fetchall()
+
+        return JsonResponse({'chkDate': chkDate, "chkBank": chkBank, "chkAct": chkAct})
 
     if method == '3' and cardNum != '':
         with connection.cursor() as cursor:
@@ -1012,8 +1021,7 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE A.EMP_LIMIT > 0 "
-                           " AND A.ICUST = '" + iCust + "'"
+                           " WHERE A.ICUST = '" + iCust + "'"
                            " AND A.EMP_DEPT = '" + cboDpt + "' ")
             mainresult = cursor.fetchall()
 
@@ -1030,8 +1038,7 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE A.EMP_LIMIT > 0 "
-                           " AND A.EMP_NBR != '" + str(creUser) + "' "
+                           " WHERE A.EMP_NBR != '" + str(creUser) + "' "
                            " AND A.ICUST = '" + iCust + "'")
             mainresult = cursor.fetchall()
             print(mainresult)
@@ -1546,6 +1553,8 @@ def paymentViews_save(request):
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
     acInfo = request.POST.get("txtInfo")
+    txtCustAct = request.POST.get("txtCustAct")  # 거래처은행
+    txtCustAct = request.POST.get("txtCustAct")  # 거래처계좌번호
     # file = request.FILES.get('file')
 
     # if (file is None):
@@ -1600,6 +1609,9 @@ def paymentViews_save(request):
 
         if acDate == '' or acDate is None:
             acDate = ioDate
+
+        if acGubn == '2':
+            acAcnumber = txtCustAct
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -1708,6 +1720,9 @@ def paymentViews_save(request):
 
         if acGubn == '4':
             finOpt = 'Y'
+
+        if acGubn == '2':
+            acAcnumber = txtCustAct
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")

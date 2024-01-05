@@ -33,17 +33,17 @@
         <div class="row">
             <div class="col-lg-6 col-6">
                 <div class="card border border-white shadow-xs">
-                    <div class="card-header pb-0" style="height: 12vh">
-                        <div class="row p-0">
+                    <div class="card-header height-150 pb-0">
+                        <div class="row p-0 pb-0">
                             <div hidden class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래일자</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fa fa-search me-2"></i>거래일자</label>
                                     <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="inputDate" id="inputDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
                             <div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>승인</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fa fa-search me-2"></i>승인</label>
                                     <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputPermit" id="inputPermit" style="height: 2rem; font-size: 0.8rem">
                                         <option value="">미시행</option>
                                         <option value="1">시행</option>
@@ -52,18 +52,32 @@
                             </div>
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>거래처</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>거래처</label>
                                     <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCust" id="inputCust" style="height: 2rem; font-size: 0.8rem"></select>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-3"></div>
                             <div class="col-lg-2 col-2 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white" style="font-size: 0.8rem" id="btnSearch" name="btnSearch">
-                                        <i class="fas fa-search me-2 fs-6"></i>조 회
+                                        <i class="fa fa-search me-2 fs-6"></i>조 회
                                 </button>
                             </div>
                         </div>
-                        <div class="row p-0">
+                        <div class="row p-0 pt-0">
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>카드명</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCard" id="inputCard" style="height: 2rem; font-size: 0.8rem"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>카드번호</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCardNum" id="inputCardNum" style="height: 2rem; font-size: 0.8rem"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2 p-0">
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>은행명</label>
@@ -77,9 +91,9 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 col-4">
-                                <div class="input-group shadow-none">
+                                <div class="input-group shadow-none sange">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fas fa-search  me-2"></i>상계 금액</label>
+                                            class="fa fa-search  me-2"></i>상계 금액</label>
                                     <input class="form-control border border-light rounded-1 text-end me-2 w-20"
                                            type="text" name="CostOffSet" id="CostOffSet"
                                            style="height: 2rem; width: 10rem">
@@ -91,7 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body height-500">
+                    <div class="card-body height-500 mt-0 pt-1">
                         <div class="table-responsive-sm height-400 overflow-auto border border-light">
                             <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
                                 <colgroup>
@@ -151,7 +165,7 @@
             </div>
             <div class="col-lg-6 col-6">
                 <div class="card border border-white shadow-xs">
-                    <div class="card-header pb-0" style="height: 12vh">
+                    <div class="card-header height-150 pb-0">
                         <div class="row p-0">
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
@@ -172,7 +186,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body height-500">
+                    <div class="card-body height-500 mt-0 pt-1">
                         <div class="table-responsive-sm overflow-auto border border-light height-400">
                             <table class="table mb-0 align-items-center justify-content-center" id="chkTb">
                                 <colgroup>
@@ -221,14 +235,20 @@
             var inputBank = "";
             var inputAct = "";
             var inputCust = "";
+            var inputCard = "";
+            var inputCardNum = "";
             var actNumber = "";
             var inputBankTxt = "<option value=''>:: 선택 ::</option>";
             var inputActTxt = "<option value=''>:: 선택 ::</option>";
+            var inputCardTxt = "<option value=''>:: 선택 ::</option>";
+            var inputCardNumTxt = "<option value=''>:: 선택 ::</option>";
             var inputCustTxt = "<option value=''>:: 선택 ::</option>";
             var actNumberTxt = "";
 
             $("#inputBank").html("");
             $("#inputAct").html("");
+            $("#inputCard").html("");
+            $("#inputCard").html("");
             $("#inputCust").html("");
             $("#actNumber").html("");
 
@@ -250,7 +270,7 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
-
+                    alert(list)
                     var total = 0;
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
@@ -315,12 +335,67 @@
                         }
                     }
 
+                    var combolist5 = data.cboCard;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == inputCard) {
+                            inputCardTxt = inputCardTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            inputCardTxt = inputCardTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
+                    }
+
+                    var combolist6 = data.cboCardNum;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == inputCardNum) {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                        } else {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
+                        }
+                    }
+
                     $("#inputCust").append(inputCustTxt);
                     $("#actNumber").append(actNumberTxt);
                     $("#inputBank").append(inputBankTxt);
                     $("#inputAct").append(inputActTxt);
+                    $("#inputCard").append(inputCardTxt);
+                    $("#inputCardNum").append(inputCardNumTxt);
                 }
             })
+        });
+
+        {# 결제방법 선택시 계좌명 바인딩 #}
+        $('#inputCard').change(function () {
+            var inputCardNum = "";
+            var inputCardNumTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#inputCardNum").html("");
+
+            var cboCard = document.getElementById('inputCard').value
+
+            var data = {"cboCard": cboCard}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cboCardNum" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboCardNum;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputCardNum) {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#inputCardNum").append(inputCardNumTxt);
+                }
+            });
         });
 
         {# 결제방법 선택시 계좌명 바인딩 #}
@@ -502,6 +577,9 @@
             var acSeqn = tr.children().eq(11).text()
             var acIogb = tr.children().eq(12).text()
 
+            alert(acBank)
+            alert(acNum)
+
             var count = $(this).closest('tr').prevAll().length;
 
             var offTotal = 0;
@@ -629,10 +707,11 @@
             var permitGbn = document.getElementById('inputPermit').value;
             var bankCode = document.getElementById('inputBank').value;
             var actCode = document.getElementById('inputAct').value;
+            var inputCard = document.getElementById('inputCard').value;
+            var inputCardNum = document.getElementById('inputCardNum').value;
 
 
-
-            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode}
+            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",

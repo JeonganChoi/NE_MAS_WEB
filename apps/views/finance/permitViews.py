@@ -26,6 +26,8 @@ def permitViews_search(request):
     custCode = request.POST.get('custCode','')
     bankCode = request.POST.get('bankCode','')
     actCode = request.POST.get('actCode','')
+    inputCard = request.POST.get('inputCard','')
+    inputCardNum = request.POST.get('inputCardNum','')
     # value = off
     offSet = request.POST.get('offSet','')
     user = request.session.get('userId')
@@ -229,7 +231,16 @@ def permitViews_search(request):
                     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
                     cboBank = cursor.fetchall()
 
-                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
+                # 카드명
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cboCard = cursor.fetchall()
+                # 카드번호
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "'")
+                    cboCardNum = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank, "cboCard": cboCard, "cboCardNum": cboCardNum})
 
             if actCode != '':
                 with connection.cursor() as cursor:
@@ -268,7 +279,16 @@ def permitViews_search(request):
                     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
                     cboBank = cursor.fetchall()
 
-                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
+                # 카드명
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cboCard = cursor.fetchall()
+                # 카드번호
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "'")
+                    cboCardNum = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank, "cboCard": cboCard, "cboCardNum": cboCardNum})
 
         if permitGbn != '':
             if actCode == '':
@@ -307,7 +327,16 @@ def permitViews_search(request):
                     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
                     cboBank = cursor.fetchall()
 
-                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
+                # 카드명
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cboCard = cursor.fetchall()
+                # 카드번호
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "'")
+                    cboCardNum = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank, "cboCard": cboCard, "cboCardNum": cboCardNum})
 
             if actCode != '':
                 with connection.cursor() as cursor:
@@ -346,14 +375,31 @@ def permitViews_search(request):
                     cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
                     cboBank = cursor.fetchall()
 
-                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank})
+                # 카드명
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cboCard = cursor.fetchall()
+                # 카드번호
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "'")
+                    cboCardNum = cursor.fetchall()
+
+                return JsonResponse({"mainList": mainresult, "cboCust": cboCust, "cboAct": cboAct, "cboBank": cboBank, "cboCard": cboCard, "cboCardNum": cboCardNum})
 
 
 
 
+def cboCardNum(request):
+    cboCard = request.POST.get('cboCard')
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
 
+    # 카드번호
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' AND CARDTYPE = '" + str(cboCard) + "'")
+        cboCardNum = cursor.fetchall()
 
-
+        return JsonResponse({'cboCardNum': cboCardNum})
 
 
 def cboActNum_search(request):

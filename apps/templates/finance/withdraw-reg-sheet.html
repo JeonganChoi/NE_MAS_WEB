@@ -171,6 +171,14 @@
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboBank" id="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
+                                    <div class="col-4" hidden>
+                                        <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>거래처은행</label>
+                                        <input class="form-control text-start" type="text" id="txtCustBank" name="txtCustBank" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
+                                    <div class="col-4" hidden>
+                                        <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>거래처계좌번호</label>
+                                        <input class="form-control text-start" type="text" id="txtCustAct" name="txtCustAct" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
                                     <div class="col-4 cardName">
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>카드 명</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboCardName" id="cboCardName" style="height: 2rem; font-size: 0.8rem"></select>
@@ -1851,6 +1859,18 @@
                         dataType: 'json',
                         success: function (data) {
                             var list = data.chkDate
+                            var list2 = data.chkBank
+                            var list3 = data.chkAct
+
+                            var bank = "";
+                            var act = "";
+                            for (var j = 0; j < list2.length; j++) {
+                                bank = list[j][0]
+                            }
+                            for (var k = 0; k < list3.length; k++) {
+                                act = list[k][0]
+
+                            }
 
                             if(data.chkDate != ''){
                                 date = list[0][0];
@@ -1890,11 +1910,15 @@
                                 }
 
                                 $("#txtExDate").val(exDate);
+
                             }
                             else{
                                 $("#txtExDate").val("");
                             }
-
+                            $('.cboBank').hide();
+                            $('.cboAct').hide();
+                            document.getElementById('txtCustBank').value = bank;
+                            document.getElementById('txtCustAct').value = act;
                         }
                     });
                 }
@@ -1968,6 +1992,7 @@
                                 }
 
                                 $("#txtExDate").val(exDate);
+
                             }
                             else{
                                 $("#txtExDate").val("");
