@@ -1107,6 +1107,64 @@ def chkWriter(request):
 
     return JsonResponse({'chkEmp': chkEmp})
 
+
+
+def cboList(request):
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
+    # 거래처
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
+        cboCust = cursor.fetchall()
+
+    # 입출금구분
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
+        cboGgn = cursor.fetchall()
+
+    # 관리계정
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ASC ")
+        cboMCode = cursor.fetchall()
+
+    # 회계게정
+    # with connection.cursor() as cursor:
+    #     cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ICUST = '" + iCust + "' ORDER BY ACODE ASC ")
+    #     cboACode = cursor.fetchall()
+
+    # 결제방법
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
+        cboPay = cursor.fetchall()
+
+    # 계좌번호
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
+        cboAcnumber = cursor.fetchall()
+
+    # 카드번호
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
+        cboCard = cursor.fetchall()
+
+    # 은행명
+    with connection.cursor() as cursor:
+        cursor.execute(
+            " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+        cboBank = cursor.fetchall()
+
+    # 카드명
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+        cardName = cursor.fetchall()
+
+
+        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard,
+                             "cboBank": cboBank, "cardName": cardName})
+
+
+
+
 def paymentViews_search(request):
     acIogb = request.POST.get('acIogb')
     ioDate = request.POST.get('ioDate')
@@ -1364,7 +1422,8 @@ def paymentViews_search(request):
 
         # 은행명
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' "
+                           "    GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
             cboBank = cursor.fetchall()
 
         # 카드명
@@ -1408,7 +1467,8 @@ def paymentViews_search(request):
 
         # 은행명
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' "
+                           "    GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
             cboBank = cursor.fetchall()
 
         # 카드명
@@ -1458,7 +1518,7 @@ def cboActNum_search(request):
                             " ON A.ACBKCD = B.RESKEY "
                             " AND B.RECODE = 'BNK' "
                             " WHERE A.ICUST = '" + str(iCust) + "' "
-                            " GROUP BY A.ACBKCD")
+                            " GROUP BY A.ACBKCD, B.RESNAM")
             cboBank = cursor.fetchall()
 
         return JsonResponse({'cboAct': cboAct, 'cboBank': cboBank})
@@ -1622,6 +1682,7 @@ def paymentViews_save(request):
                                "   , EMP_NBR "
                                "   , OPT "
                                "   , ACIOGB "
+                               "   , FOLDER "
                                "   , ICUST "                                                    
                                "    ) "
                                "    VALUES "
@@ -1630,8 +1691,9 @@ def paymentViews_save(request):
                                "     , '" + str(acSeqn) + "' "
                                "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
                                "     , '" + empArrayLists[data]["empNbr"] + "' "
-                               "     , '" + opt + "' "
+                               "     , '" + str(opt) + "' "
                                "     , '" + str(acIogb) + "' "
+                               "     , '" + str(uploaded_file) + "' "
                                "     , '" + str(iCust) + "' "
                                "     ) "
                 )
@@ -1732,6 +1794,7 @@ def paymentViews_save(request):
                                        "   , EMP_NBR "
                                        "   , OPT "
                                        "   , ACIOGB "
+                                       "   , FOLDER "  
                                        "   , ICUST "                                                    
                                        "    ) "
                                        "    VALUES "
@@ -1742,6 +1805,7 @@ def paymentViews_save(request):
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "
                                        "     , '" + opt + "' "
                                        "     , '" + str(acIogb) + "' "
+                                       "     , '" + str(uploaded_file) + "' "
                                        "     , '" + str(iCust) + "' "
                                        "     ) "
                         )

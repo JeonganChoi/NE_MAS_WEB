@@ -24,7 +24,7 @@ def actBalRegViews_search(request):
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
-    if bankCode and actNum == '':
+    if bankCode != '' and actNum == '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
                            "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
@@ -42,7 +42,7 @@ def actBalRegViews_search(request):
 
         return JsonResponse({"actBalList": actBalresult, "cboActNum": cboActNum})
 
-    if actNum and bankCode and regDate == '':
+    if actNum != '' and bankCode != '' and regDate == '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
                            "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
@@ -72,7 +72,7 @@ def actBalRegViews_search(request):
 
         return JsonResponse({"cboActNum": cboActNum, "cboBankName": cboBankName, "actBalList": actBalresult, "txtActNme": txtActNme})
 
-    if actNum and bankCode and regDate:
+    if actNum != '' and bankCode != '' and regDate != '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
                            "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
@@ -141,7 +141,7 @@ def actBalRegViews_save(request):
         cursor.execute(" SELECT ACNUMBER, ACDATE FROM ACBALANCE WHERE ACNUMBER = '" + actNum + "' AND ICUST = '" + str(iCust) + "' ")
         chkresult = cursor.fetchall()
 
-        if chkresult:
+        if (len(chkresult) != 0):
             actNum = chkresult[0][0]
             with connection.cursor() as cursor:
                 cursor.execute("    UPDATE ACBALANCE SET "

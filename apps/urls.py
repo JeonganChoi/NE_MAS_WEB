@@ -148,6 +148,7 @@ urlpatterns = [
     path('cboBank/', paymentViews.cboBank_search, name='cboBank'),
     path('chkDate/', paymentViews.chkDate, name='chkDate'),
     path('chkWriter/', paymentViews.chkWriter, name='chkWriter'),
+    path('cboList/', paymentViews.cboList, name='cboList'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),

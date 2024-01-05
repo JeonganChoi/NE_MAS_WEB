@@ -133,7 +133,8 @@ def approvalViews_search(request):
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' ")
+                           " AND B.ICUST = '" + str(iCust) + "' "
+                           " AND B.OPT = 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -227,10 +228,9 @@ def approvalViews_save(request):
                            "     OPT = '" + str(opt) + "' "
                            "   , GBN = '" + str(gbn) + "' "
                            "   , RTNGBN = '" + str(rtnGbn) + "' "
-                           "   , FOLDER = '" + str(folder) + "' "
-                           "     WHERE ACDATE = '" + str(ioDate) + "' "
-                           "     AND ACSEQN = '" + str(acSeqn) + "' "
-                           "     AND SEQ = '" + str(seq) + "' "
+                           "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                           "     AND ACSEQN = '" + str(seq) + "' "
+                           "     AND SEQ = '" + str(acSeqn) + "' "
                            "     AND EMP_NBR = '" + str(empNbr) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ICUST = '" + str(iCust) + "'"
@@ -260,7 +260,7 @@ def approvalViews_save(request):
     elif gbn == '2':
         rtnGbn = ''
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT EMP_NBR, SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' "
+            cursor.execute(" SELECT EMP_NBR, SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' AND ACSEQN = '" + str(acSeqn) + "' "
                            "                             AND SEQ >= '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
             empresult = cursor.fetchall()
 
@@ -271,9 +271,8 @@ def approvalViews_save(request):
                                        "     OPT = '" + str(opt) + "' "
                                        "   , GBN = '" + str(gbn) + "' "
                                        "   , RTNGBN = '" + str(rtnGbn) + "' "
-                                       "   , FOLDER = '" + str(folder) + "' "
-                                       "     WHERE ACDATE = '" + str(ioDate) + "' "
-                                       "     AND ACSEQN = '" + str(acSeqn) + "' "
+                                       "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                                       "     AND ACSEQN = '" + str(seq) + "' "
                                        "     AND SEQ = '" + str(payArrayLists[data][1]) + "' "
                                        "     AND EMP_NBR = '" + str(payArrayLists[data][0]) + "' "
                                        "     AND ACIOGB = '" + str(acIogb) + "' "
@@ -292,10 +291,9 @@ def approvalViews_save(request):
                                "   , OPT = '" + str(opt) + "' "
                                "   , GBN = '" + str(gbn) + "' "
                                "   , RTNGBN = '" + str(rtnGbn) + "' "
-                               "   , FOLDER = '" + str(folder) + "' "
-                               "     WHERE ACDATE = '" + str(ioDate) + "' "
-                               "     AND ACSEQN = '" + str(acSeqn) + "' "
-                               "     AND SEQ = '" + str(seq) + "' "
+                               "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                               "     AND ACSEQN = '" + str(seq) + "' "
+                               "     AND SEQ = '" + str(acSeqn) + "' "
                                "     AND EMP_NBR = '" + str(empNbr) + "' "
                                "     AND ACIOGB = '" + str(acIogb) + "' "
                                "     AND ICUST = '" + str(iCust) + "'"

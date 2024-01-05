@@ -59,18 +59,18 @@
                                 <col width="10%">
                                 <col width="10%">
                                 <col width="8%">
-                                <col width="8%">
+                                <col width="6%">
                                 <col width="20%">
                             </colgroup>
                           <thead class="bg-gray-100">
                             <tr>
                               <th style="font-size: 0.8rem" class="text-center p-1">선택</th>
-                              <th style="font-size: 0.8rem" class="text-start p-1">계좌 번호</th>
-                              <th style="font-size: 0.8rem" class="text-start p-1">계좌명</th>
+                              <th style="font-size: 0.8rem" class="text-center p-1">계좌 번호</th>
+                              <th style="font-size: 0.8rem" class="text-center p-1">계좌명</th>
                               <th style="font-size: 0.8rem" class="text-start p-1">은행명</th>
                               <th style="font-size: 0.8rem" class="text-center p-1">기준 일자</th>
-                              <th style="font-size: 0.8rem" class="text-start p-1">잔 액</th>
-                              <th style="font-size: 0.8rem" class="text-start p-1">비 고</th>
+                              <th style="font-size: 0.8rem" class="text-center p-1">잔 액</th>
+                              <th style="font-size: 0.8rem" class="text-center p-1">비 고</th>
                             </tr>
                           </thead>
                           <tbody id="acBalMainTb">
@@ -112,7 +112,7 @@
                             </div>
                             <div class="col-6">
                                 <label class="mt-2" style="font-size: 0.8rem"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>잔 액</label>
-                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="text" value="0" id="txtBalance" name="txtBalance"/>
+                                <input style="height: 2rem; font-size: 0.8rem" class="form-control text-end" type="text" value="" id="txtBalance" name="txtBalance"/>
                             </div>
                         </div>
                         <div class="row">
@@ -145,8 +145,15 @@
             $("#cboBankName").html("");
             $("#cboActNum").html("");
 
+            var actNum = "";
+            var bankCode = "";
+            var regDate = "";
+
+            let data = {"actNum": actNum, "bankCode": bankCode, "regDate": regDate}
+
             $.ajax({
                 type: "post",
+                data: data,
                 url: '{% url "actBalance_reg_search" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -397,6 +404,8 @@
             var txtBalance = document.getElementById('txtBalance').value
             var txtRemark = document.getElementById('txtRemark').value
 
+            if(txtBalance == ''){ txtBalance == '0'}
+
             if(cboActNum == '')
             {
                 alert("계좌번호를 선택해주세요.")
@@ -474,7 +483,6 @@
             $("#txtRemark").val("");
             $("#cboBankName").val("");
             $("#cboActNum").val("");
-
 
         });
 
