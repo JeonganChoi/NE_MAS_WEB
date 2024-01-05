@@ -199,7 +199,27 @@
                                 </div>
                             </div>
                             <label class="" style="font-size: 0.8rem"><i class="fa fa-money-check-dollar me-2 text-dark text-sm"></i>거래처 계좌 정보</label>
-                            <div class="table-responsive height-100 w-60 border border-light" id="custTb">
+                            <table>
+                                <colgroup>
+                                    <col width="15%">
+                                    <col width="30%">
+                                    <col width="5%">
+                                    <col width="15%">
+                                    <col width="40%">
+                                    <col width="5%">
+                                    <col width="5%">
+                                </colgroup>
+                                <tr>
+                                    <td><label class="me-2" style="font-size: 0.8rem"><i class="fa fa-circle me-2" style="font-size: 0.5rem"></i>은 행</label></td>
+                                    <td><select style="height: 2rem; font-size: 0.8rem; width: 8rem" class="form-control border border-light rounded-1 text-center p-0" name="custBank" id="custBank"></select></td>
+                                    <td></td>
+                                    <td><label class="me-2" style="font-size: 0.8rem"><i class="fa fa-circle me-2" style="font-size: 0.5rem"></i>계좌 번호</label></td>
+                                    <td><input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="custAct" name="custAct"/></td>
+                                    <td hidden><label class="me-2" style="font-size: 0.8rem"><i class="fa fa-circle me-2" style="font-size: 0.5rem"></i>순번</label></td>
+                                    <td hidden><input style="height: 2rem; font-size: 0.8rem" class="form-control" type="text" id="custSeq" name="custSeq"/></td>
+                                </tr>
+                            </table>
+                            <!--<div class="table-responsive height-100 w-60 border border-light" id="custTb">
                                 <table class="table" id="bankTb">
                                     <colgroup>
                                         <col width="2%">
@@ -217,7 +237,7 @@
                                     </tr>
                                   </tbody>
                                 </table>
-                            </div>
+                            </div>-->
                         </div>
                     </form>
                 </div>
@@ -253,9 +273,9 @@
             $("#cboDay").html("");
             $("#cboApv").html("");
 
-            var i = $('#bankTb tbody tr').length;
+            {#var i = $('#bankTb tbody tr').length;#}
             {# 첫 화면에 2개 row가 뜨도록 #}
-            $("#custBank_"+i).html("");
+            {#$("#custBank_"+i).html("");#}
 
             var custType = "";
             var custCode = "";
@@ -352,20 +372,7 @@
                     $("#cboCustType").append(cboCustTypeTxt);
                     $("#cboDay").append(cboDayTxt);
                     $("#cboApv").append(cboApvTxt);
-
-
-                    {# 왼쪽 컬럼은 은행 종류 바인딩 #}
-                    $("#subTb").html("");
-                    for (var j = 0; j < 4; j++) {
-                        $("#subTb").append(
-                            "<tr id='#subTr' class='subTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custBank_" + j + "' name='custBank'/></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + j + "' name='custSeq'/></td>" +
-                            "</tr> ");
-                    }
-
-                    {#$("#custBank_" + i).append(custBankTxt);#}
+                    $("#custBank").append(custBankTxt);
                 }
             })
         });
@@ -454,7 +461,7 @@
             var cboApv = "";
             var cboCustTypeTxt = "<option value=''>:: 선택 ::</option>";
             var cboDayTxt = "<option value='last'>말일</option>";
-            var custBankTxt = "<option value='last'>말일</option>";
+            var custBankTxt = "<option value=''>:: 선택 ::</option>";
             var cboApvTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#cboCustType").html("");
@@ -504,6 +511,21 @@
                         cboDay = list[i][9];
                     }
 
+                    var list2 = data.custBank;
+                    if(list2 != ''){
+                        for (var i = 0; i < list2.length; i++) {
+                            custBank = list2[i][0]
+                            $("#custAct").val(list2[i][1])
+                            $("#custSeq").val(list2[i][2])
+
+                        }
+                    }
+                    if(list2 == ''){
+                        custBank = "";
+                        $("#custAct").val("")
+                        $("#custSeq").val("")
+                    }
+
                     var combolist2 = data.cboCustType;
                     for (var i = 0; i < combolist2.length; i++) {
                         if (combolist2[i][0] == cboCustType) {
@@ -533,27 +555,14 @@
                     }
                     cboDayTxt = cboDayTxt + "<option value='last'>말일</option>";
 
-
-                    var list2 = data.custBank;
-                    $("#subTb").html("");
-                    for (var i = 0; i < list2.length; i++) {
-
-                        $("#subTb").append(
-                            "<tr id='#subTr' class='subTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + i + "' name='custBank' value='" + list2[i][0] + "'/></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + i + "' name='custActNum' value='" + list2[i][1] + "'/></td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + i + "' name='custSeq' value='" + list2[i][2] + "'/></td>" +
-                            "</tr> ");
+                    var combolist5 = data.cboBank;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == custBank) {
+                            custBankTxt = custBankTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
+                        } else {
+                            custBankTxt = custBankTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
+                        }
                     }
-                    for (var j = list2.length; j < list2.length + 3; j++) {
-                        $("#subTb").append(
-                            "<tr id='#subTr' class='subTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + j + "' name='custBank'/></input></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + j + "' name='custSeq'/></td>" +
-                            "</tr> ");
-                    }
-
 
                     $("#cboCustType").append(cboCustTypeTxt);
                     $("#cboApv").append(cboApvTxt);
@@ -586,67 +595,10 @@
                 dataType: 'json',
                 success: function (data) {
                     if(data.card != ''){
-                        var saveresult = confirm("이미 존재 하는 거래처 입니다. 카드 정보를 수정하시겠습니까?")
+                        var saveresult = confirm("거래처 정보를 수정하시겠습니까?")
                         if(saveresult == true){
 
                             var formData = new FormData($('#dropzone')[0]);
-
-                            var Count = 0;
-                            $("#custTb tr td input[name='custBank']").each(function (index, ele) {
-                                var ele_val = $(ele).val();
-
-                                if (ele_val) {
-                                    Count += 1;
-                                }
-                            });
-
-                            var Count2 = 0;
-                            $("#custTb tr td input[name='custSeq']").each(function (index, ele) {
-                                var ele_val = $(ele).val();
-
-                                if (ele_val) {
-                                    Count2 += 1;
-                                }
-                            });
-
-                            if (Count2 > Count) {
-                                var custArr = [];
-                                for (var i = 0; i < Count2; i++) {
-
-                                    var custBank = $('#custBank_' + i).val();
-                                    var custActNum = $('#custActNum_' + i).val();
-                                    var custSeq = $('#custSeq_' + i).val();
-
-                                    if (custSeq) {
-                                        let data = {
-                                            'custBank': custBank,
-                                            'custActNum': custActNum,
-                                            'custSeq': custSeq,
-                                        };
-                                        custArr.push(data);
-                                    }
-                                }
-                                formData.append('custArrList', JSON.stringify(custArr))
-                            } else {
-                                var custArr = [];
-                                for (var i = 0; i < Count; i++) {
-
-                                    var custBank = $('#custBank_' + i).val();
-                                    var custActNum = $('#custActNum_' + i).val();
-                                    var custSeq = $('#custSeq_' + i).val();
-
-                                    if (custBank) {
-                                        let data = {
-                                            'custBank': custBank,
-                                            'custActNum': custActNum,
-                                            'custSeq': custSeq,
-                                        };
-                                        custArr.push(data);
-                                    }
-                                }
-                                formData.append('custArrList', JSON.stringify(custArr))
-                            }
-
 
                             $.ajax({
                                 type: "post",
@@ -679,63 +631,6 @@
                             if(custType == ''){
                                 alert('업체 분류를 선택해주세요.')
                                 return false
-                            }
-
-                            var Count = 0;
-                            $("#custTb tr td input[name='custBank']").each(function (index, ele) {
-                                var ele_val = $(ele).val();
-
-                                if(ele_val){
-                                    Count += 1;
-                                }
-                            });
-
-                            var Count2 = 0;
-                            $("#custTb tr td input[name='custSeq']").each(function (index, ele) {
-                                var ele_val = $(ele).val();
-
-                                if(ele_val){
-                                    Count2 += 1;
-                                }
-                            });
-
-                            if(Count2 > Count){
-                                var custArr = [];
-                                for (var i = 0; i < Count2; i++) {
-
-                                    var custBank = $('#custBank_' + i).val();
-                                    var custActNum = $('#custActNum_' + i).val();
-                                    var custSeq = $('#custSeq_' + i).val();
-
-                                    if (custSeq) {
-                                        let data = {
-                                            'custBank': custBank,
-                                            'custActNum': custActNum,
-                                            'custSeq': custSeq,
-                                        };
-                                        custArr.push(data);
-                                    }
-                                }
-                                formData.append('custArrList', JSON.stringify(custArr))
-                            }
-                            else{
-                                var custArr = [];
-                                for (var i = 0; i < Count; i++) {
-
-                                    var custBank = $('#custBank_' + i).val();
-                                    var custActNum = $('#custActNum_' + i).val();
-                                    var custSeq = $('#custSeq_' + i).val();
-
-                                    if (custBank) {
-                                        let data = {
-                                            'custBank': custBank,
-                                            'custActNum': custActNum,
-                                            'custSeq': custSeq,
-                                        };
-                                        custArr.push(data);
-                                    }
-                                }
-                                formData.append('custArrList', JSON.stringify(custArr))
                             }
 
                             $.ajax({
@@ -840,3 +735,137 @@
         });
     </script>
 {% endblock %}
+
+{#                            var formData = new FormData($('#dropzone')[0]);#}
+{##}
+{#                            var Count = 0;#}
+{#                            $("#custTb tr td input[name='custBank']").each(function (index, ele) {#}
+{#                                var ele_val = $(ele).val();#}
+{##}
+{#                                if (ele_val) {#}
+{#                                    Count += 1;#}
+{#                                }#}
+{#                            });#}
+{##}
+{#                            var Count2 = 0;#}
+{#                            $("#custTb tr td input[name='custSeq']").each(function (index, ele) {#}
+{#                                var ele_val = $(ele).val();#}
+{##}
+{#                                if (ele_val) {#}
+{#                                    Count2 += 1;#}
+{#                                }#}
+{#                            });#}
+{##}
+{#                            if (Count2 > Count) {#}
+{#                                var custArr = [];#}
+{#                                for (var i = 0; i < Count2; i++) {#}
+{##}
+{#                                    var custBank = $('#custBank_' + i).val();#}
+{#                                    var custActNum = $('#custActNum_' + i).val();#}
+{#                                    var custSeq = $('#custSeq_' + i).val();#}
+{##}
+{#                                    if (custSeq) {#}
+{#                                        let data = {#}
+{#                                            'custBank': custBank,#}
+{#                                            'custActNum': custActNum,#}
+{#                                            'custSeq': custSeq,#}
+{#                                        };#}
+{#                                        custArr.push(data);#}
+{#                                    }#}
+{#                                }#}
+{#                                formData.append('custArrList', JSON.stringify(custArr))#}
+{#                            } else {#}
+{#                                var custArr = [];#}
+{#                                for (var i = 0; i < Count; i++) {#}
+{##}
+{#                                    var custBank = $('#custBank_' + i).val();#}
+{#                                    var custActNum = $('#custActNum_' + i).val();#}
+{#                                    var custSeq = $('#custSeq_' + i).val();#}
+{##}
+{#                                    if (custBank) {#}
+{#                                        let data = {#}
+{#                                            'custBank': custBank,#}
+{#                                            'custActNum': custActNum,#}
+{#                                            'custSeq': custSeq,#}
+{#                                        };#}
+{#                                        custArr.push(data);#}
+{#                                    }#}
+{#                                }#}
+{#                                formData.append('custArrList', JSON.stringify(custArr))#}
+{#                            }#}
+
+
+
+                            {#var Count = 0;#}
+                            {#$("#custTb tr td input[name='custBank']").each(function (index, ele) {#}
+                            {#    var ele_val = $(ele).val();#}
+                            {##}
+                            {#    if(ele_val){#}
+                            {#        Count += 1;#}
+                            {#    }#}
+{#                            })#}
+                            {##}
+                            {#var Count2 = 0;#}
+                            {#$("#custTb tr td input[name='custSeq']").each(function (index, ele) {#}
+                            {#    var ele_val = $(ele).val();#}
+                            {##}
+                            {#    if(ele_val){#}
+                            {#        Count2 += 1;#}
+                            {#    }#}
+{#                            })#}
+                            {##}
+                            {#if(Count2 > Count){#}
+                            {#    var custArr = [];#}
+                            {#    for (var i = 0; i < Count2; i++) {#}
+                            {##}
+                            {#        var custBank = $('#custBank_' + i).val();#}
+                            {#        var custActNum = $('#custActNum_' + i).val();#}
+                            {#        var custSeq = $('#custSeq_' + i).val();#}
+                            {##}
+                            {#        if (custSeq) {#}
+                            {#            let data = {#}
+                            {#                'custBank': custBank,#}
+                            {#                'custActNum': custActNum,#}
+                            {#                'custSeq': custSeq,#}
+                            {#            };#}
+                            {#            custArr.push(data);#}
+                            {#        }#}
+                            {#    }#}
+                            {#    formData.append('custArrList', JSON.stringify(custArr))#}
+{#                            })#}
+                            {#else{#}
+                            {#    var custArr = [];#}
+                            {#    for (var i = 0; i < Count; i++) {#}
+                            {##}
+                            {#        var custBank = $('#custBank_' + i).val();#}
+                            {#        var custActNum = $('#custActNum_' + i).val();#}
+                            {#        var custSeq = $('#custSeq_' + i).val();#}
+                            {##}
+                            {#        if (custBank) {#}
+                            {#            let data = {#}
+                            {#                'custBank': custBank,#}
+                            {#                'custActNum': custActNum,#}
+                            {#                'custSeq': custSeq,#}
+                            {#            };#}
+                            {#            custArr.push(data);#}
+                            {#        }#}
+                            {#    }#}
+                            {#    formData.append('custArrList', JSON.stringify(custArr))#}
+{#                            }#}
+                        {#$("#subTb").append(#}
+                        {#    "<tr id='#subTr' class='subTr_tr'>" +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-center p-0' type='text' id='custBank_" + i + "' name='custBank' value='" + list2[i][0] + "'/></td>" +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + i + "' name='custActNum' value='" + list2[i][1] + "'/></td>" +#}
+                        {#    "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + i + "' name='custSeq' value='" + list2[i][2] + "'/></td>" +#}
+                        {#    "</tr> ");#}
+
+                    {#for (var j = 0; j < 4; j++) {#}
+                    {#    $("#subTb").append(#}
+                    {#        "<tr id='#subTr' class='subTr_tr'>" +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custBank_" + j + "' name='custBank'/></td>" +#}
+                    {#        "<td class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custActNum_" + j + "' name='custActNum'/></td>" +#}
+                    {#        "<td hidden class='text-center p-1' style='font-size: 0.85rem'><input style='height: 2rem; font-size: 0.8rem' class='form-control text-start p-0' type='text' id='custSeq_" + j + "' name='custSeq'/></td>" +#}
+                    {#        "</tr> ");#}
+{#                    }#}
+
+                    {#$("#custBank_" + i).append(custBankTxt);#}

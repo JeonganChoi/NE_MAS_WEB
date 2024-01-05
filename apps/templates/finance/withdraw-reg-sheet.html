@@ -96,7 +96,7 @@
                             <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
                               <tr>
                                 <th style="font-size: 0.85rem" class="p-1">선택</th>
-                                <th style="font-size: 0.85rem" class="p-1">거래일시</th>
+                                <th style="font-size: 0.85rem" class="p-1">사용일자</th>
                                 <th style="font-size: 0.85rem" class="p-1">적용년월</th>
                                 <th style="font-size: 0.85rem" class="p-1">계정 명</th>
                                 <th style="font-size: 0.85rem" class="p-1">회계 계정명</th>
@@ -124,11 +124,11 @@
                 <div class="card border-0 shadow-xs height-600">
                     <form class="form-control border-0 shadow-none dropzone p-0" id="dropzone" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="card-body">
-                            <div class="form-group">
+                        <div class="card-body mb-0 pb-0 height-500">
+                            <div class="form-group p-0">
                                 <div class="row">
                                     <div class="col-4">
-                                        <label class="text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금 구분</label>
+                                        <label class="text-sm text-danger"><i class="fa fa-edit me-2"></i>입/출금 구분</label>
                                         <select class="form-control border border-light rounded-1 text-center bg-danger-soft p-1" name="cboWitGbn" id="cboWitGbn" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 method">
@@ -136,8 +136,8 @@
                                         <select class="form-control border border-light rounded-1 bg-danger-soft text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4">
-                                        <label class="text-sm"><i class="far fa-calendar me-2"></i>사용 일자</label>
-                                        <input class="form-control text-center bg-danger-soft" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
+                                        <label class="text-sm" id="txtRegDate"><i class="fa fa-calendar me-2"></i>사용 일자</label>
+                                        <input class="form-control text-center rounded-1 bg-danger-soft p-1" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -145,43 +145,42 @@
                                         <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1 bg-danger-soft" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-8">
                                         <label class="text-sm"><i class="fa fa-edit me-2"></i>제 목</label>
                                         <input class="form-control text-start bg-danger-soft" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="form-group basic">
+                            <div class="form-group p-0 mt-4 basic">
                                 <div class="row">
-                                    <div class="col-6 txtUser">
-                                        <label class="text-sm"><i class="fa fa-edit me-2"></i>사용처</label>
+                                    <div class="col-4 txtUser">
+                                        <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>사용처</label>
                                         <input class="form-control text-start" type="text" id="txtWhere" name="txtWhere" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <div class="col-6 cboCust">
-                                        <label class="text-sm"><i class="fa fa-edit me-2"></i>거래처</label>
+                                    <div class="col-4 cboCust">
+                                        <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>거래처</label>
                                         <select class="form-control text-center p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-6">
-                                        <label class="text-sm"><i class="fa fa-edit me-2"></i>금액</label>
+                                    <div class="col-4">
+                                        <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>금액</label>
                                         <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4 cboBank">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>은행</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboBank" id="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 cardName">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>카드 명</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>카드 명</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboCardName" id="cboCardName" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 cboCard">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>카드 번호</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>카드 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 cboAct">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>계좌번호</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>계좌번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                 </div>
@@ -193,21 +192,21 @@
                                 </div>
                                 <div class="row mt-2 txtDate">
                                     <div class="col-4">
-                                        <label class="text-sm"><i class="far fa-calendar me-2"></i>적용 년월</label>
+                                        <label class="text-sm"><i class="far fa-calendar me-2" style="font-size: 0.7rem"></i>적용 년월</label>
                                         <input class="form-control text-center" type="month" id="txtApplyDate" name="txtApplyDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-4">
-                                        <label class="text-sm" id="dateLabel"><i class="far fa-calendar me-2"></i>결재 예정 일자</label>
+                                        <label class="text-sm" id="dateLabel"><i class="fa fa-calendar me-2" style="font-size: 0.7rem"></i>결재 예정 일자</label>
                                         <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>세부 내용</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>세부 내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-6 writer">
-                                        <label class="mt-2 text-sm"><i class="fas fa-edit me-2"></i>수령인 정보</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>수령인 정보</label>
                                         <input class="form-control text-start" type="text" id="txtInfo" name="txtInfo" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -215,33 +214,33 @@
                             <div class="form-group replace">
                                 <div class="row">
                                     <div class="col-4">
-                                        <label class="text-sm"><i class="far fa-calendar me-2"></i>등록 일자</label>
+                                        <label class="text-sm"><i class="fa fa-calendar me-2" style="font-size: 0.7rem"></i>등록 일자</label>
                                         <input class="form-control text-center" type="date" id="txtWitRegDate2" name="txtWitRegDate2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>출금 은행</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>출금 은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboOutBank" id="cboOutBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>출금 계좌 번호</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>출금 계좌 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboOutAct" id="cboOutAct" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>입금 은행</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>입금 은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboInBank" id="cboInBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-6">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>입금 계좌 번호</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>입금 계좌 번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboInAct" id="cboInAct" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4">
-                                        <i class="far fa-calendar me-2"></i><label class="mt-2 text-sm" id="dateLabel">대체 일자</label>
+                                        <i class="far fa-calendar me-2" style="font-size: 0.7rem"></i><label class="mt-2" id="dateLabel">대체 일자</label>
                                         <input class="form-control text-center" type="date" id="txtOffDate" name="txtOffDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div class="col-6">
@@ -260,6 +259,8 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-footer mt-0 pt-0">
                             <div class="form-group">
                                 <div class="row mt-3">
                                     <div class="col-6 text-start">
@@ -1593,7 +1594,7 @@
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
             }
-            {#계산서#}
+            {#세금계산서#}
             else if(method == '2'){
                 $('.txtUser').hide();
                 $('.cboCard').hide();
@@ -1602,9 +1603,11 @@
                 $('.cboBank').show();
                 $('.cboAct').show();
                 $('.cboCust').show();
-                $('.line').show();
+                $('.line').show();``
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
+                document.getElementById('txtRegDate').innerHTML = "발행일자";
+
             }
             {#현금#}
             else if(method == '1'){

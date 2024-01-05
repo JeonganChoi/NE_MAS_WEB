@@ -73,7 +73,7 @@ def custViews_search(request):
             cursor.execute(
                 " SELECT CUST_BKCD, CUST_ACNUM, SEQ "
                 " FROM MIS1TB003_D "
-                " WHERE CUST_NBR LIKE '%" + custCode + "%' AND ICUST = '" + str(iCust) + "' ")
+                " WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
             custBank = cursor.fetchall()
 
             # 업체 분류 - 콤보박스
@@ -264,7 +264,7 @@ def chkCust(request):
         return JsonResponse({"chkCust": chkCust})
 
 def custViews_save(request):
-    custArray = json.loads(request.POST.get('custArrList'))
+    # custArray = json.loads(request.POST.get('custArrList'))
     custName = request.POST.get('txtCustName')
     custCode = request.POST.get('txtCustCode')
     custCeo = request.POST.get('txtCeo')
@@ -281,6 +281,9 @@ def custViews_save(request):
     cboApv = request.POST.get('cboApv')
     cboDay = request.POST.get('cboDay')
     creUser = request.POST.get('txtUser')
+    custBank = request.POST.get('custBank')
+    custAct = request.POST.get('custAct')
+    custSeq = request.POST.get('custSeq')
 
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
@@ -316,50 +319,82 @@ def custViews_save(request):
                            )
             connection.commit()
 
-        custArrayLists = list(filter(len, custArray))
-        for data in range(len(custArrayLists)):
-            if str(custArrayLists[data]["custSeq"]) != '' and str(custArrayLists[data]["custBank"]) == '' and str(custArrayLists[data]["custActNum"]) == '':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+                connection.commit()
+                result = cursor.fetchall()
+                print(result)
+
+            if (len(result) != 0):
                 with connection.cursor() as cursor:
                     cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
-                                   "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
+                                   "    AND SEQ = '" + str(custSeq) + "' AND ICUST = '" + str(iCust) + "' ")
                     connection.commit()
 
-            else:
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT CUST_NBR, SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
-                                   "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
-                    result = cursor.fetchall()
+            with connection.cursor() as cursor:
+                cursor.execute(" INSERT INTO MIS1TB003_D "
+                               "("
+                               "    CUST_NBR "
+                               "   ,CUST_BKCD "
+                               "   ,CUST_ACNUM "
+                               "   ,SEQ "
+                               "   ,ICUST"
+                               ") "
+                               "VALUES "
+                               "("
+                               "    '" + str(custCode) + "' "
+                               "    ,'" + str(custBank) + "' "
+                               "    ,'" + str(custAct) + "' "
+                               "    ,'1'"
+                               "    ,'" + str(iCust) + "' "
+                               ") ")
+                connection.commit()
 
-                if result:
-                    custNbr = result[0][0]
-                    custSeq = result[0][1]
-                    with connection.cursor() as cursor:
-                        cursor.execute(" UPDATE MIS1TB003_D SET "
-                                       "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
-                                       "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
-                                       " WHERE CUST_NBR = '" + custNbr + "'"
-                                       " AND ICUST = '" + str(iCust) + "'"
-                                       " AND SEQ = '" + str(custSeq) + "'")
-                        connection.commit()
-                else:
-                    with connection.cursor() as cursor:
-                        cursor.execute(" INSERT INTO MIS1TB003_D "
-                                       "("
-                                       "    CUST_NBR "
-                                       "   ,CUST_BKCD "
-                                       "   ,CUST_ACNUM "
-                                       "   ,SEQ "
-                                       "   ,ICUST"
-                                       ") "
-                                       "VALUES "
-                                       "("
-                                       "    '" + str(custResult) + "' "
-                                       "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
-                                       "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
-                                       "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM MIS1TB003_D A WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "') "
-                                       "    ,'" + str(iCust) + "' "
-                                       ") ")
-                        connection.commit()
+        # custArrayLists = list(filter(len, custArray))
+        # for data in range(len(custArrayLists)):
+        #     if str(custArrayLists[data]["custSeq"]) != '' and str(custArrayLists[data]["custBank"]) == '' and str(custArrayLists[data]["custActNum"]) == '':
+        #         with connection.cursor() as cursor:
+        #             cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
+        #                            "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
+        #             connection.commit()
+        #
+        #     else:
+        #         with connection.cursor() as cursor:
+        #             cursor.execute(" SELECT CUST_NBR, SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
+        #                            "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
+        #             result = cursor.fetchall()
+        #
+        #         if result:
+        #             custNbr = result[0][0]
+        #             custSeq = result[0][1]
+        #             with connection.cursor() as cursor:
+        #                 cursor.execute(" UPDATE MIS1TB003_D SET "
+        #                                "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
+        #                                "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
+        #                                " WHERE CUST_NBR = '" + custNbr + "'"
+        #                                " AND ICUST = '" + str(iCust) + "'"
+        #                                " AND SEQ = '" + str(custSeq) + "'")
+        #                 connection.commit()
+        #         else:
+        #             with connection.cursor() as cursor:
+        #                 cursor.execute(" INSERT INTO MIS1TB003_D "
+        #                                "("
+        #                                "    CUST_NBR "
+        #                                "   ,CUST_BKCD "
+        #                                "   ,CUST_ACNUM "
+        #                                "   ,SEQ "
+        #                                "   ,ICUST"
+        #                                ") "
+        #                                "VALUES "
+        #                                "("
+        #                                "    '" + str(custResult) + "' "
+        #                                "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
+        #                                "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
+        #                                "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM MIS1TB003_D A WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "') "
+        #                                "    ,'" + str(iCust) + "' "
+        #                                ") ")
+        #                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 
@@ -424,50 +459,35 @@ def custViews_save(request):
 
             connection.commit()
 
-        custArrayLists = list(filter(len, custArray))
-        for data in range(len(custArrayLists)):
-            if str(custArrayLists[data]["custSeq"]) != '' and str(custArrayLists[data]["custBank"]) == '' and str(custArrayLists[data]["custActNum"]) == '':
-                with connection.cursor() as cursor:
-                    cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
-                                   "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
-                    connection.commit()
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            connection.commit()
+            result = cursor.fetchall()
 
-            else:
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT CUST_NBR, SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custnumber) + "' "
-                                   "    AND SEQ = '" + str(custArrayLists[data]["custSeq"]) + "' AND ICUST = '" + str(iCust) + "' ")
-                    result = cursor.fetchall()
+        if (len(result) != 0):
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
+                               "    AND SEQ = '" + str(custSeq) + "' AND ICUST = '" + str(iCust) + "' ")
+                connection.commit()
 
-                if result:
-                    custNbr = result[0][0]
-                    custSeq = result[0][1]
-                    with connection.cursor() as cursor:
-                        cursor.execute(" UPDATE MIS1TB003_D SET "
-                                       "        CUST_BKCD = '" + str(custArrayLists[data]["custBank"]) + "' "
-                                       "       , CUST_ACNUM = '" + str(custArrayLists[data]["custActNum"]) + "' "
-                                       " WHERE CUST_NBR = '" + custNbr + "'"
-                                       " AND ICUST = '" + str(iCust) + "'"
-                                       " AND SEQ = '" + str(custSeq) + "'")
-                        connection.commit()
-                else:
-                    with connection.cursor() as cursor:
-                        cursor.execute(" INSERT INTO MIS1TB003_D "
-                                       "("
-                                       "    CUST_NBR "
-                                       "   ,CUST_BKCD "
-                                       "   ,CUST_ACNUM "
-                                       "   ,SEQ "
-                                       "   ,ICUST"
-                                       ") "
-                                       "VALUES "
-                                       "("
-                                       "    '" + str(custnumber) + "' "
-                                       "    ,'" + str(custArrayLists[data]["custBank"]) + "' "
-                                       "    ,'" + str(custArrayLists[data]["custActNum"]) + "' "
-                                       "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM MIS1TB003_D A WHERE CUST_NBR = '" + str(custnumber) + "' AND ICUST = '" + str(iCust) + "') "
-                                       "    ,'" + str(iCust) + "' "
-                                       ") ")
-                        connection.commit()
+        with connection.cursor() as cursor:
+            cursor.execute(" INSERT INTO MIS1TB003_D "
+                           "("
+                           "    CUST_NBR "
+                           "   ,CUST_BKCD "
+                           "   ,CUST_ACNUM "
+                           "   ,SEQ "
+                           "   ,ICUST"
+                           ") "
+                           "VALUES "
+                           "("
+                           "    '" + str(custnumber) + "' "
+                           "    ,'" + str(custBank) + "' "
+                           "    ,'" + str(custAct) + "' "
+                           "    ,'1'"
+                           "    ,'" + str(iCust) + "' "
+                           ") ")
+            connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 
