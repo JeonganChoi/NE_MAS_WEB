@@ -51,13 +51,13 @@
                             </div>
                         </div>
                         <div class="row p-0">
-                            <div class="col-lg-3 col-3">
+                            <div hidden class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>카드명</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCard" id="inputCard" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-3">
+                            <div hidden class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>카드번호</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCardNum" id="inputCardNum" style="font-size: 0.8rem; height: 2rem"></select>
@@ -624,6 +624,7 @@
     </script>
 
     <script>
+        {#  화면뜰때 #}
         $(document).ready(function () {
             var inputBank = "";
             var cboCust = "";
@@ -793,8 +794,17 @@
                         }
                     }
 
+                    var combolist10 = data.cboCard;
+                    for (var i = 0; i < combolist10.length; i++) {
+                        if (combolist10[i][0] == inputCardNum) {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist10[i][0] + "' selected>" + combolist10[i][1] + "</option>";
+                        } else {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist10[i][0] + "'>" + combolist10[i][1] + "</option>";
+                        }
+                    }
 
                     $("#inputCard").append(inputCardTxt);
+                    $("#inputCardNum").append(inputCardNumTxt);
                     $("#cboWitCust").append(cboWitCustTxt);
                     $("#cboWitGbn").append(cboWitGbnTxt);
                     $("#cboWitMethod").append(cboWitMethodTxt);
@@ -870,7 +880,6 @@
                             if (list[i][0] == '1') {
                                 total -= list[i][3]
                             }
-
                             var check = "";
                             if(list[i][9] == 'Y' ){
                                 check = '승인';
@@ -1019,11 +1028,13 @@
             var eDate = document.getElementById('inputEndDate').value;
             var inputBank = document.getElementById('inputBank').value;
             var cboAct = document.getElementById('inputAct').value;
+            var inputCard = document.getElementById('inputCard').value;
+            var inputCardNum = document.getElementById('inputCardNum').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "inputBank": inputBank, "cboAct": cboAct}
+            let data = {"strDate": strDate, "endDate": endDate, "inputBank": inputBank, "cboAct": cboAct, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",
@@ -1153,8 +1164,31 @@
 
             var inputCard = document.getElementById('inputCard').value;
 
-            let data = {"inputBank": inputCard}
+            let data = {"cboCardName": inputCard}
 
+            $.ajax({
+                type: "post",
+                url: '{% url "cboAct" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboCard;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputCardNum) {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#inputCardNum").append(inputCardNumTxt);
+
+                }
+            });
 
         });
 
@@ -1963,7 +1997,7 @@
             });
         });
 
-
+        {# 카드종류 선택시 계좌명 바인딩 #}
         $('#cboWitCard').change(function () {
 
             var cboWitActNum = "";
@@ -2048,7 +2082,8 @@
 
         });
 
-       $('#cboWitCust').change(function () {
+        {# 거래처 선택시 계좌명 바인딩 #}
+        $('#cboWitCust').change(function () {
 
             var method = '2'
             var cardNum = "";
@@ -2143,8 +2178,8 @@
 
        });
 
-
-       $('#cboWitActNum').change(function () {
+        {# 계좌번호 선택시 계좌명 바인딩 #}
+        $('#cboWitActNum').change(function () {
 
             var method = document.getElementById('cboWitMethod').value
             var cardNum = "";
@@ -2514,7 +2549,7 @@
             })
         });
 
-
+        {# 이미지 삭제 버튼 클릭 #}
         $('#btnImgDlt').click(function() {
             $('#fileNm').empty();
             $('#file').val("");

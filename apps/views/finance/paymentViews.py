@@ -66,6 +66,8 @@ def receivePay_search(request):
     endDate = request.POST.get('endDate')
     inputBank = request.POST.get('inputBank')
     cboAct = request.POST.get('cboAct')
+    inputCard = request.POST.get('inputCard')
+    inputCardNum = request.POST.get('inputCardNum')
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 

@@ -258,7 +258,16 @@
             var pDate = document.getElementById('inputDate').value
             var perDate = pDate.replace(/\-/g, '')
 
-            let data = {'perDate': perDate}
+            var custCode = "";
+            var offSet = "";
+            var permitGbn = "";
+            var bankCode = "";
+            var actCode = "";
+            var inputCard = "";
+            var inputCardNum = "";
+
+
+            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",
@@ -270,7 +279,7 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
-                    alert(list)
+
                     var total = 0;
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
@@ -290,6 +299,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
                             "</tr> ");
@@ -433,7 +443,7 @@
             });
         });
 
-
+        {# 상계 체크박스 선택시 #}
         $(document).on('change', '#selectTb tbody tr td input.chkSetOff', function () {
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(0).text()
@@ -447,6 +457,7 @@
             var acNme = tr.children().eq(9).text()
             var acSeqn = tr.children().eq(11).text()
             var acIogb = tr.children().eq(12).text()
+            var acGubn = tr.children().eq(13).text()
 
             var count = $(this).closest('tr').prevAll().length;
 
@@ -516,6 +527,7 @@
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                        "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                         "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
@@ -563,6 +575,7 @@
             }
         });
 
+        {# 승인 체크박스 선택시 #}
         $(document).on('change', '#selectTb tbody tr td input.chkPer', function () {
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(0).text()
@@ -576,9 +589,8 @@
             var acNme = tr.children().eq(9).text()
             var acSeqn = tr.children().eq(11).text()
             var acIogb = tr.children().eq(12).text()
+            var acGubn = tr.children().eq(13).text()
 
-            alert(acBank)
-            alert(acNum)
 
             var count = $(this).closest('tr').prevAll().length;
 
@@ -648,6 +660,7 @@
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                        "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                         "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
@@ -710,6 +723,14 @@
             var inputCard = document.getElementById('inputCard').value;
             var inputCardNum = document.getElementById('inputCardNum').value;
 
+            if(inputCard != '' && inputCardNum == ''){
+                alert('카드번호를 선택해주세요.')
+                return false
+            }
+            if(bankCode != '' && actCode == ''){
+                alert('계좌번호를 선택해주세요.')
+                return false
+            }
 
             let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
@@ -742,6 +763,7 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
                             "</tr> ");
@@ -774,6 +796,7 @@
                 var acIogb = $('#acIogb_' + i).text();
                 var acAmts = $('#acAmts_' + i).text();
                 var acNum = $('#acNumber_' + i).text();
+                var acGubn = $('#acGubn_' + i).text();
 
                 if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
@@ -805,7 +828,8 @@
                     'acSeqn': acSeqn,
                     'acIogb': acIogb,
                     'acNum': acNum,
-                    'acAmts': acAmts
+                    'acAmts': acAmts,
+                    'acGubn': acGubn
                 };
                 pmtArr.push(data);
             }
