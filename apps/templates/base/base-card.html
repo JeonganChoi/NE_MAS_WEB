@@ -114,7 +114,7 @@
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboActNum" id="cboActNum"></select>
                             </div>
                             <div class="col-6">
-                                <label class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제 일자</label>
+                                <label id="txtCboDay" class="mt-2" style="font-size: 0.8rem"><i class="ni ni-calendar-grid-58 me-2 text-dark text-sm"></i>결제 일자</label>
                                 <select style="height: 2rem; font-size: 0.8rem" class="form-control border border-light rounded-1 text-center p-0" name="cboDay" id="cboDay"></select>
                             </div>
                         </div>
@@ -331,10 +331,11 @@
 
     {# 입력란 은행명에 따른 조회 #}
     $('#cboType').change(function () {
-        var cboBank = document.getElementById('cboType').value;
-        if(cboBank == '2'){
+        var cboType = document.getElementById('cboType').value;
+        if(cboType == '2'){
             {#document.getElementById('cboDay').readOnly = true;#}
-            $("#cboDay").attr("readonly",true);
+            $("#txtCboDay").hide();
+            $("#cboDay").hide();
         }
         else{
             {#document.getElementById('cboDay').readOnly = false;#}

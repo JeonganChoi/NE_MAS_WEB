@@ -1488,8 +1488,37 @@ def paymentViews_search(request):
         return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName})
 
 
+def cboCardType_search(request):
+    cardType = request.POST.get("cardType")
+    cardName = request.POST.get("cardName")
+    creUser = request.session.get("userId")
+    iCust = request.session.get("USER_ICUST")
+
+    if cardType != '':
+        with connection.cursor() as cursor:
+            cursor.execute("  SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B "
+                            " ON A.CARDTYPE = B.RESKEY "
+                            " AND B.RECODE = 'COC' "
+                            " WHERE A.GBN = '" + str(cardType) + "' ")
+            cboCardName = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE GBN = '" + str(cardType) + "' AND ICUST = '" + str(iCust) + "' ")
+            cboCardGbn = cursor.fetchall()
+
+        return JsonResponse({"cboCardName": cboCardName, "cboCardGbn": cboCardGbn})
+
+    if cardName != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDTYPE = '" + str(cardName) + "' GBN = '" + str(cardType) + "' AND ICUST = '" + str(iCust) + "' ")
+            cboCardGbn = cursor.fetchall()
+
+        return JsonResponse({"cboCardGbn": cboCardGbn})
+
+
 def cboActNum_search(request):
     cboCardName = request.POST.get("cboCardName")
+    cboCardType = request.POST.get("cboCardType")
     cboBank = request.POST.get("cboBank")
     card = request.POST.get("card")
     creUser = request.session.get("userId")
@@ -1497,7 +1526,7 @@ def cboActNum_search(request):
 
     if cboCardName:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE CARDTYPE = '" + str(cboCardName) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE GBN = '" + str(cboCardType) + "' AND CARDTYPE = '" + str(cboCardName) + "' AND ICUST = '" + str(iCust) + "' ")
             cboCard = cursor.fetchall()
 
         return JsonResponse({"cboCard": cboCard})
