@@ -213,11 +213,11 @@
                                     </div>
                                 </div>
                                 <div class="row mt-2 txtDate">
-                                    <div class="col-4">
+                                    <div class="col-4 txtApply">
                                         <label class="text-sm"><i class="far fa-calendar me-2" style="font-size: 0.7rem"></i>적용 년월</label>
                                         <input class="form-control text-center" type="month" id="txtApplyDate" name="txtApplyDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-4 txtExpect">
                                         <label class="text-sm" id="dateLabel"><i class="fa fa-calendar me-2" style="font-size: 0.7rem"></i>결재 예정 일자</label>
                                         <input class="form-control text-center" type="date" id="txtExDate" name="txtExDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
@@ -1495,6 +1495,8 @@
                                     $('.cboCard').show();
                                     $('.cboAct').show();
                                     $('.writer').hide();
+                                    $('.txtApply').hide();
+                                    $('.txtExpect').hide();
                                     $('.line').hide();
                                 }
                                 else if(cboWitMethod == '3'){
@@ -1506,6 +1508,8 @@
                                     $('.cboAct').show();
                                     $('.cboCust').hide();
                                     $('.writer').hide();
+                                    $('.txtApply').show();
+                                    $('.txtExpect').show();
                                     $('.line').show();
                                 }
                                 else if(cboWitMethod == '2'){
@@ -1516,6 +1520,8 @@
                                     $('.cboBank').hide();
                                     $('.cboAct').hide();
                                     $('.cboCust').show();
+                                    $('.txtApply').show();
+                                    $('.txtExpect').show();
                                     $('.line').show();
                                 }
                                 else if(cboWitMethod == '1'){
@@ -1526,6 +1532,8 @@
                                     $('.writer').show();
                                     $('.cardName').hide();
                                     $('.cboCust').hide();
+                                    $('.txtApply').hide();
+                                    $('.txtExpect').hide();
                                     $('.line').show();
                                 }
                         }
@@ -1860,6 +1868,19 @@
             {# 체크카드 #}
             if(method == '4'){
 
+                $('.cboCust').hide();
+                $('.cboBank').hide();
+                $('.cardName').show();
+                $('.cboCard').show();
+                $('.cboAct').show();
+                $('.writer').hide();
+                $('.txtUser').show();
+                $('.txtApply').hide();
+                $('.txtExpect').hide();
+                $('.line').hide();
+                $("#txtExDate").val("");
+                $("#cboWitActNum").val("");
+
                 var cboCardName = "";
                 var cboWitCard = "";
                 var cboCardNameTxt = "<option value=''>:: 선택 ::</option>";
@@ -1906,6 +1927,9 @@
                     }
                 });
 
+            }
+            {# 신용카드 #}
+            else if(method == '3'){
 
                 $('.cboCust').hide();
                 $('.cboBank').hide();
@@ -1914,14 +1938,12 @@
                 $('.cboAct').show();
                 $('.writer').hide();
                 $('.txtUser').show();
-                $('.line').hide();
+                $('.txtApply').show();
+                $('.txtExpect').show();
+                $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
 
-
-            }
-            {# 신용카드 #}
-            else if(method == '3'){
 
                 var cboCardName = "";
                 var cboWitCard = "";
@@ -1969,17 +1991,6 @@
                 });
 
 
-                $('.cboCust').hide();
-                $('.cboBank').hide();
-                $('.cardName').show();
-                $('.cboCard').show();
-                $('.cboAct').show();
-                $('.writer').hide();
-                $('.txtUser').show();
-                $('.line').show();
-                $("#txtExDate").val("");
-                $("#cboWitActNum").val("");
-
             }
             {#세금계산서#}
             else if(method == '2'){
@@ -1990,6 +2001,8 @@
                 $('.cboBank').hide();
                 $('.cboAct').hide();
                 $('.cboCust').show();
+                $('.txtApply').show();
+                $('.txtExpect').show();
                 $('.line').show();``
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2005,6 +2018,8 @@
                 $('.writer').show();
                 $('.txtUser').show();
                 $('.cardName').hide();
+                $('.txtApply').hide();
+                $('.txtExpect').hide();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2272,7 +2287,7 @@
                                     var exDate = year + "-" + month + "-" + date
 
                                 }
-                                alert(exDate)
+
                                 document.getElementById("txtExDate").value = exDate;
 
                             }
