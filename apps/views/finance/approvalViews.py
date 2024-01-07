@@ -134,8 +134,7 @@ def approvalViews_search(request):
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' "
-                           " AND B.RTNGBN != 'N'")
+                           " AND B.OPT = 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -158,7 +157,7 @@ def approvalSubViews_search(request):
                            " WHERE A.ACDATE = '" + str(ioDate) + "' "
                            " AND A.ACSEQN = '" + str(acSeqn) + "' "
                            " AND A.ACIOGB = '" + str(acIogb) + "' "
-                           " AND A.EMP_NBR = '" + empNbr + "' "
+                           " AND A.EMP_NBR = '" + str(empNbr) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' "
                            " ORDER BY SEQ ASC ")
             subresult = cursor.fetchall()
@@ -183,27 +182,27 @@ def approvalSubViews_search(request):
 
             # 거래처
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + iCust + "' ")
+            cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
             cboCust = cursor.fetchall()
 
             # 입출금구분
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + iCust + "' ORDER BY RESKEY ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
             cboGgn = cursor.fetchall()
 
             # 관리계정
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + iCust + "' ORDER BY MCODE ASC ")
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ASC ")
             cboMCode = cursor.fetchall()
 
             # 결제방법
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + iCust + "' ORDER BY RESNAM ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESNAM ")
             cboPay = cursor.fetchall()
 
             # 계좌번호
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + iCust + "' ")
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
             cboAcnumber = cursor.fetchall()
 
         return JsonResponse({"subList": subresult, "mainList": mainresult, "cboCust": cboCust, "cboGgn": cboGgn, "cboMCode": cboMCode, "cboPay": cboPay, "cboAcnumber": cboAcnumber})
@@ -218,6 +217,7 @@ def approvalViews_save(request):
     ioDate = request.POST.get("ioDate")
     acSeqn = request.POST.get("acSeqn")
     acIogb = request.POST.get("acIogb")
+    user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
     gbn = request.POST.get('gbn')
     opt = 'Y'
@@ -232,29 +232,29 @@ def approvalViews_save(request):
                            "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
                            "     AND ACSEQN = '" + str(seq) + "' "
                            "     AND SEQ = '" + str(acSeqn) + "' "
-                           "     AND EMP_NBR = '" + str(empNbr) + "' "
+                           "     AND EMP_NBR = '" + str(user) + "' "
                            "     AND ACIOGB = '" + str(acIogb) + "' "
                            "     AND ICUST = '" + str(iCust) + "'"
                            )
             connection.commit()
 
         # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
-        # with connection.cursor() as cursor:
-        #     cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' "
-        #                    "        AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
-        #                    "        AND OPT = 'N' ")
-        #     chk = cursor.fetchall()
-        #
-        #     if chk is '' or chk is None:
-        #         with connection.cursor() as cursor:
-        #             cursor.execute(" UPDATE SISACCTT SET "
-        #                            "     FIN_OPT = 'Y' "
-        #                            "     WHERE ACDATE = '" + str(ioDate) + "' "
-        #                            "     AND ACSEQN = '" + str(acSeqn) + "' "
-        #                            "     AND ACIOGB = '" + str(acIogb) + "' "
-        #                            "     AND ICUST = '" + str(iCust) + "'"
-        #                            )
-        #             connection.commit()
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                           "        AND ACSEQN = '" + str(seq) + "' AND SEQ = '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+                           "        AND OPT = 'N' ")
+            chk = cursor.fetchall()
+
+            if (len(chk) == 0):
+                with connection.cursor() as cursor:
+                    cursor.execute(" UPDATE SISACCTT SET "
+                                   "     FIN_OPT = 'Y' "
+                                   "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
+                                   "     AND ACSEQN = '" + str(seq) + "' "
+                                   "     AND ACIOGB = '" + str(acIogb) + "' "
+                                   "     AND ICUST = '" + str(iCust) + "'"
+                                   )
+                    connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
 
@@ -265,20 +265,38 @@ def approvalViews_save(request):
                            "                             AND SEQ >= '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
             empresult = cursor.fetchall()
 
-            payArrayLists = list(filter(len, empresult))
-            for data in range(len(payArrayLists)):
+        payArrayLists = list(filter(len, empresult))
+        for data in range(len(payArrayLists)):
+            with connection.cursor() as cursor:
+                cursor.execute("    UPDATE OSSIGN SET "
+                                   "     OPT = '" + str(opt) + "' "
+                                   "   , GBN = '" + str(gbn) + "' "
+                                   "   , RTNGBN = '" + str(rtnGbn) + "' "
+                                   "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                                   "     AND ACSEQN = '" + str(seq) + "' "
+                                   "     AND SEQ = '" + str(payArrayLists[data][1]) + "' "
+                                   "     AND EMP_NBR = '" + str(payArrayLists[data][0]) + "' "
+                                   "     AND ACIOGB = '" + str(acIogb) + "' "
+                                   "     AND ICUST = '" + str(iCust) + "'"
+                                   )
+                connection.commit()
+
+        # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                           "        AND ACSEQN = '" + str(seq) + "' AND SEQ = '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+                           "        AND OPT = 'N' ")
+            chk = cursor.fetchall()
+
+            if (len(chk) != 0):
                 with connection.cursor() as cursor:
-                    cursor.execute("    UPDATE OSSIGN SET "
-                                       "     OPT = '" + str(opt) + "' "
-                                       "   , GBN = '" + str(gbn) + "' "
-                                       "   , RTNGBN = '" + str(rtnGbn) + "' "
-                                       "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-                                       "     AND ACSEQN = '" + str(seq) + "' "
-                                       "     AND SEQ = '" + str(payArrayLists[data][1]) + "' "
-                                       "     AND EMP_NBR = '" + str(payArrayLists[data][0]) + "' "
-                                       "     AND ACIOGB = '" + str(acIogb) + "' "
-                                       "     AND ICUST = '" + str(iCust) + "'"
-                                       )
+                    cursor.execute(" UPDATE SISACCTT SET "
+                                   "     FIN_OPT = 'Y' "
+                                   "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
+                                   "     AND ACSEQN = '" + str(seq) + "' "
+                                   "     AND ACIOGB = '" + str(acIogb) + "' "
+                                   "     AND ICUST = '" + str(iCust) + "'"
+                                   )
                     connection.commit()
 
             return JsonResponse({'sucYn': "Y"})
@@ -295,7 +313,7 @@ def approvalViews_save(request):
                                "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
                                "     AND ACSEQN = '" + str(seq) + "' "
                                "     AND SEQ = '" + str(acSeqn) + "' "
-                               "     AND EMP_NBR = '" + str(empNbr) + "' "
+                               "     AND EMP_NBR = '" + str(user) + "' "
                                "     AND ACIOGB = '" + str(acIogb) + "' "
                                "     AND ICUST = '" + str(iCust) + "'"
                                )

@@ -1713,14 +1713,14 @@ def paymentViews_save(request):
 
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
+            cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
                            "        AND ICUST = '" + str(iCust) + "'  ")
             result = cursor.fetchall()
         #
         if (len(result) != 0):
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM OSSIGN "
-                               "   WHERE ACDATE = '" + str(acDate) + "'  "
+                               "   WHERE ACDATE = '" + str(ioDate) + "'  "
                                "   AND ACSEQN = '" + str(acSeqn) + "' "
                                "   AND ACIOGB = '" + str(acIogb) + "' "
                                "   AND ICUST = '" + iCust + "' "
@@ -1762,7 +1762,7 @@ def paymentViews_save(request):
                                "    ) "
                                "    VALUES "
                                "    ( "
-                               "     '" + str(acDate) + "' "
+                               "     '" + str(ioDate) + "' "
                                "     , '" + str(acSeqn) + "' "
                                "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
                                "     , '" + empArrayLists[data]["empNbr"] + "' "
@@ -1877,7 +1877,7 @@ def paymentViews_save(request):
                                        "    ) "
                                        "    VALUES "
                                        "    ( "
-                                       "     '" + str(acDate) + "' "
+                                       "     '" + str(ioDate) + "' "
                                        "     , '" + str(seq) + "' "
                                        "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' AND ICUST = '" + str(iCust) + "' ) "
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "

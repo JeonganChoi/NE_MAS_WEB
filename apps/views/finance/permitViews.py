@@ -228,12 +228,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -276,12 +276,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -324,12 +324,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -373,12 +373,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -421,12 +421,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -469,12 +469,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -517,12 +517,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -566,12 +566,12 @@ def permitViews_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "'")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -599,11 +599,11 @@ def cboActNum_search(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER, ACNUM_NAME FROM ACNUMBER WHERE ICUST = '" + iCust + "' ORDER BY ACNUMBER ")
+        cursor.execute(" SELECT ACNUMBER, ACNUM_NAME FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ORDER BY ACNUMBER ")
         cboActNum = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
         cboBank = cursor.fetchall()
 
         return JsonResponse({'cboActNum': cboActNum, "cboBank": cboBank})
@@ -616,7 +616,7 @@ def balanceChk(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(ACAMTS, 0) FROM ACBALANCE WHERE ACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
+        cursor.execute(" SELECT IFNULL(ACAMTS, 0) FROM ACBALANCE WHERE ACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
 
         if result:
@@ -625,7 +625,7 @@ def balanceChk(request):
             total = 0
     # 출금
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
+        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + str(iCust) + "' ")
         result2 = cursor.fetchall()
         outTotal = result2[0][0]
         if result:
@@ -656,9 +656,11 @@ def permitViews_save(request):
     permit = 'Y'
 
     if offSet != '' and offSet is not None:
-        balance = 0;
+        balance = 0
+        custBank = ""
+        custAct = ""
         pmtArrayLists = list(filter(len, pmtArray))
-        for data in range(len(pmtArrayLists)):
+        for data in range(1, len(pmtArrayLists)):
 
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT B.CUST_BKCD, B.CUST_ACNUM FROM SISACCTT A "
@@ -755,9 +757,9 @@ def permitViews_save(request):
 
     else:
         pmtArrayLists = list(filter(len, pmtArray))
-        for data in range(len(pmtArrayLists)):
-            custBank = "";
-            custBank = "";
+        for data in range(1, len(pmtArrayLists)):
+            custBank = ""
+            custAct = ""
             if pmtArrayLists[data]["acIogb"]:
                 amts = pmtArrayLists[data]["acAmts"]
                 acAmts = amts.replace(",", "")
