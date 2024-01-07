@@ -1302,6 +1302,7 @@
             var acMcode= split[4]
             var acSeqn= split[5]
             var cboGbn = "";
+            var method = "";
 
             let data = {'acIogb': acIogb, 'ioDate': ioDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn, "acSeqn": acSeqn}
 
@@ -1321,7 +1322,12 @@
                     if(data.chkEmp == ''){
                         check = 'N'
                     }
-
+                    if(data.chkAcGbn == '3'){
+                        cboGbn = '1'
+                    }
+                    if(data.chkAcGbn == '4'){
+                        cboGbn = '2'
+                    }
                 }
             });
 
@@ -1375,11 +1381,13 @@
                             cboWitActNum = list[i][12];
                             cboWitCard = list[i][22];
                             cboBank = list[i][26]
-                            cboCardName = list[i][26]
+                            cboCardName = list[i][31]
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
                                 if (combolist[i][0] == cboWitCust2) {
+                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                                }else{
                                     cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                                 }
                             }
@@ -1388,12 +1396,16 @@
                             for (var i = 0; i < combolist2.length; i++) {
                                 if (combolist2[i][0] == cboWitGbn) {
                                     cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                                }else{
+                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                                 }
                             }
 
                             var combolist3 = data.cboPay;
                             for (var i = 0; i < combolist3.length; i++) {
                                 if (combolist3[i][0] == cboWitMethod) {
+                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                                }else{
                                     cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
                                 }
                             }
@@ -1409,12 +1421,16 @@
                             for (var i = 0; i < combolist5.length; i++) {
                                 if (combolist5[i][0] == cboWitActNum) {
                                     cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                                }else{
+                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
                                 }
                             }
 
                             var combolist6 = data.cboCard;
                             for (var i = 0; i < combolist6.length; i++) {
                                 if (combolist6[i][0] == cboWitCard) {
+                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                                }else{
                                     cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
                                 }
                             }
@@ -1423,12 +1439,16 @@
                             for (var i = 0; i < combolist7.length; i++) {
                                 if (combolist7[i][0] == cboBank) {
                                     cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                                }else{
+                                    cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
                                 }
                             }
 
                             var combolist8 = data.cardName;
                             for (var i = 0; i < combolist8.length; i++) {
                                 if (combolist8[i][0] == cboCardName) {
+                                    cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
+                                }else{
                                     cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
                                 }
                             }
@@ -1559,11 +1579,14 @@
                                 cboWitActNum = list[i][12];
                                 cboWitCard = list[i][22];
                                 cboBank = list[i][26]
-                                cboCardName = list[i][26]
+                                cboCardName = list[i][31]
+
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
                                     if (combolist[i][0] == cboWitCust2) {
+                                        cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                                    }else{
                                         cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                                     }
                                 }
@@ -1572,12 +1595,16 @@
                                 for (var i = 0; i < combolist2.length; i++) {
                                     if (combolist2[i][0] == cboWitGbn) {
                                         cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                                    }else{
+                                        cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                                     }
                                 }
 
                                 var combolist3 = data.cboPay;
                                 for (var i = 0; i < combolist3.length; i++) {
                                     if (combolist3[i][0] == cboWitMethod) {
+                                        cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                                    }else{
                                         cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
                                     }
                                 }
@@ -1586,12 +1613,16 @@
                                 for (var i = 0; i < combolist4.length; i++) {
                                     if (combolist4[i][0] == cboAdminCode) {
                                         cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                                    }else{
+                                        cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
                                     }
                                 }
 
                                 var combolist5 = data.cboAcnumber;
                                 for (var i = 0; i < combolist5.length; i++) {
                                     if (combolist5[i][0] == cboWitActNum) {
+                                        cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                                    }else{
                                         cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
                                     }
                                 }
@@ -1600,6 +1631,8 @@
                                 for (var i = 0; i < combolist6.length; i++) {
                                     if (combolist6[i][0] == cboWitCard) {
                                         cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                                    }else{
+                                        cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
                                     }
                                 }
 
@@ -1607,12 +1640,16 @@
                                 for (var i = 0; i < combolist7.length; i++) {
                                     if (combolist7[i][0] == cboBank) {
                                         cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                                    }else{
+                                        cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
                                     }
                                 }
 
                                 var combolist8 = data.cardName;
                                 for (var i = 0; i < combolist8.length; i++) {
                                     if (combolist8[i][0] == cboCardName) {
+                                        cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
+                                    }else{
                                         cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
                                     }
                                 }
@@ -1711,7 +1748,8 @@
                                 cboWitActNum = list[i][12];
                                 cboWitCard = list[i][22];
                                 cboBank = list[i][26]
-                                cboCardName = list[i][26]
+                                cboCardName = list[i][31]
+
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
@@ -1806,6 +1844,8 @@
                                 $('.cboAct').show();
                                 $('.writer').hide();
                                 $('.line').hide();
+                                $('.txtApply').hide();
+                                $('.txtExpect').hide();
                             }
                             else if(cboWitMethod == '3'){
                                 $('.txtUser').show();
@@ -1816,6 +1856,8 @@
                                 $('.cboCust').hide();
                                 $('.writer').hide();
                                 $('.line').show();
+                                $('.txtApply').show();
+                                $('.txtExpect').show();
                             }
                             else if(cboWitMethod == '2'){
                                 $('.txtUser').hide();
@@ -1826,6 +1868,8 @@
                                 $('.cboAct').hide();
                                 $('.cboCust').show();
                                 $('.line').show();
+                                $('.txtApply').show();
+                                $('.txtExpect').show();
                             }
                             else if(cboWitMethod == '1'){
                                 $('.txtUser').show();
@@ -1836,6 +1880,8 @@
                                 $('.cardName').hide();
                                 $('.cboCust').hide();
                                 $('.line').show();
+                                $('.txtApply').hide();
+                                $('.txtExpect').hide();
                             }
 
                         }
@@ -1908,7 +1954,7 @@
                             if (combolist[i][0] == cboCardName) {
                                 cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                             } else {
-                                cboWitCardTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                                cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                             }
                         }
 
@@ -1972,16 +2018,17 @@
                             if (combolist[i][0] == cboCardName) {
                                 cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                             } else {
-                                cboWitCardTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                                cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                             }
                         }
 
+
                         var combolist2 = data.cboCardGbn;
-                        for (var i = 0; i < combolist2.length; i++) {
-                            if (combolist2[i][0] == cboWitCard) {
-                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        for (var j = 0; j < combolist2.length; j++) {
+                            if (combolist2[j][0] == cboWitCard) {
+                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist2[j][0] + "' selected>" + combolist2[j][0] + "</option>";
                             } else {
-                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist2[j][0] + "'>" + combolist2[j][0] + "</option>";
                             }
                         }
 
@@ -2003,7 +2050,7 @@
                 $('.cboCust').show();
                 $('.txtApply').show();
                 $('.txtExpect').show();
-                $('.line').show();``
+                $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
                 document.getElementById('txtRegDate').innerHTML = "발행일자";
@@ -2072,14 +2119,15 @@
                     }
 
                     $("#cboWitCard").append(cboWitCardTxt);
-
+                    $("#cboWitActNum").html("");
+                    $("#txtExDate").val("");
                 }
             });
 
         });
 
 
-        {# 결제방법 선택시 계좌명 바인딩 #}
+        {# 은행명 선택시 계좌명 바인딩 #}
         $('#cboBank').change(function () {
 
             var cboWitActNum = "";
@@ -2192,7 +2240,7 @@
                             }
                             var exDate = year + "-" + month + "-" + date
 
-                            document.getElementById("txtExDate").valueAsDate = exDate;
+                            document.getElementById("txtExDate").value = exDate;
                         }
                         else{
                             $("#txtExDate").val("");
@@ -2383,7 +2431,7 @@
        {#});#}
 
 
-        {# 결재방법 선택시 #}
+        {# 입/출금구분 선택시 #}
         $('#cboWitGbn').change(function () {
 
             var val = $(this).val();
@@ -2706,7 +2754,7 @@
 
             var cboWitGbn = document.getElementById('cboWitGbn').value
             {#var txtTitle = document.getElementById('txtTitle').value#}
-            {#var cboWitCust = document.getElementById('cboWitCust').value#}
+            var cboWitCust = document.getElementById('cboWitCust').value
             var txtWitRegDate = document.getElementById('txtWitRegDate').value
             {#var txtExDate = document.getElementById('txtExDate').value#}
             {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
@@ -2714,8 +2762,8 @@
             var cboAdminCode = document.getElementById('cboAdminCode').value
             {#var txtWitPrice = document.getElementById('txtWitPrice').value#}
             {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
-            {#var cboWitMethod = document.getElementById('cboWitMethod').value#}
-            {#var cboWitCard = document.getElementById('cboWitCard').value#}
+            var cboWitMethod = document.getElementById('cboWitMethod').value
+            var cboWitCard = document.getElementById('cboWitCard').value
             {#var txtWitRemark = document.getElementById('txtWitRemark').value#}
             {#var file = document.getElementById('file').value#}
 
@@ -2725,6 +2773,14 @@
             }
             if(cboAdminCode == ''){
                 alert('관리 계정을 입력해주세요.')
+                return false;
+            }
+            if(cboWitMethod == '2' && cboWitCust == ''){
+                alert('거래처를 선택해주세요.')
+                return false;
+            }
+            if(cboWitMethod == '3' && cboWitCard == ''){
+                alert('카드를 선택해주세요.')
                 return false;
             }
 
@@ -2932,7 +2988,7 @@
             $("#cboWitMethod").attr("disabled",false);
             $("#cboWitCust").attr("disabled",false);
             $("#cboAdminCode").attr("disabled",false);
-            $("#cboWitActNum").attr("disabled",true);
+            $("#cboWitActNum").attr("disabled",false);
             $("#cboWitCard").attr("disabled",false);
             $("#cboBank").attr("disabled",false);
             $("#cboCardName").attr("disabled",false);
