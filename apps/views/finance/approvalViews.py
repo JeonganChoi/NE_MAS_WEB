@@ -134,7 +134,8 @@ def approvalViews_search(request):
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' ")
+                           " AND B.OPT = 'N' "
+                           " AND B.RTNGBN != 'N'")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -260,8 +261,8 @@ def approvalViews_save(request):
     elif gbn == '2':
         rtnGbn = ''
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT EMP_NBR, SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' AND ACSEQN = '" + str(acSeqn) + "' "
-                           "                             AND SEQ >= '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT EMP_NBR, SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' AND ACSEQN = '" + str(seq) + "' "
+                           "                             AND SEQ >= '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
             empresult = cursor.fetchall()
 
             payArrayLists = list(filter(len, empresult))
