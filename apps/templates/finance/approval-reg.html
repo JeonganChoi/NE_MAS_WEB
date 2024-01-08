@@ -325,12 +325,13 @@
             var empNbr = document.getElementById('inputEmp').value
             var gbn = document.getElementById('inputGbn').value
 
-            document.getElementById('txtWitRegDate').valueAsDate = new Date
+            {#document.getElementById('txtWitRegDate').valueAsDate = new Date#}
+            var now = new Date
             {#document.getElementById('txtExDate').valueAsDate = new Date#}
             {##}
             {#var sDate = document.getElementById('txtWitRegDate').value#}
             {#var ioDate = sDate.replace(/\-/g, '')#}
-            var ioDate = document.getElementById('txtWitRegDate').value
+            var ioDate = now
 
             let data = {'empNbr': empNbr, 'gbn': gbn, "ioDate": ioDate}
 

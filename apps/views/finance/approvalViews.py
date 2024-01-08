@@ -41,7 +41,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ACDATE <= '" + str(ioDate) + "' "
+                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND B.OPT = 'N' AND B.RTNGBN != 'N' ")
             mainresult = cursor.fetchall()
@@ -64,7 +64,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ACDATE <= '" + str(ioDate) + "' "
+                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND B.OPT = 'Y' ")
             mainresult = cursor.fetchall()
@@ -87,7 +87,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ACDATE <= '" + str(ioDate) + "' "
+                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND A.FIN_OPT = 'N' AND B.RTNGBN != 'N' ")
             mainresult = cursor.fetchall()
@@ -110,7 +110,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ACDATE <= '" + str(ioDate) + "' "
+                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND A.FIN_OPT = 'Y' ")
             mainresult = cursor.fetchall()
@@ -132,7 +132,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ACDATE <= '" + str(ioDate) + "' "
+                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND B.OPT = 'N' ")
             mainresult = cursor.fetchall()
@@ -174,7 +174,7 @@ def approvalSubViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
                            " WHERE A.IODATE = '" + str(ioDate) + "' "
-                           " AND A.ACSEQN = '" + str(acSeqn) + "' "
+                           " WHERE A.ACSEQN = '" + str(acSeqn) + "' "
                            " AND A.ACIOGB = '" + str(acIogb) + "' "
                            " AND B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")
