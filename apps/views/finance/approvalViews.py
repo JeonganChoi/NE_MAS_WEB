@@ -174,7 +174,7 @@ def approvalSubViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
                            " WHERE A.IODATE = '" + str(ioDate) + "' "
-                           " WHERE A.ACSEQN = '" + str(acSeqn) + "' "
+                           " AND A.ACSEQN = '" + str(acSeqn) + "' "
                            " AND A.ACIOGB = '" + str(acIogb) + "' "
                            " AND B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' ")

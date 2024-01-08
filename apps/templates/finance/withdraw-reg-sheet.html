@@ -1388,7 +1388,7 @@
                                 if (combolist[i][0] == cboWitCust2) {
                                     cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                                 }else{
-                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                                 }
                             }
 
@@ -1397,7 +1397,7 @@
                                 if (combolist2[i][0] == cboWitGbn) {
                                     cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                                 }else{
-                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
                                 }
                             }
 
@@ -1406,7 +1406,7 @@
                                 if (combolist3[i][0] == cboWitMethod) {
                                     cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
                                 }else{
-                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
                                 }
                             }
 
@@ -1414,6 +1414,8 @@
                             for (var i = 0; i < combolist4.length; i++) {
                                 if (combolist4[i][0] == cboAdminCode) {
                                     cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                                }else{
+                                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
                                 }
                             }
 
@@ -1422,7 +1424,7 @@
                                 if (combolist5[i][0] == cboWitActNum) {
                                     cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
                                 }else{
-                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
                                 }
                             }
 
@@ -1431,7 +1433,7 @@
                                 if (combolist6[i][0] == cboWitCard) {
                                     cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
                                 }else{
-                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                                    cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
                                 }
                             }
 
@@ -1440,7 +1442,7 @@
                                 if (combolist7[i][0] == cboBank) {
                                     cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
                                 }else{
-                                    cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                                    cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
                                 }
                             }
 
@@ -1449,7 +1451,7 @@
                                 if (combolist8[i][0] == cboCardName) {
                                     cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
                                 }else{
-                                    cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
+                                    cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "'>" + combolist8[i][1] + "</option>";
                                 }
                             }
 
@@ -1580,6 +1582,7 @@
                                 cboWitCard = list[i][22];
                                 cboBank = list[i][26]
                                 cboCardName = list[i][31]
+                                alert(cboWitMethod)
 
 
                                 var combolist = data.cboCust;
@@ -1587,7 +1590,7 @@
                                     if (combolist[i][0] == cboWitCust2) {
                                         cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
                                     }else{
-                                        cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                                        cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                                     }
                                 }
 
@@ -1596,7 +1599,7 @@
                                     if (combolist2[i][0] == cboWitGbn) {
                                         cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                                     }else{
-                                        cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                                        cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
                                     }
                                 }
 
@@ -1605,7 +1608,7 @@
                                     if (combolist3[i][0] == cboWitMethod) {
                                         cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
                                     }else{
-                                        cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                                        cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
                                     }
                                 }
 
@@ -1614,7 +1617,7 @@
                                     if (combolist4[i][0] == cboAdminCode) {
                                         cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
                                     }else{
-                                        cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                                        cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][1] + "</option>";
                                     }
                                 }
 
@@ -1623,7 +1626,7 @@
                                     if (combolist5[i][0] == cboWitActNum) {
                                         cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
                                     }else{
-                                        cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                                        cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
                                     }
                                 }
 
@@ -1632,7 +1635,7 @@
                                     if (combolist6[i][0] == cboWitCard) {
                                         cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
                                     }else{
-                                        cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                                        cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
                                     }
                                 }
 
@@ -1641,7 +1644,7 @@
                                     if (combolist7[i][0] == cboBank) {
                                         cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
                                     }else{
-                                        cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                                        cboBankTxt = cboBankTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
                                     }
                                 }
 
@@ -1650,7 +1653,7 @@
                                     if (combolist8[i][0] == cboCardName) {
                                         cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
                                     }else{
-                                        cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "' selected>" + combolist8[i][1] + "</option>";
+                                        cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist8[i][0] + "'>" + combolist8[i][1] + "</option>";
                                     }
                                 }
 

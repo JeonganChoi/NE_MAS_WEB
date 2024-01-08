@@ -2334,9 +2334,9 @@ def checkLimit_search(request):
 # 파일 불러오기
 def download_file(request):
     ioDate = request.GET.get('ioDate').replace('-', '')
-    acSeqn = request.GET.get('acSeqn')
-    acIogb = request.GET.get('acIogb')
-    acCust = request.GET.get('acCust')
+    acSeqn = request.GET.get('acSeqn').replace('null', '')
+    acIogb = request.GET.get('acIogb').replace('null', '')
+    acCust = request.GET.get('acCust').replace('null', '')
     iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
