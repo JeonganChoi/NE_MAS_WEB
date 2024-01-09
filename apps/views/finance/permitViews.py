@@ -233,7 +233,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -281,7 +281,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -329,7 +329,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -378,7 +378,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -426,7 +426,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -474,7 +474,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -522,7 +522,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -571,7 +571,7 @@ def permitViews_search(request):
 
                 # 카드명
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:

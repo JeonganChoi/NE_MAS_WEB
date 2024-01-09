@@ -150,7 +150,8 @@ def receivePay_search(request):
                         cboAct = cursor.fetchall()
 
                     with connection.cursor() as cursor:
-                        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+                        cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' "
+                                       " GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
                         inputBank = cursor.fetchall()
 
                     return JsonResponse({'balList': balresult, 'mainList': mainresult, 'cboCust': cboCust, 'cboAct': cboAct, 'inputBank': inputBank})
@@ -466,7 +467,8 @@ def receivePay_search(request):
                         cboAct = cursor.fetchall()
 
                     with connection.cursor() as cursor:
-                        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+                        cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' "
+                                       " GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
                         inputBank = cursor.fetchall()
 
                     return JsonResponse({'balList': balresult, 'mainList': mainresult, 'cboCust': cboCust, 'cboAct': cboAct, 'inputBank': inputBank})
@@ -737,7 +739,8 @@ def receivePay_search(request):
                     cboAct = cursor.fetchall()
 
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' AND ICUST = '" + str(iCust) + "' ")
+                    cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' "
+                                   " GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
                     inputBank = cursor.fetchall()
 
             return JsonResponse({'balList': balresult, 'mainList': mainresult, 'cboCust': cboCust, 'cboAct': cboAct, 'inputBank': inputBank})
