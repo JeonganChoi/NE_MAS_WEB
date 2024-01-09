@@ -421,6 +421,8 @@
     </script>
 
     <script>
+        var _flag = false;
+
 
         //파일선택창에서 이미지 선택 후 확인 누르면 그 동시에 발생하는 이벤트
         $('#file').change(function(event) {
@@ -449,58 +451,62 @@
 
             $("#cboDpt").html("");
 
-            $.ajax({
-                type: "post",
-                data: {
-                    'empList': JSON.stringify(chk_cust_id_arr),
-                    "cboDpt": cboDpt,
-                    {#'ioDate': ioDate,#}
-                    {#'acIogb': acIogb,#}
-                    {#'acSeq': acSeq,#}
-                    {#'mCode': mCode,#}
-                },
-                url: '{% url "apvLine_modal" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    var list = data.mainList;
+            if(_flag == false) {
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'empList': JSON.stringify(chk_cust_id_arr),
+                        "cboDpt": cboDpt,
+                        {#'ioDate': ioDate,#}
+                        {#'acIogb': acIogb,#}
+                        {#'acSeq': acSeq,#}
+                        {#'mCode': mCode,#}
+                    },
+                    url: '{% url "apvLine_modal" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        _flag = true;
 
-                    $("#modalMainTd").html("");
+                        var list = data.mainList;
 
-                    for (var i = 0; i < list.length; i++) {
+                        $("#modalMainTd").html("");
 
-                        $("#modalMainTd").append(
-                            "<tr id='#modalMainTr' class='modalMainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkEmp_" + list[i][4] + "' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></td>" +
-                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
-                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                            "</tr> ");
-                    }
+                        for (var i = 0; i < list.length; i++) {
 
-                    $('.subEmpNme').each(function() {
-                        const code = $(this).data('code');
-                        $(`#chkEmp_${code}`).trigger('click');
-                    });
-
-
-                    var combolist = data.cboDpt;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboDpt) {
-                            cboDptTxt = cboDptTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                        } else {
-                            cboDptTxt = cboDptTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                            $("#modalMainTd").append(
+                                "<tr id='#modalMainTr' class='modalMainTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkEmp_" + list[i][4] + "' name='chkEmp[]' value='" + list[i][0] + "," + list[i][2] + "," + list[i][4] + "'/></td>" +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][2] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
+                                "</tr> ");
                         }
-                    }
 
-                    $("#cboDpt").append(cboDptTxt);
-                }
-            })
+                        $('.subEmpNme').each(function() {
+                            const code = $(this).data('code');
+                            $(`#chkEmp_${code}`).trigger('click');
+                        });
+
+
+                        var combolist = data.cboDpt;
+                        for (var i = 0; i < combolist.length; i++) {
+                            if (combolist[i][0] == cboDpt) {
+                                cboDptTxt = cboDptTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                            } else {
+                                cboDptTxt = cboDptTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                            }
+                        }
+
+                        $("#cboDpt").append(cboDptTxt);
+                    }
+                })
+            }
 
             $('#DecisionModal').show();
         });
@@ -3131,6 +3137,9 @@
                     }
             });
 
+            _flag = false;
+            $("#modalMainTd").html("");
+            $("#modalSubTd").html("");
 
         });
 

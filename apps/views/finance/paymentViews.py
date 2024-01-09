@@ -1531,7 +1531,8 @@ def cboCardType_search(request):
             cursor.execute("  SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B "
                             " ON A.CARDTYPE = B.RESKEY "
                             " AND B.RECODE = 'COC' "
-                            " WHERE A.ICUST = '" + str(iCust) + "' AND A.GBN = '" + str(cardType) + "' ")
+                            " WHERE A.ICUST = '" + str(iCust) + "' AND A.GBN = '" + str(cardType) + "' "
+                            " GROUP BY A.CARDTYPE, B.RESNAM ")
             cboCardName = cursor.fetchall()
 
         with connection.cursor() as cursor:
