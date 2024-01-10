@@ -89,7 +89,7 @@ def approvalViews_search(request):
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND A.FIN_OPT = 'N' AND B.RTNGBN != 'N' ")
+                           " AND A.FIN_OPT = 'N' AND A.MID_OPT = 'Y' AND B.RTNGBN != 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -112,7 +112,8 @@ def approvalViews_search(request):
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND A.FIN_OPT = 'Y' ")
+                           " AND A.FIN_OPT = 'Y' "
+                           " AND A.MID_OPT = 'Y'")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -132,7 +133,6 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND B.OPT = 'N' ")
             mainresult = cursor.fetchall()
@@ -248,7 +248,7 @@ def approvalViews_save(request):
             if (len(chk) == 0):
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE SISACCTT SET "
-                                   "     FIN_OPT = 'Y' "
+                                   "     MID_OPT = 'Y' "
                                    "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
                                    "     AND ACSEQN = '" + str(seq) + "' "
                                    "     AND ACIOGB = '" + str(acIogb) + "' "
@@ -291,7 +291,7 @@ def approvalViews_save(request):
             if (len(chk) != 0):
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE SISACCTT SET "
-                                   "     FIN_OPT = 'Y' "
+                                   "     MID_OPT = 'Y' "
                                    "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
                                    "     AND ACSEQN = '" + str(seq) + "' "
                                    "     AND ACIOGB = '" + str(acIogb) + "' "

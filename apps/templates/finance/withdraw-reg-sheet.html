@@ -332,7 +332,7 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="modal-header bg-dark" style="height: 5vh">
-                        <a class="text-white" type="button" id="btnClose" name="btnClose" style="float:leftright;"><i class="fa fa-xmark fs-6"></i></a>
+                        <a class="text-white" type="button" id="btnClose" name="btnClose" style="float:right;"><i class="fa fa-xmark fs-6"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="row p-2">
@@ -848,6 +848,7 @@
                     var outTotal = data.outresult;
                     var inTotal = data.inresult;
                     var total = 0;
+                    var apv = "";
 
 
                     $("#withMainTb").html("");
@@ -890,12 +891,16 @@
                             if(list[i][9] == 'Y' ){
                                 check = '승인';
                             }
-                            {#if(list[i][9] == 'N'){#}
-                            {#    check = '반려';#}
-                            {#}#}
                             if(list[i][9] == 'N'){
                                 check = '미승인';
                             }
+                            if(list[i][19] == 'Y' ){
+                                apv = '결재';
+                            }
+                            if(list[i][19] == 'N' ){
+                                apv = '미결재';
+                            }
+
 
                             if(list[i][9] == 'Y'){
                                 $("#withMainTb").append(
@@ -912,7 +917,7 @@
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                     "</tr> ");
@@ -932,7 +937,7 @@
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                     "</tr> ");
@@ -958,6 +963,12 @@
                             if(list[i][9] == 'N'){
                                 check = '미승인';
                             }
+                            if(list[i][19] == 'Y' ){
+                                apv = '결재';
+                            }
+                            if(list[i][19] == 'N' ){
+                                apv = '미결재';
+                            }
 
                             if(list[i][9] == 'Y'){
                                 $("#withMainTb").append(
@@ -974,7 +985,7 @@
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                     "</tr> ");
@@ -994,7 +1005,7 @@
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                     "</tr> ");
@@ -1056,6 +1067,8 @@
                     var outTotal = data.outresult;
                     var inTotal = data.inresult;
                     var total = 0;
+                    var check = "";
+                    var apv = "";
 
                     $("#withMainTb").html("");
                     {# 잔액 계산 #}
@@ -1094,14 +1107,19 @@
                             if(list[i][0] == '1'){
                                 total -= list[i][3]
                             }
-
-                            var check = "";
                             if(list[i][9] == 'Y'){
                                 check = '승인';
                             }
-                            else{
+                            if(list[i][9] == 'N'){
                                 check = '미승인';
                             }
+                            if(list[i][20] == 'Y'){
+                                apv = '결재';
+                            }
+                            if(list[i][20] == 'N'){
+                                apv = '미결재';
+                            }
+
 
                             $("#withMainTb").append(
                                 "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
@@ -1117,7 +1135,7 @@
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                 "</tr> ");
@@ -1127,12 +1145,17 @@
                     if(list2 == ''){
                         for (var i = 0; i < list.length; i++) {
 
-                            var check = "";
                             if(list[i][9] == 'Y'){
                                 check = '승인';
                             }
-                            else{
+                            if(list[i][9] == 'N'){
                                 check = '미승인';
+                            }
+                            if(list[i][20] == 'Y'){
+                                apv = '결재';
+                            }
+                            if(list[i][20] == 'N'){
+                                apv = '미결재';
                             }
 
                             $("#withMainTb").append(
@@ -1147,7 +1170,7 @@
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
