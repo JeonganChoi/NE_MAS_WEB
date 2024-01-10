@@ -1222,7 +1222,8 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
                            "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')"
-                           "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, ''), IFNULL(J.GBN, '')  "
+                           "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, '')"
+                           "    , IFNULL(J.GBN, ''), IFNULL(A.CRE_USER,''), IFNULL(I.EMP_NME,''), IFNULL(A.ACDATE, '')  "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -1341,7 +1342,8 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACGUNO_BK,''), IFNULL(F.RESNAM, '') , IFNULL(A.ACBUNHO,''), IFNULL(A.ACGUNO_DT,'')"
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
                            "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')"
-                           "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, '')     "
+                           "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, '')"
+                           "    , IFNULL(A.CRE_USER,''), IFNULL(I.EMP_NME,''), IFNULL(A.ACDATE, '') "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -1619,9 +1621,14 @@ def paymentViews_save(request):
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
+    cashDate = request.POST.get("txtCashDate")
     acInfo = request.POST.get("txtInfo")
     txtCustAct = request.POST.get("txtCustAct")  # 거래처은행
     txtCustAct = request.POST.get("txtCustAct")  # 거래처계좌번호
+    # 전결처리
+    txtApvAll = request.POST.get("txtApvAll")
+    midOpt = 'N'
+    finOpt = 'N'
     # file = request.FILES.get('file')
 
     # if (file is None):
@@ -1673,12 +1680,19 @@ def paymentViews_save(request):
         uploaded_file = destination
 
     if acSeqn:
-
+        # 예정일이 없는경우
         if acDate == '' or acDate is None:
             acDate = ioDate
-
+        # 현금결재시 예정일 지정
+        if acGubn == '1':
+            exDate = cashDate.replace('-', '')
+            acDate = cashDate.replace('-', '')
+        # 계산서시 거래처 계호
         if acGubn == '2':
             acAcnumber = txtCustAct
+        # 전결시
+        if txtApvAll == '100':
+            midOpt = 'Y'
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -1686,7 +1700,6 @@ def paymentViews_save(request):
             aCode = result[0][0]
 
         with connection.cursor() as cursor:
-            iCust = request.session.get("USER_ICUST")
             cursor.execute("    UPDATE  SISACCTT SET"
                            "     ACGUBN = '" + str(acGubn) + "' "
                            ",    MCODE = '" + str(mCode) + "' "
@@ -1704,6 +1717,8 @@ def paymentViews_save(request):
                            ",    ACUSE = '" + str(acUse) + "' "
                            ",    ACINFO = '" + str(acInfo) + "' "
                            ",    ACCUST = '" + str(acCust) + "' "
+                           ",    MID_OPT = '" + str(midOpt) + "' "
+                           ",    FIN_OPT = '" + str(finOpt) + "' "
                            ",    APPLYDT = '" + str(acApply).replace('-', '') + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
@@ -1764,19 +1779,24 @@ def paymentViews_save(request):
         return JsonResponse({'sucYn': "Y"})
 
     else:
-        finOpt = 'N'
-
+        # 예정일이 없을시
         if acDate == '' or acDate is None:
             acDate = ioDate
-
-        # if not empArray:
-        #     finOpt = 'Y'
-
+        # 체크카드시 없을시
         if acGubn == '4':
+            midOpt = 'Y'
             finOpt = 'Y'
+        # 현금선택시 예정일지정
+        if acGubn == '1':
+            exDate = cashDate.replace('-', '')
+            acDate = cashDate.replace('-', '')
+        # 계산서선택시 계좌번호 가져오기
+        # if acGubn == '2':
+        #     acAcnumber = txtCustAct
+        # 전결시
+        if txtApvAll == '100':
+            midOpt = 'Y'
 
-        if acGubn == '2':
-            acAcnumber = txtCustAct
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -1840,7 +1860,7 @@ def paymentViews_save(request):
                                ",    '" + str(acUse) + "'"
                                ",    '" + str(acApply).replace('-', '') + "'"
                                ",    '" + str(acInfo) + "'"
-                               ",    '" + str(finOpt) + "' "
+                               ",    '" + str(midOpt) + "' "
                                ",    '" + str(finOpt) + "' "
                                "    )   "
                                )

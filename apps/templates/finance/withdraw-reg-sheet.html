@@ -227,9 +227,21 @@
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>세부 내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark" name="txtWitRemark" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-6 writer">
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>수령인 정보</label>
                                         <input class="form-control text-start" type="text" id="txtInfo" name="txtInfo" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
+                                    <div class="col-6 cashDate">
+                                        <label class="mt-2 text-sm" id="dateLabel"><i class="fa fa-calendar me-2" style="font-size: 0.7rem"></i>지급요청일</label>
+                                        <input class="form-control text-center" type="date" id="txtCashDate" name="txtCashDate" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mt-2 col-4 creUser">
+                                        <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>등록자</label>
+                                        <input class="form-control text-start bg-primary-soft text-dark" type="text" id="txtCreUser" name="txtCreUser" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
                             </div>
@@ -279,7 +291,12 @@
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>내용</label>
                                         <input class="form-control text-start" type="text" id="txtWitRemark2" name="txtWitRemark2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
+                                    <div class="col-4 creUser">
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>등록자</label>
+                                        <input class="form-control text-start bg-primary-soft text-dark" type="text" id="txtCreUser" name="txtCreUser" style="height: 2rem; font-size: 0.8rem"/>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                         <div class="card-footer mt-0 pt-0">
@@ -298,10 +315,14 @@
                                         <label class="form-label"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
                                         <div class="form-group mt-2 mb-0">
                                             <div class="row">
-                                                <div class="col-6 text-start">
-                                                    <button type="button" class="btn btn-sm btn-dark" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
+                                                <div class="col-12 text-start">
+                                                    <div class="d-flex">
+                                                        <button type="button" class="btn btn-sm btn-dark me-3" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
+                                                        <button type="button" class="btn btn-sm btn-warning" style="width: 10vw" id="btnApv" name="btnApv" value="100">전결</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6 text-start">
+                                                <div hidden class="col-12 text-start">
+                                                    <input readonly class="form-control border-0 shadow-none bg-transparent" type="text" id="txtApvAll"  name="txtApvAll" style="font-size: 1rem"/>
                                                     <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
                                                 </div>
                                             </div>
@@ -678,6 +699,7 @@
             $("#txtWitPrice").val("");
             $("#txtWitCashNum").val("");
             $("#txtWitRemark").val("");
+            $("#txtCashDate").val("");
 
             $('.basic').hide();
             $('.replace').hide();
@@ -685,6 +707,7 @@
             $('.cboBank').hide();
             $('.cboAct').hide();
             $('.cboCard').hide();
+            $('.creUser').hide();
 
             var date = new Date();
             date.setMonth(date.getMonth() - 3);
@@ -1280,6 +1303,15 @@
             }
         });
 
+        {# 전결 버튼 누를시 #}
+        {# 버튼색깔: class명: btn-outline-warning #}
+        $(document).on('click', '#btnApv', function () {
+            var apv = "";
+            apv = $(this).val();
+            $("#txtApvAll").val(apv)
+
+        });
+
         {# 테이블 로우 클릭 시 #}
         $(document).on('click', '#withMainTb .withMainTr_tr', function () {
 
@@ -1321,6 +1353,8 @@
             $("#txtWitPrice").val("");
             $("#txtWitCashNum").val("");
             $("#txtWitRemark").val("");
+            $("#txtCashDate").val("");
+            $("#txtCreUser").val("");
 
             let search = $(this).attr('main_code');
             var split = search.split(',');
@@ -1379,18 +1413,7 @@
                         cls = list[i][29]
                         if(permit == 'Y'){
                             alert('수정 불가능한 건입니다. ')
-                            {#$('.basic').show();#}
-                            {#$("#txtWitSeq").val("")#}
-                            {#$("#txtWitRecn").val("")#}
-                            {#$("#txtWitRegDate").val("")#}
-                            {#$("#txtExDate").val("")#}
-                            {#$("#txtWitPrice").val("")#}
-                            {#$("#txtWitCashNum").val("")#}
-                            {#$("#txtWitRemark").val("")#}
-                            {#$("#txtTitle").val("")#}
-                            {#$("#txtInfo").val("")#}
-                            {#$("#txtApplyDate").val("")#}
-                            {#$('.folderArea').hide();#}
+
                             $("#txtWitSeq").val(list[i][0])
                             $("#txtWitRecn").val(list[i][3])
                             $("#txtWitRegDate").val(list[i][11].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
@@ -1402,6 +1425,8 @@
                             $("#txtWhere").val(list[i][24])
                             $("#txtInfo").val(list[i][25])
                             $("#txtApplyDate").val(list[i][27].replace(/(\d{4})(\d{2})/g, '$1-$2'))
+                            $("#txtCashDate").val(list[i][35].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                            $("#txtCreUser").val(list[i][34])
                             folder = list[i][22]
                             cboWitCust2 = list[i][1];
                             cboWitGbn = list[i][6];
@@ -1513,6 +1538,8 @@
                             $("#txtInfo").attr("readonly",true);
                             $("#txtApplyDate").attr("readonly",true);
                             $("#txtWhere").attr("readonly",true);
+                            $("#txtCashDate").attr("readonly",true);
+                            $("#txtCreUser").attr("readonly",true);
                             document.getElementById("cboWitGbn").classList.add('bg-transparent')
                             document.getElementById("cboWitMethod").classList.add('bg-transparent')
                             document.getElementById("cboWitCust").classList.add('bg-transparent')
@@ -1533,6 +1560,8 @@
                             document.getElementById("txtInfo").classList.add('bg-transparent')
                             document.getElementById("txtApplyDate").classList.add('bg-transparent')
                             document.getElementById("txtWhere").classList.add('bg-transparent')
+                            document.getElementById("txtCashDate").classList.add('bg-transparent')
+                            document.getElementById("txtCreUser").classList.add('bg-transparent')
 
                             $('.folderArea').hide();
 
@@ -1546,9 +1575,11 @@
                                     $('.cboCard').show();
                                     $('.cboAct').show();
                                     $('.writer').hide();
+                                    $('.cashDate').hide();
                                     $('.txtApply').hide();
                                     $('.txtExpect').hide();
                                     $('.line').hide();
+                                    $('.creUser').show();
                                 }
                                 else if(cboWitMethod == '3'){
 
@@ -1559,21 +1590,25 @@
                                     $('.cboAct').show();
                                     $('.cboCust').hide();
                                     $('.writer').hide();
+                                    $('.cashDate').hide();
                                     $('.txtApply').show();
                                     $('.txtExpect').show();
                                     $('.line').show();
+                                    $('.creUser').show();
                                 }
                                 else if(cboWitMethod == '2'){
                                     $('.txtUser').hide();
                                     $('.cboCard').hide();
                                     $('.cardName').hide();
                                     $('.writer').hide();
+                                    $('.cashDate').hide();
                                     $('.cboBank').hide();
                                     $('.cboAct').hide();
                                     $('.cboCust').show();
                                     $('.txtApply').show();
                                     $('.txtExpect').show();
                                     $('.line').show();
+                                    $('.creUser').show();
                                 }
                                 else if(cboWitMethod == '1'){
                                     $('.txtUser').show();
@@ -1581,11 +1616,13 @@
                                     $('.cboBank').hide();
                                     $('.cboAct').hide();
                                     $('.writer').show();
+                                    $('.cashDate').show();
                                     $('.cardName').hide();
                                     $('.cboCust').hide();
                                     $('.txtApply').hide();
                                     $('.txtExpect').hide();
                                     $('.line').show();
+                                    $('.creUser').show();
                                 }
                         }
                         else{
@@ -1602,6 +1639,8 @@
                                 $("#txtWhere").val(list[i][24])
                                 $("#txtInfo").val(list[i][25])
                                 $("#txtApplyDate").val(list[i][27].replace(/(\d{4})(\d{2})/g, '$1-$2'))
+                                $("#txtCreUser").val(list[i][34])
+                                $("#txtCashDate").val(list[i][35].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                                 folder = list[i][22]
                                 cboWitCust2 = list[i][1];
                                 cboWitGbn = list[i][6];
@@ -1713,6 +1752,8 @@
                                 $("#txtInfo").attr("readonly",true);
                                 $("#txtApplyDate").attr("readonly",true);
                                 $("#txtWhere").attr("readonly",true);
+                                $("#txtCashDate").attr("readonly",true);
+                                $("#txtCreUser").attr("readonly",true);
                                 document.getElementById("cboWitGbn").classList.add('bg-transparent')
                                 document.getElementById("cboWitMethod").classList.add('bg-transparent')
                                 document.getElementById("cboWitCust").classList.add('bg-transparent')
@@ -1733,6 +1774,8 @@
                                 document.getElementById("txtInfo").classList.add('bg-transparent')
                                 document.getElementById("txtApplyDate").classList.add('bg-transparent')
                                 document.getElementById("txtWhere").classList.add('bg-transparent')
+                                document.getElementById("txtCashDate").classList.add('bg-transparent')
+                                document.getElementById("txtCreUser").classList.add('bg-transparent')
 
                                 $('.folderArea').hide();
 
@@ -1757,6 +1800,8 @@
                                 $("#txtInfo").attr("readonly",false);
                                 $("#txtApplyDate").attr("readonly",false);
                                 $("#txtWhere").attr("readonly",false);
+                                $("#txtCashDate").attr("readonly",false);
+                                $("#txtCreUser").attr("readonly",false);
                                 $('.folderArea').show();
 
                                 $("#txtWitSeq").val(list[i][0])
@@ -1770,6 +1815,8 @@
                                 $("#txtWhere").val(list[i][24])
                                 $("#txtInfo").val(list[i][25])
                                 $("#txtApplyDate").val(list[i][27].replace(/(\d{4})(\d{2})/g, '$1-$2'))
+                                $("#txtCreUser").val(list[i][34])
+                                $("#txtCashDate").val(list[i][35].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
                                 folder = list[i][22]
                                 cboWitCust2 = list[i][1];
                                 cboWitGbn = list[i][6];
@@ -1873,9 +1920,11 @@
                                 $('.cboCard').show();
                                 $('.cboAct').show();
                                 $('.writer').hide();
+                                $('.cashDate').hide();
                                 $('.line').hide();
                                 $('.txtApply').hide();
                                 $('.txtExpect').hide();
+                                $('.creUser').show();
                             }
                             else if(cboWitMethod == '3'){
                                 $('.txtUser').show();
@@ -1885,21 +1934,25 @@
                                 $('.cboAct').show();
                                 $('.cboCust').hide();
                                 $('.writer').hide();
+                                $('.cashDate').hide();
                                 $('.line').show();
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
+                                $('.creUser').show();
                             }
                             else if(cboWitMethod == '2'){
                                 $('.txtUser').hide();
                                 $('.cboCard').hide();
                                 $('.cardName').hide();
                                 $('.writer').hide();
+                                $('.cashDate').hide();
                                 $('.cboBank').hide();
                                 $('.cboAct').hide();
                                 $('.cboCust').show();
                                 $('.line').show();
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
+                                $('.creUser').show();
                             }
                             else if(cboWitMethod == '1'){
                                 $('.txtUser').show();
@@ -1907,13 +1960,14 @@
                                 $('.cboBank').hide();
                                 $('.cboAct').hide();
                                 $('.writer').show();
+                                $('.cashDate').show();
                                 $('.cardName').hide();
                                 $('.cboCust').hide();
                                 $('.line').show();
                                 $('.txtApply').hide();
                                 $('.txtExpect').hide();
+                                $('.creUser').show();
                             }
-
                         }
                     }
 
@@ -1930,7 +1984,6 @@
             })
 
         });
-
 
         {# 결제방법 선택시 계좌명 바인딩 #}
         $('#cboWitMethod').change(function () {
@@ -1950,6 +2003,7 @@
                 $('.cboCard').show();
                 $('.cboAct').show();
                 $('.writer').hide();
+                $('.cashDate').hide();
                 $('.txtUser').show();
                 $('.txtApply').hide();
                 $('.txtExpect').hide();
@@ -2013,6 +2067,7 @@
                 $('.cboCard').show();
                 $('.cboAct').show();
                 $('.writer').hide();
+                $('.cashDate').hide();
                 $('.txtUser').show();
                 $('.txtApply').show();
                 $('.txtExpect').show();
@@ -2075,6 +2130,7 @@
                 $('.cboCard').hide();
                 $('.cardName').hide();
                 $('.writer').hide();
+                $('.cashDate').hide();
                 $('.cboBank').hide();
                 $('.cboAct').hide();
                 $('.cboCust').show();
@@ -2093,6 +2149,7 @@
                 $('.cboBank').hide();
                 $('.cboAct').hide();
                 $('.writer').show();
+                $('.cashDate').show();
                 $('.txtUser').show();
                 $('.cardName').hide();
                 $('.txtApply').hide();
@@ -2106,6 +2163,7 @@
                 $('.cboBank').show();
                 $('.cboAct').show();
                 $('.writer').show();
+                $('.cashDate').show();
                 $('.cardName').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2794,7 +2852,7 @@
             {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
             var cboWitMethod = document.getElementById('cboWitMethod').value
             var cboWitCard = document.getElementById('cboWitCard').value
-            {#var txtWitRemark = document.getElementById('txtWitRemark').value#}
+            var txtApvAll = document.getElementById('txtApvAll').value
             {#var file = document.getElementById('file').value#}
 
             if(txtWitRegDate == ''){
@@ -2829,146 +2887,280 @@
                     return false
                 }
 
+                if(txtApvAll == '100'){
+                    var apvresult = confirm("전결건입니다. 저장하시겠습니까?")
+                    if(apvresult == true){
+                        var empArr = [];
+                        for (var i = 0; i < 10; i++) {
 
-                var empArr = [];
-                for (var i = 0; i < 10; i++) {
+                            var empNbr = $('#subEmpNbr_' + i).text();
 
-                    var empNbr = $('#subEmpNbr_' + i).text();
-
-                    if(empNbr){
-                        let data = {
-                            'empNbr': empNbr
-                        };
-                        empArr.push(data);
-                    }
-                }
-
-                formData.append('empArrList', JSON.stringify(empArr))
-
-                var saveresult = confirm("저장하시겠습니까?")
-
-                if(saveresult == true){
-                    $.ajax({
-                        type: "post",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        url: '{% url "offSet_save" %}',
-                        headers: {
-                            'X-CSRFTOKEN': '{{ csrf_token }}'
-                        },
-                        success: function (data) {
-                            if (data.sucYn === 'Y') {
-                                alert('저장 되었습니다.')
-                                location.href = "{% url 'with_reg_sheet' %}";
-                            }
-                            else if(data.sucYn === 'N' && data.message == 'same file name exists') {
-
-                                formData.append('fileOverwriteYn', 'Y');
-
-                                $.ajax({
-                                    type: "post",
-                                    data: formData,
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    dataType: "json",
-                                    url: '{% url "offSet_save" %}',
-                                    headers: {
-                                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                                    },
-                                    success: function (data) {
-                                        if (data.sucYn === 'Y') {
-                                            alert('저장 되었습니다.')
-                                            location.href = "{% url 'with_reg_sheet' %}";
-                                        }
-                                    }
-                                });
-
-                                {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
-                                {##}
-                                {#}#}
+                            if(empNbr){
+                                let data = {
+                                    'empNbr': empNbr
+                                };
+                                empArr.push(data);
                             }
                         }
-                    });
-                }
-                if(saveresult == false){
+                        formData.append('empArrList', JSON.stringify(empArr))
+
+                        $.ajax({
+                            type: "post",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            url: '{% url "offSet_save" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+                                if (data.sucYn === 'Y') {
+                                    alert('저장 되었습니다.')
+                                    location.href = "{% url 'with_reg_sheet' %}";
+                                }
+                                else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+
+                                    formData.append('fileOverwriteYn', 'Y');
+
+                                    $.ajax({
+                                        type: "post",
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        dataType: "json",
+                                        url: '{% url "offSet_save" %}',
+                                        headers: {
+                                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                                        },
+                                        success: function (data) {
+                                            if (data.sucYn === 'Y') {
+                                                alert('저장 되었습니다.')
+                                                location.href = "{% url 'with_reg_sheet' %}";
+                                            }
+                                        }
+                                    });
+
+                                    {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
+                                    {##}
+                                    {#}#}
+                                }
+                            }
+                        });
+                    }
+                    if(apvresult == false){
                     alert('취소되었습니다.')
                      return false;
-                }
-
-            }
-            else{
-
-                var empArr = [];
-                for (var i = 0; i < 10; i++) {
-
-                    var empNbr = $('#subEmpNbr_' + i).text();
-                    if(empNbr){
-                        let data = {
-                            'empNbr': empNbr
-                        };
-                        empArr.push(data);
                     }
                 }
+                else{
+                    var empArr = [];
+                    for (var i = 0; i < 10; i++) {
 
+                        var empNbr = $('#subEmpNbr_' + i).text();
 
-                formData.append('empArrList', JSON.stringify(empArr))
+                        if(empNbr){
+                            let data = {
+                                'empNbr': empNbr
+                            };
+                            empArr.push(data);
+                        }
+                    }
 
-                var saveresult = confirm("저장하시겠습니까?")
+                    formData.append('empArrList', JSON.stringify(empArr))
 
-                if(saveresult == true){
-                    $.ajax({
-                        type: "post",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        url: '{% url "payment_save" %}',
-                        headers: {
-                            'X-CSRFTOKEN': '{{ csrf_token }}'
-                        },
-                        success: function (data) {
-                            if (data.sucYn === 'Y') {
-                                alert('저장 되었습니다.')
-                                location.href = "{% url 'with_reg_sheet' %}";
-                            }
-                            else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+                    var saveresult = confirm("저장하시겠습니까?")
 
-                                formData.append('fileOverwriteYn', 'Y');
-                                $.ajax({
-                                    type: "post",
-                                    data: formData,
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    dataType: "json",
-                                    url: '{% url "payment_save" %}',
-                                    headers: {
-                                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                                    },
-                                    success: function (data) {
-                                        if (data.sucYn === 'Y') {
-                                            alert('저장 되었습니다.')
-                                            location.href = "{% url 'with_reg_sheet' %}";
+                    if(saveresult == true){
+                        $.ajax({
+                            type: "post",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            url: '{% url "offSet_save" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+                                if (data.sucYn === 'Y') {
+                                    alert('저장 되었습니다.')
+                                    location.href = "{% url 'with_reg_sheet' %}";
+                                }
+                                else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+
+                                    formData.append('fileOverwriteYn', 'Y');
+
+                                    $.ajax({
+                                        type: "post",
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        dataType: "json",
+                                        url: '{% url "offSet_save" %}',
+                                        headers: {
+                                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                                        },
+                                        success: function (data) {
+                                            if (data.sucYn === 'Y') {
+                                                alert('저장 되었습니다.')
+                                                location.href = "{% url 'with_reg_sheet' %}";
+                                            }
                                         }
-                                    }
-                                });
-                                {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
-                                {##}
-                                {#}#}
+                                    });
+
+                                    {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
+                                    {##}
+                                    {#}#}
+                                }
+                            }
+                        });
+                    }
+                    if(saveresult == false){
+                        alert('취소되었습니다.')
+                         return false;
+                    }
+                }
+            }
+            else{
+                {# 전결 저장 #}
+                if(txtApvAll == '100'){
+                    var apvresult = confirm("전결건입니다. 저장하시겠습니까?")
+                    if(apvresult == true){
+                        var empArr = [];
+                        for (var i = 0; i < 10; i++) {
+
+                            var empNbr = $('#subEmpNbr_' + i).text();
+                            if(empNbr){
+                                let data = {
+                                    'empNbr': empNbr
+                                };
+                                empArr.push(data);
                             }
                         }
-                    });
-                }
-                if(saveresult == false){
-                    alert('취소되었습니다.')
-                    return false;
-                }
+                        formData.append('empArrList', JSON.stringify(empArr))
 
+                        $.ajax({
+                            type: "post",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            url: '{% url "payment_save" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+                                if (data.sucYn === 'Y') {
+                                    alert('저장 되었습니다.')
+                                    location.href = "{% url 'with_reg_sheet' %}";
+                                }
+                                else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+
+                                    formData.append('fileOverwriteYn', 'Y');
+                                    $.ajax({
+                                        type: "post",
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        dataType: "json",
+                                        url: '{% url "payment_save" %}',
+                                        headers: {
+                                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                                        },
+                                        success: function (data) {
+                                            if (data.sucYn === 'Y') {
+                                                alert('저장 되었습니다.')
+                                                location.href = "{% url 'with_reg_sheet' %}";
+                                            }
+                                        }
+                                    });
+                                    {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
+                                    {##}
+                                    {#}#}
+                                }
+                            }
+                        });
+                    }
+                    if(apvresult == false){
+                        alert('취소되었습니다.')
+                        return false;
+                    }
+                }
+                else{
+                    var empArr = [];
+                    for (var i = 0; i < 10; i++) {
+
+                        var empNbr = $('#subEmpNbr_' + i).text();
+                        if(empNbr){
+                            let data = {
+                                'empNbr': empNbr
+                            };
+                            empArr.push(data);
+                        }
+                    }
+
+
+                    formData.append('empArrList', JSON.stringify(empArr))
+
+                    var saveresult = confirm("저장하시겠습니까?")
+
+                    if(saveresult == true){
+                        $.ajax({
+                            type: "post",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            url: '{% url "payment_save" %}',
+                            headers: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            success: function (data) {
+                                if (data.sucYn === 'Y') {
+                                    alert('저장 되었습니다.')
+                                    location.href = "{% url 'with_reg_sheet' %}";
+                                }
+                                else if(data.sucYn === 'N' && data.message == 'same file name exists') {
+
+                                    formData.append('fileOverwriteYn', 'Y');
+                                    $.ajax({
+                                        type: "post",
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        dataType: "json",
+                                        url: '{% url "payment_save" %}',
+                                        headers: {
+                                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                                        },
+                                        success: function (data) {
+                                            if (data.sucYn === 'Y') {
+                                                alert('저장 되었습니다.')
+                                                location.href = "{% url 'with_reg_sheet' %}";
+                                            }
+                                        }
+                                    });
+                                    {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
+                                    {##}
+                                    {#}#}
+                                }
+                            }
+                        });
+                    }
+                    if(saveresult == false){
+                        alert('취소되었습니다.')
+                        return false;
+                    }
+                }
             }
 
         });
@@ -3011,9 +3203,11 @@
             $("#txtWitCashNum").attr("readonly",false);
             $("#txtWitRemark").attr("readonly",false);
             $("#txtExDate").attr("readonly",false);
+            $("#txtCashDate").attr("readonly",false);
             $("#txtInfo").attr("readonly",false);
             $("#txtWhere").attr("readonly",false);
             $("#txtApplyDate").attr("readonly",false);
+            $("#txtCashDate").attr("readonly",false);
             $("#cboWitGbn").attr("disabled",false);
             $("#cboWitMethod").attr("disabled",false);
             $("#cboWitCust").attr("disabled",false);
@@ -3022,6 +3216,7 @@
             $("#cboWitCard").attr("disabled",false);
             $("#cboBank").attr("disabled",false);
             $("#cboCardName").attr("disabled",false);
+
 
             var inputBank = "";
             var cboCust = "";
@@ -3059,6 +3254,7 @@
             $("#txtWitSeq").val("");
             $("#txtWitRecn").val("");
             $("#txtExDate").val("");
+            $("#txtCashDate").val("");
             $("#txtWitPrice").val("");
             $("#txtWitCashNum").val("");
             $("#txtWitRemark").val("");
@@ -3066,6 +3262,10 @@
             $("#txtInfo").val("");
             $("#txtApplyDate").val("");
             $("#txtWhere").val("");
+            $("#txtCreUser").val("");
+            $("#txtCashDate").val("");
+            $("#txtApvAll").val("");
+            $('.creUser').hide();
 
             $.ajax({
                 type: "post",
