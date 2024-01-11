@@ -1224,7 +1224,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACODE,''), IFNULL(G.RESNAM, ''), IFNULL(A.ACDESC, ''), IFNULL(A.EXDATE,''), IFNULL(A.ACTITLE,'')"
                            "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')"
                            "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, '')"
-                           "    , IFNULL(J.GBN, ''), IFNULL(A.CRE_USER,''), IFNULL(I.EMP_NME,''), IFNULL(A.ACDATE, '')  "
+                           "    , IFNULL(J.GBN, ''), IFNULL(I.EMP_NME,''), IFNULL(A.ACDATE, '')  "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
