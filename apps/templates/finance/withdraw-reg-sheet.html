@@ -2863,6 +2863,18 @@
             var cboWitCard = document.getElementById('cboWitCard').value
             var txtApvAll = document.getElementById('txtApvAll').value
             {#var file = document.getElementById('file').value#}
+            var empArr = [];
+            for (var i = 0; i < 10; i++) {
+
+                var empNbr = $('#subEmpNbr_' + i).text();
+
+                if(empNbr){
+                    let data = {
+                        'empNbr': empNbr
+                    };
+                    empArr.push(data);
+                }
+            }
 
             if(txtWitRegDate == ''){
                 alert('등록 일자를 입력해주세요.')
@@ -2878,6 +2890,10 @@
             }
             if(cboWitMethod == '3' && cboWitCard == ''){
                 alert('카드를 선택해주세요.')
+                return false;
+            }
+            if(txtApvAll == '' && empArr == ''){
+                alert('결재라인을 지정해주세요.')
                 return false;
             }
 
