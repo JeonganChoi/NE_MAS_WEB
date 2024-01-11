@@ -1026,8 +1026,9 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE A.ICUST = '" + iCust + "'"
-                           " AND A.EMP_DEPT = '" + cboDpt + "' ")
+                           " WHERE A.ICUST = '" + str(iCust) + "'"
+                           " AND A.EMP_DEPT = '" + str(cboDpt) + "' "
+                           " AND A.EMP_NBR != '" + str(creUser) + "' ")
             mainresult = cursor.fetchall()
 
             return JsonResponse({'mainList': mainresult})
@@ -1043,8 +1044,8 @@ def apvLine_modal_search(request):
                            " LEFT OUTER JOIN OSREFCP C "
                            " ON A.EMP_GBN = C.RESKEY "
                            " AND C.RECODE = 'JJO' "
-                           " WHERE A.ICUST = '" + iCust + "'")
-            # " WHERE A.EMP_NBR != '" + str(creUser) + "' "
+                           " WHERE A.EMP_NBR != '" + str(creUser) + "' "
+                           "   AND A.ICUST = '" + str(iCust) + "' ")
             mainresult = cursor.fetchall()
             print(mainresult)
 

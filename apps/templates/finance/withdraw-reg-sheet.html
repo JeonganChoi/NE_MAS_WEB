@@ -5,8 +5,13 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
-
 {% block content %}
+<style>
+.btn-outline-warning {
+    --bs-btn-hover-color: #F19937;
+    --bs-btn-hover-bg: none;
+}
+</style>
 {#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
     <div class="height-100" style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
     <div class="container-fluid py-1 my-2">
@@ -318,7 +323,7 @@
                                                 <div class="col-12 text-start">
                                                     <div class="d-flex">
                                                         <button type="button" class="btn btn-sm btn-dark me-3" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
-                                                        <button type="button" class="btn btn-sm btn-warning" style="width: 10vw" id="btnApv" name="btnApv" value="100">전결</button>
+                                                        <button type="button" class="btn btn-sm btn-warning" style="width: 10vw" id="btnApv" name="btnApv" value="">전결</button>
                                                     </div>
                                                 </div>
                                                 <div hidden class="col-12 text-start">
@@ -1306,9 +1311,16 @@
         {# 전결 버튼 누를시 #}
         {# 버튼색깔: class명: btn-outline-warning #}
         $(document).on('click', '#btnApv', function () {
-            var apv = "";
-            apv = $(this).val();
-            $("#txtApvAll").val(apv)
+            if($(this).hasClass('btn-warning')) {
+                $("#txtApvAll").val('100');
+                $(this).removeClass('btn-warning');
+                $(this).addClass('btn-outline-warning');
+            } else {
+                $("#txtApvAll").val('');
+                $(this).removeClass('btn-outline-warning');
+                $(this).addClass('btn-warning');
+            }
+
 
         });
 
@@ -3180,14 +3192,30 @@
         {#    $(this).val(regex_txtRegNum);#}
         {#});#}
 
-        $('input[name=txtWitPrice]').on('input', function () {
-            var txtRegNum = Number($(this).val().replaceAll(',',''));
 
-            if(isNaN(txtRegNum)) {
+        {#기존소스#}
+        {#$('input[name=txtWitPrice]').on('input', function () {#}
+        {#    var txtRegNum = Number($(this).val().replaceAll(',',''));#}
+        {##}
+        {#    if(isNaN(txtRegNum)) {#}
+        {#        txtRegNum = 0;#}
+        {#    }#}
+        {##}
+        {#    var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");#}
+        {#    $(this).val(regex_txtRegNum);#}
+        {##}
+        {#});#}
+
+
+        $('input[name=txtWitPrice]').on('input', function () {
+            var txtRegNum = $(this).val().replaceAll(',','');
+
+            if(txtRegNum != '-' && isNaN(Math.abs(txtRegNum))) {
                 txtRegNum = 0;
             }
 
-            var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            {#var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");#}
+            var regex_txtRegNum = txtRegNum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
             $(this).val(regex_txtRegNum);
 
         });
