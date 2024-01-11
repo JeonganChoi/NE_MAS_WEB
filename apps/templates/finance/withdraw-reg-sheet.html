@@ -917,16 +917,16 @@
                             }
                             var check = "";
                             if(list[i][9] == 'Y' ){
-                                check = '승인';
+                                check = '시행';
                             }
                             if(list[i][9] == 'N'){
-                                check = '미승인';
+                                check = '미시행';
                             }
                             if(list[i][19] == 'Y' ){
-                                apv = '결재';
+                                apv = '승인';
                             }
                             if(list[i][19] == 'N' ){
-                                apv = '미결재';
+                                apv = '미승인';
                             }
 
 
@@ -983,19 +983,16 @@
 
                             var check = "";
                             if(list[i][9] == 'Y' ){
-                                check = '승인';
+                                check = '시행';
                             }
                             if(list[i][9] == 'N'){
-                                check = '반려';
-                            }
-                            if(list[i][9] == 'N'){
-                                check = '미승인';
+                                check = '미시행';
                             }
                             if(list[i][19] == 'Y' ){
-                                apv = '결재';
+                                apv = '승인';
                             }
                             if(list[i][19] == 'N' ){
-                                apv = '미결재';
+                                apv = '미승인';
                             }
 
                             if(list[i][9] == 'Y'){
@@ -1136,16 +1133,16 @@
                                 total -= list[i][3]
                             }
                             if(list[i][9] == 'Y'){
-                                check = '승인';
+                                check = '시행';
                             }
                             if(list[i][9] == 'N'){
-                                check = '미승인';
+                                check = '미시행';
                             }
                             if(list[i][20] == 'Y'){
-                                apv = '결재';
+                                apv = '승인';
                             }
                             if(list[i][20] == 'N'){
-                                apv = '미결재';
+                                apv = '미승인';
                             }
 
 
@@ -1174,16 +1171,16 @@
                         for (var i = 0; i < list.length; i++) {
 
                             if(list[i][9] == 'Y'){
-                                check = '승인';
+                                check = '시행';
                             }
                             if(list[i][9] == 'N'){
-                                check = '미승인';
+                                check = '미시행';
                             }
                             if(list[i][20] == 'Y'){
-                                apv = '결재';
+                                apv = '승인';
                             }
                             if(list[i][20] == 'N'){
-                                apv = '미결재';
+                                apv = '미승인';
                             }
 
                             $("#withMainTb").append(
