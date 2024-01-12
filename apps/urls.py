@@ -5,6 +5,7 @@ from apps.views.finance import purchaseViews, salesViews, depositViews, withdraw
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews, permitViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews, nonPayGetVIews
+from apps.views.popup import popCustViews
 
 urlpatterns = [
     # path('', redirectToMain, name="redirectToMain"),
@@ -28,6 +29,10 @@ urlpatterns = [
     # 파일 불러오기
     path('download_file/', paymentViews.download_file, name='download_file'),
     path('download_file_emp/', empViews.download_file_emp, name='download_file_emp'),
+
+    # 팝업창
+    path('popup_cust/', popCustViews.pop_base_cust, name='popup_cust'),
+    path('popup_cust_search/', popCustViews.pop_base_cust_search, name='popup_cust_search'),
 
     # 기초정보
     # 계정코드관리
@@ -210,4 +215,6 @@ urlpatterns = [
     # 계정별내역서
     path('nonPayment/', nonPayGetVIews.nonPaymentView, name='nonPayment'),
     path('nonPayment_search/', nonPayGetVIews.nonPaymentView_search, name='nonPayment_search'),
+
+
 ]

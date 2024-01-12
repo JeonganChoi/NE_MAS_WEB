@@ -1,0 +1,79 @@
+{% extends "layouts/base-popup.html" %}
+
+{% block title %} base_cust {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <section>
+        <div class="card mx-2 my-2 height-400 shadow-none">
+            <div class="card-header pt-2 h-5">
+                <label class="text-lg"><i class="fa fa-rectangle-list fs-6 me-2"></i>거래처 조회</label>
+            </div>
+            <div class="card-body pt-2 mb-0">
+                <div class="table-responsive-sm overflow-auto max-height-vh-80 min-vh-80 border border-light">
+                    <table class="table">
+                        <colgroup>
+                            <col width="5%">
+                            <col width="10%">
+                            <col width="5%">
+                        </colgroup>
+                        <thead class="bg-primary text-white text-center">
+                        <tr>
+                            <th class="p-1" style="font-size: 0.8rem">거래처 코드</th>
+                            <th class="p-1" style="font-size: 0.8rem">거래처 명</th>
+                            <th class="p-1" style="font-size: 0.8rem">업체 구분</th>
+                        </tr>
+                        </thead>
+                        <tbody id="custTb">
+                        <tr id="#custTr" class="custTr_tr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            window.resizeTo(500, 480);
+
+            const urlParams = new URL(location.href).searchParams;
+            var val =   decodeURIComponent(urlParams.get('val'));
+            var inputvalue = val.replaceAll("",'')
+
+            let data = {"custCode": inputvalue}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "popup_cust_search" %}',
+                async: false,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    var list = data.custList;
+
+                    $("#custTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#custTb").append(
+                            "<tr id='#custTr' class='custTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
+                            "</tr> ");
+                    }
+
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

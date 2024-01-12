@@ -23,19 +23,9 @@
 
 </head>
 
-<body class="g-sidenav-show   bg-gray-100">
+<body class="bg-white">
 
-    {% include 'includes/navigation.html' %}
-{#  {% include 'includes/sidebar.html' %}#}
-
-  <div class="main-content position-relative min-height-100 border-radius-lg">
-
-      <!-- Page content -->
-      {% block content %}{% endblock content %}
-
-      {% include 'includes/footer.html' %}
-
-  </div>
+    {% block content %}{% endblock content %}
 
    {% block javascripts %}{% endblock javascripts %}
 
@@ -54,48 +44,10 @@
   <script src="/static/assets/js/plugins/jkanban/jkanban.js"></script>
   <script src="/static/assets/js/plugins/chartjs.min.js"></script>
   <script src="/static/assets/js/plugins/swiper-bundle.min.js" type="text/javascript"></script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-
-    // 콤마 추가
-    function addComma(str) {
-        return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-    {# 팜업 띄우는 함수 #}
-    function openPop(url, title) {
-    let screenwidth = screen.width;
-    let screenheight = screen.height;
-
-    let popupWidth = 800;
-    let popupHeight = 800;
-
-    let popupX = Math.ceil((screenwidth - popupWidth) / 2);
-    let popupY = Math.ceil((screenheight - popupHeight) / 2);
-
-    $title = title;
-    window.open(url, title, "width=" + popupWidth + ",height=" + popupHeight + ",left=" + popupX + ", top=" + popupY);
-    }
-
-  </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Corporate UI Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/static/assets/js/corporate-ui-dashboard.min.js?v=1.0.0"></script>
   <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
-
-  <script>
-      window.onpageshow = function(e) {
-        if(e.persisted || (window.performance && window.performance.navigation.type == 2)) {
-            window.location.reload();
-        }
-      }
-  </script>
 </body>
 </html>

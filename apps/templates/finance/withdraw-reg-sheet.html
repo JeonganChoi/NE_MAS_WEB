@@ -178,6 +178,7 @@
                                     </div>
                                     <div class="col-4 cboCust">
                                         <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>거래처</label>
+                                        <input class="form-control text-start" type="text" id="txtCust" name="txtCust" style="height: 2rem; font-size: 0.8rem"/>
                                         <select class="form-control text-center p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4">
@@ -3504,7 +3505,25 @@
             });
         });
 
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtCust') {
 
+                    if ($("#txtCust").val().length == 0) {
+                        alert("거래처명 한 글자 이상 입력 후 엔터를 쳐주세요.")
+                        return false
+                    } else {
+                        let thisVal = $("#txtCust").val();
+                        let url = '{% url 'popup_cust' %}';
+                        openPop(url + '?val=' + thisVal, '거래처검색창');
+                    }
+
+                }
+            }
+        });
     </script>
+
+
 
 {% endblock %}
