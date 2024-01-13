@@ -56,6 +56,7 @@
                                 <div class="table-responsive-sm height-400 overflow-auto border border-light">
                                   <table class="table mb-0 align-items-center justify-content-center">
                                       <colgroup>
+                                          <col width="2%">
                                           <col width="8%">
                                           <col width="15%">
                                           <col width="8%">
@@ -65,12 +66,13 @@
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center bg-primary">
                                       <tr>
-                                        <th style="font-size: 0.85rem" class="p-0">등록일자</th>
-                                        <th style="font-size: 0.85rem" class="p-0">제 목</th>
-                                        <th style="font-size: 0.85rem" class="p-0">지출금액</th>
-                                        <th style="font-size: 0.85rem" class="p-0">작성자</th>
-                                        <th style="font-size: 0.85rem" class="p-0">결재</th>
-                                        <th style="font-size: 0.85rem" class="p-0">승인</th>
+                                        <th style="font-size: 0.85rem" class="p-1">선택</th>
+                                        <th style="font-size: 0.85rem" class="p-1">등록일자</th>
+                                        <th style="font-size: 0.85rem" class="p-1">제 목</th>
+                                        <th style="font-size: 0.85rem" class="p-1">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-1">작성자</th>
+                                        <th style="font-size: 0.85rem" class="p-1">결재</th>
+                                        <th style="font-size: 0.85rem" class="p-1">승인</th>
                                       </tr>
                                     </thead>
                                     <tbody id="mainTb">
@@ -92,7 +94,7 @@
                                             <label class="text-sm"><i class="far fa-edit me-2"></i>제 목</label>
                                             <input readonly class="form-control text-start bg-transparent" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-4 colCust">
                                             <label class="text-sm"><i class="far fa-edit me-2"></i>거래처</label>
                                             <select readonly class="form-control border border-light rounded-1 text-center bg-danger-soft p-1 bg-transparent" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                         </div>
@@ -122,7 +124,7 @@
                                             <label class="text-sm"><i class="fas fa-edit me-2"></i>금액</label>
                                             <input readonly class="form-control text-end bg-transparent" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-4 colAct">
                                             <label class="text-sm"><i class="fas fa-edit me-2"></i>계좌번호</label>
                                             <select readonly class="form-control border border-light rounded-1 text-center p-1 bg-transparent" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
                                         </div>
@@ -132,7 +134,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-4 colCard">
                                             <label class="text-sm"><i class="fas fa-edit me-2"></i>카드</label>
                                             <select readonly class="form-control border border-light rounded-1 text-center bg-transparent" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                         </div>
@@ -156,7 +158,16 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-8"></div>
+                                        <div class="col-8">
+                                            <div class="table-responsive-sm overflow-auto mt-2">
+                                                <table class="table mb-0 align-items-center justify-content-center">
+                                                    <tbody id="subTb">
+                                                    <tr id="#subTr" class="subTr_tr">
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                         <div class="col-4">
                                             <div class="form-group text-end mt-3">
                                             <a class="btn btn-success text-dark btn-sm" type="button" id="btnFileLook">파일 보기</a>
@@ -165,7 +176,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group buttonLine mt-0">
-                                    <div class="row">
+                                    <div class="row p-0">
                                         <div class="col-9 text-start">
                                             <div class="d-flex">
                                                 <button class="btn btn-sm btn-success me-4" id="btnApv" name="btnApv"><i class="fa fa-file-signature fs-6 pe-3"></i>결 재</button>
@@ -223,16 +234,6 @@
                                     <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fa fa-file-signature fs-6 pe-3"></i>반 려</button>
                                 </div>
                             </div>
-                            <!--<div class="row p-0">
-                                <div class="col-4 text-start">
-                                    <button class="btn btn-sm btn-primary" id="btnAbt" name="btnAbt"><i class="ni ni-bold-down pe-3"></i>전 결</button>
-                                </div>
-                            </div>-->
-                            <!--<div class="row p-0">
-                                <div class="col-4 text-start">
-                                    <button class="btn btn-sm btn-primary" id="btnReturn" name="btnReturn"><i class="ni ni-bold-down pe-3"></i>반 려</button>
-                                </div>
-                            </div>-->
                             <div hidden class="row p-0">
                                 <div class="col-4">
                                     <div class="form-group">
@@ -325,12 +326,7 @@
             var empNbr = document.getElementById('inputEmp').value
             var gbn = document.getElementById('inputGbn').value
 
-            {#document.getElementById('txtWitRegDate').valueAsDate = new Date#}
             var now = new Date
-            {#document.getElementById('txtExDate').valueAsDate = new Date#}
-            {##}
-            {#var sDate = document.getElementById('txtWitRegDate').value#}
-            {#var ioDate = sDate.replace(/\-/g, '')#}
             var ioDate = now
 
             let data = {'empNbr': empNbr, 'gbn': gbn, "ioDate": ioDate}
@@ -351,12 +347,13 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>미결재</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>미승인</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }
@@ -392,9 +389,10 @@
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
                         if(gbn == '2'){
-                            text = '미결재'
+                            text = '미승인'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -405,9 +403,10 @@
                             "</tr> ");
                         }
                         if(gbn == '3'){
-                            text = '결재'
+                            text = '승인'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -418,9 +417,10 @@
                             "</tr> ");
                         }
                         if(gbn == '4'){
-                            text = '미승인'
+                            text = '미시행'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -431,9 +431,10 @@
                             "</tr> ");
                         }
                         if(gbn == '5'){
-                            text = '승인'
+                            text = '시행'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -499,23 +500,6 @@
 
                     $('.buttonLine').show();
 
-                    {#$("#subTb").html("");#}
-                    {#$("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
-                    {#for (var i = 0; i < list.length; i++) {#}
-                    {#    $("#subTb").append(#}
-                    {#        "<td class='text-center p-1 bg-warning font-weight-bolder text-white' style='font-size: 0.85rem'>" + list[i][2] + "</td> ");#}
-                    {#}#}
-                    {#$("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
-                    {#for (var i = 0; i < list.length; i++) {#}
-                    {#    $("#subTb").append(#}
-                    {#        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");#}
-                    {#}#}
-                    {#$("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
-                    {#for (var i = 0; i < list.length; i++) {#}
-                    {#    $("#subTb").append(#}
-                    {#        "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");#}
-                    {#}#}
-
                     for (var i = 0; i < list2.length; i++) {
                         $("#txtWitSeq").val(list2[i][11])
                         $("#txtWitRegDate").val(list2[i][3].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
@@ -572,6 +556,42 @@
                     $("#cboWitMethod").append(cboWitMethodTxt);
                     $("#cboAdminCode").append(cboAdminCodeTxt);
                     $("#cboWitActNum").append(cboWitActNumTxt);
+
+                    $("#subTb").html("");
+                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#subTb").append(
+                            "<td class='text-center p-1 bg-warning font-weight-bolder text-white' style='font-size: 0.85rem'>" + list[i][2] + "</td> ");
+                    }
+                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#subTb").append(
+                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");
+                    }
+                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#subTb").append(
+                            "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
+                    }
+
+                    if (cboWitMethod == '1') {
+                        $('.colCust').hide();
+                        $('.colAct').hide();
+                        $('.colCard').hide();
+                    } else if (cboWitMethod == '2') {
+                        $('.colCust').show();
+                        $('.colAct').hide();
+                        $('.colCard').hide();
+                    } else if (cboWitMethod == '3') {
+                        $('.colCust').hide();
+                        $('.colAct').show();
+                        $('.colCard').show();
+                    } else if (cboWitMethod == '4') {
+                        $('.colCust').hide();
+                        $('.colAct').show();
+                        $('.colCard').show();
+                    }
+
                 }
             })
         });
@@ -747,3 +767,4 @@
         });
     </script>
 {% endblock %}
+

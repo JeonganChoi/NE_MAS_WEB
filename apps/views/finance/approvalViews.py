@@ -41,7 +41,6 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND B.OPT = 'N' AND B.RTNGBN != 'N' ")
             mainresult = cursor.fetchall()
@@ -64,7 +63,6 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND B.OPT = 'Y' ")
             mainresult = cursor.fetchall()
@@ -87,7 +85,6 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND A.FIN_OPT = 'N' AND A.MID_OPT = 'Y' AND B.RTNGBN != 'N' ")
             mainresult = cursor.fetchall()
@@ -110,7 +107,6 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN PIS1TB001 D "
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           # " AND B.ACDATE <= '" + str(ioDate) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND A.FIN_OPT = 'Y' "
                            " AND A.MID_OPT = 'Y'")
@@ -241,7 +237,7 @@ def approvalViews_save(request):
         # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
         with connection.cursor() as cursor:
             cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-                           "        AND ACSEQN = '" + str(seq) + "' AND SEQ = '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+                           "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
                            "        AND OPT = 'N' ")
             chk = cursor.fetchall()
 
@@ -284,11 +280,11 @@ def approvalViews_save(request):
         # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
         with connection.cursor() as cursor:
             cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-                           "        AND ACSEQN = '" + str(seq) + "' AND SEQ = '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+                           "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
                            "        AND OPT = 'N' ")
             chk = cursor.fetchall()
 
-            if (len(chk) != 0):
+            if (len(chk) == 0):
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE SISACCTT SET "
                                    "     MID_OPT = 'Y' "

@@ -1767,7 +1767,7 @@ def paymentViews_save(request):
                                "    ( "
                                "     '" + str(ioDate) + "' "
                                "     , '" + str(acSeqn) + "' "
-                               "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
+                               "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
                                "     , '" + empArrayLists[data]["empNbr"] + "' "
                                "     , '" + str(opt) + "' "
                                "     , '" + str(acIogb) + "' "
@@ -1869,7 +1869,7 @@ def paymentViews_save(request):
 
                 with connection.cursor() as cursor:
                     cursor.execute(" SELECT MAX(ACSEQN) FROM SISACCTT WHERE IODATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
-                    result2 = cursor.fetchall()  # 계좌 은행
+                    result2 = cursor.fetchall()
 
                     seq = result2[0][0]
 
@@ -1893,7 +1893,7 @@ def paymentViews_save(request):
                                        "    ( "
                                        "     '" + str(ioDate) + "' "
                                        "     , '" + str(seq) + "' "
-                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' AND ICUST = '" + str(iCust) + "' ) "
+                                       "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "'  AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "
                                        "     , '" + opt + "' "
                                        "     , '" + str(acIogb) + "' "
