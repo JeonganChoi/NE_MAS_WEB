@@ -561,18 +561,14 @@
                     $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
                         $("#subTb").append(
-                            "<td class='text-center p-1 bg-warning font-weight-bolder text-white' style='font-size: 0.85rem'>" + list[i][2] + "</td> ");
+                            "<td class='text-center p-1 bg-warning font-weight-bolder text-white border border-light' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
                     }
                     $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
                         $("#subTb").append(
                             "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");
                     }
-                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#subTb").append(
-                            "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");
-                    }
+
 
                     if (cboWitMethod == '1') {
                         $('.colCust').hide();
@@ -767,4 +763,8 @@
         });
     </script>
 {% endblock %}
-
+{#    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
+{#    for (var i = 0; i < list.length; i++) {#}
+{#        $("#subTb").append(#}
+{#            "<td class='border' sub_code='" + list[i][0] + "," + list[i][1] + "," + list[i][3] + "," + list[i][4] + "," + list[i][5] + "," + list[i][6] + "' id='btnChoice' data-bs-toggle='modal' data-bs-target='#DecisionModal' style='height: 5vh'></td> ");#}
+{#    }#}

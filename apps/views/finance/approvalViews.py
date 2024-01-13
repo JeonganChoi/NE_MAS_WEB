@@ -153,7 +153,6 @@ def approvalSubViews_search(request):
                            " WHERE A.ACDATE = '" + str(ioDate) + "' "
                            " AND A.ACSEQN = '" + str(acSeqn) + "' "
                            " AND A.ACIOGB = '" + str(acIogb) + "' "
-                           " AND A.EMP_NBR = '" + str(empNbr) + "' "
                            " AND A.ICUST = '" + str(iCust) + "' "
                            " ORDER BY SEQ ASC ")
             subresult = cursor.fetchall()
