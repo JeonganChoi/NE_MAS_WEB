@@ -34,6 +34,7 @@
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>결재자</label>
                                     <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" value="{{ request.session.USER_NM }}" style="height: 2rem">
+                                    <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="empCode" id="empCode" value="{{ request.session.userId }}" style="height: 2rem">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-2">
@@ -64,7 +65,7 @@
                                           <col width="4%">
                                           <col width="4%">
                                       </colgroup>
-                                    <thead class="text-white font-weight-bolder text-center bg-primary">
+                                    <thead class="text-white font-weight-bolder text-center bg-primary" style="position: sticky; top: 0">
                                       <tr>
                                         <th style="font-size: 0.85rem" class="p-1">선택</th>
                                         <th style="font-size: 0.85rem" class="p-1">등록일자</th>
@@ -157,9 +158,9 @@
                                             <input class="form-control text-start bg-transparent" type="text" id="txtSeqn" name="txtSeqn" style="height: 2rem; font-size: 0.8rem"/>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <div class="table-responsive-sm overflow-auto mt-2">
+                                    <div class="row mt-5 mb-0 pb-0">
+                                        <div class="col-9">
+                                            <div class="table-responsive-sm overflow-auto m-0">
                                                 <table class="table mb-0 align-items-center justify-content-center">
                                                     <tbody id="subTb">
                                                     <tr id="#subTr" class="subTr_tr">
@@ -168,14 +169,14 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="col-4">
-                                            <div class="form-group text-end mt-3">
+                                        <div class="col-3">
+                                            <div class="form-group text-end m-0">
                                             <a class="btn btn-success text-dark btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group buttonLine mt-0">
+                                <div class="form-group buttonLine pt-0 mt-0">
                                     <div class="row p-0">
                                         <div class="col-9 text-start">
                                             <div class="d-flex">
@@ -557,11 +558,20 @@
                     $("#cboAdminCode").append(cboAdminCodeTxt);
                     $("#cboWitActNum").append(cboWitActNumTxt);
 
+                    var empCode = document.getElementById('empCode').value
+
                     $("#subTb").html("");
                     $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {
-                        $("#subTb").append(
-                            "<td class='text-center p-1 bg-warning font-weight-bolder text-white border border-light' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                        if(empCode == list[i][1]){
+                            $("#subTb").append(
+                                "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-2' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                        }
+                        else{
+                            $("#subTb").append(
+                                "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-2' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                        }
+
                     }
                     $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                     for (var i = 0; i < list.length; i++) {

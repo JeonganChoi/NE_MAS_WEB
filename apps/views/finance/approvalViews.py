@@ -35,6 +35,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
                            " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ACIOGB = B.ACIOGB "
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
@@ -57,6 +58,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
                            " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ACIOGB = B.ACIOGB "
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
@@ -79,6 +81,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
                            " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ACIOGB = B.ACIOGB "
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
@@ -101,6 +104,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
                            " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ACIOGB = B.ACIOGB "
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
@@ -109,7 +113,7 @@ def approvalViews_search(request):
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
                            " AND A.FIN_OPT = 'Y' "
-                           " AND A.MID_OPT = 'Y'")
+                           " AND A.MID_OPT = 'Y' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -123,6 +127,7 @@ def approvalViews_search(request):
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
                            " AND A.ACSEQN = B.ACSEQN "
+                           " AND A.ACIOGB = B.ACIOGB "
                            " AND A.ICUST = B.ICUST "
                            " LEFT OUTER JOIN PIS1TB001 C "
                            " ON B.EMP_NBR = C.EMP_NBR "
