@@ -122,7 +122,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')  "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, '')  "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -139,6 +139,43 @@ def approvalViews_search(request):
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
+        #     sublist2 = []
+        #
+        #     for i in range(len(mainresult)):
+        #         sublist = [mainresult[i][0], mainresult[i][5], mainresult[i][6], mainresult[i][11]]
+        #         sublist2 += [sublist]
+        #
+        #     sublist4 = []
+        #     for j in range(len(sublist2)):
+        #         with connection.cursor() as cursor:
+        #             cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+        #                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+        #                            "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, '')  "
+        #                            " FROM SISACCTT A "
+        #                            " LEFT OUTER JOIN OSSIGN B "
+        #                            " ON A.IODATE = B.ACDATE "
+        #                            " AND A.ACSEQN = B.ACSEQN "
+        #                            " AND A.ICUST = B.ICUST "
+        #                            " AND A.ACIOGB = B.ACIOGB "
+        #                            " LEFT OUTER JOIN PIS1TB001 C "
+        #                            " ON B.EMP_NBR = C.EMP_NBR "
+        #                            " LEFT OUTER JOIN PIS1TB001 D "
+        #                            " ON A.CRE_USER = D.EMP_NBR "
+        #                            " WHERE B.SEQ < '" + str(sublist2[j][3]) + "' "
+        #                            " AND B.OPT = 'Y' "
+        #                            " AND A.IODATE = '" + str(sublist2[j][0]) + "' "
+        #                            " AND A.ACSEQN = '" + str(sublist2[j][1]) + "' "
+        #                            " AND A.ICUST = '" + str(iCust) + "' "
+        #                            " AND A.ACIOGB = '" + str(sublist2[j][2]) + "' ")
+        #             subresult = cursor.fetchall()
+        #             print(subresult)
+        #             for data in range(len(subresult)):
+        #                 itembomlist3 = [subresult[data][0], subresult[data][1], subresult[data][2], subresult[data][3],
+        #                                 subresult[data][4], subresult[data][5], subresult[data][6], subresult[data][7],
+        #                                 subresult[data][8], subresult[data][9], subresult[data][10]]
+        #                 sublist4 += [itembomlist3]
+        #
+        # return JsonResponse({"mainList": mainresult, "subList": sublist4})
 
 
 def approvalSubViews_search(request):
