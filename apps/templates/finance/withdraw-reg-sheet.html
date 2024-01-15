@@ -408,6 +408,7 @@
                                           <col hidden width="10%">
                                           <col hidden width="10%">
                                           <col hidden width="10%">
+                                          <col width="3%">
                                           <col width="10%">
                                           <col width="10%">
                                       </colgroup>
@@ -416,6 +417,7 @@
                                         <th hidden style="font-size: 0.8rem" class="p-1">부 서</th>
                                         <th hidden style="font-size: 0.8rem" class="p-1">직 책</th>
                                         <th hidden style="font-size: 0.8rem" class="p-1">사 번</th>
+                                        <th style="font-size: 0.8rem" class="p-1">순번</th>
                                         <th style="font-size: 0.8rem" class="p-1">Seg</th>
                                         <th style="font-size: 0.8rem" class="p-1">이 름</th>
                                       </tr>
@@ -591,12 +593,14 @@
                 if($('#modalSubTr' + empNbr).length == 0) {
 
                     var sub_tr_cnt = $('#modalSubTb tbody tr').length;
+                    var seq = parseInt(sub_tr_cnt) + 1
 
                     $("#modalSubTd").append(
                         "<tr id='modalSubTr" + empNbr + "' class='modalSubTr_tr'>" +
                         "<td hidden class='text-start p-1 empDpt' id='empDpt_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empDpt + "</td>" +
                         "<td hidden class='text-start p-1 empGbn' id='empGbn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empGbn + "</td> " +
                         "<td hidden class='text-start p-1 empNbr' name='empNbr' id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
+                        "<td class='text-start p-1' style='font-size: 0.8rem'>" + seq + "</td> " +
                         "<td class='text-start p-1'  id='empNbr_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNbr + "</td> " +
                         "<td class='text-start p-1 empNme' id='empNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + empNme + "</td> " +
                         "</tr> ");
