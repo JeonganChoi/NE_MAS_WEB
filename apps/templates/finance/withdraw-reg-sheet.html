@@ -178,7 +178,7 @@
                                     </div>
                                     <div class="col-4 cboCust">
                                         <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>거래처</label>
-                                        <input class="form-control text-start" type="text" id="txtCust" name="txtCust" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input hidden class="form-control text-start" type="text" id="txtCust" name="txtCust" style="height: 2rem; font-size: 0.8rem"/>
                                         <select class="form-control text-center p-1" name="cboWitCust" id="cboWitCust" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4">
@@ -324,7 +324,9 @@
                                                 <div class="col-12 text-start">
                                                     <div class="d-flex">
                                                         <button type="button" class="btn btn-sm btn-dark me-3" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
-                                                        <button type="button" class="btn btn-sm btn-warning" style="width: 10vw" id="btnApv" name="btnApv" value="">전결</button>
+                                                        {% if request.session.USER_GBN != '3' %}
+                                                        <button type="button" class="btn btn-sm btn-warning btnApv" style="width: 10vw" id="btnApv" name="btnApv" value="">전결</button>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 <div hidden class="col-12 text-start">
