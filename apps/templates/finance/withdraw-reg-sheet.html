@@ -3426,8 +3426,13 @@
             $("#txtApvAll").val("");
             $('.creUser').hide();
 
+            var gbn = '1'
+
+            let data = {"gbn": gbn}
+
             $.ajax({
                 type: "post",
+                data: data,
                 url: '{% url "cboList" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'

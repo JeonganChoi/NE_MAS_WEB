@@ -1135,12 +1135,22 @@ def chkWriter(request):
 
 
 def cboList(request):
+    gbn = request.POST.get("gbn")
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
+
     # 거래처
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
-        cboCust = cursor.fetchall()
+    if gbn != '':
+        if gbn == '1':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3' ")
+                cboCust = cursor.fetchall()
+        if gbn == '2':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3' ")
+                cboCust = cursor.fetchall()
 
     # 입출금구분
     with connection.cursor() as cursor:
@@ -1148,9 +1158,17 @@ def cboList(request):
         cboGgn = cursor.fetchall()
 
     # 관리계정
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ASC ")
-        cboMCode = cursor.fetchall()
+    if gbn != '':
+        if gbn == '1':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '5%' ORDER BY MCODE ASC ")
+                cboMCode = cursor.fetchall()
+        if gbn == '2':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '4%' ORDER BY MCODE ASC ")
+                cboMCode = cursor.fetchall()
 
     # 회계게정
     # with connection.cursor() as cursor:
