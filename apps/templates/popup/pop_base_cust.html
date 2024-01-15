@@ -74,6 +74,19 @@
                 }
             });
         });
+
+        {# 테이블 로우 클릭 시 #}
+        $(document).on('click', '#custTb .custTr_tr', function () {
+            $custCode = $(this).children('td:nth-child(1)').text();
+            $custName = $(this).children('td:nth-child(2)').text();
+
+            opener.document.getElementById('cboWitCust').value = $custCode
+            opener.document.getElementById('txtCustName').value = $custName
+
+            window.close();
+        });
+
+
     </script>
 
 {% endblock %}

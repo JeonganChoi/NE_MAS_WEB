@@ -30,7 +30,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(A.APPLYDT, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -53,7 +53,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '') "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -76,7 +76,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '') "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '') "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -99,7 +99,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')  "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '')  "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -122,7 +122,7 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, '')  "
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '')  "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "

@@ -59,6 +59,7 @@
                                       <colgroup>
                                           <col width="2%">
                                           <col width="8%">
+                                          <col width="6%">
                                           <col width="15%">
                                           <col width="8%">
                                           <col width="6%">
@@ -68,7 +69,8 @@
                                     <thead class="text-white font-weight-bolder text-center bg-primary" style="position: sticky; top: 0">
                                       <tr>
                                         <th style="font-size: 0.85rem" class="p-1">선택</th>
-                                        <th style="font-size: 0.85rem" class="p-1">등록일자</th>
+                                        <th style="font-size: 0.85rem" class="p-1">사용일자</th>
+                                        <th style="font-size: 0.85rem" class="p-1">적용년월</th>
                                         <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                         <th style="font-size: 0.85rem" class="p-1">지출금액</th>
                                         <th style="font-size: 0.85rem" class="p-1">작성자</th>
@@ -349,8 +351,9 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
@@ -394,8 +397,9 @@
                             text = '미승인'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
@@ -408,8 +412,9 @@
                             text = '승인'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
@@ -422,8 +427,9 @@
                             text = '미시행'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
@@ -436,8 +442,9 @@
                             text = '시행'
                             $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
@@ -566,11 +573,11 @@
                     for (var i = 0; i < list.length; i++) {
                         if(empCode == list[i][1]){
                             $("#subTb").append(
-                                "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-2' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
                         }
                         else{
                             $("#subTb").append(
-                                "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-2' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
                         }
 
                     }
