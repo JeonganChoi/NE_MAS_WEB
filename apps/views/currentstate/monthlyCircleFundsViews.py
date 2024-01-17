@@ -167,7 +167,7 @@ def montlyCircleFundsViews_search(request):
                        "   LEFT OUTER JOIN MIS1TB003 B "
                        "   ON A.ACCUST = B.CUST_NBR "
                        "   WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.ACIOGB = '1' AND A.FIN_OPT = 'Y' "
-                       "   AND A.MCODE LIKE '53%' OR A.MCODE LIKE '55%' "
+                       "   AND A.MCODE IN ('53%', '55%') "
                        "   GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE, A.FIN_OPT ) AA GROUP BY AA.ACCUST, AA.CUST_NME ")
         mainresult2 = cursor.fetchall()
 
