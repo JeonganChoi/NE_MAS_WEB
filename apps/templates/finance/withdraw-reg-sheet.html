@@ -141,7 +141,7 @@
             </div>
             <div class="col-lg-4 col-4 mb-md-0">
                 <div class="card border-0 shadow-xs height-600">
-                    <form class="form-control border-0 shadow-none dropzone p-0" id="dropzone" enctype="multipart/form-data">
+                    <form class="form-control border-0 shadow-none formzone p-0" id="formzone" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body mb-0 pb-0 height-500">
                             <div class="form-group p-0">
@@ -310,6 +310,14 @@
                             <div class="form-group folderArea">
                                 <div class="row mt-3">
                                     <div class="col-6 text-start">
+                                        <label class="mt-4 form-label">Starting Files</label>
+                                        <form action="/file-upload" class="form-control dropzone" id="dropzone">
+                                          <div class="fallback">
+                                            <input class="" name="file" type="file" multiple/>
+                                          </div>
+                                        </form>
+                                    </div>
+                                    <div hidden class="col-6 text-start">
                                         <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
                                         <input name="file" id="file" type="file" class="" style="display: none;" />
                                         <div class="form-group text-start mt-2">
@@ -443,6 +451,7 @@
 {% block javascripts %}
 
     <script>
+{#       드롭존  #}
         Dropzone.autoDiscover = false;
         var drop = document.getElementById('dropzone')
         var myDropzone = new Dropzone(drop, {
@@ -450,6 +459,7 @@
             addRemoveLinks: true
 
         });
+
     </script>
 
     <script>
@@ -2966,7 +2976,7 @@
         {# 저장 버튼 #}
         $(document).on('click', "#btnSave", function () {
 
-            var formData = new FormData($('#dropzone')[0]);
+            var formData = new FormData($('#formzone')[0]);
 
             var cboWitGbn = document.getElementById('cboWitGbn').value
             {#var txtTitle = document.getElementById('txtTitle').value#}
