@@ -184,7 +184,7 @@ urlpatterns = [
          name='ym_account_search'),
 
     #  자금 현황
-    # 내역별 잔액
+    # 입출금 현황
     path('receipts_payments/', receiptPaymentViews.receiptPaymentViews, name='receipts_payments'),
     path('receipts_payments_search/', receiptPaymentViews.receiptPaymentViews_search, name='receipts_payments_search'),
 
@@ -195,7 +195,7 @@ urlpatterns = [
     path('receive_pay_code/', receivepayViews.receivepayCodeSheetViews, name='receive_pay_code'),
     path('receive_pay_code_search/', receivepayViews.receivepayCodeSheetViews_search, name='receive_pay_code_search'),
 
-    # 월별 자금 유동 현황
+    # 월별 자금 유동 현황(현재사용중)
     path('monthly_circle_funds/', monthlyCircleFundsViews.montlyCircleFundsViews, name='monthly_circle_funds'),
     path('monthly_circle_funds_search/', monthlyCircleFundsViews.montlyCircleFundsViews_search, name='monthly_circle_funds_search'),
     # path('daily_circle_funds/', monthlyCircleFundsViews.dailyCircleFunds_search, name='daily_circle_funds'),

@@ -27,11 +27,11 @@ def montlyProfitLossViews_search(request):
     iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' ")
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND ICUST = '" + str(iCust) + "' ")
         cboAcode = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' ")
+        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND ICUST = '" + str(iCust) + "' ")
         mheadresult = cursor.fetchall()
 
     # with connection.cursor() as cursor:
@@ -62,7 +62,8 @@ def montlyProfitLossViews_search(request):
                        " AND A.RECODE = 'MCD' "
                        " LEFT OUTER JOIN SISACCTT C "
                        " ON B.MCODE = C.MCODE "
-                       " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
+                       " WHERE C.ICUST = '" + str(iCust) + "' AND C.FIN_OPT = 'Y' "
+                       " AND SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
                        " GROUP BY A.RESKEY, A.RESNAM ORDER BY A.RESKEY ")
         mCoderesult = cursor.fetchall()
 
@@ -74,7 +75,8 @@ def montlyProfitLossViews_search(request):
                        " LEFT OUTER JOIN OSREFCP C "
                        " ON A.ACODE = C.RESKEY "
                        " AND C.RECODE = 'ACD' "
-                       " WHERE SUBSTRING(B.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "' "
+                       " WHERE B.ICUST = '" + str(iCust) + "' AND B.FIN_OPT = 'Y' "
+                       " AND SUBSTRING(B.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "' "
                        " GROUP BY A.MCODE_M, A.ACODE, C.RESNAM ")
         aCoderesult = cursor.fetchall()
 
@@ -87,7 +89,8 @@ def montlyProfitLossViews_search(request):
                        " LEFT OUTER JOIN OSREFCP C "
                        " ON A.ACODE = C.RESKEY "
                        " AND C.RECODE = 'ACD' "
-                       " WHERE SUBSTRING(B.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "' "
+                       " WHERE B.ICUST = '" + str(iCust) + "' AND B.FIN_OPT = 'Y' "
+                       " AND SUBSTRING(B.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "' "
                        " GROUP BY A.MCODE_M, A.ACODE, C.RESNAM, SUBSTRING(B.ACDATE, 1, 6) ")
         itembomlist3 = cursor.fetchall()
 
@@ -100,7 +103,8 @@ def montlyProfitLossViews_search(request):
                        " AND A.RECODE = 'MCD' "
                        " LEFT OUTER JOIN SISACCTT C "
                        " ON B.MCODE = C.MCODE "
-                       " WHERE SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
+                       " WHERE C.ICUST = '" + str(iCust) + "' AND C.FIN_OPT = 'Y' "
+                       " AND SUBSTRING(C.ACDATE, 1, 6) BETWEEN '" + str(strDate).replace("-", "") + "' AND '" + str(endDate).replace("-", "") + "'"
                        " GROUP BY A.RESKEY, A.RESNAM, SUBSTRING(C.ACDATE, 1, 6)")
         itembomlist2 = cursor.fetchall()
         print(itembomlist2)

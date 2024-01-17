@@ -59,9 +59,9 @@ def montlyCircleFundsViews_search(request):
                        "    FROM SISACCTT A "
                        "    LEFT OUTER JOIN MIS1TB003 B "
                        "    ON A.ACCUST = B.CUST_NBR "
-                       "    WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
-                       "    AND A.MCODE LIKE '41%' AND A.ACGUBN = '2'"
-                       "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE "
+                       "    WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.ACGUBN = '2'  AND A.FIN_OPT = 'Y' "
+                       "    AND A.MCODE LIKE '41%' "
+                       "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE, A.FIN_OPT "
                        " UNION ALL "
                        "   SELECT A.ACCUST, B.CUST_NME "
                        "          , 0 AS MONTH01 "
@@ -91,9 +91,9 @@ def montlyCircleFundsViews_search(request):
                        "    FROM SISACCTT A "
                        "    LEFT OUTER JOIN MIS1TB003 B "
                        "    ON A.ACCUST = B.CUST_NBR "
-                       "    WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
+                       "    WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.ACIOGB = '2' AND A.FIN_OPT = 'Y' "
                        "    AND A.MCODE LIKE '43%' "
-                       "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE ) AA GROUP BY AA.ACCUST, AA.CUST_NME ")
+                       "    GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE, A.FIN_OPT ) AA GROUP BY AA.ACCUST, AA.CUST_NME ")
         mainresult = cursor.fetchall()
 
     # 매입/출금
@@ -134,10 +134,10 @@ def montlyCircleFundsViews_search(request):
                        "   FROM SISACCTT A "
                        "   LEFT OUTER JOIN MIS1TB003 B "
                        "   ON A.ACCUST = B.CUST_NBR "
-                       "   WHERE YEAR(A.ACDATE) = '" + str(year) + "' "
-                       "   AND MCODE LIKE '51%' AND A.ACGUBN = '2' "
-                       "   GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE "
-                       "UNION ALL "
+                       "   WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.ACGUBN = '2' AND A.FIN_OPT = 'Y' "
+                       "   AND A.MCODE LIKE '51%' "
+                       "   GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE, A.FIN_OPT "
+                       " UNION ALL "
                        "  SELECT A.ACCUST, B.CUST_NME "
                        "         , 0 AS MONTH01 "
                        "         , (CASE WHEN MONTH(A.ACDATE) = '01' THEN SUM(A.ACAMTS) END) AS MONTH01_IN "
@@ -166,9 +166,9 @@ def montlyCircleFundsViews_search(request):
                        "   FROM SISACCTT A "
                        "   LEFT OUTER JOIN MIS1TB003 B "
                        "   ON A.ACCUST = B.CUST_NBR "
-                       "   WHERE YEAR(A.ACDATE) = '" + str(year) + "'  "
-                       "   AND MCODE LIKE '53%' OR MCODE LIKE '55%' "
-                       "   GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE ) AA GROUP BY AA.ACCUST, AA.CUST_NME ")
+                       "   WHERE YEAR(A.ACDATE) = '" + str(year) + "' AND A.ICUST = '" + str(iCust) + "' AND A.ACIOGB = '1' AND A.FIN_OPT = 'Y' "
+                       "   AND A.MCODE LIKE '53%' OR A.MCODE LIKE '55%' "
+                       "   GROUP BY A.ACCUST, B.CUST_NME, A.ACDATE, A.FIN_OPT ) AA GROUP BY AA.ACCUST, AA.CUST_NME ")
         mainresult2 = cursor.fetchall()
 
     # with connection.cursor() as cursor:
@@ -205,9 +205,9 @@ def montlyCircleFundsViews_search(request):
             cursor.execute(" SELECT (TOTAL + INTOTAL - OUTTOTAL) AS FINAL FROM ( "
                            " SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE YEAR(ACDATE) = '" + str(year) + "' AND ICUST = '" + str(iCust) + "' "
                            " UNION ALL "
-                           " SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '43%' AND ICUST ='" + str(iCust) + "' AND YEAR(ACDATE) = '" + str(year) + "' "
+                           " SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT WHERE ICUST ='" + str(iCust) + "' AND YEAR(ACDATE) = '" + str(year) + "' AND FIN_OPT = 'Y' AND MCODE LIKE '43%'  "
                            " UNION ALL "
-                           " SELECT 0 AS TOTAL, 0 AS INTOTAL, IFNULL(SUM(ACAMTS), 0) AS OUTTOTAL FROM SISACCTT WHERE MCODE LIKE '53%' OR MCODE LIKE '55%' AND ICUST ='" + str(iCust) + "' AND YEAR(ACDATE) = '" + str(year) + "' "
+                           " SELECT 0 AS TOTAL, 0 AS INTOTAL, IFNULL(SUM(ACAMTS), 0) AS OUTTOTAL FROM SISACCTT WHERE ICUST ='" + str(iCust) + "' AND YEAR(ACDATE) = '" + str(year) + "' AND FIN_OPT = 'Y' AND MCODE LIKE '53%' OR MCODE LIKE '55%' "
                            " ) AA ")
             lastresult = cursor.fetchall()
 
@@ -219,18 +219,18 @@ def montlyCircleFundsViews_search(request):
                            " FROM "
                            "     ( "
                            " SELECT IFNULL(B.YUD, '') AS YUD, IFNULL(A.RESNAM, '') AS RESNAM "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '01' THEN SUM(C.ACAMTS) END) AS MONTH01 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '02' THEN SUM(C.ACAMTS) END) AS MONTH02 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '03' THEN SUM(C.ACAMTS) END) AS MONTH03 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '04' THEN SUM(C.ACAMTS) END) AS MONTH04 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '05' THEN SUM(C.ACAMTS) END) AS MONTH05 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '06' THEN SUM(C.ACAMTS) END) AS MONTH06 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '07' THEN SUM(C.ACAMTS) END) AS MONTH07 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '08' THEN SUM(C.ACAMTS) END) AS MONTH08 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '09' THEN SUM(C.ACAMTS) END) AS MONTH09 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '10' THEN SUM(C.ACAMTS) END) AS MONTH10 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '11' THEN SUM(C.ACAMTS) END) AS MONTH11 "
-                           "            , (CASE WHEN MONTH(C.ACDATE) = '12' THEN SUM(C.ACAMTS) END) AS MONTH12 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '01' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH01 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '02' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH02 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '03' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH03 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '04' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH04 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '05' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH05 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '06' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH06 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '07' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH07 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '08' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH08 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '09' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH09 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '10' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH10 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '11' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH11 "
+                           "            , (CASE WHEN MONTH(C.ACDATE) = '12' AND C.FIN_OPT = 'Y' THEN SUM(C.ACAMTS) END) AS MONTH12 "
                            " FROM OSREFCP A "
                            " LEFT OUTER JOIN OSCODEM B "
                            " ON A.RESKEY = B.YUD "
@@ -238,8 +238,8 @@ def montlyCircleFundsViews_search(request):
                            " LEFT OUTER JOIN SISACCTT C "
                            " ON B.MCODE = C.MCODE "
                            " AND YEAR(C.ACDATE) = '" + str(year) + "'"
-                           " WHERE B.YUD != NULL OR B.YUD != '' "
-                           " GROUP BY B.YUD, A.RESNAM, C.ACDATE "
+                           " WHERE B.ICUST = '111' AND B.YUD != NULL OR B.YUD != '' "
+                           " GROUP BY B.YUD, A.RESNAM, C.ACDATE, C.FIN_OPT "
                            " ) AA GROUP BY YUD, RESNAM ")
             totalresult = cursor.fetchall()
 

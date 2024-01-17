@@ -20,9 +20,10 @@ def breakdownBalanceViews(request):
 def breakdownBalanceViews_search(request):
     date = request.POST.get('date')
     year = request.POST.get('year')
+    iCust = request.session.get("USER_ICUST")
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'BNK' ")
+        cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD  ")
         headresult = cursor.fetchall()
 
 
@@ -31,17 +32,17 @@ def breakdownBalanceViews_search(request):
                        " FROM SISACCTT A "
                        " LEFT OUTER JOIN ACNUMBER B "
                        " ON A.ACACNUMBER = B.ACNUMBER "
-                       " WHERE A.ACDATE < '" + str(date) + "' "
+                       " WHERE A.FIN_OPT = 'Y' AND A.ACDATE < '" + str(date) + "' AND A.ICUST = '" + str(iCust) + "' "
                        " GROUP BY B.ACBKCD "
                        " ORDER BY B.ACBKCD ASC ")
         mainresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT SUM(ACAMTS) FROM ACBALANCE WHERE ACDATE < '" + str(date) + "' ")
+            cursor.execute(" SELECT SUM(ACAMTS) FROM ACBALANCE WHERE ACDATE < '" + str(date) + "' AND ICUST = '" + str(iCust) + "' ")
             coderesult = cursor.fetchall()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT MCODE, ACAMTS FROM SISACCTT WHERE ACDATE < '" + str(date) + "' ")
+            cursor.execute(" SELECT MCODE, ACAMTS FROM SISACCTT WHERE FIN_OPT = 'Y' AND ACDATE < '" + str(date) + "' AND ICUST = '" + str(iCust) + "' ")
             coderesult2 = cursor.fetchall()
 
         # 매입51/매출43/출금53,55/입금41
@@ -51,19 +52,19 @@ def breakdownBalanceViews_search(request):
                            "      , IFNULL(SUM(TOTAL + DEPOSIT + SALE - BUY - WITHDROW), 0) AS CAL FROM "
                            "     ( "
                            "     SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
-                           "     FROM ACBALANCE WHERE ACDATE < '" + str(date) + "' "
+                           "     FROM ACBALANCE WHERE ACDATE < '" + str(date) + "' AND ICUST = '" + str(iCust) + "' "
                            " UNION ALL "
                            "     SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
-                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACIOGB = '1' AND ACODE LIKE '51%' "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ACIOGB = '1' AND ICUST = '" + str(iCust) + "'  AND ACODE LIKE '51%' "
                            " UNION ALL "
                            "     SELECT 0 AS TOTAL, 0 AS BUY, IFNULL(SUM(ACAMTS), 0) AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
-                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACIOGB = '2' AND ACODE LIKE '43%' "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ACIOGB = '2' AND ICUST = '" + str(iCust) + "' AND ACODE LIKE '43%' "
                            " UNION ALL "
                            "     SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, IFNULL(SUM(ACAMTS), 0) AS WITHDROW, 0 AS DEPOSIT "
-                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACIOGB = '1'  AND ACODE LIKE '53%' OR ACODE LIKE '55%' "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ACIOGB = '1' AND ICUST = '" + str(iCust) + "'  AND ACODE LIKE '53%' OR ACODE LIKE '55%' "
                            " UNION ALL "
                            "     SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, IFNULL(SUM(ACAMTS), 0) AS DEPOSIT "
-                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACIOGB = '2'  AND ACODE LIKE '41%' "
+                           "     FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ACIOGB = '2' AND ICUST = '" + str(iCust) + "'  AND ACODE LIKE '41%' "
                            " ) AA ")
             monthresult = cursor.fetchall()
 
@@ -73,19 +74,19 @@ def breakdownBalanceViews_search(request):
                            "      , IFNULL(SUM(BUY), 0) AS BUY, IFNULL(SUM(WITHDROW), 0) AS WITHDROW, IFNULL(SUM(DEPOSIT - WITHDROW + (TOTAL + SALE) - BUY), 0) AS CAL FROM "
                            "      ( "
                            "      SELECT IFNULL(SUM(ACAMTS), 0) AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
-                           "      FROM ACBALANCE WHERE ACDATE < '" + str(date) + "' "
+                           "      FROM ACBALANCE WHERE ACDATE < '" + str(date) + "' AND ICUST = '" + str(iCust) + "' "
                            "  UNION ALL "
                            "     SELECT 0 AS TOTAL, IFNULL(SUM(ACAMTS), 0) AS BUY, 0 AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
-                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACODE LIKE '51%' "
+                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ICUST = '" + str(iCust) + "' AND ACODE LIKE '51%' "
                            "  UNION ALL "
                            "     SELECT 0 AS TOTAL, 0 AS BUY, IFNULL(SUM(ACAMTS), 0) AS SALE, 0 AS WITHDROW, 0 AS DEPOSIT "
-                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACODE LIKE '43%' "
+                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ICUST = '" + str(iCust) + "' AND ACODE LIKE '43%' "
                            "  UNION ALL "
                            "     SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, IFNULL(SUM(ACAMTS), 0) AS WITHDROW, 0 AS DEPOSIT "
-                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACODE LIKE '53%' OR ACODE LIKE '55%' "
+                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ICUST = '" + str(iCust) + "' AND ACODE LIKE '53%' OR ACODE LIKE '55%' "
                            "  UNION ALL "
                            "     SELECT 0 AS TOTAL, 0 AS BUY, 0 AS SALE, 0 AS WITHDROW, IFNULL(SUM(ACAMTS), 0) AS DEPOSIT "
-                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND ACODE LIKE '41%' "
+                           "      FROM SISACCTT WHERE YEAR(ACDATE) = '" + str(year) + "' AND ACDATE < '" + str(date) + "' AND FIN_OPT = 'Y' AND ICUST = '" + str(iCust) + "' AND ACODE LIKE '41%' "
                            "  ) AA ")
 
             circleresult = cursor.fetchall()

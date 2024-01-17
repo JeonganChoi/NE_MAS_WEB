@@ -101,11 +101,13 @@
             var eDate = endDate.replace("-", "")
             eDate = parseInt(eDate.substr(4,2)) + 1
 
+            {# eDate 값이 sDate값이 작아서 for문이 돌지않음 #}
             var monthArr = [];
             for (var i = sDate; i < eDate; i++) {
 
                 if(i < 10){ i = '0' + i}
                 var month = year.concat(i);
+                alert(month)
 
                 let data = {
                     'month': month,
@@ -279,7 +281,7 @@
                     }
 
                     {# 매출총이익 #}
-                    total3 = total - total2
+                    total3 = parseInt(total) - parseInt(total2)
                     $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>매출총이익</td> " +
@@ -353,7 +355,7 @@
                     }
 
                     {# 영업이익 #}
-                    total5 = total3 + total4
+                    total5 = parseInt(total3) + parseInt(total4)
                     $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>영업이익</td> " +
@@ -579,6 +581,7 @@
             var eDate = endDate.replace("-", "")
             eDate = parseInt(eDate.substr(4,2)) + 1
 
+
             var monthArr = [];
             for (var i = sDate; i < eDate; i++) {
 
@@ -610,6 +613,7 @@
                     var list4 = data.monthListA;
                     var saleTotal = 0;
                     var percent = 0;
+
 
                     {#수정했음#}
                     var dates = getYearMonthsBetween(strDate, endDate);
@@ -757,7 +761,7 @@
                     }
 
                     {# 매출총이익 #}
-                    total3 = total - total2
+                    total3 = parseInt(total) - parseInt(total2)
                     $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>매출총이익</td> " +
@@ -831,7 +835,7 @@
                     }
 
                     {# 영업이익 #}
-                    total5 = total3 + total4
+                    total5 = parseInt(total3) + parseInt(total4)
                     $("#sheetTb").append("<tr id='#sheetTr' class='sheetTr_tr'>" + "</tr> ");
                     $("#sheetTb").append(
                         "<td class='text-center border border-light text-info p-1' style='font-size: 0.85rem'>영업이익</td> " +
