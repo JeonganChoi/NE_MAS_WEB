@@ -324,8 +324,9 @@
 {#                                    </div>#}
                                     <div  class="col-6 text-start">
                                         <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                        <input name="file" id="file" type="file" class="" style="display: none;" multiple />
-                                        <div class="form-group text-start mt-2">
+                                        <p class="text-success" style="font-size: 0.8rem">파일을 한번에 여러개 선택해주세요.</p>
+                                        <input name="file" id="file" type="file" class="" style="display: none;" multiple/>
+                                        <div class="form-group text-start">
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
                                             <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                         </div>
@@ -1322,10 +1323,15 @@
         });
 
         $(document).on('change', '#file', function () {
-            $('#file_name').empty();
+            {#$('#file_name').empty();#}
 
+            {# 파일을 한번에 여러개(구현됨) 또는 한개씩 여러번 쌓아서 저장  #}
             $.each(this.files, function(i, file) {
-                $('#file_name').append($('<span>').text(file.name));
+
+                {#$('#file_name').append($('<span>').text(file.name));#}
+{#                버튼 밑에 세로로 remove a tag 넣기 : 이 파일 삭제#}
+                $('#file_name').append($('<button class="btn btn-sm btn-outline-info text-dark">').text(file.name));
+                {#$('#file_name').append($('<a class="dz-remove">').text('Remove'));#}
             });
 
         });
@@ -1475,6 +1481,7 @@
                             cboWitCard = list[i][22];
                             cboBank = list[i][26]
                             cboCardName = list[i][31]
+
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
@@ -1971,7 +1978,8 @@
                                 cboWitCard = list[i][22];
                                 cboBank = list[i][26]
                                 cboCardName = list[i][31]
-
+                                if(list[i][35] != ''){ $("#txtApvAll").val(list[i][35]) }
+                                if(list[i][35] == ''){ $("#txtApvAll").val(check) }
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
@@ -3033,6 +3041,7 @@
                 return false;
             }
 
+
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             if(cboWitGbn == '3'){
                 {#const subCount = $('#signTd tr').length;#}
@@ -3372,6 +3381,7 @@
         {# 초기화 버튼 #}
         $(document).on('click', "#btnClear", function () {
 
+            $('#file_name').empty();
             $("#txtTitle").attr("readonly",false);
             $("#txtWitRegDate").attr("readonly",false);
             $("#txtWitSeq").attr("readonly",false);
