@@ -1,5 +1,7 @@
 import json
 import os
+from wsgiref.util import FileWrapper
+import zipfile
 from django.shortcuts import render, redirect
 from django import template
 from django.contrib.auth.decorators import login_required
@@ -1702,37 +1704,44 @@ def paymentViews_save(request):
 
     fileOverwriteYn = request.POST.get("fileOverwriteYn")
 
-    uploaded_file = request.FILES.get('file')
-    if uploaded_file is None:
-        uploaded_file = ''
+    uploaded_file_list = request.FILES.getlist('file')
+    # if uploaded_file is None:
+    #     uploaded_file = ''
+    uploaded_file_full_path = ['', '', '', '', '']
+    if uploaded_file_list:
+        for i in range(len(uploaded_file_list)):
+            if i > 4:
+                break;
 
-    if uploaded_file:
-        # 원하는 경로 설정, FileResponse
-        # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
-        # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
-        # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
-        # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
-        # desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
-        # desired_path = "/D:/NE_FTP/사업장/산양화학/Dodument/"
-        desired_path = "D:/COMPANY/SANYANG/DOCUMENTS/"
-        # 해당 디렉토리가 없으면 생성
-        if not os.path.exists(desired_path):
-            os.makedirs(desired_path)
+            uploaded_file = uploaded_file_list[i]
+            # 원하는 경로 설정, FileResponse
+            # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
+            # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
+            # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
+            # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
+            desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
+            # desired_path = "/D:/NE_FTP/사업장/산양화학/Dodument/"
 
-        destination = os.path.join(desired_path, uploaded_file.name)
 
-        # 해당 경로에 동일한 이름의 파일이 있다면
-        if os.path.exists(destination):
-            if fileOverwriteYn == 'Y':
-                os.remove(destination)
-            else:
-                return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
+            # desired_path = "D:/COMPANY/SANYANG/DOCUMENTS/"
+            # 해당 디렉토리가 없으면 생성
+            if not os.path.exists(desired_path):
+                os.makedirs(desired_path)
 
-        with open(destination, 'wb+') as destination_file:
-            for chunk in uploaded_file.chunks():
-                destination_file.write(chunk)
+            destination = os.path.join(desired_path, uploaded_file.name)
 
-        uploaded_file = destination
+            # 해당 경로에 동일한 이름의 파일이 있다면
+            if os.path.exists(destination):
+                if fileOverwriteYn == 'Y':
+                    os.remove(destination)
+                else:
+                    return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
+
+            with open(destination, 'wb+') as destination_file:
+                for chunk in uploaded_file.chunks():
+                    destination_file.write(chunk)
+
+            uploaded_file_full_path[i] = destination
 
     if acSeqn:
         # 예정일이 없는경우
@@ -1765,7 +1774,11 @@ def paymentViews_save(request):
                            ",    ACACNUMBER = '" + str(acAcnumber) + "' "
                            ",    ACDESC = '" + str(acDesc) + "' "
                            ",    ACGUNO_BK = '" + str(acBank) + "' "
-                           ",    ACFOLDER = '" + str(uploaded_file) + "' "
+                           ",    ACFOLDER = '" + str(uploaded_file_full_path[0]) + "' "
+                           ",    ACFOLDER2 = '" + str(uploaded_file_full_path[1]) + "' "
+                           ",    ACFOLDER3 = '" + str(uploaded_file_full_path[2]) + "' "
+                           ",    ACFOLDER4 = '" + str(uploaded_file_full_path[3]) + "' "
+                           ",    ACFOLDER5 = '" + str(uploaded_file_full_path[4]) + "' "                                            
                            ",    EXDATE = '" + str(exDate) + "' "
                            ",    ACDATE = '" + str(acDate) + "' "
                            ",    ACCARD = '" + str(acCard) + "' "
@@ -1880,6 +1893,10 @@ def paymentViews_save(request):
                                ",    ICUST "
                                ",    ACGUNO_BK "
                                ",    ACFOLDER "
+                               ",    ACFOLDER2 "
+                               ",    ACFOLDER3 "
+                               ",    ACFOLDER4 "
+                               ",    ACFOLDER5 "
                                ",    EXDATE "
                                ",    ACDATE "
                                ",    ACCARD "
@@ -1908,7 +1925,11 @@ def paymentViews_save(request):
                                ",   date_format(now(), '%Y%m%d') "
                                ",   '" + str(iCust) + "'"
                                ",   '" + str(acBank) + "'"
-                               ",   '" + str(uploaded_file) + "'"
+                               ",   '" + str(uploaded_file_full_path[0]) + "'"
+                               ",   '" + str(uploaded_file_full_path[1]) + "'"
+                               ",   '" + str(uploaded_file_full_path[2]) + "'"
+                               ",   '" + str(uploaded_file_full_path[3]) + "'"
+                               ",   '" + str(uploaded_file_full_path[4]) + "'"                                            
                                ",    '" + str(exDate) + "'"
                                ",    '" + str(acDate) + "'"
                                ",    '" + str(acCard) + "'"
@@ -2415,7 +2436,7 @@ def download_file(request):
 
     with connection.cursor() as cursor:
         cursor.execute(
-                    "    SELECT  ACFOLDER"
+                    "    SELECT  ACFOLDER, ACFOLDER2, ACFOLDER3, ACFOLDER4, ACFOLDER5"
                     "     FROM SISACCTT "
                     "     WHERE IODATE = '" + str(ioDate) + "' "
                     "     AND ACIOGB = '" + str(acIogb) + "' "
@@ -2424,17 +2445,32 @@ def download_file(request):
                     "     AND ICUST = '" + str(iCust) + "' "
                        )
         result = cursor.fetchall()
-
+    file_path_list = []
     #     file_path = result[0][0]
     #
     # if file_path:
     if result:
-        file_path = result[0][0]
-        # 한글 파일명 처리를 위한 인코딩
-        filename = quote(os.path.basename(file_path).encode('utf-8'))
+        desired_path = "/Users/thenaeunsys/Documents/OutputFile/"
 
-        response = FileResponse(open(file_path, 'rb'))
-        response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % filename
+        # desired_path = "D:/COMPANY/SANYANG/OutputFile/"
+
+        zip_filename = desired_path + 'zipfile.zip'
+
+        with zipfile.ZipFile(zip_filename, 'w') as zip_file:
+            file_path_list = result[0]
+
+            for file_path in file_path_list:
+                if file_path and os.path.exists(file_path):
+                    zip_file.write(file_path, os.path.basename(file_path))
+
+        # 한글 파일명 처리를 위한 인코딩
+        # filename = quote(os.path.basename(file_path).encode('utf-8'))
+
+        # response = FileResponse(open(file_path, 'rb'))
+        # response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % filename
+
+        response = HttpResponse(FileWrapper(open(zip_filename, 'rb')), content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename="downloaded_files.zip"'
         return response
     else:
         return render(request, "finance/back.html")

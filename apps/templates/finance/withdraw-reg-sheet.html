@@ -11,6 +11,11 @@
     --bs-btn-hover-color: #F19937;
     --bs-btn-hover-bg: none;
 }
+
+#file_name {
+    display: flex;
+    gap: 10px;
+}
 </style>
 {#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
     <div class="height-100" style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
@@ -309,22 +314,21 @@
                         <div class="card-footer mt-0 pt-0">
                             <div class="form-group folderArea">
                                 <div class="row mt-3">
-                                    <div class="col-6 text-start">
-                                        <label class="mt-4 form-label">Starting Files</label>
-                                        <form action="/file-upload" class="form-control dropzone" id="dropzone">
-                                          <div class="fallback">
-                                            <input class="" name="file" type="file" multiple/>
-                                          </div>
-                                        </form>
-                                    </div>
-                                    <div hidden class="col-6 text-start">
+{#                                    <div class="col-6 text-start">#}
+{#                                        <label class="mt-4 form-label">Starting Files</label>#}
+{#                                        <form action="/file-upload" class="form-control dropzone" id="dropzone">#}
+{#                                          <div class="fallback">#}
+{#                                            <input class="" name="file" type="file" multiple/>#}
+{#                                          </div>#}
+{#                                        </form>#}
+{#                                    </div>#}
+                                    <div  class="col-6 text-start">
                                         <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                        <input name="file" id="file" type="file" class="" style="display: none;" />
+                                        <input name="file" id="file" type="file" class="" style="display: none;" multiple />
                                         <div class="form-group text-start mt-2">
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
                                             <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                         </div>
-                                        <div><span id="file_name"></span></div>
                                     </div>
                                     <div class="col-6 text-start line">
                                         <label class="form-label"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
@@ -352,6 +356,7 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div id="file_name"></div>
                                 </div>
                             </div>
                         </div>
@@ -1317,10 +1322,12 @@
         });
 
         $(document).on('change', '#file', function () {
-            let selectedFile = $(this).prop('files')[0];
-            if (selectedFile != null) {
-                $('#file_name').text(selectedFile.name);
-            }
+            $('#file_name').empty();
+
+            $.each(this.files, function(i, file) {
+                $('#file_name').append($('<span>').text(file.name));
+            });
+
         });
 
         {# 전결 버튼 누를시 #}

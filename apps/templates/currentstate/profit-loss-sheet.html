@@ -504,7 +504,7 @@
                         var ym = $(this).data('ym');
 
                         var profit = parseInt($(`.profit_${ym}`).text().replaceAll(',', ''));
-                        var sale_mng_fee = parseInt($(`.sale_mng_fee_${ym}`).text().replaceAll(',', ''));
+                        var sale_mng_fee = isNaN(parseInt($(`.sale_mng_fee_${ym}`).text())) ? 0 : parseInt($(`.sale_mng_fee_${ym}`).text().replaceAll(',', ''));
                         var sale_revenue = profit + sale_mng_fee;
 
                         $(this).text(addComma(sale_revenue));
@@ -984,7 +984,8 @@
                         var ym = $(this).data('ym');
 
                         var profit = parseInt($(`.profit_${ym}`).text().replaceAll(',', ''));
-                        var sale_mng_fee = parseInt($(`.sale_mng_fee_${ym}`).text().replaceAll(',', ''));
+                        var sale_mng_fee = isNaN(parseInt($(`.sale_mng_fee_${ym}`).text())) ? 0 : parseInt($(`.sale_mng_fee_${ym}`).text().replaceAll(',', ''));
+
                         var sale_revenue = profit + sale_mng_fee;
 
                         $(this).text(addComma(sale_revenue));
