@@ -40,7 +40,7 @@ def receivepaySheetViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
                            "        (SELECT SUM(IFNULL(A.ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL, B.ACBKCD FROM ACBALANCE A "
-                           "        LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER "
+                           "        LEFT OUTER JOIN ACNUMBER B ON A.ACNUMBER = B.ACNUMBER "
                            "        WHERE A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND B.ACBKCD = '" + str(cboBank) + "' "
                            " UNION ALL "
                            "        SELECT 0 AS BAL, SUM(IFNULL(A.ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL, B.ACBKCD FROM SISACCTT A "

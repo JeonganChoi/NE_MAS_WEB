@@ -55,7 +55,7 @@
                         <div class="row">
                             <div class="col-lg-7 col-7">
                                 <div class="table-responsive-sm height-400 overflow-auto border border-light">
-                                  <table class="table mb-0 align-items-center justify-content-center">
+                                  <table class="table mb-0 align-items-center justify-content-center" id="mainTable">
                                       <colgroup>
                                           <col width="2%">
                                           <col width="8%">
@@ -457,11 +457,9 @@
                     }
                 }
             })
-
         });
 
-        {# 테이블 로우 클릭 시 #}
-        $(document).on('click', '#mainTb .mainTr_tr', function () {
+        $(document).on('change', '#mainTable tbody tr td:first-child input[type=checkbox]', function() {
 
             var cboWitCust2 = "";
             var cboWitGbn = "";
@@ -487,128 +485,322 @@
             $("#txtSeqn").val("");
 
 
-            let serials = $(this).attr('main_code');
-            var split = serials.split(',');
-            var ioDate = split[0]
-            var acSeqn = split[1]
-            var acIogb = split[2]
+            var chk_cust_id_arr = [];
+            if($(this).is(':checked')) {
 
-            let data = {'ioDate': ioDate, 'acSeqn': acSeqn, 'acIogb': acIogb}
+                {#$('#mainTable body tr').addClass('bg-gray-100');#}
+                chk_cust_id_arr.push($(this).val());
 
-            $.ajax({
-                type: "post",
-                data: data,
-                url: '{% url "approval_sub_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    var list = data.subList;
-                    var list2 = data.mainList;
+                var split = chk_cust_id_arr[0];
+                var it = split.split(',');
+                var ioDate = it[0]
+                var acSeqn = it[1]
+                var acIogb = it[2]
 
-                    $('.buttonLine').show();
+                let data = {'ioDate': ioDate, 'acSeqn': acSeqn, 'acIogb': acIogb}
 
-                    for (var i = 0; i < list2.length; i++) {
-                        $("#txtWitSeq").val(list2[i][11])
-                        $("#txtWitRegDate").val(list2[i][3].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtExDate").val(list2[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
-                        $("#txtWitPrice").val(addComma(list2[i][6]))
-                        $("#txtWitRemark").val(list2[i][10])
-                        $("#txtTitle").val(list2[i][1])
-                        $("#txtFolder").val(list2[i][12])
-                        $("#txtSeqn").val(list2[i][13])
-                        cboWitCust2 = list2[i][2];
-                        cboWitGbn = list2[i][0];
-                        cboWitMethod = list2[i][8];
-                        cboAdminCode = list2[i][4];
-                        cboWitActNum = list2[i][7];
-                    }
+                $.ajax({
+                    type: "post",
+                    data: data,
+                    url: '{% url "approval_sub_search" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var list = data.subList;
+                        var list2 = data.mainList;
 
-                    var combolist = data.cboCust;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == cboWitCust2) {
-                            cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        $('.buttonLine').show();
+
+                        for (var i = 0; i < list2.length; i++) {
+                            $("#txtWitSeq").val(list2[i][11])
+                            $("#txtWitRegDate").val(list2[i][3].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                            $("#txtExDate").val(list2[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))
+                            $("#txtWitPrice").val(addComma(list2[i][6]))
+                            $("#txtWitRemark").val(list2[i][10])
+                            $("#txtTitle").val(list2[i][1])
+                            $("#txtFolder").val(list2[i][12])
+                            $("#txtSeqn").val(list2[i][13])
+                            cboWitCust2 = list2[i][2];
+                            cboWitGbn = list2[i][0];
+                            cboWitMethod = list2[i][8];
+                            cboAdminCode = list2[i][4];
+                            cboWitActNum = list2[i][7];
                         }
-                    }
 
-                    var combolist2 = data.cboGgn;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboWitGbn) {
-                            cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                        var combolist = data.cboCust;
+                        for (var i = 0; i < combolist.length; i++) {
+                            if (combolist[i][0] == cboWitCust2) {
+                                cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                            }
                         }
-                    }
 
-                    var combolist3 = data.cboPay;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == cboWitMethod) {
-                            cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                        var combolist2 = data.cboGgn;
+                        for (var i = 0; i < combolist2.length; i++) {
+                            if (combolist2[i][0] == cboWitGbn) {
+                                cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
+                            }
                         }
-                    }
 
-                    var combolist4 = data.cboMCode;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == cboAdminCode) {
-                            cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                        var combolist3 = data.cboPay;
+                        for (var i = 0; i < combolist3.length; i++) {
+                            if (combolist3[i][0] == cboWitMethod) {
+                                cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
+                            }
                         }
-                    }
 
-                    var combolist5 = data.cboAcnumber;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == cboWitActNum) {
-                            cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                        var combolist4 = data.cboMCode;
+                        for (var i = 0; i < combolist4.length; i++) {
+                            if (combolist4[i][0] == cboAdminCode) {
+                                cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";
+                            }
                         }
-                    }
 
-                    $("#cboWitCust").append(cboWitCustTxt);
-                    $("#cboWitGbn").append(cboWitGbnTxt);
-                    $("#cboWitMethod").append(cboWitMethodTxt);
-                    $("#cboAdminCode").append(cboAdminCodeTxt);
-                    $("#cboWitActNum").append(cboWitActNumTxt);
+                        var combolist5 = data.cboAcnumber;
+                        for (var i = 0; i < combolist5.length; i++) {
+                            if (combolist5[i][0] == cboWitActNum) {
+                                cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                            }
+                        }
 
-                    var empCode = document.getElementById('empCode').value
+                        $("#cboWitCust").append(cboWitCustTxt);
+                        $("#cboWitGbn").append(cboWitGbnTxt);
+                        $("#cboWitMethod").append(cboWitMethodTxt);
+                        $("#cboAdminCode").append(cboAdminCodeTxt);
+                        $("#cboWitActNum").append(cboWitActNumTxt);
 
-                    $("#subTb").html("");
-                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < list.length; i++) {
-                        if(empCode == list[i][1]){
+                        var empCode = document.getElementById('empCode').value
+
+                        $("#subTb").html("");
+                        $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
+                        for (var i = 0; i < list.length; i++) {
+                            if(empCode == list[i][1]){
+                                $("#subTb").append(
+                                    "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                            }
+                            else{
+                                $("#subTb").append(
+                                    "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                            }
+
+                        }
+                        $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
+                        for (var i = 0; i < list.length; i++) {
                             $("#subTb").append(
-                                "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
-                        }
-                        else{
-                            $("#subTb").append(
-                                "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");
                         }
 
-                    }
-                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#subTb").append(
-                            "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");
-                    }
 
+                        if (cboWitMethod == '1') {
+                            $('.colCust').hide();
+                            $('.colAct').hide();
+                            $('.colCard').hide();
+                        } else if (cboWitMethod == '2') {
+                            $('.colCust').show();
+                            $('.colAct').hide();
+                            $('.colCard').hide();
+                        } else if (cboWitMethod == '3') {
+                            $('.colCust').hide();
+                            $('.colAct').show();
+                            $('.colCard').show();
+                        } else if (cboWitMethod == '4') {
+                            $('.colCust').hide();
+                            $('.colAct').show();
+                            $('.colCard').show();
+                        }
 
-                    if (cboWitMethod == '1') {
-                        $('.colCust').hide();
-                        $('.colAct').hide();
-                        $('.colCard').hide();
-                    } else if (cboWitMethod == '2') {
-                        $('.colCust').show();
-                        $('.colAct').hide();
-                        $('.colCard').hide();
-                    } else if (cboWitMethod == '3') {
-                        $('.colCust').hide();
-                        $('.colAct').show();
-                        $('.colCard').show();
-                    } else if (cboWitMethod == '4') {
-                        $('.colCust').hide();
-                        $('.colAct').show();
-                        $('.colCard').show();
                     }
-
-                }
-            })
+                })
+            } else {
+                $("#cboWitCust").html("");
+                $("#cboWitGbn").html("");
+                $("#cboAdminCode").html("");
+                $("#cboWitMethod").html("");
+                $("#cboWitActNum").html("");
+                $("#txtWitRegDate").val("");
+                $("#txtWitSeq").val("");
+                $("#txtWitPrice").val("");
+                $("#txtWitRemark").val("");
+                $("#txtFolder").val("");
+                $("#txtSeqn").val("");
+                $("#txtTitle").val("");
+                $("#txtExDate").val("");
+                $("#subTb").html("");
+                $('.buttonLine').hide();
+                $(this).removeClass('bg-gray-100');
+            }
         });
+
+        // 마우스 오버
+        $(document).on('mouseover', '#mainTable tr', function() {
+            $(this).addClass('bg-gray-100');
+        });
+
+        // 마우스 아웃
+        $(document).on('mouseout', '#mainTable tr', function() {
+            $(this).removeClass('bg-gray-100');
+        });
+
+
+        {# 테이블 로우 클릭 시 #}
+        {#$(document).on('click', '#mainTb .mainTr_tr', function () {#}
+        {##}
+        {#    var cboWitCust2 = "";#}
+        {#    var cboWitGbn = "";#}
+        {#    var cboAdminCode = "";#}
+        {#    var cboWitMethod = "";#}
+        {#    var cboWitActNum = "";#}
+        {#    var cboWitCustTxt = "";#}
+        {#    var cboWitGbnTxt = "";#}
+        {#    var cboAdminCodeTxt = "";#}
+        {#    var cboWitMethodTxt = "";#}
+        {#    var cboWitActNumTxt = "";#}
+        {##}
+        {#    $("#cboWitCust").html("");#}
+        {#    $("#cboWitGbn").html("");#}
+        {#    $("#cboAdminCode").html("");#}
+        {#    $("#cboWitMethod").html("");#}
+        {#    $("#cboWitActNum").html("");#}
+        {#    $("#txtWitRegDate").val("");#}
+        {#    $("#txtWitSeq").val("");#}
+        {#    $("#txtWitPrice").val("");#}
+        {#    $("#txtWitRemark").val("");#}
+        {#    $("#txtFolder").val("");#}
+        {#    $("#txtSeqn").val("");#}
+        {##}
+            {#$('#mainTr').removeClass('bg-gray-200')#}
+            {#$(this).addClass('bg-gray-200');#}
+            {#if() {#}
+            {#    $(this).removeClass('bg-gray-200');#}
+            {#    $(this).addClass('bg-transparent');#}
+            {#} else {#}
+            {#    $(this).removeClass('bg-transparent');#}
+            {#    $(this).addClass('bg-gray-200');#}
+            {#}#}
+        {##}
+        {#    let serials = $(this).attr('main_code');#}
+        {#    var split = serials.split(',');#}
+        {#    var ioDate = split[0]#}
+        {#    var acSeqn = split[1]#}
+        {#    var acIogb = split[2]#}
+        {##}
+        {#    let data = {'ioDate': ioDate, 'acSeqn': acSeqn, 'acIogb': acIogb}#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        data: data,#}
+        {#        url: '{% url "approval_sub_search" %}',#}
+        {#        headers: {#}
+        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+        {#        },#}
+        {#        dataType: 'json',#}
+        {#        success: function (data) {#}
+        {#            var list = data.subList;#}
+        {#            var list2 = data.mainList;#}
+        {##}
+        {#            $('.buttonLine').show();#}
+        {##}
+        {#            for (var i = 0; i < list2.length; i++) {#}
+        {#                $("#txtWitSeq").val(list2[i][11])#}
+        {#                $("#txtWitRegDate").val(list2[i][3].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))#}
+        {#                $("#txtExDate").val(list2[i][5].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))#}
+        {#                $("#txtWitPrice").val(addComma(list2[i][6]))#}
+        {#                $("#txtWitRemark").val(list2[i][10])#}
+        {#                $("#txtTitle").val(list2[i][1])#}
+        {#                $("#txtFolder").val(list2[i][12])#}
+        {#                $("#txtSeqn").val(list2[i][13])#}
+        {#                cboWitCust2 = list2[i][2];#}
+        {#                cboWitGbn = list2[i][0];#}
+        {#                cboWitMethod = list2[i][8];#}
+        {#                cboAdminCode = list2[i][4];#}
+        {#                cboWitActNum = list2[i][7];#}
+        {#            }#}
+        {##}
+        {#            var combolist = data.cboCust;#}
+        {#            for (var i = 0; i < combolist.length; i++) {#}
+        {#                if (combolist[i][0] == cboWitCust2) {#}
+        {#                    cboWitCustTxt = cboWitCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            var combolist2 = data.cboGgn;#}
+        {#            for (var i = 0; i < combolist2.length; i++) {#}
+        {#                if (combolist2[i][0] == cboWitGbn) {#}
+        {#                    cboWitGbnTxt = cboWitGbnTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            var combolist3 = data.cboPay;#}
+        {#            for (var i = 0; i < combolist3.length; i++) {#}
+        {#                if (combolist3[i][0] == cboWitMethod) {#}
+        {#                    cboWitMethodTxt = cboWitMethodTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            var combolist4 = data.cboMCode;#}
+        {#            for (var i = 0; i < combolist4.length; i++) {#}
+        {#                if (combolist4[i][0] == cboAdminCode) {#}
+        {#                    cboAdminCodeTxt = cboAdminCodeTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][1] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            var combolist5 = data.cboAcnumber;#}
+        {#            for (var i = 0; i < combolist5.length; i++) {#}
+        {#                if (combolist5[i][0] == cboWitActNum) {#}
+        {#                    cboWitActNumTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            $("#cboWitCust").append(cboWitCustTxt);#}
+        {#            $("#cboWitGbn").append(cboWitGbnTxt);#}
+        {#            $("#cboWitMethod").append(cboWitMethodTxt);#}
+        {#            $("#cboAdminCode").append(cboAdminCodeTxt);#}
+        {#            $("#cboWitActNum").append(cboWitActNumTxt);#}
+        {##}
+        {#            var empCode = document.getElementById('empCode').value#}
+        {##}
+        {#            $("#subTb").html("");#}
+        {#            $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
+        {#            for (var i = 0; i < list.length; i++) {#}
+        {#                if(empCode == list[i][1]){#}
+        {#                    $("#subTb").append(#}
+        {#                        "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");#}
+        {#                }#}
+        {#                else{#}
+        {#                    $("#subTb").append(#}
+        {#                        "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");#}
+        {#                }#}
+        {##}
+        {#            }#}
+        {#            $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");#}
+        {#            for (var i = 0; i < list.length; i++) {#}
+        {#                $("#subTb").append(#}
+        {#                    "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");#}
+        {#            }#}
+        {##}
+        {##}
+        {#            if (cboWitMethod == '1') {#}
+        {#                $('.colCust').hide();#}
+        {#                $('.colAct').hide();#}
+        {#                $('.colCard').hide();#}
+        {#            } else if (cboWitMethod == '2') {#}
+        {#                $('.colCust').show();#}
+        {#                $('.colAct').hide();#}
+        {#                $('.colCard').hide();#}
+        {#            } else if (cboWitMethod == '3') {#}
+        {#                $('.colCust').hide();#}
+        {#                $('.colAct').show();#}
+        {#                $('.colCard').show();#}
+        {#            } else if (cboWitMethod == '4') {#}
+        {#                $('.colCust').hide();#}
+        {#                $('.colAct').show();#}
+        {#                $('.colCard').show();#}
+        {#            }#}
+        {##}
+        {#        }#}
+        {#    })#}
+        {#});#}
 
     </script>
 

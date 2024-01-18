@@ -1396,6 +1396,8 @@
             $("#txtCashDate").val("");
             $("#txtCreUser").val("");
 
+            {#$(this).addClass('bg-gray-200');#}
+
             let search = $(this).attr('main_code');
             var split = search.split(',');
             var acIogb = split[0]
@@ -3556,6 +3558,16 @@
             $("#modalMainTd").html("");
             $("#modalSubTd").html("");
 
+        });
+
+         // 마우스 오버
+        $(document).on('mouseover', '#grid tr', function() {
+            $(this).addClass('bg-gray-100');
+        });
+
+        // 마우스 아웃
+        $(document).on('mouseout', '#grid tr', function() {
+            $(this).removeClass('bg-gray-100');
         });
 
         {#체크한 내용 삭제#}
