@@ -194,7 +194,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-4 cboBank">
-                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>은행</label>
+                      ㄷ                  <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboBank" id="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4" hidden>
@@ -1323,7 +1323,7 @@
         });
 
         $(document).on('change', '#file', function () {
-            {#$('#file_name').empty();#}
+            $('#file_name').empty();
 
             {# 파일을 한번에 여러개(구현됨) 또는 한개씩 여러번 쌓아서 저장  #}
             $.each(this.files, function(i, file) {
