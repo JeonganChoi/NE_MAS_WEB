@@ -1810,7 +1810,7 @@ def paymentViews_save(request):
                                "   WHERE ACDATE = '" + str(ioDate) + "'  "
                                "   AND ACSEQN = '" + str(acSeqn) + "' "
                                "   AND ACIOGB = '" + str(acIogb) + "' "
-                               "   AND ICUST = '" + iCust + "' "
+                               "   AND ICUST = '" + str(iCust) + "' "
                 )
                 connection.commit()
         # 들어오는 순서대로 emp_nbr(순번)으로 데이터 넣어주기
@@ -1827,7 +1827,6 @@ def paymentViews_save(request):
                                "   , EMP_NBR "
                                "   , OPT "
                                "   , ACIOGB "
-                               "   , FOLDER "
                                "   , ICUST "                                                    
                                "    ) "
                                "    VALUES "
@@ -1838,7 +1837,6 @@ def paymentViews_save(request):
                                "     , '" + empArrayLists[data]["empNbr"] + "' "
                                "     , '" + str(opt) + "' "
                                "     , '" + str(acIogb) + "' "
-                               "     , '" + str(uploaded_file) + "' "
                                "     , '" + str(iCust) + "' "
                                "     ) "
                 )
@@ -1961,7 +1959,6 @@ def paymentViews_save(request):
                                        "   , EMP_NBR "
                                        "   , OPT "
                                        "   , ACIOGB "
-                                       "   , FOLDER "  
                                        "   , ICUST "                                                    
                                        "    ) "
                                        "    VALUES "
@@ -1972,7 +1969,6 @@ def paymentViews_save(request):
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "
                                        "     , '" + opt + "' "
                                        "     , '" + str(acIogb) + "' "
-                                       "     , '" + str(uploaded_file) + "' "
                                        "     , '" + str(iCust) + "' "
                                        "     ) "
                         )
