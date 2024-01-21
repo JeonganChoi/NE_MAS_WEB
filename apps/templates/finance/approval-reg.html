@@ -42,10 +42,10 @@
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>구분</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputGbn" id="inputGbn" style="font-size: 0.8rem; height: 2rem">
                                         <option value="1">전체</option>
-                                        <option value="2">미결재</option>
-                                        <option value="3">결재</option>
-                                        <option value="4">미승인</option>
-                                        <option value="5">승인</option>
+                                        <option value="2">승인</option>
+                                        <option value="3">미승인</option>
+                                        <!--<option value="4">미승인</option>-->
+                                        <!--<option value="5">승인</option>-->
                                     </select>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                           <col width="8%">
                                           <col width="6%">
                                           <col width="4%">
-                                          <col width="4%">
+                                          <!--<col width="4%">-->
                                       </colgroup>
                                     <thead class="text-white font-weight-bolder text-center bg-primary" style="position: sticky; top: 0">
                                       <tr>
@@ -74,8 +74,8 @@
                                         <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                         <th style="font-size: 0.85rem" class="p-1">지출금액</th>
                                         <th style="font-size: 0.85rem" class="p-1">작성자</th>
-                                        <th style="font-size: 0.85rem" class="p-1">결재</th>
                                         <th style="font-size: 0.85rem" class="p-1">승인</th>
+                                        <!--<th style="font-size: 0.85rem" class="p-1">시행</th>-->
                                       </tr>
                                     </thead>
                                     <tbody id="mainTb">
@@ -359,7 +359,6 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>미승인</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                     }
                 }
@@ -405,7 +404,6 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                         }
                         if(gbn == '3'){
@@ -420,39 +418,38 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
                             "</tr> ");
                         }
-                        if(gbn == '4'){
-                            text = '미시행'
-                            $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
-                            "</tr> ");
-                        }
-                        if(gbn == '5'){
-                            text = '시행'
-                            $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
-                            "</tr> ");
-                        }
+                        {#if(gbn == '4'){#}
+                        {#    text = '미시행'#}
+                        {#    $("#mainTb").append(#}
+                        {#    "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +#}
+                        {#    "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +#}
+                        {#    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +#}
+                        {#    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +#}
+                        {#    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +#}
+                        {#    "</tr> ");#}
+                        {#}#}
+                        {#if(gbn == '5'){#}
+                        {#    text = '시행'#}
+                        {#    $("#mainTb").append(#}
+                        {#    "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +#}
+                        {#    "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +#}
+                        {#    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +#}
+                        {#    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +#}
+                        {#    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'></td> " +#}
+                        {#    "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +#}
+                        {#    "</tr> ");#}
+                        {#}#}
 
                     }
                 }

@@ -595,6 +595,7 @@ def cboCardNum(request):
 
 
 def cboActNum_search(request):
+    acIogb = request.POST.get('acIogb')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
@@ -606,7 +607,19 @@ def cboActNum_search(request):
         cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
         cboBank = cursor.fetchall()
 
-        return JsonResponse({'cboActNum': cboActNum, "cboBank": cboBank})
+    if acIogb != '':
+        # 출금
+        if acIogb == '1':
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '5%' ORDER BY MCODE ")
+                cboMcode = cursor.fetchall()
+        # 입금
+        if acIogb == '2':
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '4%' ORDER BY MCODE ")
+                cboMcode = cursor.fetchall()
+
+        return JsonResponse({'cboActNum': cboActNum, "cboBank": cboBank, "cboMcode": cboMcode})
 
 
 
@@ -686,6 +699,7 @@ def permitViews_save(request):
                                    "  , ACINFO = '" + str(custBank) + "," + str(custAct) + "' "
                                    "  , ACCUST_BNK = '" + str(custBank) + "' "
                                    "  , ACCUST_ACT = '" + str(custAct) + "' "
+                                   "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
                                    "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
                                    "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                                    "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
@@ -788,6 +802,7 @@ def permitViews_save(request):
                                "  , ACINFO = '" + str(custBank) + "," + str(custAct) + "' "
                                "  , ACCUST_BNK = '" + str(custBank) + "' "
                                "  , ACCUST_ACT = '" + str(custAct) + "' "
+                               "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
                                "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
                                "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                                "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "

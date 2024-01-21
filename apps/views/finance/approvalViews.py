@@ -72,51 +72,51 @@ def approvalViews_search(request):
         return JsonResponse({"mainList": mainresult})
 
     # 미승인
-    elif gbn == '4':
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
-                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '') "
-                           " FROM SISACCTT A "
-                           " LEFT OUTER JOIN OSSIGN B "
-                           " ON A.IODATE = B.ACDATE "
-                           " AND A.ACSEQN = B.ACSEQN "
-                           " AND A.ACIOGB = B.ACIOGB "
-                           " AND A.ICUST = B.ICUST "
-                           " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON B.EMP_NBR = C.EMP_NBR "
-                           " LEFT OUTER JOIN PIS1TB001 D "
-                           " ON A.CRE_USER = D.EMP_NBR "
-                           " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND A.FIN_OPT = 'N' AND A.MID_OPT = 'Y' AND B.RTNGBN != 'N' ")
-            mainresult = cursor.fetchall()
-
-        return JsonResponse({"mainList": mainresult})
+    # elif gbn == '4':
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+    #                        "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
+    #                        "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '') "
+    #                        " FROM SISACCTT A "
+    #                        " LEFT OUTER JOIN OSSIGN B "
+    #                        " ON A.IODATE = B.ACDATE "
+    #                        " AND A.ACSEQN = B.ACSEQN "
+    #                        " AND A.ACIOGB = B.ACIOGB "
+    #                        " AND A.ICUST = B.ICUST "
+    #                        " LEFT OUTER JOIN PIS1TB001 C "
+    #                        " ON B.EMP_NBR = C.EMP_NBR "
+    #                        " LEFT OUTER JOIN PIS1TB001 D "
+    #                        " ON A.CRE_USER = D.EMP_NBR "
+    #                        " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+    #                        " AND B.ICUST = '" + str(iCust) + "' "
+    #                        " AND A.FIN_OPT = 'N' AND A.MID_OPT = 'Y' AND B.RTNGBN != 'N' ")
+    #         mainresult = cursor.fetchall()
+    #
+    #     return JsonResponse({"mainList": mainresult})
 
     # 승인
-    elif gbn == '5':
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
-                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '')  "
-                           " FROM SISACCTT A "
-                           " LEFT OUTER JOIN OSSIGN B "
-                           " ON A.IODATE = B.ACDATE "
-                           " AND A.ACSEQN = B.ACSEQN "
-                           " AND A.ACIOGB = B.ACIOGB "
-                           " AND A.ICUST = B.ICUST "
-                           " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON B.EMP_NBR = C.EMP_NBR "
-                           " LEFT OUTER JOIN PIS1TB001 D "
-                           " ON A.CRE_USER = D.EMP_NBR "
-                           " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND A.FIN_OPT = 'Y' "
-                           " AND A.MID_OPT = 'Y' ")
-            mainresult = cursor.fetchall()
-
-        return JsonResponse({"mainList": mainresult})
+    # elif gbn == '5':
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+    #                        "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
+    #                        "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '')  "
+    #                        " FROM SISACCTT A "
+    #                        " LEFT OUTER JOIN OSSIGN B "
+    #                        " ON A.IODATE = B.ACDATE "
+    #                        " AND A.ACSEQN = B.ACSEQN "
+    #                        " AND A.ACIOGB = B.ACIOGB "
+    #                        " AND A.ICUST = B.ICUST "
+    #                        " LEFT OUTER JOIN PIS1TB001 C "
+    #                        " ON B.EMP_NBR = C.EMP_NBR "
+    #                        " LEFT OUTER JOIN PIS1TB001 D "
+    #                        " ON A.CRE_USER = D.EMP_NBR "
+    #                        " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+    #                        " AND B.ICUST = '" + str(iCust) + "' "
+    #                        " AND A.FIN_OPT = 'Y' "
+    #                        " AND A.MID_OPT = 'Y' ")
+    #         mainresult = cursor.fetchall()
+    #
+    #     return JsonResponse({"mainList": mainresult})
 
     else:
         with connection.cursor() as cursor:
