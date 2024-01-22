@@ -194,7 +194,7 @@
                                     <div class="col-3 checkPre">
                                         <div class="d-flex">
                                             <label class="text-sm mt-1 me-3"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>선지급</label>
-                                            <input class="" type="checkbox" id="chkPre" name="chkPre" style="font-size: 0.8rem"/>
+                                            <input class="" type="checkbox" id="chkPre" name="chkPre" value="Y" style="font-size: 0.8rem"/>
                                         </div>
                                     </div>
                                 </div>
@@ -908,7 +908,7 @@
                     var total = 0;
                     var apv = "";
                     var cust = "";
-
+                    var chkOpt = "";
 
                     $("#withMainTb").html("");
                     {# 잔액 계산 #}
@@ -956,8 +956,11 @@
                             if(list[i][21] == 'Y' ){
                                 apv = '승인';
                             }
-                            if(list[i][21] == 'N' ){
-                                apv = '미승인';
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                                apv = list[i][24];
+                            }
+                            if(list[i][21] == 'N' && list[i][24] == ''){
+                               apv = '미승인';
                             }
                             if(list[i][23] == '2'){
                                 cust = list[i][5]
@@ -1027,8 +1030,11 @@
                             if(list[i][21] == 'Y' ){
                                 apv = '승인';
                             }
-                            if(list[i][21] == 'N' ){
-                                apv = '미승인';
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                                apv = list[i][24];
+                            }
+                            if(list[i][21] == 'N' && list[i][24] == ''){
+                               apv = '미승인';
                             }
                             if(list[i][20] == '2'){
                                 cust = list[i][5]
@@ -1184,8 +1190,11 @@
                             if(list[i][20] == 'Y'){
                                 apv = '승인';
                             }
-                            if(list[i][20] == 'N'){
-                                apv = '미승인';
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                                apv = list[i][24];
+                            }
+                            if(list[i][21] == 'N' && list[i][24] == ''){
+                               apv = '미승인';
                             }
                             if(list[i][20] == '2'){
                                 cust = list[i][5]
@@ -1227,8 +1236,11 @@
                             if(list[i][20] == 'Y'){
                                 apv = '승인';
                             }
-                            if(list[i][20] == 'N'){
-                                apv = '미승인';
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                                apv = list[i][24];
+                            }
+                            if(list[i][21] == 'N' && list[i][24] == ''){
+                               apv = '미승인';
                             }
                             if(list[i][20] == '2'){
                                 cust = list[i][5]
@@ -1438,6 +1450,7 @@
             var cboGbn = "";
             var method = "";
 
+
             let data = {'acIogb': acIogb, 'ioDate': ioDate, 'acNum': acNum, "acCust": acCust, 'acMcode': acMcode, "cboGbn": cboGbn, "acSeqn": acSeqn}
 
             var check = "";
@@ -1515,6 +1528,12 @@
                             cboBank = list[i][26]
                             cboCardName = list[i][31]
 
+                            if(list[i][36] == 'Y'){
+                                $('#chkPre').prop("selected",true);
+                            }
+                            else{
+                                $('#chkPre').prop("selected",false);
+                            }
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
@@ -1722,6 +1741,13 @@
                                 cboBank = list[i][26]
                                 cboCardName = list[i][31]
 
+                                if(list[i][36] == 'Y'){
+                                    $('#chkPre').prop("selected",true);
+                                }
+                                else{
+                                    $('#chkPre').prop("selected",false);
+                                }
+
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
                                     if (combolist[i][0] == cboWitCust2) {
@@ -1863,6 +1889,14 @@
                                 cboWitCard = list[i][22];
                                 cboBank = list[i][26]
                                 cboCardName = list[i][31]
+
+
+                                if(list[i][36] == 'Y'){
+                                    $('#chkPre').prop("selected",true);
+                                }
+                                else{
+                                    $('#chkPre').prop("selected",false);
+                                }
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
@@ -2030,6 +2064,13 @@
                                 cboCardName = list[i][31]
                                 if(list[i][35] != ''){ $("#txtApvAll").val(list[i][35]) }
                                 if(list[i][35] == ''){ $("#txtApvAll").val(check) }
+
+                                if(list[i][36] == 'Y'){
+                                    $('#chkPre').val('Y').prop("selected",true);
+                                }
+                                else{
+                                    $('#chkPre').val('N').prop("selected",false);
+                                }
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
@@ -3511,6 +3552,7 @@
             $("#txtCashDate").val("");
             $("#txtApvAll").val("");
             $('.creUser').hide();
+            $(`#chkPre`).prop("checked",false);
 
             var gbn = '1'
 
