@@ -54,17 +54,22 @@
                 </div>
               </a>
             </li>-->
-            <li class="px-3 nav-item d-flex align-items-center">
+            <li class="px-2 nav-item d-flex align-items-center">
               <a href="#" class="p-0 nav-link" style="color: lightgreen">
                   <span><i class="fa fa-user-pen pe-2"></i>{{ request.session.USER_NM }} 님</span>
               </a>
             </li>
-            <li class="px-3 nav-item d-flex align-items-center">
+            <li class="px-2 nav-item d-flex align-items-center">
+              <a id="btnMCode" class="p-0 text-white nav-link">
+                  <span><i class="fa-solid fa-book-open pe-2"></i>계정과목</span>
+              </a>
+            </li>
+            <li class="px-2 nav-item d-flex align-items-center">
               <a href="#" class="p-0 text-white nav-link">
                   <span><i class="fas fa-gear pe-2"></i>설정</span>
               </a>
             </li>
-            <li class="px-3 nav-item d-flex align-items-center text-white">
+            <li class="px-2 nav-item d-flex align-items-center text-white">
                 <a href="#" class="btnLogout p-0 text-white nav-link" id="btnLogout" name="btnLogout">
                     <span><i class="fas fa-user pe-2"></i>로그아웃</span>
                 </a>
@@ -550,4 +555,10 @@
             });
         });
     })
+</script>
+<script>
+    $(document).on('click', '#btnMCode', function () {
+        let url = '{% url 'popup_mCode' %}';
+        openPop(url, '계정과목검색창');
+    });
 </script>

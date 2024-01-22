@@ -191,10 +191,16 @@
                                         <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>금액</label>
                                         <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
+                                    <div class="col-3 checkPre">
+                                        <div class="d-flex">
+                                            <label class="text-sm mt-1 me-3"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>선지급</label>
+                                            <input class="" type="checkbox" id="chkPre" name="chkPre" style="font-size: 0.8rem"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4 cboBank">
-                      ㄷ                  <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>은행</label>
+                                        <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>은행</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboBank" id="cboBank" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4" hidden>
@@ -1639,6 +1645,7 @@
                                     $('.txtExpect').hide();
                                     $('.line').hide();
                                     $('.creUser').show();
+                                    $('.checkPre').hide();
                                 }
                                 else if(cboWitMethod == '3'){
 
@@ -1654,6 +1661,7 @@
                                     $('.txtExpect').show();
                                     $('.line').show();
                                     $('.creUser').show();
+                                    $('.checkPre').hide();
                                 }
                                 else if(cboWitMethod == '2'){
                                     $('.txtUser').hide();
@@ -1668,6 +1676,7 @@
                                     $('.txtExpect').show();
                                     $('.line').show();
                                     $('.creUser').show();
+                                    $('.checkPre').hide();
                                 }
                                 else if(cboWitMethod == '1'){
                                     $('.txtUser').show();
@@ -1678,10 +1687,11 @@
                                     $('.cashDate').show();
                                     $('.cardName').hide();
                                     $('.cboCust').hide();
-                                    $('.txtApply').hide();
+                                    $('.txtApply').show();
                                     $('.txtExpect').hide();
                                     $('.line').show();
                                     $('.creUser').show();
+                                    $('.checkPre').show();
                                 }
                         }
                         else{
@@ -2118,6 +2128,7 @@
                                 $('.txtApply').hide();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
+                                $('.checkPre').hide();
                             }
                             else if(cboWitMethod == '3'){
                                 $('.txtUser').show();
@@ -2132,6 +2143,7 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
+                                $('.checkPre').hide();
                             }
                             else if(cboWitMethod == '2'){
                                 $('.txtUser').hide();
@@ -2146,6 +2158,7 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
+                                $('.checkPre').hide();
                             }
                             else if(cboWitMethod == '1'){
                                 $('.txtUser').show();
@@ -2157,9 +2170,10 @@
                                 $('.cardName').hide();
                                 $('.cboCust').hide();
                                 $('.line').show();
-                                $('.txtApply').hide();
+                                $('.txtApply').show();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
+                                $('.checkPre').show();
                             }
                         }
                     }
@@ -2200,6 +2214,7 @@
                 $('.txtUser').show();
                 $('.txtApply').hide();
                 $('.txtExpect').hide();
+                $('.checkPre').hide();
                 $('.line').hide();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2264,6 +2279,7 @@
                 $('.txtUser').show();
                 $('.txtApply').show();
                 $('.txtExpect').show();
+                $('.checkPre').hide();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2329,6 +2345,7 @@
                 $('.cboCust').show();
                 $('.txtApply').show();
                 $('.txtExpect').show();
+                $('.checkPre').hide();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2345,8 +2362,9 @@
                 $('.cashDate').show();
                 $('.txtUser').show();
                 $('.cardName').hide();
-                $('.txtApply').hide();
+                $('.txtApply').show();
                 $('.txtExpect').hide();
+                $('.checkPre').show();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");

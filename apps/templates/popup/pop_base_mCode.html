@@ -1,0 +1,151 @@
+{% extends "layouts/base-popup.html" %}
+
+{% block title %} base_mCode {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <section>
+        <div class="card mx-2 my-2 shadow-none">
+            <div class="card-header mt-0 mb-0 pb-0">
+                <div class="row">
+                    <div class="col-lg-8 col-8 text-start">
+                        <label class="text-lg"><i class="fa fa-rectangle-list fs-6 me-2"></i>계정과목 조회</label>
+                    </div>
+                    <div class="col-lg-4 col-4 text-end">
+                        <input id="inputMCode" name="inputMCode" type="text" class="form-control text-start" style="height: 2rem; font-size: 0.8rem"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body mt-1 pt-0 mb-0">
+                <div class="table-responsive-sm overflow-auto height-400 border border-light">
+                    <table class="table">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="30%">
+                        </colgroup>
+                        <thead class="bg-primary text-white text-center" style="position: sticky; top: 0">
+                        <tr>
+                            <th class="p-1" style="font-size: 0.8rem">상위 계정 과목</th>
+                            <th class="p-1" style="font-size: 0.8rem">회계 계정 명</th>
+                            <th class="p-1" style="font-size: 0.8rem">관리 계정 과목</th>
+                            <th class="p-1" style="font-size: 0.8rem">관리 계정 명</th>
+                            <th class="p-1" style="font-size: 0.8rem">비 고</th>
+                        </tr>
+                        </thead>
+                        <tbody id="mainTb">
+                        <tr id="#mainTr" class="mainTr_tr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            window.resizeTo(800, 600);
+
+            {#const urlParams = new URL(location.href).searchParams;#}
+            {#var val =   decodeURIComponent(urlParams.get('val'));#}
+            {#var inputvalue = val.replaceAll("",'')#}
+            {##}
+            {#let data = {"custCode": inputvalue}#}
+
+            var mCode = "";
+
+            let data = {"mCode": mCode}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "popup_mCode_search" %}',
+                async: false,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    var list = data.codeList;
+
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td>" +
+                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td>" +
+                            "</tr> ");
+                    }
+
+                }
+            });
+        });
+
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'inputMCode') {
+
+                    if ($("#inputMCode").val().length == 0) {
+                        var mCode = "";
+                    }
+                    else {
+                        var mCode = document.getElementById('inputMCode').value;
+                    }
+
+                    let data = {"mCode": mCode}
+
+                    $.ajax({
+                        type: "post",
+                        data: data,
+                        url: '{% url "popup_mCode_search" %}',
+                        async: false,
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            var list = data.codeList;
+
+                            $("#mainTb").html("");
+                            for (var i = 0; i < list.length; i++) {
+                                $("#mainTb").append(
+                                    "<tr id='#mainTr' class='mainTr_tr'>" +
+                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
+                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td>" +
+                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td>" +
+                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td>" +
+                                    "</tr> ");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        {# 테이블 로우 클릭 시 #}
+        {#$(document).on('click', '#custTb .custTr_tr', function () {#}
+        {#    $custCode = $(this).children('td:nth-child(1)').text();#}
+        {#    $custName = $(this).children('td:nth-child(2)').text();#}
+        {##}
+        {#    opener.document.getElementById('cboWitCust').value = $custCode#}
+        {#    opener.document.getElementById('txtCustName').value = $custName#}
+        {##}
+        {#    window.close();#}
+        {#});#}
+
+    </script>
+
+{% endblock %}

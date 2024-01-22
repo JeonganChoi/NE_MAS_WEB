@@ -5,7 +5,7 @@ from apps.views.finance import purchaseViews, salesViews, depositViews, withdraw
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews, permitViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
     , monthlyCircleFundsViews, monthlyCountViews, monthlyProfitLossViews, breakdownBalanceViews, receiptPaymentViews, nonPayGetVIews
-from apps.views.popup import popCustViews
+from apps.views.popup import popCustViews, popMCodeViews
 
 urlpatterns = [
     # path('', redirectToMain, name="redirectToMain"),
@@ -33,6 +33,8 @@ urlpatterns = [
     # 팝업창
     path('popup_cust/', popCustViews.pop_base_cust, name='popup_cust'),
     path('popup_cust_search/', popCustViews.pop_base_cust_search, name='popup_cust_search'),
+    path('popup_mCode/', popMCodeViews.pop_base_mCode, name='popup_mCode'),
+    path('popup_mCode_search/', popMCodeViews.pop_base_mCode_search, name='popup_mCode_search'),
 
     # 기초정보
     # 계정코드관리

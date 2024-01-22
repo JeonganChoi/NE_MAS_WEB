@@ -1701,6 +1701,7 @@ def paymentViews_save(request):
     acDesc = request.POST.get("txtWitRemark")     # 비고
     acUse = request.POST.get("txtWhere")  # 사용처
     acApply = request.POST.get("txtApplyDate")  # 적용년월
+    prePay = request.POST.get("chkPre")  # 선지급
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
@@ -1814,6 +1815,7 @@ def paymentViews_save(request):
                            ",    MID_OPT = '" + str(midOpt) + "' "
                            ",    FIN_OPT = '" + str(finOpt) + "' "
                            ",    APPLYDT = '" + str(acApply).replace('-', '') + "' "
+                           ",    PRE_PAY = '" + str(prePay) + "' "
                            ",    UPD_USER = '" + str(creUser) + "' "
                            ",    UPD_DT = date_format(now(), '%Y%m%d') "
                            "     WHERE IODATE = '" + str(ioDate) + "' "
@@ -1927,6 +1929,7 @@ def paymentViews_save(request):
                                ",    ACUSE "
                                ",    APPLYDT "
                                ",    ACINFO "
+                               ",    PRE_PAY "
                                ",    MID_OPT "
                                ",    FIN_OPT "
                                "    ) "
@@ -1960,6 +1963,7 @@ def paymentViews_save(request):
                                ",    '" + str(acUse) + "'"
                                ",    '" + str(acApply).replace('-', '') + "'"
                                ",    '" + str(acInfo) + "'"
+                               ",    '" + str(prePay) + "' "
                                ",    '" + str(midOpt) + "' "
                                ",    '" + str(finOpt) + "' "
                                "    )   "
