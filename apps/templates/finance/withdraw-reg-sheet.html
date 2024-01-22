@@ -119,7 +119,7 @@
                                 <th style="font-size: 0.85rem" class="p-1">계정 명</th>
                                 <th style="font-size: 0.85rem" class="p-1">회계 계정명</th>
                                 <th style="font-size: 0.85rem" class="p-1">구 분</th>
-                                <th style="font-size: 0.85rem" class="p-1">거래처</th>
+                                <th style="font-size: 0.85rem" class="p-1">거래처/사용처</th>
                                 <th style="font-size: 0.85rem" class="p-1">입 금</th>
                                 <th style="font-size: 0.85rem" class="p-1">출 금</th>
                                 <th style="font-size: 0.85rem" class="p-1">잔 액</th>
@@ -901,6 +901,7 @@
                     var inTotal = data.inresult;
                     var total = 0;
                     var apv = "";
+                    var cust = "";
 
 
                     $("#withMainTb").html("");
@@ -952,7 +953,12 @@
                             if(list[i][21] == 'N' ){
                                 apv = '미승인';
                             }
-
+                            if(list[i][23] == '2'){
+                                cust = list[i][5]
+                            }
+                            if(list[i][23] == '1' || list[i][23] == '3' || list[i][23] == '4'){
+                                cust = list[i][22]
+                            }
 
                             if(list[i][9] == 'Y'){
                                 $("#withMainTb").append(
@@ -964,7 +970,7 @@
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -984,7 +990,7 @@
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -1018,6 +1024,12 @@
                             if(list[i][21] == 'N' ){
                                 apv = '미승인';
                             }
+                            if(list[i][20] == '2'){
+                                cust = list[i][5]
+                            }
+                            if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
+                                cust = list[i][22]
+                            }
 
                             if(list[i][9] == 'Y'){
                                 $("#withMainTb").append(
@@ -1029,7 +1041,7 @@
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
@@ -1049,7 +1061,7 @@
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
@@ -1118,6 +1130,7 @@
                     var total = 0;
                     var check = "";
                     var apv = "";
+                    var cust = "";
 
                     $("#withMainTb").html("");
                     {# 잔액 계산 #}
@@ -1168,7 +1181,12 @@
                             if(list[i][20] == 'N'){
                                 apv = '미승인';
                             }
-
+                            if(list[i][20] == '2'){
+                                cust = list[i][5]
+                            }
+                            if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
+                                cust = list[i][22]
+                            }
 
                             $("#withMainTb").append(
                                 "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
@@ -1179,7 +1197,7 @@
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -1206,6 +1224,12 @@
                             if(list[i][20] == 'N'){
                                 apv = '미승인';
                             }
+                            if(list[i][20] == '2'){
+                                cust = list[i][5]
+                            }
+                            if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
+                                cust = list[i][22]
+                            }
 
                             $("#withMainTb").append(
                                 "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
@@ -1216,7 +1240,7 @@
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
