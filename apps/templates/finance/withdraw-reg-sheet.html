@@ -16,6 +16,10 @@
     display: flex;
     gap: 10px;
 }
+
+#withMainTb .withMainTr_tr.active {
+    background-color: lightgoldenrodyellow !important;
+}
 </style>
 {#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
     <div class="height-100" style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"></div>
@@ -1394,7 +1398,11 @@
         });
 
         {# 테이블 로우 클릭 시 #}
+{#        줄 색 깔 넣어야함 #}
         $(document).on('click', '#withMainTb .withMainTr_tr', function () {
+
+            $('#withMainTb .withMainTr_tr').removeClass('active');
+            $(this).addClass('active');
 
             var itemimg = "";
             var Rfilename = ""
@@ -1528,11 +1536,13 @@
                             cboBank = list[i][26]
                             cboCardName = list[i][31]
 
+                            {# Y이면 체크박스 체크되야함 #}
                             if(list[i][36] == 'Y'){
-                                $('#chkPre').prop("selected",true);
+                                $('#chkPre').val('Y').prop("checked",true);
                             }
+                            {# N이거나 비어있으면 체크박스 체크되야함 #}
                             else{
-                                $('#chkPre').prop("selected",false);
+                                $('#chkPre').val('N').prop("checked",false);
                             }
 
                             var combolist = data.cboCust;
@@ -1742,10 +1752,10 @@
                                 cboCardName = list[i][31]
 
                                 if(list[i][36] == 'Y'){
-                                    $('#chkPre').prop("selected",true);
+                                    $('#chkPre').prop("checked",true);
                                 }
                                 else{
-                                    $('#chkPre').prop("selected",false);
+                                    $('#chkPre').prop("checked",false);
                                 }
 
                                 var combolist = data.cboCust;
@@ -1891,11 +1901,13 @@
                                 cboCardName = list[i][31]
 
 
+                                {# Y이면 체크박스 체크되야함 #}
                                 if(list[i][36] == 'Y'){
-                                    $('#chkPre').prop("selected",true);
+                                    $('#chkPre').val('Y').prop("checked",true);
                                 }
+                                {# N이거나 비어있으면 체크박스 체크되야함 #}
                                 else{
-                                    $('#chkPre').prop("selected",false);
+                                    $('#chkPre').val('N').prop("checked",false);
                                 }
 
                                 var combolist = data.cboCust;
@@ -2065,11 +2077,13 @@
                                 if(list[i][35] != ''){ $("#txtApvAll").val(list[i][35]) }
                                 if(list[i][35] == ''){ $("#txtApvAll").val(check) }
 
+                                {# Y이면 체크박스 체크되야함 #}
                                 if(list[i][36] == 'Y'){
-                                    $('#chkPre').val('Y').prop("selected",true);
+                                    $('#chkPre').val('Y').prop("checked",true);
                                 }
+                                {# N이거나 비어있으면 체크박스 체크되야함 #}
                                 else{
-                                    $('#chkPre').val('N').prop("selected",false);
+                                    $('#chkPre').val('N').prop("checked",false);
                                 }
 
                                 var combolist = data.cboCust;
