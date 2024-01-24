@@ -28,22 +28,44 @@ def approvalViews_search(request):
     # 미결재
     if gbn == '2':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
-                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(A.APPLYDT, '') "
-                           " FROM SISACCTT A "
-                           " LEFT OUTER JOIN OSSIGN B "
-                           " ON A.IODATE = B.ACDATE "
-                           " AND A.ACSEQN = B.ACSEQN "
-                           " AND A.ACIOGB = B.ACIOGB "
-                           " AND A.ICUST = B.ICUST "
-                           " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON B.EMP_NBR = C.EMP_NBR "
-                           " LEFT OUTER JOIN PIS1TB001 D "
-                           " ON A.CRE_USER = D.EMP_NBR "
-                           " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND B.RTNGBN != 'N' ")
+            cursor.execute("SELECT IODATE, ACTITLE, ACAMTS, EMP_NBR, EMP_NME, ACSEQN, ACIOGB, OPT, FIN_OPT, CRE_USER, WRITER, SEQ, APPLYDT FROM "
+                            "            ( "
+                            " SELECT IFNULL(A.IODATE, '') AS IODATE, IFNULL(A.ACTITLE, '') AS ACTITLE, IFNULL(A.ACAMTS, '') AS ACAMTS "
+                            "        , IFNULL(B.EMP_NBR, '') AS EMP_NBR, IFNULL(C.EMP_NME, '') AS EMP_NME, IFNULL(A.ACSEQN, '') AS ACSEQN, IFNULL(A.ACIOGB, '') AS ACIOGB "
+                            "        , IFNULL(B.OPT, '') AS OPT, IFNULL(A.FIN_OPT, '') AS FIN_OPT, IFNULL(A.CRE_USER, '') AS CRE_USER, IFNULL(D.EMP_NME, '') AS WRITER "
+                            "        , IFNULL(B.SEQ, '') AS SEQ, IFNULL(A.APPLYDT, '') AS APPLYDT "
+                            " FROM SISACCTT A "
+                            " LEFT OUTER JOIN OSSIGN B "
+                            " ON A.IODATE = B.ACDATE "
+                            " AND A.ACSEQN = B.ACSEQN "
+                            " AND A.ACIOGB = B.ACIOGB "
+                            " AND A.ICUST = B.ICUST "
+                            " LEFT OUTER JOIN PIS1TB001 C "
+                            " ON B.EMP_NBR = C.EMP_NBR "
+                            " LEFT OUTER JOIN PIS1TB001 D "
+                            " ON A.CRE_USER = D.EMP_NBR "
+                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                            " AND B.ICUST = '" + str(iCust) + "' "
+                            " AND B.OPT = 'N' "
+                            " AND B.SEQ  > (SELECT MAX(SEQ) FROM OSSIGN S WHERE S.ACDATE = B.ACDATE AND S.ACSEQN = B.ACSEQN AND S.ACIOGB = B.ACIOGB AND S.ICUST = B.ICUST AND S.OPT = 'Y' AND S.RTNGBN = 'N') "
+                            " UNION ALL "
+                            " SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+                            "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '') "
+                            " FROM SISACCTT A "
+                            " LEFT OUTER JOIN OSSIGN B "
+                            " ON A.IODATE = B.ACDATE "
+                            " AND A.ACSEQN = B.ACSEQN "
+                            " AND A.ACIOGB = B.ACIOGB "
+                            " AND A.ICUST = B.ICUST "
+                            " LEFT OUTER JOIN PIS1TB001 C "
+                            " ON B.EMP_NBR = C.EMP_NBR "
+                            " LEFT OUTER JOIN PIS1TB001 D "
+                            " ON A.CRE_USER = D.EMP_NBR "
+                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                            " AND B.ICUST = '" + str(iCust) + "' "
+                            " AND B.OPT = 'N' "
+                            " AND B.SEQ  = '1' AND B.RTNGBN = 'N') AA ORDER BY IODATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -120,25 +142,66 @@ def approvalViews_search(request):
 
     else:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
-                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '')  "
-                           " FROM SISACCTT A "
-                           " LEFT OUTER JOIN OSSIGN B "
-                           " ON A.IODATE = B.ACDATE "
-                           " AND A.ACSEQN = B.ACSEQN "
-                           " AND A.ACIOGB = B.ACIOGB "
-                           " AND A.ICUST = B.ICUST "
-                           " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON B.EMP_NBR = C.EMP_NBR "
-                           " LEFT OUTER JOIN PIS1TB001 D "
-                           " ON A.CRE_USER = D.EMP_NBR "
-                           " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' ")
+            cursor.execute("SELECT IODATE, ACTITLE, ACAMTS, EMP_NBR, EMP_NME, ACSEQN, ACIOGB, OPT, FIN_OPT, CRE_USER, WRITER, SEQ, APPLYDT FROM "
+                            "            ( "
+                            " SELECT IFNULL(A.IODATE, '') AS IODATE, IFNULL(A.ACTITLE, '') AS ACTITLE, IFNULL(A.ACAMTS, '') AS ACAMTS "
+                            "        , IFNULL(B.EMP_NBR, '') AS EMP_NBR, IFNULL(C.EMP_NME, '') AS EMP_NME, IFNULL(A.ACSEQN, '') AS ACSEQN, IFNULL(A.ACIOGB, '') AS ACIOGB "
+                            "        , IFNULL(B.OPT, '') AS OPT, IFNULL(A.FIN_OPT, '') AS FIN_OPT, IFNULL(A.CRE_USER, '') AS CRE_USER, IFNULL(D.EMP_NME, '') AS WRITER "
+                            "        , IFNULL(B.SEQ, '') AS SEQ, IFNULL(A.APPLYDT, '') AS APPLYDT "
+                            " FROM SISACCTT A "
+                            " LEFT OUTER JOIN OSSIGN B "
+                            " ON A.IODATE = B.ACDATE "
+                            " AND A.ACSEQN = B.ACSEQN "
+                            " AND A.ACIOGB = B.ACIOGB "
+                            " AND A.ICUST = B.ICUST "
+                            " LEFT OUTER JOIN PIS1TB001 C "
+                            " ON B.EMP_NBR = C.EMP_NBR "
+                            " LEFT OUTER JOIN PIS1TB001 D "
+                            " ON A.CRE_USER = D.EMP_NBR "
+                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                            " AND B.ICUST = '" + str(iCust) + "' "
+                            " AND B.OPT = 'N' "
+                            " AND B.SEQ  > (SELECT MAX(SEQ) FROM OSSIGN S WHERE S.ACDATE = B.ACDATE AND S.ACSEQN = B.ACSEQN AND S.ACIOGB = B.ACIOGB AND S.ICUST = B.ICUST AND S.OPT = 'Y' AND S.RTNGBN = 'N') "
+                            " UNION ALL "
+                            " SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+                            "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '') "
+                            " FROM SISACCTT A "
+                            " LEFT OUTER JOIN OSSIGN B "
+                            " ON A.IODATE = B.ACDATE "
+                            " AND A.ACSEQN = B.ACSEQN "
+                            " AND A.ACIOGB = B.ACIOGB "
+                            " AND A.ICUST = B.ICUST "
+                            " LEFT OUTER JOIN PIS1TB001 C "
+                            " ON B.EMP_NBR = C.EMP_NBR "
+                            " LEFT OUTER JOIN PIS1TB001 D "
+                            " ON A.CRE_USER = D.EMP_NBR "
+                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                            " AND B.ICUST = '" + str(iCust) + "' "
+                            " AND B.OPT = 'N' "
+                            " AND B.SEQ  = '1' AND B.RTNGBN = 'N') AA ORDER BY IODATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
+
+        # " SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+        #            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+        #            "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, ''), IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, '')  "
+        #            " FROM SISACCTT A "
+        #            " LEFT OUTER JOIN OSSIGN B "
+        #            " ON A.IODATE = B.ACDATE "
+        #            " AND A.ACSEQN = B.ACSEQN "
+        #            " AND A.ACIOGB = B.ACIOGB "
+        #            " AND A.ICUST = B.ICUST "
+        #            " LEFT OUTER JOIN PIS1TB001 C "
+        #            " ON B.EMP_NBR = C.EMP_NBR "
+        #            " LEFT OUTER JOIN PIS1TB001 D "
+        #            " ON A.CRE_USER = D.EMP_NBR "
+        #            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+        #            " AND B.ICUST = '" + str(iCust) + "' "
+        #            " AND B.OPT = 'N' "
+
+
         #     sublist2 = []
         #
         #     for i in range(len(mainresult)):
@@ -260,7 +323,7 @@ def approvalViews_save(request):
     opt = 'Y'
 
     if gbn == '1':
-        rtnGbn = ''
+        rtnGbn = 'N'
         with connection.cursor() as cursor:
             cursor.execute(" UPDATE OSSIGN SET "
                            "     OPT = '" + str(opt) + "' "
@@ -296,7 +359,7 @@ def approvalViews_save(request):
         return JsonResponse({'sucYn': "Y"})
 
     elif gbn == '2':
-        rtnGbn = ''
+        rtnGbn = 'N'
         with connection.cursor() as cursor:
             cursor.execute(" SELECT EMP_NBR, SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' AND ACSEQN = '" + str(seq) + "' "
                            "                             AND SEQ >= '" + str(acSeqn) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -340,7 +403,7 @@ def approvalViews_save(request):
 
     elif gbn == '3':
         opt = 'N'
-        rtnGbn = 'N'
+        rtnGbn = 'Y'
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSSIGN SET "
                                "     RETURNS = '" + str(reason) + "' "

@@ -2071,7 +2071,9 @@ def paymentViews_save(request):
                                "   , EMP_NBR "
                                "   , OPT "
                                "   , ACIOGB "
-                               "   , ICUST "                                                    
+                               "   , ICUST "
+                               "   , CRE_USER "
+                               "   , CRE_DT "   
                                "    ) "
                                "    VALUES "
                                "    ( "
@@ -2082,6 +2084,8 @@ def paymentViews_save(request):
                                "     , '" + str(opt) + "' "
                                "     , '" + str(acIogb) + "' "
                                "     , '" + str(iCust) + "' "
+                               "     , '" + str(creUser) + "' "
+                               "     , date_format(now(), '%Y%m%d') "
                                "     ) "
                 )
                 connection.commit()
@@ -2207,7 +2211,9 @@ def paymentViews_save(request):
                                        "   , EMP_NBR "
                                        "   , OPT "
                                        "   , ACIOGB "
-                                       "   , ICUST "                                                    
+                                       "   , ICUST "
+                                       "   , CRE_USER "
+                                       "   , CRE_DT "   
                                        "    ) "
                                        "    VALUES "
                                        "    ( "
@@ -2218,6 +2224,8 @@ def paymentViews_save(request):
                                        "     , '" + opt + "' "
                                        "     , '" + str(acIogb) + "' "
                                        "     , '" + str(iCust) + "' "
+                                       "     , '" + str(creUser) + "' "
+                                       "     , date_format(now(), '%Y%m%d') "
                                        "     ) "
                         )
                         connection.commit()
