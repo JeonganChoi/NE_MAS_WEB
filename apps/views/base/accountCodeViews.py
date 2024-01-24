@@ -168,10 +168,11 @@ def accountCodeViews_saveM(request):
 
     # 수익4/ 비용5
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT MCODE FROM OSCODEM WHERE MCODE = '" + mCode + "' AND ICUST = '" + str(iCust) + "'")
+        cursor.execute(" SELECT COUNT(MCODE) FROM OSCODEM WHERE MCODE = '" + mCode + "' AND ICUST = '" + str(iCust) + "'")
         result = cursor.fetchall()
+        count = int(result[0][0])
 
-    if result:
+    if count > 0:
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODE_M = '" + str(mCode_M) + "' "

@@ -605,7 +605,9 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if(data.card != ''){
+
+                    if(parseInt(data.chkCust) > 0 ){
+
                         var saveresult = confirm("거래처 정보를 수정하시겠습니까?")
                         if(saveresult == true){
 

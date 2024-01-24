@@ -259,7 +259,7 @@ def chkCust(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE CUST_ID_NBR = '" + str(regNum) + "' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT COUNT(CUST_NBR) FROM MIS1TB003 WHERE CUST_ID_NBR = '" + str(regNum) + "' AND ICUST = '" + str(iCust) + "' ")
         chkCust = cursor.fetchall()
         return JsonResponse({"chkCust": chkCust})
 
@@ -290,11 +290,11 @@ def custViews_save(request):
 
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CUST_NBR FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+        cursor.execute(" SELECT COUNT(CUST_NBR) FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
+        count = int(result[0][0])
 
-    if result:
-        custResult = result[0][0]
+    if count > 0:
 
         with connection.cursor() as cursor:
             cursor.execute(" UPDATE MIS1TB003 SET "
@@ -315,17 +315,18 @@ def custViews_save(request):
                            "    , UPD_DT = '" + str(creDt) + "' "
                            "    , UPD_USER = '" + str(user) + "' "
                            "    WHERE ICUST = '" + str(iCust) + "' "
-                           "      AND CUST_NBR = '" + str(custResult) + "'"
+                           "      AND CUST_NBR = '" + str(custCode) + "'"
                            )
             connection.commit()
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+                cursor.execute(" SELECT COUNT(SEQ) FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
                 connection.commit()
                 result = cursor.fetchall()
-                print(result)
+                seqCount = int(result[0][0])
 
-            if (len(result) != 0):
+            # if (len(result) != 0):
+            if seqCount > 0:
                 with connection.cursor() as cursor:
                     cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
                                    "    AND SEQ = '" + str(custSeq) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -460,11 +461,12 @@ def custViews_save(request):
             connection.commit()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT SEQ FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            cursor.execute(" SELECT COUNT(SEQ) FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
             connection.commit()
             result = cursor.fetchall()
+            custCount = int(result[0][0])
 
-        if (len(result) != 0):
+        if custCount > 0:
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM MIS1TB003_D WHERE CUST_NBR = '" + str(custCode) + "' "
                                "    AND SEQ = '" + str(custSeq) + "' AND ICUST = '" + str(iCust) + "' ")
