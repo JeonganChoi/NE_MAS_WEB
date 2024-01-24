@@ -3,7 +3,14 @@
 {% block title %} 결재 관리 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+    <style>
+        #mainTb .mainTr_tr.active {
+        background-color: lightgoldenrodyellow !important;
+    }
+    </style>
+{% endblock stylesheets %}
 
 {% block content %}
 {#         style="background-image: url('/static/assets/img/header-blue-purple.jpg'); background-position: bottom;"#}
@@ -457,6 +464,9 @@
         });
 
         $(document).on('change', '#mainTable tbody tr td:first-child input[type=checkbox]', function() {
+
+            {#$('#mainTb .mainTr_tr').removeClass('active');#}
+            {#$(this).addClass('active');#}
 
             var cboWitCust2 = "";
             var cboWitGbn = "";

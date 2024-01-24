@@ -7,6 +7,12 @@
 
 {% block content %}
 
+    <style>
+        #adminMainTb .adminMainTr_tr.active {
+        background-color: rgb(235, 243, 232) !important;
+    }
+    </style>
+
     <div class="px-5 py-4 container-fluid">
     <form method="post" type="form">
         {% csrf_token %}
@@ -362,6 +368,9 @@
 
         {# 테이블 로우 클릭 시 #}
         $(document).on('click', '#adminMainTb .adminMainTr_tr', function () {
+
+            $('#adminMainTb .adminMainTr_tr').removeClass('active');
+            $(this).addClass('active');
 
             var cboMCode_M = "";
             var cboGbn_M = "";

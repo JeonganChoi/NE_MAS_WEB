@@ -3,9 +3,17 @@
 {% block title %} 참조 코드 등록 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
+
+    <style>
+        #MainTb .MainTr_tr.active {
+        background-color: rgb(235, 243, 232) !important;
+    }
+    </style>
 
     <div class="px-5 py-4 container-fluid">
     <form method="post" action="{% url 'base_code_save' %}">
@@ -124,6 +132,9 @@
 
         {# 테이블 로우 클릭 시 #}
         $(document).on('click', '#MainTb .MainTr_tr', function () {
+
+            $('#MainTb .MainTr_tr').removeClass('active');
+            $(this).addClass('active');
 
             let mainCode = $(this).attr('main_code');
 

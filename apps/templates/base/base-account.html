@@ -3,9 +3,17 @@
 {% block title %} 계좌 번호 등록 {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
+
+    <style>
+    #actMainTb .actMainTr_tr.active {
+    background-color: rgb(235, 243, 232) !important;
+    }
+    </style>
 
     <div class="px-5 py-4 container-fluid">
     <form method="post">
@@ -72,7 +80,7 @@
                             </tr>
                           </thead>
                           <tbody id="actMainTb">
-                            <tr id="actMainTr" class="actMainTr_tr">
+                            <tr id="#actMainTr" class="actMainTr_tr">
 
                             </tr>
                           </tbody>
@@ -261,7 +269,10 @@
 
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#actMainTb .actMainTr_tr', function () {
-            {#var cboTop = "";#}
+
+            $('#actMainTb .actMainTr_tr').removeClass('active');
+            $(this).addClass('active');
+
             var bankType = "";
             {#var cboTopTxt = "<option value=''>:: 선택 ::</option>";#}
             var bankTypeTxt = "<option value=''>:: 선택 ::</option>";

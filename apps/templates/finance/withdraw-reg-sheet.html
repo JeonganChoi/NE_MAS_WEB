@@ -26,7 +26,7 @@
     <div class="container-fluid py-1 my-2">
         <div class="row mt-n7">
             <div class="col-lg-12">
-                <div class="card card-header blur border border-white rounded-2 shadow-xs">
+                <div class="card card-header blur border border-white rounded-2 shadow-xs pb-0">
                     <h6 id="gbn" hidden>{{ request.session.USER_GBN }}</h6>
                     <div class="row">
                         <div class="col-lg-6 col-6 text-start px-3 py-2">
@@ -95,6 +95,16 @@
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-2 text-start">
+                                <div class="input-group shadow-none">
+                                    <label class="me-1" style="font-size: 0.85rem; width: 3rem"><i class="fa fa-ellipsis-vertical me-2"></i>구 분</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-0" name="inputGbn" id="inputGbn" style="font-size: 0.8rem; height: 2rem">
+                                        <option value="0">시행</option>
+                                        <option value="1">미시행</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4"></div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -1278,6 +1288,163 @@
                 }
             })
         });
+
+        {# 구분 선택시 조회 #}
+        {#$('#inputGbn').change(function () {#}
+        {##}
+        {#    var sDate = document.getElementById('inputStrDate').value;#}
+        {#    var eDate = document.getElementById('inputEndDate').value;#}
+        {#    var inputGbn = document.getElementById('inputGbn').value;#}
+        {##}
+        {#    let data = {"sDate": sDate, "eDate": eDate, "inputGbn": inputGbn}#}
+        {##}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        data: data,#}
+        {#        url: '{% url "receivePay_search" %}',#}
+        {#        headers: {#}
+        {#            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+        {#        },#}
+        {#        dataType: 'json',#}
+        {#        success: function (data) {#}
+        {#            var list = data.mainList;#}
+        {#            var list2 = data.balList;#}
+        {#            var total = 0;#}
+        {#            var check = "";#}
+        {#            var apv = "";#}
+        {#            var cust = "";#}
+        {##}
+        {#            $("#withMainTb").html("");#}
+                    {# 잔액 계산 #}
+        {##}
+        {#            if(list2 != ''){#}
+        {#                for (var i = 0; i < list2.length; i++) {#}
+        {#                    total = list2[0][3]#}
+        {#                    $("#withMainTb").append(#}
+        {#                        "<tr id='#withMainTr' class='withMainTr_tr'>" +#}
+        {#                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "</tr> ");#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            if(list2 != ''){#}
+        {#                for (var i = 0; i < list.length; i++) {#}
+        {##}
+                            {# 입금 #}
+        {#                    if(list[i][0] == '2'){#}
+        {#                        total += list[i][2]#}
+        {#                    }#}
+                            {# 출금 #}
+        {#                    if(list[i][0] == '1'){#}
+        {#                        total -= list[i][3]#}
+        {#                    }#}
+        {#                    if(list[i][9] == 'Y'){#}
+        {#                        check = '시행';#}
+        {#                    }#}
+        {#                    if(list[i][9] == 'N'){#}
+        {#                        check = '미시행';#}
+        {#                    }#}
+        {#                    if(list[i][20] == 'Y'){#}
+        {#                        apv = '승인';#}
+        {#                    }#}
+        {#                    if(list[i][21] == 'N' && list[i][24] != ''){#}
+        {#                        apv = list[i][24];#}
+        {#                    }#}
+        {#                    if(list[i][21] == 'N' && list[i][24] == ''){#}
+        {#                       apv = '미승인';#}
+        {#                    }#}
+        {#                    if(list[i][20] == '2'){#}
+        {#                        cust = list[i][5]#}
+        {#                    }#}
+        {#                    if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){#}
+        {#                        cust = list[i][22]#}
+        {#                    }#}
+        {##}
+        {#                    $("#withMainTb").append(#}
+        {#                        "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +#}
+        {#                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +#}
+        {#                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +#}
+        {#                        "</tr> ");#}
+        {#                }#}
+        {#                $("#inputBal").val(addComma(total))#}
+        {#            }#}
+        {#            if(list2 == ''){#}
+        {#                for (var i = 0; i < list.length; i++) {#}
+        {##}
+        {#                    if(list[i][9] == 'Y'){#}
+        {#                        check = '시행';#}
+        {#                    }#}
+        {#                    if(list[i][9] == 'N'){#}
+        {#                        check = '미시행';#}
+        {#                    }#}
+        {#                    if(list[i][20] == 'Y'){#}
+        {#                        apv = '승인';#}
+        {#                    }#}
+        {#                    if(list[i][21] == 'N' && list[i][24] != ''){#}
+        {#                        apv = list[i][24];#}
+        {#                    }#}
+        {#                    if(list[i][21] == 'N' && list[i][24] == ''){#}
+        {#                       apv = '미승인';#}
+        {#                    }#}
+        {#                    if(list[i][20] == '2'){#}
+        {#                        cust = list[i][5]#}
+        {#                    }#}
+        {#                    if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){#}
+        {#                        cust = list[i][22]#}
+        {#                    }#}
+        {##}
+        {#                    $("#withMainTb").append(#}
+        {#                        "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +#}
+        {#                        "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +#}
+        {#                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +#}
+        {#                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + apv + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+        {#                        "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +#}
+        {#                        "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +#}
+        {#                        "</tr> ");#}
+        {#                }#}
+        {##}
+        {#            }#}
+        {##}
+        {#        }#}
+        {#    })#}
+        {#});#}
+
 
         {# 조회 조건 카드명 선택시 카드번호 바인딩 #}
         $('#inputCard').change(function () {

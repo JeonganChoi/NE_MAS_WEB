@@ -7,6 +7,13 @@
 
 {% block content %}
 
+    <style>
+        #custMainTb .custMainTr_tr.active {
+        background-color: rgb(235, 243, 232) !important;
+    }
+    </style>
+
+
     <div class="px-5 py-4 container-fluid">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -455,6 +462,10 @@
 
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#custMainTb .custMainTr_tr', function () {
+
+            $('#custMainTb .custMainTr_tr').removeClass('active');
+            $(this).addClass('active');
+
             var cboCustType = "";
             var cboDay = "";
             var custBank = "";

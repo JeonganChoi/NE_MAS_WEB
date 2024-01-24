@@ -7,6 +7,12 @@
 
 {% block content %}
 
+    <style>
+        #acBalMainTb .acBalMainTr_tr.active {
+        background-color: rgb(235, 243, 232) !important;
+    }
+    </style>
+
     <div class="px-5 py-4 container-fluid">
     <form method="post">
         {% csrf_token %}
@@ -313,6 +319,9 @@
 
         {# 테이블 로우 클릭 시 #}
         $(document).on('click', '#acBalMainTb .acBalMainTr_tr', function () {
+
+            $('#acBalMainTb .acBalMainTr_tr').removeClass('active');
+            $(this).addClass('active');
 
             var cboBankName = "";
             var cboActNum = "";

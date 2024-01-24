@@ -7,6 +7,12 @@
 
 {% block content %}
 
+    <style>
+        #empMainTb .empMainTr_tr.active {
+        background-color: rgb(235, 243, 232) !important;
+    }
+    </style>
+
     <div class="px-5 py-4 container-fluid">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -540,6 +546,10 @@
 
         {#  테이블 로우 클릭 시  #}
         $(document).on('click', '#empMainTb .empMainTr_tr', function () {
+
+            $('#empMainTb .empMainTr_tr').removeClass('active');
+            $(this).addClass('active');
+
             var itemimg = "";
             var Rfilename = ""
             var imglc = ""
