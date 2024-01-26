@@ -216,12 +216,16 @@ def accountCodeViews_saveM(request):
                 code = int(result[0][0])
                 mCode = code
 
-        if mCode_A.startswith('53'):
+        if mCode_A.startswith('53') or mCode_A.startswith('55'):
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 53001) FROM OSCODEM A WHERE MCODE LIKE '53%' AND ICUST = '" + str(iCust) + "' ")
                 result = cursor.fetchall()
                 code = int(result[0][0])
                 mCode = code
+
+        # if mCode == '':
+        #
+
 
         with connection.cursor() as cursor:
               cursor.execute(" INSERT INTO OSCODEM "
