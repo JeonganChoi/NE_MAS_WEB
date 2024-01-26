@@ -195,6 +195,7 @@ def accountCodeViews_saveM(request):
 
     else:
 
+        # for문으로 회계코드 기준으로 만들게 해야함.
         if mCode_A.startswith('41'):
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 41001) FROM OSCODEM A WHERE MCODE LIKE '41%' AND ICUST = '" + str(iCust) + "' ")
@@ -224,7 +225,8 @@ def accountCodeViews_saveM(request):
                 mCode = code
 
         # if mCode == '':
-        #
+        # 비어있으면 튕기게 해야함.
+
 
 
         with connection.cursor() as cursor:
