@@ -582,13 +582,13 @@
                         $("#subTb").html("");
                         $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                         for (var i = 0; i < list.length; i++) {
-                            if(empCode == list[i][1]){
+                            if(list[i][7] == 'Y'){
                                 $("#subTb").append(
-                                    "<td class='text-center rounded-2 border border-warning border-2 bg-light font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                    "<td class='text-center rounded-2 border border-warning font-weight-bolder text-dark p-1' style='font-size: 0.85rem; background-color: #fbdcd8'>" + list[i][0] + "." + list[i][2] + "</td> ");
                             }
-                            else{
+                            if(list[i][7] == 'N'){
                                 $("#subTb").append(
-                                    "<td class='text-center rounded-2 border border-warning border-2 bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                    "<td class='text-center rounded-2 border border-warning bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
                             }
 
                         }

@@ -380,6 +380,21 @@
                                     <div id="file_name"></div>
                                 </div>
                             </div>
+                            <div class="form-group apvArea">
+                                <div class="row mt-3">
+                                    <div class="col-lg-12 col-12">
+                                        <label class="form-label"><i class="fas fa-users-line me-2"></i>결재 라인</label>
+                                        <div class="table-responsive-sm overflow-auto m-0">
+                                            <table class="table mb-0 align-items-center justify-content-center">
+                                                <tbody id="subTb">
+                                                <tr id="#subTr" class="subTr_tr">
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -730,6 +745,7 @@
             var cboCardNameTxt = "<option value=''>:: 선택 ::</option>";
 
             {#$("#inputCust").html("");#}
+            $('.apvArea').hide();
             $("#inputCard").html("");
             $("#inputCardNum").html("");
             $("#inputActName").html("");
@@ -971,7 +987,7 @@
                                 apv = '승인';
                             }
                             if(list[i][21] == 'N' && list[i][24] != ''){
-                                apv = list[i][24];
+                                apv = '반려';
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1045,7 +1061,7 @@
                                 apv = '승인';
                             }
                             if(list[i][21] == 'N' && list[i][24] != ''){
-                                apv = list[i][24];
+                                apv = '반려';
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1134,7 +1150,7 @@
             var cboAct = document.getElementById('inputAct').value;
             var inputCard = document.getElementById('inputCard').value;
             var inputCardNum = document.getElementById('inputCardNum').value;
-
+            $('.apvArea').hide();
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
@@ -1205,7 +1221,7 @@
                                 apv = '승인';
                             }
                             if(list[i][21] == 'N' && list[i][24] != ''){
-                                apv = list[i][24];
+                                apv = '반려';
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1251,7 +1267,7 @@
                                 apv = '승인';
                             }
                             if(list[i][21] == 'N' && list[i][24] != ''){
-                                apv = list[i][24];
+                                apv = '반려';
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1665,6 +1681,7 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.subList;
+                    var list2 = data.empResult;
                     var check = data.chkApv;
                     var gbn = $("#gbn").text();
 
@@ -1825,6 +1842,7 @@
                             document.getElementById("txtCustName").classList.add('bg-transparent')
 
                             $('.folderArea').hide();
+                            $('.apvArea').hide();
 
                             $('.basic').show();
                             if(cboWitMethod == '4'){
@@ -2038,6 +2056,7 @@
                                 document.getElementById("txtCustName").classList.add('bg-transparent')
 
                                 $('.folderArea').hide();
+                                $('.apvArea').show();
 
                             }
                             {# 2등급은 본인꺼 재외한 다른건은 수정할 수 없다. #}
@@ -2190,6 +2209,7 @@
                                 document.getElementById("txtCustName").classList.add('bg-transparent')
 
                                 $('.folderArea').hide();
+                                $('.apvArea').show();
 
                             }
                             else{
@@ -2216,6 +2236,7 @@
                                 $("#txtCreUser").attr("readonly",false);
                                 $("#txtCustName").attr("readonly",false);
                                 $('.folderArea').show();
+                                $('.apvArea').show();
 
                                 $("#txtWitSeq").val(list[i][0])
                                 $("#txtWitRecn").val(list[i][3])
@@ -2399,6 +2420,21 @@
                             }
                         }
                     }
+
+
+                    $("#subTb").html("");
+                    $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
+                    for (var i = 0; i < list2.length; i++) {
+                        if(list2[i][7] == 'Y'){
+                            $("#subTb").append(
+                                "<td class='text-center rounded-2 border border-warning font-weight-bolder text-dark p-1' style='font-size: 0.85rem; background-color: #fbdcd8'>" + list2[i][0] + "." + list2[i][2] + "</td> ");
+                        }
+                        if(list2[i][7] == 'N'){
+                            $("#subTb").append(
+                                "<td class='text-center rounded-2 border border-warning bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list2[i][0] + "." + list2[i][2] + "</td> ");
+                        }
+                    }
+
 
                     $('#signTd').empty();
                     if(permit == 'Y'){}
@@ -3830,12 +3866,14 @@
                     $("#cboBank").append(cboBankTxt);
                     $("#cboCardName").append(cboCardNameTxt);
                     $('.folderArea').show();
+                    $('.apvArea').show();
                     }
             });
 
             _flag = false;
             $("#modalMainTd").html("");
             $("#modalSubTd").html("");
+            $("#subTb").html("");
 
         });
 

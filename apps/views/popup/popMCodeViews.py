@@ -28,8 +28,8 @@ def pop_base_mCode_search(request):
                            " ON A.ACODE = C.RESKEY "
                            " AND C.RECODE = 'ACD' "
                            " WHERE A.ICUST = '" + str(iCust) + "' "
-                           " AND A.MCODENM LIKE '%" + str(mCode) + "%' "
-                           " ORDER BY A.MCODENM; ")
+                           " AND A.MDESC LIKE '%" + str(mCode) + "%' "
+                           " ORDER BY B.RESNAM, C.RESNAM, A.MCODENM ")
             coderesult = cursor.fetchall()
 
         return JsonResponse({"codeList": coderesult})
@@ -45,7 +45,7 @@ def pop_base_mCode_search(request):
                            " ON A.ACODE = C.RESKEY "
                            " AND C.RECODE = 'ACD' "
                            " WHERE A.ICUST = '" + str(iCust) + "' "
-                           " ORDER BY A.MCODENM; ")
+                           " ORDER BY B.RESNAM, C.RESNAM, A.MCODENM ")
             coderesult = cursor.fetchall()
 
         return JsonResponse({"codeList": coderesult})

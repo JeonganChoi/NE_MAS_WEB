@@ -1553,109 +1553,119 @@ def paymentViews_search(request):
                            "    ON A.ACCARD = J.CARDNUM "
                            "    WHERE A.IODATE = '" + str(ioDate) + "' "
                            "    AND A.ACIOGB = '" + str(acIogb) + "' "
-                           "    AND A.ACACNUMBER = '" + str(acNum) + "' "
                            "    AND A.ACSEQN = '" + str(acSeqn) + "'"
                            "    AND A.ICUST = '" + str(iCust) + "'")
             subresult = cursor.fetchall()
 
-            # 결재할사람
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME FROM OSSIGN A "
-                               " LEFT OUTER JOIN PIS1TB001 B ON A.EMP_NBR = B.EMP_NBR"
-                               " WHERE A.ACDATE = '" + str(ioDate) + "' AND A.ACIOGB = '" + str(acIogb) + "' "
-                               "   AND A.ACSEQN = '" + str(acSeqn) + "' AND A.ICUST = '" + str(iCust) + "'  ")
-                permit = cursor.fetchall()
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER, A.ACDATE, A.ACSEQN, A.ACIOGB, A.OPT "
+                           " FROM OSSIGN A "
+                           " LEFT OUTER JOIN PIS1TB001 B "
+                           " ON A.EMP_NBR = B.EMP_NBR "
+                           " WHERE A.ACDATE = '" + str(ioDate) + "' "
+                           " AND A.ACSEQN = '" + str(acSeqn) + "' "
+                           " AND A.ACIOGB = '" + str(acIogb) + "' "
+                           " AND A.ICUST = '" + str(iCust) + "' "
+                           " ORDER BY SEQ ASC ")
+            empresult = cursor.fetchall()
+        # 결재할사람
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME FROM OSSIGN A "
+                           " LEFT OUTER JOIN PIS1TB001 B ON A.EMP_NBR = B.EMP_NBR"
+                           " WHERE A.ACDATE = '" + str(ioDate) + "' AND A.ACIOGB = '" + str(acIogb) + "' "
+                           "   AND A.ACSEQN = '" + str(acSeqn) + "' AND A.ICUST = '" + str(iCust) + "'  ")
+            permit = cursor.fetchall()
 
-            # 결재한건
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT COUNT(*) FROM OSSIGN "
-                               " WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' "
-                               " AND ACSEQN = '" + str(acSeqn) + "' AND ICUST = '" + str(iCust) + "' AND OPT = 'Y' ")
-                chkApv = cursor.fetchall()
+        # 결재한건
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT COUNT(*) FROM OSSIGN "
+                           " WHERE ACDATE = '" + str(ioDate) + "' AND ACIOGB = '" + str(acIogb) + "' "
+                           " AND ACSEQN = '" + str(acSeqn) + "' AND ICUST = '" + str(iCust) + "' AND OPT = 'Y' ")
+            chkApv = cursor.fetchall()
 
-            # 거래처
-            if acCust == '':
-                custGbn = subresult[0][6]
-                # 매입처
-                if custGbn == '1':
-                    with connection.cursor() as cursor:
-                        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3' ")
-                        cboCust = cursor.fetchall()
-                # 매출처
-                if custGbn == '2':
-                    with connection.cursor() as cursor:
-                        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '2' OR CUST_GBN = '3' ")
-                        cboCust = cursor.fetchall()
-                else:
-                    with connection.cursor() as cursor:
-                        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
-                        cboCust = cursor.fetchall()
-
-            # 입출금구분
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
-                cboGgn = cursor.fetchall()
-
-            # 관리계정
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ASC ")
-                cboMCode = cursor.fetchall()
-
-            # 회계게정
-            # with connection.cursor() as cursor:
-            #     cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ICUST = '" + iCust + "' ORDER BY ACODE ASC ")
-            #     cboACode = cursor.fetchall()
-
-            # 결제방법
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
-                cboPay = cursor.fetchall()
-
-            # 계좌번호
-            if subresult[0][32] != '':
-                gbn = subresult[0][32]
+        # 거래처
+        if acCust == '':
+            custGbn = subresult[0][6]
+            # 매입처
+            if custGbn == '1':
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT ACNUMBER FROM ACCARD WHERE ICUST = '" + str(iCust) + "' AND GBN = '" + str(gbn) + "' ")
-                    cboAcnumber = cursor.fetchall()
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3' ")
+                    cboCust = cursor.fetchall()
+            # 매출처
+            if custGbn == '2':
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '2' OR CUST_GBN = '3' ")
+                    cboCust = cursor.fetchall()
             else:
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
-                    cboAcnumber = cursor.fetchall()
+                    cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ")
+                    cboCust = cursor.fetchall()
 
-            # 카드번호
-            if subresult[0][32] != '':
-                gbn = subresult[0][32]
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' AND GBN = '" + str(gbn) + "' ")
-                    cboCard = cursor.fetchall()
-            else:
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
-                    cboCard = cursor.fetchall()
+        # 입출금구분
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
+            cboGgn = cursor.fetchall()
 
-            # 은행명
+        # 관리계정
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ORDER BY MCODE ASC ")
+            cboMCode = cursor.fetchall()
+
+        # 회계게정
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ICUST = '" + iCust + "' ORDER BY ACODE ASC ")
+        #     cboACode = cursor.fetchall()
+
+        # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
+            cboPay = cursor.fetchall()
+
+        # 계좌번호
+        if subresult[0][32] != '':
+            gbn = subresult[0][32]
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
-                cboBank = cursor.fetchall()
+                cursor.execute(" SELECT ACNUMBER FROM ACCARD WHERE ICUST = '" + str(iCust) + "' AND GBN = '" + str(gbn) + "' ")
+                cboAcnumber = cursor.fetchall()
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
+                cboAcnumber = cursor.fetchall()
 
-            # 카드명
-            if subresult[0][32] != '':
-                gbn = subresult[0][32]
-                with connection.cursor() as cursor:
-                    cursor.execute("  SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B "
-                                    " ON A.CARDTYPE = B.RESKEY "
-                                    " AND B.RECODE = 'COC' "
-                                    " WHERE A.ICUST = '" + str(iCust) + "' AND A.GBN = '" + str(gbn) + "' ")
-                cardName = cursor.fetchall()
-            else:
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
-                cardName = cursor.fetchall()
+        # 카드번호
+        if subresult[0][32] != '':
+            gbn = subresult[0][32]
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' AND GBN = '" + str(gbn) + "' ")
+                cboCard = cursor.fetchall()
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
+                cboCard = cursor.fetchall()
+
+        # 은행명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cboBank = cursor.fetchall()
+
+        # 카드명
+        if subresult[0][32] != '':
+            gbn = subresult[0][32]
+            with connection.cursor() as cursor:
+                cursor.execute("  SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B "
+                                " ON A.CARDTYPE = B.RESKEY "
+                                " AND B.RECODE = 'COC' "
+                                " WHERE A.ICUST = '" + str(iCust) + "' AND A.GBN = '" + str(gbn) + "' ")
+            cardName = cursor.fetchall()
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cardName = cursor.fetchall()
 
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
                                 , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber
-                                , 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName, "chkApv": chkApv})
+                                , 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName, "chkApv": chkApv, 'empResult': empresult})
 
     if acIogb != '' and acCust != '':
         with connection.cursor() as cursor:
@@ -1694,12 +1704,23 @@ def paymentViews_search(request):
                            "    ON A.ACCARD = J.CARDNUM "
                            "    WHERE A.IODATE = '" + str(ioDate) + "' "
                            "    AND A.ACIOGB = '" + str(acIogb) + "' "
-                           "    AND A.ACACNUMBER = '" + str(acNum) + "' "
                            "    AND A.ACCUST = '" + str(acCust) + "'"
                            "    AND A.MCODE = '" + str(acMcode) + "' "
                            "    AND A.ACSEQN = '" + str(acSeqn) + "'"
                            "    AND A.ICUST = '" + str(iCust) + "'")
             subresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER, A.ACDATE, A.ACSEQN, A.ACIOGB, A.OPT "
+                           " FROM OSSIGN A "
+                           " LEFT OUTER JOIN PIS1TB001 B "
+                           " ON A.EMP_NBR = B.EMP_NBR "
+                           " WHERE A.ACDATE = '" + str(ioDate) + "' "
+                           " AND A.ACSEQN = '" + str(acSeqn) + "' "
+                           " AND A.ACIOGB = '" + str(acIogb) + "' "
+                           " AND A.ICUST = '" + str(iCust) + "' "
+                           " ORDER BY SEQ ASC ")
+            empresult = cursor.fetchall()
 
         # 결재할사람
         with connection.cursor() as cursor:
@@ -1765,7 +1786,7 @@ def paymentViews_search(request):
 
         return JsonResponse({'subList': subresult, 'permit': permit, 'cboCust': cboCust, 'cboGgn': cboGgn
                                 , 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber
-                                , 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName, "chkApv": chkApv})
+                                , 'cboCard': cboCard, "cboBank": cboBank, "cardName": cardName, "chkApv": chkApv, 'empResult': empresult})
 
     # 출금
     if cboGbn == '1':
@@ -2081,11 +2102,12 @@ def paymentViews_save(request):
 
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
+            cursor.execute(" SELECT COUNT(SEQ) FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "
                            "        AND ICUST = '" + str(iCust) + "'  ")
             result = cursor.fetchall()
+            count = int(result[0][0])
         #
-        if (len(result) != 0):
+        if count > 0:
             with connection.cursor() as cursor:
                 cursor.execute(" DELETE FROM OSSIGN "
                                "   WHERE ACDATE = '" + str(ioDate) + "'  "
@@ -2258,7 +2280,7 @@ def paymentViews_save(request):
                                        "     , '" + str(seq) + "' "
                                        "     , ( SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM OSSIGN A WHERE ACDATE = '" + str(ioDate) + "'  AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ) "
                                        "     , '" + empArrayLists[data]["empNbr"] + "' "
-                                       "     , '" + opt + "' "
+                                       "     , '" + str(opt) + "' "
                                        "     , '" + str(acIogb) + "' "
                                        "     , '" + str(iCust) + "' "
                                        "     , '" + str(creUser) + "' "

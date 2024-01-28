@@ -43,7 +43,7 @@ def approvalViews_search(request):
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND B.RTNGBN = 'N' ")
+                           " AND B.OPT = 'N' AND B.RTNGBN = 'N' AND A.MID_OPT = 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -66,7 +66,7 @@ def approvalViews_search(request):
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'Y' ")
+                           " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -135,7 +135,7 @@ def approvalViews_search(request):
                            " ON A.CRE_USER = D.EMP_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND B.RTNGBN = 'N' ")
+                           " AND B.OPT = 'N' AND B.RTNGBN = 'N' AND A.MID_OPT = 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -230,7 +230,7 @@ def approvalSubViews_search(request):
 
     if ioDate and acSeqn:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER, A.ACDATE, A.ACSEQN, A.ACIOGB "
+            cursor.execute(" SELECT A.SEQ, A.EMP_NBR, B.EMP_NME, B.EMP_FOLDER, A.ACDATE, A.ACSEQN, A.ACIOGB, A.OPT "
                            " FROM OSSIGN A "
                            " LEFT OUTER JOIN PIS1TB001 B "
                            " ON A.EMP_NBR = B.EMP_NBR "
@@ -319,12 +319,13 @@ def approvalViews_save(request):
 
         # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+            cursor.execute(" SELECT COUNT(*) FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
                            "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
                            "        AND OPT = 'N' ")
-            chk = cursor.fetchall()
+            result = cursor.fetchall()
+            chk = int(result[0][0])
 
-            if (len(chk) == 0):
+            if chk == 0:
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE SISACCTT SET "
                                    "     MID_OPT = 'Y' "
@@ -362,12 +363,13 @@ def approvalViews_save(request):
 
         # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT * FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+            cursor.execute(" SELECT COUNT(*) FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
                            "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
                            "        AND OPT = 'N' ")
-            chk = cursor.fetchall()
+            result2 = cursor.fetchall()
+            chk = int(result2[0][0])
 
-            if (len(chk) == 0):
+            if chk == 0:
                 with connection.cursor() as cursor:
                     cursor.execute(" UPDATE SISACCTT SET "
                                    "     MID_OPT = 'Y' "
