@@ -1848,18 +1848,18 @@
                             if(cboWitMethod == '4'){
 
                                 $('.txtUser').show();
+                                $('.cboCard').hide();
                                 $('.cboBank').hide();
-                                $('.cardName').show();
-                                $('.cboCust').hide();
-                                $('.cboCard').show();
-                                $('.cboAct').show();
+                                $('.cboAct').hide();
                                 $('.writer').hide();
-                                $('.cashDate').hide();
-                                $('.txtApply').hide();
+                                $('.cashDate').show();
+                                $('.cardName').hide();
+                                $('.cboCust').hide();
+                                $('.txtApply').show();
                                 $('.txtExpect').hide();
-                                $('.line').hide();
+                                $('.line').show();
                                 $('.creUser').show();
-                                $('.checkPre').hide();
+                                $('.checkPre').show();
                             }
                             else if(cboWitMethod == '3'){
 
@@ -2360,18 +2360,18 @@
                             $('.basic').show();
                             if(cboWitMethod == '4'){
                                 $('.txtUser').show();
+                                $('.cboCard').hide();
                                 $('.cboBank').hide();
-                                $('.cardName').show();
-                                $('.cboCust').hide();
-                                $('.cboCard').show();
-                                $('.cboAct').show();
+                                $('.cboAct').hide();
                                 $('.writer').hide();
-                                $('.cashDate').hide();
-                                $('.line').hide();
-                                $('.txtApply').hide();
+                                $('.cashDate').show();
+                                $('.cardName').hide();
+                                $('.cboCust').hide();
+                                $('.line').show();
+                                $('.txtApply').show();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
-                                $('.checkPre').hide();
+                                $('.checkPre').show();
                             }
                             else if(cboWitMethod == '3'){
                                 $('.txtUser').show();
@@ -2459,69 +2459,25 @@
 
             var method = document.getElementById('cboWitMethod').value
             $('.basic').show();
+
             {# 체크카드 #}
             if(method == '4'){
 
                 $('.cboCust').hide();
+                $('.cboCard').hide();
                 $('.cboBank').hide();
-                $('.cardName').show();
-                $('.cboCard').show();
-                $('.cboAct').show();
+                $('.cboAct').hide();
                 $('.writer').hide();
-                $('.cashDate').hide();
+                $('.cashDate').show();
                 $('.txtUser').show();
-                $('.txtApply').hide();
+                $('.cardName').hide();
+                $('.txtApply').show();
                 $('.txtExpect').hide();
-                $('.checkPre').hide();
-                $('.line').hide();
+                $('.checkPre').show();
+                $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
 
-                var cboCardName = "";
-                var cboWitCard = "";
-                var cboCardNameTxt = "<option value=''>:: 선택 ::</option>";
-                var cboWitCardTxt = "<option value=''>:: 선택 ::</option>";
-
-                $("#cboCardName").html("");
-                $("#cboWitCard").html("");
-
-                var cardType = '2';
-                var CardName = '';
-                let data = {"cardType": cardType, "cardName": CardName}
-
-                $.ajax({
-                    type: "post",
-                    url: '{% url "cboCardType" %}',
-                    data: data,
-                    headers: {
-                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-
-                        var combolist = data.cboCardName;
-                        for (var i = 0; i < combolist.length; i++) {
-                            if (combolist[i][0] == cboCardName) {
-                                cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                            } else {
-                                cboCardNameTxt = cboCardNameTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
-                            }
-                        }
-
-                        var combolist2 = data.cboCardGbn;
-                        for (var i = 0; i < combolist2.length; i++) {
-                            if (combolist2[i][0] == cboWitCard) {
-                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
-                            } else {
-                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
-                            }
-                        }
-
-
-                        $("#cboCardName").append(cboCardNameTxt);
-                        $("#cboWitCard").append(cboWitCardTxt);
-                    }
-                });
 
             }
             {# 신용카드 #}
@@ -2652,7 +2608,7 @@
             var method = document.getElementById('cboWitMethod').value
             var cboCardType = "";
             if(method == '3'){ cboCardType = '1' }
-            if(method == '4'){ cboCardType = '2' }
+            {#if(method == '4'){ cboCardType = '2' }#}
 
             var data = {"cboCardName": cboCardName, "cboCardType": cboCardType}
 
