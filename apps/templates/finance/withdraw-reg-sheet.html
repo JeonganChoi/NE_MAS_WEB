@@ -77,12 +77,12 @@
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCardNum" id="inputCardNum" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-3">
+                            <!--<div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>은행명</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputBank" id="inputBank" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
-                            </div>
+                            </div>-->
                             <!--<div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 4rem"><i class="fas fa-search me-2"></i>거래처</label>
@@ -91,7 +91,7 @@
                             </div>-->
                             <div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
-                                    <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌번호</label>
+                                    <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>통장명</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
@@ -914,13 +914,12 @@
 
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
-            var inputBank = document.getElementById('inputBank').value;
             var cboAct = document.getElementById('inputAct').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "inputBank": inputBank, "cboAct": cboAct}
+            let data = {"strDate": strDate, "endDate": endDate, "cboAct": cboAct}
 
             $.ajax({
                 type: "post",
@@ -995,10 +994,10 @@
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
                             }
-                            if(list[i][23] == '2'){
+                            if(list[i][18] == '2'){
                                 cust = list[i][5]
                             }
-                            if(list[i][23] == '1' || list[i][23] == '3' || list[i][23] == '4'){
+                            if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
 
@@ -1072,12 +1071,10 @@
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
                             }
-                            if(list[i][20] == '2'){
+                            if(list[i][18] == '2'){
                                 cust = list[i][5]
                             }
-                            alert(list[i][20])
-                            if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
-
+                            if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
 
@@ -1154,7 +1151,6 @@
         $(document).on('click', '#btnSearch', function () {
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
-            var inputBank = document.getElementById('inputBank').value;
             var cboAct = document.getElementById('inputAct').value;
             var inputCard = document.getElementById('inputCard').value;
             var inputCardNum = document.getElementById('inputCardNum').value;
@@ -1162,7 +1158,7 @@
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "inputBank": inputBank, "cboAct": cboAct, "inputCard": inputCard, "inputCardNum": inputCardNum}
+            let data = {"strDate": strDate, "endDate": endDate, "cboAct": cboAct, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",
@@ -1213,11 +1209,11 @@
 
                             {# 입금 #}
                             if(list[i][0] == '2'){
-                                total += list[i][2]
+                                total += parseInt(list[i][2])
                             }
                             {# 출금 #}
                             if(list[i][0] == '1'){
-                                total -= list[i][3]
+                                total -= parseInt(list[i][3])
                             }
                             if(list[i][9] == 'Y'){
                                 check = '시행';
@@ -1237,10 +1233,10 @@
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
                             }
-                            if(list[i][20] == '2'){
+                            if(list[i][18] == '2'){
                                 cust = list[i][5]
                             }
-                            if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
+                            if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
 
@@ -1268,13 +1264,14 @@
                     if(list2 == ''){
                         for (var i = 0; i < list.length; i++) {
 
-                            if(list[i][9] == 'Y'){
+                            var check = "";
+                            if(list[i][9] == 'Y' ){
                                 check = '시행';
                             }
                             if(list[i][9] == 'N'){
                                 check = '미시행';
                             }
-                            if(list[i][20] == 'Y'){
+                            if(list[i][21] == 'Y' ){
                                 apv = '승인';
                             }
                             if(list[i][21] == 'R'){
@@ -1286,10 +1283,10 @@
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
                             }
-                            if(list[i][20] == '2'){
+                            if(list[i][18] == '2'){
                                 cust = list[i][5]
                             }
-                            if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
+                            if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
 
@@ -3280,10 +3277,10 @@
             var formData = new FormData($('#formzone')[0]);
 
             var cboWitGbn = document.getElementById('cboWitGbn').value
-            {#var txtTitle = document.getElementById('txtTitle').value#}
+            var txtTitle = document.getElementById('txtTitle').value
             var cboWitCust = document.getElementById('cboWitCust').value
             var txtWitRegDate = document.getElementById('txtWitRegDate').value
-            {#var txtExDate = document.getElementById('txtExDate').value#}
+            var txtExDate = document.getElementById('txtExDate').value
             {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
             {#var txtWitRecn = document.getElementById('txtWitRecn').value#}
             var cboAdminCode = document.getElementById('cboAdminCode').value
@@ -3316,6 +3313,14 @@
             }
             if(cboWitMethod == '2' && cboWitCust == ''){
                 alert('거래처를 선택해주세요.')
+                return false;
+            }
+            if(txtWitRegDate == ''){
+                alert('등록 일자를 입력해주세요.')
+                return false;
+            }
+            if(txtExDate == ''){
+                alert('예정 일자를 입력해주세요.')
                 return false;
             }
             if(cboWitMethod == '3' && cboWitCard == ''){
