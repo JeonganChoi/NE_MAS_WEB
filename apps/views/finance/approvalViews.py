@@ -304,39 +304,76 @@ def approvalViews_save(request):
     if gbn == '1':
         rtnGbn = 'N'
         with connection.cursor() as cursor:
-            cursor.execute(" UPDATE OSSIGN SET "
-                           "     OPT = '" + str(opt) + "' "
-                           "   , GBN = '" + str(gbn) + "' "
-                           "   , RTNGBN = '" + str(rtnGbn) + "' "
-                           "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-                           "     AND ACSEQN = '" + str(seq) + "' "
-                           "     AND SEQ = '" + str(acSeqn) + "' "
-                           "     AND EMP_NBR = '" + str(user) + "' "
-                           "     AND ACIOGB = '" + str(acIogb) + "' "
-                           "     AND ICUST = '" + str(iCust) + "'"
-                           )
-            connection.commit()
-
-        # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT COUNT(*) FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-                           "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
-                           "        AND OPT = 'N' ")
+            cursor.execute(" SELECT EMP_NBR FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' "
+                           "  AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+                           "  AND SEQ = (SELECT MAX(SEQ) FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "') ")
             result = cursor.fetchall()
-            chk = int(result[0][0])
+            emp = str(result[0][0])
 
-            if chk == 0:
-                with connection.cursor() as cursor:
-                    cursor.execute(" UPDATE SISACCTT SET "
-                                   "     MID_OPT = 'Y' "
-                                   "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
-                                   "     AND ACSEQN = '" + str(seq) + "' "
-                                   "     AND ACIOGB = '" + str(acIogb) + "' "
-                                   "     AND ICUST = '" + str(iCust) + "'"
-                                   )
-                    connection.commit()
+        # 예결
+        if emp == str(user):
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE OSSIGN SET "
+                               "     OPT = '" + str(opt) + "' "
+                               "   , GBN = '" + str(gbn) + "' "
+                               "   , RTNGBN = '" + str(rtnGbn) + "' "
+                               "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                               "     AND ACSEQN = '" + str(seq) + "' "
+                               "     AND SEQ = '" + str(acSeqn) + "' "
+                               "     AND EMP_NBR = '" + str(user) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
+                               )
+                connection.commit()
 
-        return JsonResponse({'sucYn': "Y"})
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE SISACCTT SET "
+                               "     MID_OPT = 'Y' "
+                               "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
+                               "     AND ACSEQN = '" + str(seq) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
+                               )
+                connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
+
+        # 일반결재
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE OSSIGN SET "
+                               "     OPT = '" + str(opt) + "' "
+                               "   , GBN = '" + str(gbn) + "' "
+                               "   , RTNGBN = '" + str(rtnGbn) + "' "
+                               "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                               "     AND ACSEQN = '" + str(seq) + "' "
+                               "     AND SEQ = '" + str(acSeqn) + "' "
+                               "     AND EMP_NBR = '" + str(user) + "' "
+                               "     AND ACIOGB = '" + str(acIogb) + "' "
+                               "     AND ICUST = '" + str(iCust) + "'"
+                               )
+                connection.commit()
+
+            # 모두 결재 했는지 체크 후, 모두 했으면 SISACCTT 처리
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT COUNT(*) FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                               "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+                               "        AND OPT = 'N' ")
+                result = cursor.fetchall()
+                chk = int(result[0][0])
+
+                if chk == 0:
+                    with connection.cursor() as cursor:
+                        cursor.execute(" UPDATE SISACCTT SET "
+                                       "     MID_OPT = 'Y' "
+                                       "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
+                                       "     AND ACSEQN = '" + str(seq) + "' "
+                                       "     AND ACIOGB = '" + str(acIogb) + "' "
+                                       "     AND ICUST = '" + str(iCust) + "'"
+                                       )
+                        connection.commit()
+
+            return JsonResponse({'sucYn': "Y"})
 
     elif gbn == '2':
         rtnGbn = 'N'
