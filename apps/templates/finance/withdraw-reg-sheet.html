@@ -95,6 +95,13 @@
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
+                            <div class="col-lg-3 col-3">
+                                <div class="input-group shadow-none">
+                                    <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래처</label>
+                                    <input hidden class="form-control text-start" type="text" id="inputCust" name="inputCust" style="height: 2rem; font-size: 0.8rem"/>
+                                    <input class="form-control text-start border border-light rounded-1 text-center p-0" type="text" id="inputCustName" name="inputCustName" style="height: 2rem; font-size: 0.8rem"/>
+                                </div>
+                            </div>
                             <div class="col-lg-2 col-2 text-start">
                                 <!--<div class="input-group shadow-none">
                                     <label class="me-1" style="font-size: 0.85rem; width: 3rem"><i class="fa fa-ellipsis-vertical me-2"></i>구 분</label>
@@ -750,6 +757,8 @@
             $("#inputCardNum").html("");
             $("#inputActName").html("");
             $("#inputAct").html("");
+            $("#inputCust").html("");
+            $("#inputCustName").html("");
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
             $("#cboAdminCode").html("");
@@ -915,11 +924,12 @@
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
             var cboAct = document.getElementById('inputAct').value;
+            var cboCust = document.getElementById('inputCust').value;
 
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "cboAct": cboAct}
+            let data = {"strDate": strDate, "endDate": endDate, "cboAct": cboAct, "cboCust": cboCust}
 
             $.ajax({
                 type: "post",
@@ -1152,13 +1162,14 @@
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
             var cboAct = document.getElementById('inputAct').value;
-            var inputCard = document.getElementById('inputCard').value;
-            var inputCardNum = document.getElementById('inputCardNum').value;
+            var cboCust = document.getElementById('inputCust').value;
+            {#var inputCard = document.getElementById('inputCard').value;#}
+            {#var inputCardNum = document.getElementById('inputCardNum').value;#}
             $('.apvArea').hide();
             var strDate = sDate.replace(/\-/g, '')
             var endDate = eDate.replace(/\-/g, '')
 
-            let data = {"strDate": strDate, "endDate": endDate, "cboAct": cboAct, "inputCard": inputCard, "inputCardNum": inputCardNum}
+            let data = {"strDate": strDate, "endDate": endDate, "cboAct": cboAct, "cboCust": cboCust}
 
             $.ajax({
                 type: "post",
@@ -3970,8 +3981,28 @@
                         return false
                     } else {
                         let thisVal = $("#txtCustName").val();
+                        let gbnVal = '1';
                         let url = '{% url 'popup_cust' %}';
-                        openPop(url + '?val=' + thisVal, '거래처검색창');
+                        openPop(url + '?val=' + thisVal + '&gbnVal=' + gbnVal, '거래처검색창');
+                    }
+
+                }
+            }
+        });
+
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'inputCustName') {
+
+                    if ($("#inputCustName").val().length == 0) {
+                        alert("거래처명 한 글자 이상 입력 후 엔터를 쳐주세요.")
+                        return false
+                    } else {
+                        let thisVal = $("#inputCustName").val();
+                        let gbnVal = '0';
+                        let url = '{% url 'popup_cust' %}';
+                        openPop(url + '?val=' + thisVal + '&gbnVal=' + gbnVal, '거래처검색창');
                     }
 
                 }
