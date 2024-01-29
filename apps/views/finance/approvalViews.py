@@ -284,7 +284,12 @@ def approvalSubViews_search(request):
             cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
             cboAcnumber = cursor.fetchall()
 
-        return JsonResponse({"subList": subresult, "mainList": mainresult, "cboCust": cboCust, "cboGgn": cboGgn, "cboMCode": cboMCode, "cboPay": cboPay, "cboAcnumber": cboAcnumber})
+            # 카드번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
+            cboCard = cursor.fetchall()
+
+        return JsonResponse({"subList": subresult, "mainList": mainresult, "cboCust": cboCust, "cboGgn": cboGgn, "cboMCode": cboMCode, "cboPay": cboPay, "cboAcnumber": cboAcnumber, "cboCard": cboCard})
 
 
 
@@ -435,6 +440,16 @@ def approvalViews_save(request):
                                "     AND ACIOGB = '" + str(acIogb) + "' "
                                "     AND ICUST = '" + str(iCust) + "'"
                                )
+            connection.commit()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" UPDATE SISACCTT SET "
+                           "     MID_OPT = 'R' "
+                           "     WHERE IODATE = '" + str(ioDate).replace("-", "") + "' "
+                           "     AND ACSEQN = '" + str(seq) + "' "
+                           "     AND ACIOGB = '" + str(acIogb) + "' "
+                           "     AND ICUST = '" + str(iCust) + "'"
+                           )
             connection.commit()
 
         return JsonResponse({'sucYn': "Y"})

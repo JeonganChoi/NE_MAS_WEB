@@ -986,8 +986,11 @@
                             if(list[i][21] == 'Y' ){
                                 apv = '승인';
                             }
-                            if(list[i][21] == 'N' && list[i][24] != ''){
+                            if(list[i][21] == 'R'){
                                 apv = '반려';
+                            }
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                               apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1060,8 +1063,11 @@
                             if(list[i][21] == 'Y' ){
                                 apv = '승인';
                             }
-                            if(list[i][21] == 'N' && list[i][24] != ''){
+                            if(list[i][21] == 'R'){
                                 apv = '반려';
+                            }
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                               apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1069,7 +1075,9 @@
                             if(list[i][20] == '2'){
                                 cust = list[i][5]
                             }
+                            alert(list[i][20])
                             if(list[i][20] == '1' || list[i][20] == '3' || list[i][20] == '4'){
+
                                 cust = list[i][22]
                             }
 
@@ -1220,8 +1228,11 @@
                             if(list[i][20] == 'Y'){
                                 apv = '승인';
                             }
-                            if(list[i][21] == 'N' && list[i][24] != ''){
+                            if(list[i][21] == 'R'){
                                 apv = '반려';
+                            }
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                               apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';
@@ -1266,8 +1277,11 @@
                             if(list[i][20] == 'Y'){
                                 apv = '승인';
                             }
-                            if(list[i][21] == 'N' && list[i][24] != ''){
+                            if(list[i][21] == 'R'){
                                 apv = '반려';
+                            }
+                            if(list[i][21] == 'N' && list[i][24] != ''){
+                               apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
                                apv = '미승인';

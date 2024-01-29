@@ -146,7 +146,7 @@
                                     <div class="row">
                                         <div class="col-4 colCard">
                                             <label class="text-sm"><i class="fas fa-edit me-2"></i>카드</label>
-                                            <select readonly class="form-control border border-light rounded-1 text-center bg-transparent" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
+                                            <select readonly class="form-control border border-light rounded-1 p-1 text-center bg-transparent" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                         </div>
                                         <div class="col-8">
                                             <label class="text-sm"><i class="fas fa-edit me-2"></i>내용</label>
@@ -478,12 +478,15 @@
             var cboAdminCodeTxt = "";
             var cboWitMethodTxt = "";
             var cboWitActNumTxt = "";
+            var cboWitCard = "";
+            var cboWitCardTxt = "";
 
             $("#cboWitCust").html("");
             $("#cboWitGbn").html("");
             $("#cboAdminCode").html("");
             $("#cboWitMethod").html("");
             $("#cboWitActNum").html("");
+            $("#cboWitCard").html("");
             $("#txtWitRegDate").val("");
             $("#txtWitSeq").val("");
             $("#txtWitPrice").val("");
@@ -534,6 +537,7 @@
                             cboWitMethod = list2[i][8];
                             cboAdminCode = list2[i][4];
                             cboWitActNum = list2[i][7];
+                            cboWitCard = list2[i][9]
                         }
 
                         var combolist = data.cboCust;
@@ -571,11 +575,19 @@
                             }
                         }
 
+                        var combolist6 = data.cboCard;
+                        for (var i = 0; i < combolist6.length; i++) {
+                            if (combolist6[i][0] == cboWitCard) {
+                                cboWitCardTxt = cboWitCardTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
+                            }
+                        }
+
                         $("#cboWitCust").append(cboWitCustTxt);
                         $("#cboWitGbn").append(cboWitGbnTxt);
                         $("#cboWitMethod").append(cboWitMethodTxt);
                         $("#cboAdminCode").append(cboAdminCodeTxt);
                         $("#cboWitActNum").append(cboWitActNumTxt);
+                        $("#cboWitCard").append(cboWitCardTxt);
 
                         var empCode = document.getElementById('empCode').value
 
@@ -613,8 +625,8 @@
                             $('.colCard').show();
                         } else if (cboWitMethod == '4') {
                             $('.colCust').hide();
-                            $('.colAct').show();
-                            $('.colCard').show();
+                            $('.colAct').hide();
+                            $('.colCard').hide();
                         }
 
                     }
