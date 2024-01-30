@@ -46,7 +46,7 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND B.RTNGBN = 'N' AND A.MID_OPT = 'N' ")
+                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -144,7 +144,7 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND B.RTNGBN = 'N' AND A.MID_OPT = 'N' ")
+                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
