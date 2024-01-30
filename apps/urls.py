@@ -12,6 +12,8 @@ urlpatterns = [
     # path('main/', index, name='home'),
     # path('', redirectToLogin, name="redirectToLogin"),
     # path('login/', login, name='login'),
+    path('pdf_view/', empViews.pdf_view, name='pdf_view'),
+
 
     # 로그인/로그아웃 관리
     path('', mainViews.loginView, name="login"),

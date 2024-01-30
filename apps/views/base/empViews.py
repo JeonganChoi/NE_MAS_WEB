@@ -13,6 +13,18 @@ from django.core.files.storage import FileSystemStorage
 from urllib.parse import quote
 
 
+def pdf_view(request):
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACFOLDER FROM SISACCTT WHERE IODATE = '20240122' AND ACSEQN = '1' AND ACIOGB = '1' ")
+        empresult = cursor.fetchall()
+        where = empresult[0][0]
+        img = open(f'{where}', 'rb')
+    try:
+        return FileResponse(img, content_type='image/jpeg')
+    except FileNotFoundError:
+        return redirect("/page-404")
+
+
 def empViews(request):
     userId = request.session.get('userId')
     if userId == '' or userId is None:
