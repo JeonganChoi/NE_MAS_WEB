@@ -2674,6 +2674,20 @@ def paymentViews_dlt(request):
                                "                      AND ICUST = '" + str(iCust) + "'")
                 connection.commit()
 
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT COUNT(SEQ) FROM OSSIGN WHERE ACSEQN = '" + acc_split_list[5] + "' AND ACIOGB = '" + acc_split_list[0] + "' "
+                               "                                AND ACDATE = '" + acc_split_list[1] + "'  AND ICUST = '" + str(iCust) + "' ")
+                result = cursor.fetchall()
+                count = int(result[0][0])
+
+            if count > 0:
+                with connection.cursor() as cursor:
+                    cursor.execute(" DELETE FROM OSSIGN WHERE ACSEQN = '" + acc_split_list[5] + "'"
+                                   "                      AND ACIOGB = '" + acc_split_list[0] + "' "
+                                   "                      AND ACDATE = '" + acc_split_list[1] + "'"
+                                   "                      AND ICUST = '" + str(iCust) + "'")
+                    connection.commit()
+
         return JsonResponse({'sucYn': "Y"})
 
     else:
