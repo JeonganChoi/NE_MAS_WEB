@@ -318,9 +318,9 @@ def approvalViews_save(request):
     if gbn == '1':
         rtnGbn = 'N'
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT EMP_NBR FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' "
+            cursor.execute(" SELECT EMP_NBR FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
                            "  AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
-                           "  AND SEQ = (SELECT MAX(SEQ) FROM OSSIGN WHERE ACDATE = '" + str(ioDate) + "' AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "') ")
+                           "  AND SEQ = (SELECT MAX(SEQ) FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "') ")
             result = cursor.fetchall()
             emp = str(result[0][0])
 
