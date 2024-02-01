@@ -70,6 +70,7 @@
                                           <col width="15%">
                                           <col width="8%">
                                           <col width="8%">
+                                          <col width="8%">
                                           <col width="6%">
                                           <col width="4%">
                                           <!--<col width="4%">-->
@@ -81,7 +82,8 @@
                                         <th style="font-size: 0.85rem" class="p-1">적용년월</th>
                                         <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                         <th style="font-size: 0.85rem" class="p-1">거래처/사용처</th>
-                                        <th style="font-size: 0.85rem" class="p-1">지출금액</th>
+                                        <th style="font-size: 0.85rem" class="p-1">입금 금액</th>
+                                        <th style="font-size: 0.85rem" class="p-1">출금 금액</th>
                                         <th style="font-size: 0.85rem" class="p-1">작성자</th>
                                         <th style="font-size: 0.85rem" class="p-1">승인</th>
                                         <!--<th style="font-size: 0.85rem" class="p-1">시행</th>-->
@@ -355,6 +357,8 @@
                     var list2 = data.subList;
                     var list = data.mainList;
                     var cust = "";
+                    var inAmts = 0;
+                    var outAmts = 0;
 
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
@@ -363,6 +367,15 @@
                         if(list[i][13] != ''){ cust = list[i][14] }
                         if(list[i][15] != ''){ cust = list[i][15]}
 
+                        if(list[i][6] == '1'){
+                            outAmts = list[i][2]
+                            inAmts = 0
+                        }
+                        if(list[i][6] == '2'){
+                            inAmts = list[i][2]
+                            outAmts = 0
+                        }
+
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
                             "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
@@ -370,7 +383,8 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(inAmts) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(outAmts) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>미승인</td> " +
@@ -403,14 +417,24 @@
                 success: function (data) {
                     var list = data.mainList;
                     var cust = "";
-
                     var text = "";
+                    var inAmts = 0;
+                    var outAmts = 0;
 
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
 
                         if(list[i][13] != ''){ cust = list[i][14] }
-                        if(list[i][15] != ''){ cust = list[i][15]}
+                        if(list[i][15] != ''){ cust = list[i][15] }
+
+                        if(list[i][6] == '1'){
+                            outAmts = list[i][2]
+                            inAmts = 0
+                        }
+                        if(list[i][6] == '2'){
+                            inAmts = list[i][2]
+                            outAmts = 0
+                        }
 
                         if(gbn == '2'){
                             text = '미승인'
@@ -421,7 +445,8 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(inAmts) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(outAmts) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +
@@ -436,7 +461,8 @@
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(inAmts) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(outAmts) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + text + "</td> " +

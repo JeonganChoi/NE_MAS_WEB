@@ -137,8 +137,8 @@
                                 <th style="font-size: 0.85rem" class="p-1 excel-hidden">선택</th>
                                 <th style="font-size: 0.85rem" class="p-1">사용일자</th>
                                 <th style="font-size: 0.85rem" class="p-1">적용년월</th>
-                                <th style="font-size: 0.85rem" class="p-1">계정 명</th>
                                 <th style="font-size: 0.85rem" class="p-1">회계 계정명</th>
+                                <th style="font-size: 0.85rem" class="p-1">관리 계정명</th>
                                 <th style="font-size: 0.85rem" class="p-1">구 분</th>
                                 <th style="font-size: 0.85rem" class="p-1">거래처/사용처</th>
                                 <th style="font-size: 0.85rem" class="p-1">입 금</th>
@@ -919,8 +919,6 @@
                 }
             })
 
-
-
             var sDate = document.getElementById('inputStrDate').value;
             var eDate = document.getElementById('inputEndDate').value;
             var cboAct = document.getElementById('inputAct').value;
@@ -1018,8 +1016,8 @@
                                     "<td class='text-center p-1 excel-hidden' style='font-size: 0.8rem'><input disabled class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -1038,8 +1036,8 @@
                                     "<td class='text-center p-1 excel-hidden' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -1095,8 +1093,8 @@
                                     "<td class='text-center p-1 excel-hidden' style='font-size: 0.8rem'><input disabled class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -1115,8 +1113,8 @@
                                     "<td class='text-center p-1 excel-hidden' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -1257,8 +1255,8 @@
                                 "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
@@ -1307,8 +1305,8 @@
                                 "<td class='text-center p-1' style='font-size: 0.8rem'><input class='' type='checkbox' id='chkWith[]' name='chkWith[]' value='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'/></td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                                 "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][17].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td>" +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
