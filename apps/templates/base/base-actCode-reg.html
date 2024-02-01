@@ -184,7 +184,7 @@
             var mainCode = "";
             let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
 
-            {#$('.cboGbn').hide();#}
+            $('.cboGbn').hide();
 
             $.ajax({
                 type: "post",
@@ -280,12 +280,12 @@
             let mCodeType = document.getElementById('cboCodeType').value;
             var mainCode = "";
 
-            {#if(mCodeType == '4'){#}
-            {#    $('.cboGbn').hide();#}
-            {#}#}
-            {#if(mCodeType == '5'){#}
-            {#    $('.cboGbn').show();#}
-            {#}#}
+            if(mCodeType == '4'){
+                $('.cboGbn').hide();
+            }
+            if(mCodeType == '5'){
+                $('.cboGbn').show();
+            }
 
 
             let data = {'mainCode': mainCode, 'cboCodeType': mCodeType}
