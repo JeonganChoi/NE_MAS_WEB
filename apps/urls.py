@@ -13,6 +13,7 @@ urlpatterns = [
     # path('', redirectToLogin, name="redirectToLogin"),
     # path('login/', login, name='login'),
     path('pdf_view/', empViews.pdf_view, name='pdf_view'),
+    path('pdf_open/', paymentViews.open_file, name='pdf_open'),
 
 
     # 로그인/로그아웃 관리
@@ -46,6 +47,7 @@ urlpatterns = [
     path('base_accountCode_saveM/', accountCodeViews.accountCodeViews_saveM, name='base_accountCode_saveM'),
     path('base_accountCode_dltM/', accountCodeViews.accountCodeViews_dltM, name='base_accountCode_dltM'),
     path('chkcodeM/', accountCodeViews.chkcodeM, name='chkcodeM'),
+    path('chkMCode/', accountCodeViews.chkMCode, name='chkMCode'),
     # 계정코드관리
     path('base_charge/', baseChargeViews.baseChargeViews, name='base_charge'),
     # 참조코드관리

@@ -2722,6 +2722,23 @@ def checkLimit_search(request):
 
 
 
+def open_file(request):
+    # file_path = "/Users/thenaeunsys/Documents/OutputFile/"
+
+    file_path = "\\Users\\thenaeunsys\\Desktop\\Time.txt\\"
+
+    # 한글 파일명 처리를 위한 인코딩
+    filename = quote(os.path.basename(file_path).encode('utf-8'))
+
+    response = FileResponse(open(file_path, 'rb'))
+    response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' % filename
+
+    # response = HttpResponse(FileWrapper(open(zip_filename, 'rb')), content_type='application/zip')
+    # response['Content-Disposition'] = 'attachment; filename="downloaded_files.zip"'
+    return response
+
+
+
 # 파일 불러오기
 def download_file(request):
     ioDate = request.GET.get('ioDate').replace('-', '')

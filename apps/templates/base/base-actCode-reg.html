@@ -101,16 +101,17 @@
                                             <label class="mt-4" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-info text-sm"></i>회계 계정 명</label>
                                             <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="cboMCode_A" id="cboMCode_A"></select>
                                         </div>
+                                        <div class="col-lg-6 col-6">
+                                            <label class="mt-4 text-danger" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-danger text-sm"></i>관리 계정 과목</label>
+                                            <select style="max-width: 15rem; font-size: 0.85rem" class="form-control text-center" name="txtCode_M" id="txtCode_M"></select>
+                                            <!--<input maxlength="6" style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>-->
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6 col-6">
-                                            <label class="mt-2 text-danger" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-danger text-sm"></i>관리 계정 과목</label>
-                                            <input readonly placeholder="관리 계정 코드는 자동 생성 됩니다." maxlength="6" style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-danger text-start" value="" type="text" id="txtCode_M" name="txtCode_M"/>
-                                        </div>
-                                        <div class="col-lg-6 col-6">
+                                        <!--<div class="col-lg-6 col-6">
                                             <label class="mt-2 text-danger" style="font-size: 0.85rem"><i class="fas fa-bookmark me-2 text-danger text-sm"></i>관리 계정 명</label>
-                                            <input style="max-width: 15rem; font-size: 0.85rem" class="form-control border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
-                                        </div>
+                                            <input readonly style="max-width: 15rem; font-size: 0.85rem" class="form-control bg-transparent border border-light rounded-1 text-start" value="" type="text" id="txtCodeNme_M" name="txtCodeNme_M"/>
+                                        </div>-->
                                     </div>
                                     <div class="row">
                                         <div class="col-6 cboGbn">
@@ -169,16 +170,19 @@
             var cboGbn2_M = "";
             var cboMCode_A = "";
             var cboYud = "";
+            var txtCode_M = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
             var cboGbnTxt_M = "";
             var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
             var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
             var cboYudTxt = "<option value=''>:: 선택 ::</option>";
+            var txtCode_MTxt = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
             $("#cboGbn_M").html("");
             $("#cboGbn2_M").html("");
             $("#cboMCode_A").html("");
             $("#cboYud").html("");
+            $("#txtCode_M").html("");
 
             let mCodeType = document.getElementById('cboCodeType').value;
             var mainCode = "";
@@ -260,11 +264,21 @@
                         }
                     }
 
+                    var combolist7 = data.cboRecCode;
+                    for (var i = 0; i < combolist7.length; i++) {
+                        if (combolist7[i][0] == txtCode_M) {
+                            txtCode_MTxt = txtCode_MTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                        } else {
+                            txtCode_MTxt = txtCode_MTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboMCode_M").append(cboMCodeTxt_M);
                     $("#cboGbn_M").append(cboGbnTxt_M);
                     $("#cboGbn2_M").append(cboGbn2Txt_M);
                     $("#cboMCode_A").append(cboMCodeTxt_A);
                     $("#cboYud").append(cboYudTxt);
+                    $("#txtCode_M").append(txtCode_MTxt);
                 }
             })
         });
@@ -273,8 +287,11 @@
         $('#cboCodeType').change(function () {
 
             var cboMCode_M = "";
+            var txtCode_M = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
+            var txtCode_MTxt = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
+            $("#txtCode_M").html("");
 
 
             let mCodeType = document.getElementById('cboCodeType').value;
@@ -325,7 +342,17 @@
                             cboMCodeTxt_M = cboMCodeTxt_M + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
                         }
                     }
+
+                    var combolist = data.cboRecCode;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == txtCode_M) {
+                            txtCode_MTxt = txtCode_MTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            txtCode_MTxt = txtCode_MTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
+                    }
                     $("#cboMCode_M").append(cboMCodeTxt_M);
+                    $("#txtCode_M").append(txtCode_MTxt);
                 }
             })
         });
@@ -365,7 +392,6 @@
             });
         });
 
-
         {# 테이블 로우 클릭 시 #}
         $(document).on('click', '#adminMainTb .adminMainTr_tr', function () {
 
@@ -377,16 +403,19 @@
             var cboGbn2_M = "";
             var cboMCode_A = "";
             var cboYud = "";
+            var txtCode_M = "";
             var cboMCodeTxt_M = "<option value=''>:: 선택 ::</option>";
             var cboGbnTxt_M = "";
             var cboGbn2Txt_M = "<option value=''>:: 선택 ::</option>";
             var cboMCodeTxt_A = "<option value=''>:: 선택 ::</option>";
             var cboYudTxt = "<option value=''>:: 선택 ::</option>";
+            var txtCode_MTxt = "<option value=''>:: 선택 ::</option>";
             $("#cboMCode_M").html("");
             $("#cboGbn_M").html("");
             $("#cboGbn2_M").html("");
             $("#cboMCode_A").html("");
             $("#cboYud").html("");
+            $("#txtCode_M").html("");
             {#$("#cboOpt").html("");#}
 
             let mainCode = $(this).attr('main_code');
@@ -410,12 +439,14 @@
                         $("#txtCodeNme_M").val(list[i][3])
                         $("#txtDesc_M").val(list[i][4])
                         $("#txtSeq_M").val(list[i][5])
+                        $("#txtCodeNme_M").val(list[i][3])
                         cboMCode_M = list[i][0];
                         cboGbn_M = list[i][6];
                         cboGbn2_M = list[i][8];
                         cboMCode_A = list[i][10]
                         cboMCode_A = list[i][10]
                         cboYud = list[i][13]
+                        txtCode_M = list[i][2]
                     {#    결제여부 값 콤보박스#}
                         $("#cboOpt").val(list[i][12] === 'Y' ? 'Y' : 'N');
                     }
@@ -465,11 +496,21 @@
                         }
                     }
 
+                    var combolist6 = data.cboRecCode;
+                    for (var i = 0; i < combolist6.length; i++) {
+                        if (combolist6[i][0] == txtCode_M) {
+                            txtCode_MTxt = txtCode_MTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][1] + "</option>";
+                        } else {
+                            txtCode_MTxt = txtCode_MTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][1] + "</option>";
+                        }
+                    }
+
                     $("#cboMCode_M").append(cboMCodeTxt_M);
                     $("#cboGbn_M").append(cboGbnTxt_M);
                     $("#cboGbn2_M").append(cboGbn2Txt_M);
                     $("#cboMCode_A").append(cboMCodeTxt_A);
                     $("#cboYud").append(cboYudTxt);
+                    $("#txtCode_M").append(txtCode_MTxt);
                 }
             })
 
@@ -484,7 +525,7 @@
             let mCode_M = document.getElementById('cboMCode_M').value;
             let mCode_A = document.getElementById('cboMCode_A').value;
             let mCode = document.getElementById('txtCode_M').value;
-            let mCodeNme = document.getElementById('txtCodeNme_M').value;
+            {#let mCodeNme = document.getElementById('txtCodeNme_M').value;#}
             let mSeq = document.getElementById('txtSeq_M').value;
             let mDesc = document.getElementById('txtDesc_M').value;
             let cboGbn_M = document.getElementById('cboGbn_M').value;
@@ -500,8 +541,8 @@
                 alert('회계 계정과목을 선택해주세요.')
                 return false
             }
-            if (mCodeNme == '') {
-                alert('계정명을 입력해주세요.')
+            if (mCode == '') {
+                alert('관리 계정과목을 입력해주세요.')
                 return false
             }
 
@@ -510,7 +551,6 @@
                 'mCode_M': mCode_M,
                 "mCode_A": mCode_A,
                 'txtCode_M': mCode,
-                'txtCodeNme_M': mCodeNme,
                 'txtSeq_M': mSeq,
                 'txtDesc_M': mDesc,
                 'cboGbn_M': cboGbn_M,

@@ -50,31 +50,43 @@ def accountCodeViews_search(request):
 
         # 상위계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + codeType + "%' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
             cboMCode = cursor.fetchall()
 
         # 회계계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + codeType + "%' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
             cboACode = cursor.fetchall()
+
+        if codeType != '':
+            if codeType == '4':
+                # 관리계정과목
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '4%' AND ICUST = '" + str(iCust) + "' ")
+                    cboRecCode = cursor.fetchall()
+            if codeType == '5':
+                # 관리계정과목
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '5%' AND ICUST = '" + str(iCust) + "' ")
+                    cboRecCode = cursor.fetchall()
 
         # 구분1
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "' ")
             gbnesult = cursor.fetchall()
 
         # 구분2
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "' ")
             gbn2result = cursor.fetchall()
 
         # 유동항목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "' ")
             cboYud = cursor.fetchall()
 
 
-        return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
+        return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
     else:
         with connection.cursor() as cursor:
@@ -103,30 +115,41 @@ def accountCodeViews_search(request):
 
         # 상위계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + codeType + "%' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
             cboMCode = cursor.fetchall()
 
         # 회계계정과목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + codeType + "%' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "'")
             cboACode = cursor.fetchall()
 
+        if codeType != '':
+            if codeType == '4':
+                # 관리계정과목
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '4%' AND ICUST = '" + str(iCust) + "' ")
+                    cboRecCode = cursor.fetchall()
+            if codeType == '5':
+                # 관리계정과목
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '5%' AND ICUST = '" + str(iCust) + "' ")
+                    cboRecCode = cursor.fetchall()
         # 구분1
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "'")
             gbnesult = cursor.fetchall()
 
         # 구분2
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "'")
             gbn2result = cursor.fetchall()
 
         # 유동항목
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' ")
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "'")
             cboYud = cursor.fetchall()
 
-        return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
+        return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
 def chkcodeM(request):
     codeType = request.POST.get('codeType')
@@ -138,7 +161,15 @@ def chkcodeM(request):
 
     return JsonResponse({"cboACode": cboACode})
 
+def chkMCode(request):
+    txtCode_M = request.POST.get('txtCode_M')
+    iCust = request.session.get("USER_ICUST")
 
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(txtCode_M) + "%' AND ICUST = '" + str(iCust) + "' ")
+        cboMCode = cursor.fetchall()
+
+    return JsonResponse({"cboMCode": cboMCode})
 
 def chkCodeViews_search(request):
     mCode = request.POST.get("mCode")
@@ -156,7 +187,7 @@ def accountCodeViews_saveM(request):
     mCode_M = request.POST.get("mCode_M")
     mCode_A = request.POST.get("mCode_A")
     mCode = request.POST.get("txtCode_M")
-    mCodeNme = request.POST.get("txtCodeNme_M")
+    # mCodeNme = request.POST.get("txtCodeNme_M")
     mSeq = request.POST.get("txtSeq_M")
     mDesc = request.POST.get("txtDesc_M")
     gbn = request.POST.get("cboGbn_M")
@@ -168,11 +199,16 @@ def accountCodeViews_saveM(request):
 
     # 수익4/ 비용5
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT COUNT(MCODE) FROM OSCODEM WHERE MCODE = '" + mCode + "' AND ICUST = '" + str(iCust) + "'")
+        cursor.execute(" SELECT COUNT(MCODE) FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "'")
         result = cursor.fetchall()
         count = int(result[0][0])
 
     if count > 0:
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY = '" + str(mCode) + "%' AND ICUST = '" + str(iCust) + "'")
+            result2 = cursor.fetchall()
+            mCodeNme = result2[0][0]
+
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSCODEM SET"
                            "     MCODE_M = '" + str(mCode_M) + "' "
@@ -196,38 +232,40 @@ def accountCodeViews_saveM(request):
     else:
 
         # for문으로 회계코드 기준으로 만들게 해야함.
-        if mCode_A.startswith('41'):
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 41001) FROM OSCODEM A WHERE MCODE LIKE '41%' AND ICUST = '" + str(iCust) + "' ")
-                result = cursor.fetchall()
-                code = int(result[0][0])
-                mCode = code
-
-        if mCode_A.startswith('43'):
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 43001) FROM OSCODEM A WHERE MCODE LIKE '43%' AND ICUST = '" + str(iCust) + "' ")
-                result = cursor.fetchall()
-                code = int(result[0][0])
-                mCode = code
-
-        if mCode_A.startswith('51'):
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 51001) FROM OSCODEM A WHERE MCODE LIKE '51%' AND ICUST = '" + str(iCust) + "' ")
-                result = cursor.fetchall()
-                code = int(result[0][0])
-                mCode = code
-
-        if mCode_A.startswith('53') or mCode_A.startswith('55'):
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 53001) FROM OSCODEM A WHERE MCODE LIKE '53%' AND ICUST = '" + str(iCust) + "' ")
-                result = cursor.fetchall()
-                code = int(result[0][0])
-                mCode = code
+        # if mCode_A.startswith('41'):
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 41001) FROM OSCODEM A WHERE MCODE LIKE '41%' AND ICUST = '" + str(iCust) + "' ")
+        #         result = cursor.fetchall()
+        #         code = int(result[0][0])
+        #         mCode = code
+        #
+        # if mCode_A.startswith('43'):
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 43001) FROM OSCODEM A WHERE MCODE LIKE '43%' AND ICUST = '" + str(iCust) + "' ")
+        #         result = cursor.fetchall()
+        #         code = int(result[0][0])
+        #         mCode = code
+        #
+        # if mCode_A.startswith('51'):
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 51001) FROM OSCODEM A WHERE MCODE LIKE '51%' AND ICUST = '" + str(iCust) + "' ")
+        #         result = cursor.fetchall()
+        #         code = int(result[0][0])
+        #         mCode = code
+        #
+        # if mCode_A.startswith('53') or mCode_A.startswith('55'):
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" SELECT IFNULL(MAX(A.MCODE) + 1, 53001) FROM OSCODEM A WHERE MCODE LIKE '53%' AND ICUST = '" + str(iCust) + "' ")
+        #         result = cursor.fetchall()
+        #         code = int(result[0][0])
+        #         mCode = code
 
         # if mCode == '':
         # 비어있으면 튕기게 해야함.
-
-
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY = '" + str(mCode) + "%' AND ICUST = '" + str(iCust) + "'")
+            result2 = cursor.fetchall()
+            mCodeNme = result2[0][0]
 
         with connection.cursor() as cursor:
               cursor.execute(" INSERT INTO OSCODEM "
