@@ -1953,6 +1953,7 @@ def paymentViews_save(request):
     txtCustAct = request.POST.get("txtCustAct")  # 거래처계좌번호
     # 전결처리
     txtApvAll = request.POST.get("txtApvAll")
+    midOptGbn = ''
     midOpt = 'N'
     finOpt = 'N'
     # file = request.FILES.get('file')
@@ -2023,9 +2024,10 @@ def paymentViews_save(request):
         # 계산서시 거래처 계호
         if acGubn == '2':
             acAcnumber = txtCustAct
-        # 전결시
+        # 전결시(전결구분)
         if txtApvAll == '100':
             midOpt = 'Y'
+            midOptGbn = 'Y'
         # 선지급
         if prePay != 'Y':
             prePay = 'N'
@@ -2058,6 +2060,7 @@ def paymentViews_save(request):
                            ",    ACINFO = '" + str(acInfo) + "' "
                            ",    ACCUST = '" + str(acCust) + "' "
                            ",    MID_OPT = '" + str(midOpt) + "' "
+                           ",    MID_OPT_GBN = '" + str(midOptGbn) + "' "
                            ",    FIN_OPT = '" + str(finOpt) + "' "
                            ",    APPLYDT = '" + str(acApply).replace('-', '') + "' "
                            ",    PRE_PAY = '" + str(prePay) + "' "
@@ -2140,6 +2143,7 @@ def paymentViews_save(request):
         # 전결시
         if txtApvAll == '100':
             midOpt = 'Y'
+            midOptGbn = 'Y'
         # 선지급
         if prePay != 'Y':
             prePay = 'N'
@@ -2183,6 +2187,7 @@ def paymentViews_save(request):
                                ",    ACINFO "
                                ",    PRE_PAY "
                                ",    MID_OPT "
+                               ",    MID_OPT_GBN "
                                ",    FIN_OPT "
                                "    ) "
                                "    VALUES "
@@ -2217,6 +2222,7 @@ def paymentViews_save(request):
                                ",    '" + str(acInfo) + "'"
                                ",    '" + str(prePay) + "' "
                                ",    '" + str(midOpt) + "' "
+                               ",    '" + str(midOptGbn) + "' "
                                ",    '" + str(finOpt) + "' "
                                "    )   "
                                )
