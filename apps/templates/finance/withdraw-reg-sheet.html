@@ -1230,7 +1230,7 @@
                             if(list[i][9] == 'N'){
                                 check = '미시행';
                             }
-                            if(list[i][20] == 'Y'){
+                            if(list[i][21] == 'Y' ){
                                 apv = '승인';
                             }
                             if(list[i][21] == 'R'){
@@ -1962,6 +1962,9 @@
                                 else{
                                     $('#chkPre').prop("checked",false);
                                 }
+                                if(list[i][37] == 'Y'){
+                                    $('.line').hide()
+                                }
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
@@ -2114,6 +2117,9 @@
                                 {# N이거나 비어있으면 체크박스 체크되야함 #}
                                 else{
                                     $('#chkPre').val('N').prop("checked",false);
+                                }
+                                if(list[i][37] == 'Y'){
+                                    $('.line').hide();
                                 }
 
                                 var combolist = data.cboCust;

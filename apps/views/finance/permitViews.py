@@ -106,7 +106,7 @@ def permitViews_search(request):
                                    " AND A.OFF_GBN = 'off'"
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
 
                 return JsonResponse({"mainList": mainresult})
@@ -133,7 +133,7 @@ def permitViews_search(request):
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
 
                 return JsonResponse({"mainList": mainresult})
@@ -160,7 +160,7 @@ def permitViews_search(request):
                                    " AND A.OFF_GBN = 'off'"
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -187,7 +187,7 @@ def permitViews_search(request):
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                     " AND A.ACACNUMBER = '" + str(actCode) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -215,7 +215,7 @@ def permitViews_search(request):
                                    " AND A.MID_OPT = 'Y' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -263,7 +263,7 @@ def permitViews_search(request):
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -311,7 +311,7 @@ def permitViews_search(request):
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACCARD = '" + str(inputCardNum) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -360,7 +360,7 @@ def permitViews_search(request):
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACCARD = '" + str(inputCardNum) + "' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -408,7 +408,7 @@ def permitViews_search(request):
                                    " AND A.MID_OPT = 'Y' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -456,7 +456,7 @@ def permitViews_search(request):
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -504,7 +504,7 @@ def permitViews_search(request):
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACCARD = '" + str(inputCardNum) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
@@ -553,7 +553,7 @@ def permitViews_search(request):
                                    " AND A.ACCUST like '%" + str(custCode) + "%' "
                                    " AND A.ACCARD = '" + str(inputCardNum) + "' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
-                                   " ORDER BY A.ACSEQN ASC ")
+                                   " ORDER BY A.IODATE ASC ")
                     mainresult = cursor.fetchall()
                 # " AND NOT EXISTS (SELECT OPT FROM OSSIGN WHERE OPT = 'N') "
 
