@@ -359,7 +359,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 text-start line">
-                                        <label class="form-label"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
+                                        <label class="form-label" id="lineLabel"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
                                         <div class="form-group mt-2 mb-0">
                                             <div class="row">
                                                 <div class="col-12 text-start">
@@ -1963,7 +1963,8 @@
                                     $('#chkPre').prop("checked",false);
                                 }
                                 if(list[i][37] == 'Y'){
-                                    $('.line').hide()
+                                    $('.apvArea').hide();
+                                    $('.line').hide();
                                 }
 
                                 var combolist = data.cboCust;
@@ -2119,6 +2120,7 @@
                                     $('#chkPre').val('N').prop("checked",false);
                                 }
                                 if(list[i][37] == 'Y'){
+                                    $('.apvArea').hide();
                                     $('.line').hide();
                                 }
 
@@ -2299,6 +2301,10 @@
                                 else{
                                     $('#chkPre').val('N').prop("checked",false);
                                 }
+                                if(list[i][37] == 'Y'){
+                                    $('.apvArea').hide();
+                                    $('.line').hide();
+                                }
 
                                 var combolist = data.cboCust;
                                 for (var i = 0; i < combolist.length; i++) {
@@ -2393,7 +2399,7 @@
                                 $('.cashDate').show();
                                 $('.cardName').hide();
                                 $('.cboCust').hide();
-                                $('.line').show();
+                                {#$('.line').show();#}
                                 $('.txtApply').show();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
@@ -2408,7 +2414,7 @@
                                 $('.cboCust').hide();
                                 $('.writer').hide();
                                 $('.cashDate').hide();
-                                $('.line').show();
+                                {#$('.line').show();#}
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
@@ -2423,7 +2429,7 @@
                                 $('.cboBank').hide();
                                 $('.cboAct').hide();
                                 $('.cboCust').show();
-                                $('.line').show();
+                                {#$('.line').show();#}
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
@@ -2438,7 +2444,7 @@
                                 $('.cashDate').show();
                                 $('.cardName').hide();
                                 $('.cboCust').hide();
-                                $('.line').show();
+                                {#$('.line').show();#}
                                 $('.txtApply').show();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
