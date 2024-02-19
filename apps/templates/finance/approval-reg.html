@@ -505,6 +505,19 @@
             })
         });
 
+
+        function checkOnlyOne(element) {
+
+          const checkboxes
+              = document.getElementsByName("chkApv");
+
+          checkboxes.forEach((cb) => {
+            cb.checked = false;
+          })
+
+          element.checked = true;
+        }
+
         $(document).on('change', '#mainTable tbody tr td:first-child input[type=checkbox]', function() {
 
             {#$('#mainTb .mainTr_tr').removeClass('active');#}

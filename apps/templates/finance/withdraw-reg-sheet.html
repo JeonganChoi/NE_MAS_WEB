@@ -181,7 +181,7 @@
                                         <select class="form-control border border-light rounded-1 bg-danger-soft text-center p-1" name="cboWitMethod" id="cboWitMethod" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4">
-                                        <label class="text-sm" id="txtRegDate"><i class="fa fa-calendar me-2"></i>사용 일자</label>
+                                        <i class="fa fa-calendar me-2"></i><label class="text-sm" id="txtRegDate">사용 일자</label>
                                         <input class="form-control text-center rounded-1 bg-danger-soft p-1" type="date" id="txtWitRegDate" name="txtWitRegDate" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                 </div>
@@ -2503,7 +2503,7 @@
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
-
+                document.getElementById('txtRegDate').innerHTML = "사용일자";
 
             }
             {# 신용카드 #}
@@ -2523,6 +2523,7 @@
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
+                document.getElementById('txtRegDate').innerHTML = "사용일자";
 
 
                 var cboCardName = "";
@@ -2608,6 +2609,7 @@
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
+                document.getElementById('txtRegDate').innerHTML = "사용일자";
             }
             else{
                 $('.cboCard').show();
@@ -3292,19 +3294,174 @@
             var formData = new FormData($('#formzone')[0]);
 
             var cboWitGbn = document.getElementById('cboWitGbn').value
+            var cboWitMethod = document.getElementById('cboWitMethod').value
             var txtTitle = document.getElementById('txtTitle').value
+            var txtWhere = document.getElementById('txtWhere').value
             var cboWitCust = document.getElementById('cboWitCust').value
+            var txtCustName = document.getElementById('txtCustName').value
             var txtWitRegDate = document.getElementById('txtWitRegDate').value
             var txtExDate = document.getElementById('txtExDate').value
-            {#var txtWitSeq = document.getElementById('txtWitSeq').value#}
-            {#var txtWitRecn = document.getElementById('txtWitRecn').value#}
             var cboAdminCode = document.getElementById('cboAdminCode').value
-            {#var txtWitPrice = document.getElementById('txtWitPrice').value#}
-            {#var cboWitActNum = document.getElementById('cboWitActNum').value#}
-            var cboWitMethod = document.getElementById('cboWitMethod').value
+            var txtWitPrice = document.getElementById('txtWitPrice').value
+            var cboWitActNum = document.getElementById('cboWitActNum').value
+            var txtApplyDate = document.getElementById('txtApplyDate').value
             var cboWitCard = document.getElementById('cboWitCard').value
+            var txtWitRemark = document.getElementById('txtWitRemark').value
             var txtApvAll = document.getElementById('txtApvAll').value
-            {#var file = document.getElementById('file').value#}
+            var txtInfo = document.getElementById('txtInfo').value
+            var txtCashDate = document.getElementById('txtCashDate').value
+
+
+            {# 현금 #}
+            if(method == '1'){
+                if(txtWitRegDate == ''){
+                    alert('사용 일자를 입력해주세요.')
+                    return false;
+                }
+                if(cboAdminCode == ''){
+                    alert('관리 계정을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('제목을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('사용처를 입력해주세요.')
+                    return false;
+                }
+                if(txtWitPrice == ''){
+                    alert('금액을 입력해주세요.')
+                    return false;
+                }
+                if(txtApplyDate == ''){
+                    alert('적용 년월을 선택해주세요.')
+                    return false;
+                }
+                if(txtWitRemark == ''){
+                    alert('세부 내용을 입력해주세요.')
+                    return false;
+                }
+                if(txtInfo == ''){
+                    alert('수령인 정보를 입력해주세요.')
+                    return false;
+                }
+                if(txtCashDate == ''){
+                    alert('지급 요청일을 선택해주세요.')
+                    return false;
+                }
+            }
+            {# 계산서 #}
+            if(method == '2'){
+                if(txtWitRegDate == ''){
+                    alert('발행 일자를 입력해주세요.')
+                    return false;
+                }
+                if(cboAdminCode == ''){
+                    alert('관리 계정을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('제목을 입력해주세요.')
+                    return false;
+                }
+                if(cboWitCust == ''){
+                    alert('거래처를 선택해주세요.')
+                    return false;
+                }
+                if(txtWitPrice == ''){
+                    alert('금액을 입력해주세요.')
+                    return false;
+                }
+                if(txtApplyDate == ''){
+                    alert('적용 년월을 선택해주세요.')
+                    return false;
+                }
+                if(txtExDate == ''){
+                    alert('결재 예정 일자를 선택해주세요.')
+                    return false;
+                }
+                if(txtWitRemark == ''){
+                    alert('세부 내용을 입력해주세요.')
+                    return false;
+                }
+            }
+            {# 신용카드 #}
+            if(method == '3'){
+                if(txtWitRegDate == ''){
+                    alert('사용 일자를 입력해주세요.')
+                    return false;
+                }
+                if(cboAdminCode == ''){
+                    alert('관리 계정을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('제목을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('사용처를 입력해주세요.')
+                    return false;
+                }
+                if(txtWitPrice == ''){
+                    alert('금액을 입력해주세요.')
+                    return false;
+                }
+                if(cboWitCard == ''){
+                    alert('카드를 선택해주세요.')
+                    return false;
+                }
+                if(txtApplyDate == ''){
+                    alert('적용 년월을 선택해주세요.')
+                    return false;
+                }
+                if(txtExDate == ''){
+                    alert('결재 예정 일자를 선택해주세요.')
+                    return false;
+                }
+                if(txtWitRemark == ''){
+                    alert('세부 내용을 입력해주세요.')
+                    return false;
+                }
+            }
+            {# 이체 #}
+            if(method == '4'){
+                if(txtWitRegDate == ''){
+                    alert('사용 일자를 입력해주세요.')
+                    return false;
+                }
+                if(cboAdminCode == ''){
+                    alert('관리 계정을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('제목을 입력해주세요.')
+                    return false;
+                }
+                if(txtTitle == ''){
+                    alert('사용처를 입력해주세요.')
+                    return false;
+                }
+                if(txtWitPrice == ''){
+                    alert('금액을 입력해주세요.')
+                    return false;
+                }
+                if(txtApplyDate == ''){
+                    alert('적용 년월을 선택해주세요.')
+                    return false;
+                }
+                if(txtWitRemark == ''){
+                    alert('세부 내용을 입력해주세요.')
+                    return false;
+                }
+                if(txtCashDate == ''){
+                    alert('지급 요청일을 선택해주세요.')
+                    return false;
+                }
+            }
+
+
             var empArr = [];
             for (var i = 0; i < 10; i++) {
 
@@ -3318,26 +3475,6 @@
                 }
             }
 
-            if(txtWitRegDate == ''){
-                alert('등록 일자를 입력해주세요.')
-                return false;
-            }
-            if(cboAdminCode == ''){
-                alert('관리 계정을 입력해주세요.')
-                return false;
-            }
-            if(cboWitMethod == '2' && cboWitCust == ''){
-                alert('거래처를 선택해주세요.')
-                return false;
-            }
-            if(txtWitRegDate == ''){
-                alert('등록 일자를 입력해주세요.')
-                return false;
-            }
-            if(cboWitMethod == '3' && cboWitCard == ''){
-                alert('카드를 선택해주세요.')
-                return false;
-            }
             if(txtApvAll == '' && empArr == ''){
                 alert('결재라인을 지정해주세요.')
                 return false;
