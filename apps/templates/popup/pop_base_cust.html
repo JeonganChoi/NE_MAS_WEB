@@ -89,10 +89,20 @@
             var now = new Date;
             var year = now.getFullYear();
             var month = now.getMonth() + 1;
+            var nextmonth = now.getMonth() + 2;
+            var lastdate = now.getDate();
             if(month < 10 ){ month = '0' + month }
-            if(date < 10 ){ date = '0' + date }
-            if(date == 'last'){ date = new Date(year, month, 0); date = date.getDate(); }
-            var payDate = year + '-' + month + '-' + date
+            if(nextmonth < 10 ){ nextmonth = '0' + nextmonth }
+            if( lastdate <= date){
+                if(date < 10 ){ date = '0' + date }
+                if(date == 'last'){ date = new Date(year, month, 0); date = date.getDate(); }
+                var payDate = year + '-' + month + '-' + date
+            }
+            if( lastdate > date){
+                if(date < 10 ){ date = '0' + date }
+                if(date == 'last'){ date = new Date(year, nextmonth, 0); date = date.getDate(); }
+                var payDate = year + '-' + nextmonth + '-' + date
+            }
             $custPay = payDate
 
             var gbn = document.getElementById('gbn').value;
