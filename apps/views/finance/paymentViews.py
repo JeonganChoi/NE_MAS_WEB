@@ -1950,8 +1950,7 @@ def paymentViews_save(request):
     acDate = request.POST.get("txtExDate").replace('-', '')
     cashDate = request.POST.get("txtCashDate")
     acInfo = request.POST.get("txtInfo")
-    txtCustAct = request.POST.get("txtCustAct")  # 거래처은행
-    txtCustAct = request.POST.get("txtCustAct")  # 거래처계좌번호
+    # txtCustAct = request.POST.get("txtCustAct")  # 거래처계좌번호
     # 전결처리
     txtApvAll = request.POST.get("txtApvAll")
     midOptGbn = ''
@@ -2017,14 +2016,18 @@ def paymentViews_save(request):
     if acSeqn:
         # 예정일이 없는경우
         if acDate == '' or acDate is None:
-            acDate = ioDate
+            if exDate != '' or exDate is not None:
+                acDate = exDate
+            if exDate == '' or exDate is None:
+                exDate = ''
+                acDate = ioDate
         # 현금결재시 예정일 지정
         if acGubn == '1':
             exDate = cashDate.replace('-', '')
             acDate = cashDate.replace('-', '')
         # 계산서시 거래처 계호
-        if acGubn == '2':
-            acAcnumber = txtCustAct
+        # if acGubn == '2':
+        #     acAcnumber = txtCustAct
         # 전결시(전결구분)
         if txtApvAll == '100':
             midOpt = 'Y'
@@ -2072,7 +2075,6 @@ def paymentViews_save(request):
                            "     AND ACSEQN = '" + str(acSeqn) + "' "
                            "     AND ICUST = '" + str(iCust) + "' "
                            )
-
             connection.commit()
 
 
@@ -2129,7 +2131,11 @@ def paymentViews_save(request):
     else:
         # 예정일이 없을시
         if acDate == '' or acDate is None:
-            acDate = ioDate
+            if exDate != '' or exDate is not None:
+                acDate = exDate
+            if exDate == '' or exDate is None:
+                exDate = ''
+                acDate = ioDate
         # 체크카드시 없을시
         if acGubn == '4':
             midOpt = 'Y'

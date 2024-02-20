@@ -20,12 +20,14 @@
                             <col width="5%">
                             <col width="10%">
                             <col width="5%">
+                            <col hidden width="5%">
                         </colgroup>
                         <thead class="bg-primary text-white text-center">
                         <tr>
                             <th class="p-1" style="font-size: 0.8rem">거래처 코드</th>
                             <th class="p-1" style="font-size: 0.8rem">거래처 명</th>
                             <th class="p-1" style="font-size: 0.8rem">업체 구분</th>
+                            <th hidden class="p-1" style="font-size: 0.8rem">결재일</th>
                         </tr>
                         </thead>
                         <tbody id="custTb">
@@ -71,6 +73,7 @@
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][0] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
                             "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td>" +
                             "</tr> ");
                     }
 
@@ -82,6 +85,15 @@
         $(document).on('click', '#custTb .custTr_tr', function () {
             $custCode = $(this).children('td:nth-child(1)').text();
             $custName = $(this).children('td:nth-child(2)').text();
+            var date = $(this).children('td:nth-child(4)').text();
+            var now = new Date;
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            if(month < 10 ){ month = '0' + month }
+            if(date < 10 ){ date = '0' + date }
+            if(date == 'last'){ date = new Date(year, month, 0); date = date.getDate(); }
+            var payDate = year + '-' + month + '-' + date
+            $custPay = payDate
 
             var gbn = document.getElementById('gbn').value;
 
@@ -93,6 +105,7 @@
             if(gbn == '1'){
                 opener.document.getElementById('cboWitCust').value = $custCode
                 opener.document.getElementById('txtCustName').value = $custName
+                opener.document.getElementById('txtExDate').value = $custPay
             }
 
             window.close();

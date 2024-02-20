@@ -21,7 +21,7 @@ def pop_base_cust_search(request):
 
     if custCode != '':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, '') "
+            cursor.execute(" SELECT IFNULL(A.CUST_NBR, ''), IFNULL(A.CUST_NME, ''), IFNULL(A.CUST_GBN, ''), IFNULL(D.RESNAM, ''), IFNULL(A.CUST_PAY_DAY, '') "
                            "   FROM MIS1TB003 A "
                            "   LEFT OUTER JOIN OSREFCP D "
                            "   ON A.CUST_GBN = D.RESKEY "
