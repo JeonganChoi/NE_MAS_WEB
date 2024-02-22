@@ -26,12 +26,16 @@ def approvalViews_search(request):
     acIogb = request.POST.get('acIogb')
 
     # 미결재
-    if gbn == '2':
+    if gbn == '3':
         with connection.cursor() as cursor:
             cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
                            "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                           "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                           "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                           "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                           "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -46,18 +50,23 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' ")
+                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' "
+                           " ORDER BY A.IODATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
 
     # 결재
-    elif gbn == '3':
+    elif gbn == '2':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
                            "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                           "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                           "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                           "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                           "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -72,7 +81,8 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' ")
+                           " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' "
+                           " ORDER BY A.IODATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
@@ -128,8 +138,12 @@ def approvalViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
                            "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                           "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
                            "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '')  "
+                           "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                           "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                           "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                           "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
                            " FROM SISACCTT A "
                            " LEFT OUTER JOIN OSSIGN B "
                            " ON A.IODATE = B.ACDATE "
@@ -144,7 +158,8 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' ")
+                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' "
+                           " ORDER BY A.IODATE ")
             mainresult = cursor.fetchall()
 
         return JsonResponse({"mainList": mainresult})
