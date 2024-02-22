@@ -640,16 +640,16 @@ def balanceChk(request):
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + str(iCust) + "' ")
         result2 = cursor.fetchall()
-        outTotal = result2[0][0]
+
         if result:
             outTotal = result2[0][0]
         else:
             outTotal = 0
     # 입금
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '2' AND ACACNUMBER = '" + acNumber + "' AND ICUST = '" + iCust + "' ")
+        cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '2' AND ACACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + iCust + "' ")
         result3 = cursor.fetchall()
-        inTotal = result3[0][0]
+
         if result:
             inTotal = result3[0][0]
         else:
@@ -673,7 +673,7 @@ def permitViews_save(request):
         custBank = ""
         custAct = ""
         pmtArrayLists = list(filter(len, pmtArray))
-        for data in range(1, len(pmtArrayLists)):
+        for data in range(0, len(pmtArrayLists)):
 
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT B.CUST_BKCD, B.CUST_ACNUM FROM SISACCTT A "
@@ -772,7 +772,7 @@ def permitViews_save(request):
 
     else:
         pmtArrayLists = list(filter(len, pmtArray))
-        for data in range(1, len(pmtArrayLists)):
+        for data in range(0, len(pmtArrayLists)):
             custBank = ""
             custAct = ""
             if pmtArrayLists[data]["acIogb"]:

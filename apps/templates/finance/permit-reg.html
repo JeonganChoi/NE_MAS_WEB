@@ -546,7 +546,7 @@
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
-                        "<td class='text-center p-1' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
+                        "<td hidden class='text-center p-1' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
                         "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(acAmts) + "'/></td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
@@ -557,7 +557,7 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
-                        "<td class='text-center p-1' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
+                        "<td hidden class='text-center p-1' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "</tr> ");
 
 
@@ -598,6 +598,18 @@
                 $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
                 $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
             }
+        });
+
+        $(document).on('change', 'select[name=cboMcode]', function() {
+           var _val = $(this).val();
+
+           $(this).parents('tr.subTr_tr').find('td[name=mainCode]').text(_val);
+        });
+
+        $(document).on('change', 'select[name=cboActNum]', function() {
+           var _val = $(this).val();
+
+           $(this).parents('tr.subTr_tr').find('td[name=acNumber]').text(_val);
         });
 
         {# 승인 체크박스 선택시 #}
@@ -699,7 +711,7 @@
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
-                        "<td class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
                         "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(acAmts) + "'/></td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
@@ -710,7 +722,7 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
-                        "<td class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "</tr> ");
 
 
@@ -852,12 +864,10 @@
                 var acEmp = $('#acEmp_' + i).text();
                 var acSeqn = $('#acSeqn_' + i).text();
                 var acIogb = $('#acIogb_' + i).text();
-                var acAmts = $('#acAmts_' + i).text();
+                var acAmts = $('#txtAmts_' + i).val();
                 var acNum = $('#acNumber_' + i).text();
                 var acGubn = $('#acGubn_' + i).text();
-                var mCode = $('#manageCode_' + i).text();
-
-                {# 계정과목/ 은행/ 계좌번호가 변경되었을때 어떻게 가져올건인지? #}
+                var mCode = $('#mainCode_' + i).text();
 
                 if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
