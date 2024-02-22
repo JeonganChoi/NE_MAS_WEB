@@ -149,15 +149,14 @@
                             </table>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-lg-8 col-8"></div>
-                            <div class="col-lg-4 col-4 text-end">
-                                <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem"><i
-                                            class="ni ni-money-coins me-2"></i>합계 금액</label>
-                                    <input readonly
-                                           class="form-control border border-light rounded-1 text-end me-2 w-20"
-                                           type="text" name="inputPrice" id="inputPrice"
-                                           style="height: 2rem; width: 10rem">
+                            <div class="col-lg-5 col-5"></div>
+                            <div class="col-lg-7 col-7">
+                                <div class="d-flex" style="float: right">
+                                    <label style="font-size: 0.85rem; width: 3rem"><i class="fa fa-server me-2"></i>총</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputCnt" id="inputCnt" style="font-size: 0.8rem; height: 2rem; max-width: 4rem">
+                                    <label class="me-4" style="font-size: 0.85rem; width: 1rem">건</label>
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-end" type="text" name="inputPrice" id="inputPrice" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
                         </div>
@@ -282,8 +281,10 @@
                 dataType: 'json',
                 success: function (data) {
                     var list = data.mainList;
-
+                    var count = 0;
                     var total = 0;
+
+                    count = list.length;
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
@@ -310,6 +311,7 @@
 
                         total += parseInt(list[i][2])
                     }
+                    document.getElementById('inputCnt').value = addComma(count)
                     document.getElementById('inputPrice').value = addComma(total)
 
 

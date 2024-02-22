@@ -156,10 +156,16 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="d-flex mt-2" style="float: right">
-                            <div class="input-group shadow-none">
-                                <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-chart-simple me-2"></i>잔액</label>
-                                <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem">
+                        <div class="row mt-2">
+                            <div class="col-lg-6 col-6"></div>
+                            <div class="col-lg-6 col-6">
+                                <div class="d-flex" style="float: right">
+                                        <label style="font-size: 0.85rem; width: 3rem"><i class="fa fa-server me-2"></i>총</label>
+                                        <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputCnt" id="inputCnt" style="font-size: 0.8rem; height: 2rem; max-width: 4rem">
+                                        <label class="me-5" style="font-size: 0.85rem; width: 1rem">건</label>
+                                        <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-coins me-2"></i>잔액</label>
+                                        <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem; width: 10rem">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -946,6 +952,8 @@
                     var apv = "";
                     var cust = "";
                     var chkOpt = "";
+                    var count = 0;
+                    count = list.length;
 
                     $("#withMainTb").html("");
                     {# 잔액 계산 #}
@@ -1054,7 +1062,7 @@
 
                         total = addComma(total)
                         document.getElementById("inputBal").value = total;
-
+                        document.getElementById("inputCnt").value = count;
                     }
                     if(list2 == ''){
 
