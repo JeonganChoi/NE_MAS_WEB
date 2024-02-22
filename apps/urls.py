@@ -153,6 +153,7 @@ urlpatterns = [
     path('payment_search/', paymentViews.paymentViews_search, name='payment_search'),
     path('payment_save/', paymentViews.paymentViews_save, name='payment_save'),
     path('offSet_save/', paymentViews.offSetViews_save, name='offSet_save'),
+    path('payment_dlt_check/', paymentViews.payment_dlt_check, name='payment_dlt_check'),
     path('payment_dlt/', paymentViews.paymentViews_dlt, name='payment_dlt'),
     path('apvLine_modal/', paymentViews.apvLine_modal_search, name='apvLine_modal'),
     path('checkLimit/', paymentViews.checkLimit_search, name='checkLimit'),

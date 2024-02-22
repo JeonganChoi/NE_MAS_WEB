@@ -544,7 +544,7 @@
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
-                        "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(acAmts) + "'/></td> " +
+                        "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(acAmts) + "'/></td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
@@ -696,7 +696,8 @@
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
-                        "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(acAmts) + "'/></td> " +
+                        "<td hidden class='text-center p-1' name='manageCode'  id='manageCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
+                        "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(acAmts) + "'/></td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
@@ -721,6 +722,7 @@
 
             }
         });
+
 
 
         {#$(document).on('change', '#inputOffSet', function() {#}
@@ -819,6 +821,16 @@
             })
         });
 
+        {#$("#cboActNum_").on("change", function(){#}
+        {#    //selected value#}
+        {#    $(this).val();#}
+        {#    alert($(this).find("option:selected").text();)#}
+            {#$("option:selected", this).attr("value");#}
+            {#//selected option element#}
+            {#$("option:selected", this);#}
+            {#$("option:selected", this).text();#}
+            {#$(this).find("option:selected").text();#}
+        {#});#}
 
         {# 승인 버튼 #}
         $(document).on('click', "#btnPermit", function () {
@@ -830,7 +842,7 @@
             var perDate = document.getElementById('permitDate').value;
 
             var pmtArr = [];
-            for (var i = 0; i < subCount; i++) {
+            for (var i = 1; i < subCount; i++) {
 
                 var perDate = $('#perDate_' + i).text();
                 var ioDate = $('#ioDate_' + i).text();
@@ -840,11 +852,9 @@
                 var acAmts = $('#acAmts_' + i).text();
                 var acNum = $('#acNumber_' + i).text();
                 var acGubn = $('#acGubn_' + i).text();
-                var mCode = $('#mCode_' + i).text();
+                var mCode = $('#manageCode_' + i).text();
 
-
-                alert(mCode)
-                return false;
+                {# 계정과목/ 은행/ 계좌번호가 변경되었을때 어떻게 가져올건인지? #}
 
                 if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;

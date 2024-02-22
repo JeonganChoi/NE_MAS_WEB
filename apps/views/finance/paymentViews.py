@@ -2669,6 +2669,34 @@ def offSetViews_save(request):
 
         return JsonResponse({'sucYn': "Y"})
 
+
+
+def payment_dlt_check(request):
+    iCust = request.session.get("USER_ICUST")
+    dataList = json.loads(request.POST.get('arrList'))
+
+    for cust in dataList:
+        acc_split_list = cust.split(',')
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MID_OPT, FIN_OPT FROM SISACCTT WHERE ACSEQN = '" + acc_split_list[5] + "'"
+                               "                      AND ACIOGB = '" + acc_split_list[0] + "' "
+                               "                      AND IODATE = '" + acc_split_list[1] + "'"
+                               "                      AND ACACNUMBER = '" + acc_split_list[2] + "' "
+                               "                      AND ACCUST = '" + acc_split_list[3] + "' "
+                               "                      AND MCODE = '" + acc_split_list[4] + "' "
+                               "                      AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()
+
+        # 결재 진행중
+        if result[0][0] == 'Y' or result[0][1] == 'Y':
+            YN = 'Y'
+        # 결재 미진행
+        if result[0][0] == 'N' and result[0][1] == 'N':
+            YN = 'N'
+
+        return JsonResponse({'YN': YN})
+
+
 def paymentViews_dlt(request):
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
