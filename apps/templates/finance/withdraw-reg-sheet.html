@@ -127,7 +127,7 @@
                                   <col width="10%">
                                   <col width="10%">
                                   <col width="10%">
-                                  <col width="10%">
+                                  <!--<col width="10%">-->
                                   <col width="8%">
                                   <col width="4%">
                                   <col width="4%">
@@ -143,7 +143,7 @@
                                 <th style="font-size: 0.85rem" class="p-1">거래처/사용처</th>
                                 <th style="font-size: 0.85rem" class="p-1">입 금</th>
                                 <th style="font-size: 0.85rem" class="p-1">출 금</th>
-                                <th style="font-size: 0.85rem" class="p-1">잔 액</th>
+                                <!--<th style="font-size: 0.85rem" class="p-1">잔 액</th>-->
                                 <th style="font-size: 0.85rem" class="p-1">통장명</th>
                                 <th style="font-size: 0.85rem" class="p-1">결재</th>
                                 <th style="font-size: 0.85rem" class="p-1">승인</th>
@@ -162,9 +162,9 @@
                                 <div class="d-flex" style="float: right">
                                         <label style="font-size: 0.85rem; width: 3rem"><i class="fa fa-server me-2"></i>총</label>
                                         <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputCnt" id="inputCnt" style="font-size: 0.8rem; height: 2rem; max-width: 4rem">
-                                        <label class="me-5" style="font-size: 0.85rem; width: 1rem">건</label>
-                                        <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-coins me-2"></i>잔액</label>
-                                        <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem; width: 10rem">
+                                        <label class="" style="font-size: 0.85rem; width: 1rem">건</label>
+                                        <!--<label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-coins me-2"></i>잔액</label>
+                                        <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputBal" id="inputBal" style="font-size: 0.8rem; height: 2rem; width: 10rem">-->
                                 </div>
                             </div>
                         </div>
@@ -957,28 +957,27 @@
 
                     $("#withMainTb").html("");
                     {# 잔액 계산 #}
-                    if(list2 != ''){
-                        for (var i = 0; i < list2.length; i++) {
-                            total = list2[0][3]
-                            $("#withMainTb").append(
-                                "<tr id='#withMainTr' class='withMainTr_tr'>" +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "</tr> ");
-                        }
-                    }
+                    {#if(list2 != ''){#}
+                    {#    for (var i = 0; i < list2.length; i++) {#}
+                    {#        total = list2[0][3]#}
+                    {#        $("#withMainTb").append(#}
+                    {#            "<tr id='#withMainTr' class='withMainTr_tr'>" +#}
+                    {#            "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+                    {#            "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+                    {#            "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +#}
+                    {#            "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "</tr> ");#}
+                    {#    }#}
+                    {#}#}
 
                     if(list2 != ''){
                         for (var i = 0; i < list.length; i++) {
@@ -1030,7 +1029,6 @@
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
@@ -1050,7 +1048,6 @@
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
@@ -1060,8 +1057,8 @@
                         }
 
 
-                        total = addComma(total)
-                        document.getElementById("inputBal").value = total;
+                        {#total = addComma(total)#}
+                        {#document.getElementById("inputBal").value = total;#}
                         document.getElementById("inputCnt").value = count;
                     }
                     if(list2 == ''){
@@ -1190,6 +1187,7 @@
                     var list2 = data.balList;
                     var outTotal = data.outresult;
                     var inTotal = data.inresult;
+                    var count = 0;
                     var total = 0;
                     var check = "";
                     var apv = "";
@@ -1197,29 +1195,28 @@
 
                     $("#withMainTb").html("");
                     {# 잔액 계산 #}
-
-                    if(list2 != ''){
-                        for (var i = 0; i < list2.length; i++) {
-                            total = parseInt(list2[0][3])
-                            $("#withMainTb").append(
-                                "<tr id='#withMainTr' class='withMainTr_tr'>" +
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "</tr> ");
-                        }
-                    }
+                    count = list.length;
+                    {#if(list2 != ''){#}
+                    {#    for (var i = 0; i < list2.length; i++) {#}
+                    {#        total = parseInt(list2[0][3])#}
+                    {#        $("#withMainTb").append(#}
+                    {#            "<tr id='#withMainTr' class='withMainTr_tr'>" +#}
+                    {#            "<td hidden class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+                    {#            "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +#}
+                    {#            "<td class='text-center p-1' style='font-size: 0.85rem'>잔 액</td>" +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +#}
+                    {#            "</tr> ");#}
+                    {#    }#}
+                    {#}#}
 
                     if(list2 != ''){
                         for (var i = 0; i < list.length; i++) {
@@ -1269,14 +1266,14 @@
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                 "</tr> ");
                         }
-                        $("#inputBal").val(addComma(total))
+                        {#$("#inputBal").val(addComma(total))#}
+                        $("#inputCnt").val(addComma(count))
                     }
                     if(list2 == ''){
                         for (var i = 0; i < list.length; i++) {
@@ -1527,6 +1524,11 @@
 
         });
 
+        $('#inputCustName').change(function () {
+            if($('#inputCustName').val('')){
+                $('#inputCust').val('');
+            }
+        });
 
         {# 조회 조건 은행명 선택시 계좌명 바인딩 #}
         $('#inputBank').change(function () {
@@ -2807,105 +2809,105 @@
         });
 
         {# 거래처 선택시 계좌명 바인딩 #}
-        $('#cboWitCust').change(function () {
-
-            var method = document.getElementById('cboWitMethod').value;
-            var cardNum = "";
-            var custCode = document.getElementById('cboWitCust').value;
-
-            if(method == '2'){
-
-                let data2 = {"method": method, "cardNum": cardNum, "custCode": custCode}
-
-                var date = 0;
-                var gbn = "";
-                if(custCode == ''){
-                    alert('거래처를 선택해주세요.')
-                    return false;
-                }
-                if(custCode != ''){
-                    $.ajax({
-                        type: "post",
-                        data: data2,
-                        url: '{% url "chkDate" %}',
-                        headers: {
-                            'X-CSRFTOKEN': '{{ csrf_token }}'
-                        },
-                        dataType: 'json',
-                        success: function (data) {
-                            var list = data.chkDate
-                            var list2 = data.chkBank
-                            var list3 = data.chkAct
-
-
-                            var bank = "";
-                            var act = "";
-                            for (var j = 0; j < list2.length; j++) {
-                                bank = list[j][0]
-                            }
-                            for (var k = 0; k < list3.length; k++) {
-                                act = list[k][0]
-
-                            }
-
-                            if(data.chkDate != ''){
-                                date = list[0][0];
-                                gbn = list[0][1];
-
-                                if(date < 10){
-                                    date = '0' + date
-                                }
-                                if(date == 'last'){
-                                    var now = new Date;
-                                    date = now.getDate()
-                                }
-
+       {# $('#cboWitCust').change(function () {#}
+       {##}
+       {#     var method = document.getElementById('cboWitMethod').value;#}
+       {#     var cardNum = "";#}
+       {#     var custCode = document.getElementById('cboWitCust').value;#}
+       {##}
+       {#     if(method == '2'){#}
+       {##}
+       {#         let data2 = {"method": method, "cardNum": cardNum, "custCode": custCode}#}
+       {##}
+       {#         var date = 0;#}
+       {#         var gbn = "";#}
+       {#         if(custCode == ''){#}
+       {#             alert('거래처를 선택해주세요.')#}
+       {#             return false;#}
+       {#         }#}
+       {#         if(custCode != ''){#}
+       {#             $.ajax({#}
+       {#                 type: "post",#}
+       {#                 data: data2,#}
+       {#                 url: '{% url "chkDate" %}',#}
+       {#                 headers: {#}
+       {#                     'X-CSRFTOKEN': '{{ csrf_token }}'#}
+       {#                 },#}
+       {#                 dataType: 'json',#}
+       {#                 success: function (data) {#}
+       {#                     var list = data.chkDate#}
+       {#                     var list2 = data.chkBank#}
+       {#                     var list3 = data.chkAct#}
+       {##}
+       {##}
+       {#                     var bank = "";#}
+       {#                     var act = "";#}
+       {#                     for (var j = 0; j < list2.length; j++) {#}
+       {#                         bank = list[j][0]#}
+       {#                     }#}
+       {#                     for (var k = 0; k < list3.length; k++) {#}
+       {#                         act = list[k][0]#}
+       {##}
+       {#                     }#}
+       {##}
+       {#                     if(data.chkDate != ''){#}
+       {#                         date = list[0][0];#}
+       {#                         gbn = list[0][1];#}
+       {##}
+       {#                         if(date < 10){#}
+       {#                             date = '0' + date#}
+       {#                         }#}
+       {#                         if(date == 'last'){#}
+       {#                             var now = new Date;#}
+       {#                             date = now.getDate()#}
+       {#                         }#}
+       {##}
                                  {# 당월 #}
-                                if(gbn == '0'){
-                                    var newDate = new Date;
-                                    var year = newDate.getFullYear()
-                                    var month = newDate.getMonth() + 1
-                                    if(month > 12){
-                                        year = year + 1
-                                        month = '0' + (month - 12)
-                                    }
-                                    if(month < 10){
-                                        month = '0' + (month)
-                                    }
-                                    var exDate = year + "-" + month + "-" + date
-
-                                }
+       {#                         if(gbn == '0'){#}
+       {#                             var newDate = new Date;#}
+       {#                             var year = newDate.getFullYear()#}
+       {#                             var month = newDate.getMonth() + 1#}
+       {#                             if(month > 12){#}
+       {#                                 year = year + 1#}
+       {#                                 month = '0' + (month - 12)#}
+       {#                             }#}
+       {#                             if(month < 10){#}
+       {#                                 month = '0' + (month)#}
+       {#                             }#}
+       {#                             var exDate = year + "-" + month + "-" + date#}
+       {##}
+       {#                         }#}
                                 {# 익월 #}
-                                if(gbn == '1'){
-                                    var newDate = new Date;
-                                    var year = newDate.getFullYear()
-                                    var month = newDate.getMonth() + 2
-                                    if(month > 12){
-                                        year = year + 1
-                                        month = '0' + (month - 12)
-                                    }
-                                    if(month < 10){
-                                        month = '0' + (month)
-                                    }
-                                    var exDate = year + "-" + month + "-" + date
-
-                                }
-
-                                document.getElementById("txtExDate").value = exDate;
-
-                            }
-                            else{
-                                $("#txtExDate").val("");
-                            }
-                            $('.cboBank').hide();
-                            $('.cboAct').hide();
-                            document.getElementById('txtCustBank').value = bank;
-                            document.getElementById('txtCustAct').value = act;
-                        }
-                    });
-                }
-            }
-       });
+       {#                         if(gbn == '1'){#}
+       {#                             var newDate = new Date;#}
+       {#                             var year = newDate.getFullYear()#}
+       {#                             var month = newDate.getMonth() + 2#}
+       {#                             if(month > 12){#}
+       {#                                 year = year + 1#}
+       {#                                 month = '0' + (month - 12)#}
+       {#                             }#}
+       {#                             if(month < 10){#}
+       {#                                 month = '0' + (month)#}
+       {#                             }#}
+       {#                             var exDate = year + "-" + month + "-" + date#}
+       {##}
+       {#                         }#}
+       {##}
+       {#                         document.getElementById("txtExDate").value = exDate;#}
+       {##}
+       {#                     }#}
+       {#                     else{#}
+       {#                         $("#txtExDate").val("");#}
+       {#                     }#}
+       {#                     $('.cboBank').hide();#}
+       {#                     $('.cboAct').hide();#}
+       {#                     document.getElementById('txtCustBank').value = bank;#}
+       {#                     document.getElementById('txtCustAct').value = act;#}
+       {#                 }#}
+       {#             });#}
+       {#         }#}
+       {#     }#}
+       {#});#}
 
         {# 계좌번호 선택시 계좌명 바인딩 #}
        {# $('#cboWitActNum').change(function () {#}
