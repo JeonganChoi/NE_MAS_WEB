@@ -873,24 +873,24 @@
                     acNum = document.getElementById('actNumber').value;
                 }
 
-                let chk = {"acNum": acNum}
-
-                $.ajax({
-                    type: "post",
-                    data: chk,
-                    url: '{% url "balanceChk" %}',
-                    headers: {
-                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        var act = "";
-                        if (data.balance < acAmts) {
-                            alert('선택한 통장의 잔고가 부족합니다.')
-                            return false;
-                        }
-                    }
-                });
+                {#let chk = {"acNum": acNum}#}
+                {##}
+                {#$.ajax({#}
+                {#    type: "post",#}
+                {#    data: chk,#}
+                {#    url: '{% url "balanceChk" %}',#}
+                {#    headers: {#}
+                {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
+                {#    },#}
+                {#    dataType: 'json',#}
+                {#    success: function (data) {#}
+                {#        var act = "";#}
+                {#        if (data.balance < acAmts) {#}
+                {#            alert('선택한 통장의 잔고가 부족합니다.')#}
+                {#            return false;#}
+                {#        }#}
+                {#    }#}
+                {#});#}
 
                 let data = {
                     'perDate': perDate,
