@@ -170,21 +170,24 @@
           <li class="px-3 nav-item d-flex align-items-center">
             <a href="{% url 'index' %}" class="p-0 text-xl text-white nav-item">HOME</a>
           </li>
-          {% if request.session.USER_GBN == '1' %}
           <li class="nav-item dropdown px-3 py-3 border-radius-sm  d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white dropdown-toggle  nav-item" id="dropdownBase" data-bs-toggle="dropdown" aria-expanded="false">
               기초관리
             </a>
               <ul class="dropdown-menu text-dark" aria-labelledby="dropdownBase">
+                  {% if request.session.USER_GBN == '1' %}
                   <li class="mb-2">
                       <a href="{% url 'base_code' %}" class="dropdown-item border-radius-md">참조 코드 등록</a>
                   </li>
+                      {}
                   <li class="mb-2">
                       <a href="{% url 'base_emp' %}" class="dropdown-item border-radius-md">사용자 등록</a>
                   </li>
+                  {% endif %}
                   <li class="mb-2">
                       <a href="{% url 'base_cust' %}" class="dropdown-item border-radius-md">업체 등록</a>
                   </li>
+                  {% if request.session.USER_GBN == '1' %}
                   <li class="mb-2">
                       <a href="{% url 'base_accountCode' %}" class="dropdown-item border-radius-md">계정 과목 등록</a>
                   </li>
@@ -230,12 +233,12 @@
                   <li class="mb-2">
                       <a href="{% url 'base_targetIndex' %}" class="dropdown-item border-radius-md">지수 목표 등록</a>
                   </li>
+                  {% endif %}
                   <!--<li class="mb-2">
                       <a href="#" class="dropdown-item border-radius-md">대출 상환 일정 등록</a>
                   </li>-->
               </ul>
           </li>
-          {% endif %}
           <!--<li class="nav-item dropdown px-3 py-3 border-radius-sm d-flex align-items-center">
             <a href="#" class="text-xl p-0 text-white  dropdown-toggle  nav-item" id="dropdownWithDeposits" data-bs-toggle="dropdown" aria-expanded="false">
               매입/ 매출

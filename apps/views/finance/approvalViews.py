@@ -451,6 +451,15 @@ def approvalViews_save(request):
     elif gbn == '3':
         opt = 'N'
         rtnGbn = 'Y'
+
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+        #                    "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
+        #                    "        AND OPT = 'Y' ")
+        #     result2 = cursor.fetchall()
+        #     count = int(result2[0][0])
+
+        # for i in range(0, count):
         with connection.cursor() as cursor:
             cursor.execute("    UPDATE OSSIGN SET "
                                "     RETURNS = '" + str(reason) + "' "
