@@ -452,28 +452,28 @@ def approvalViews_save(request):
         opt = 'N'
         rtnGbn = 'Y'
 
-        # with connection.cursor() as cursor:
-        #     cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-        #                    "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' "
-        #                    "        AND OPT = 'Y' ")
-        #     result2 = cursor.fetchall()
-        #     count = int(result2[0][0])
-
-        # for i in range(0, count):
         with connection.cursor() as cursor:
-            cursor.execute("    UPDATE OSSIGN SET "
-                               "     RETURNS = '" + str(reason) + "' "
-                               "   , OPT = '" + str(opt) + "' "
-                               "   , GBN = '" + str(gbn) + "' "
-                               "   , RTNGBN = '" + str(rtnGbn) + "' "
-                               "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
-                               "     AND ACSEQN = '" + str(seq) + "' "
-                               "     AND SEQ = '" + str(acSeqn) + "' "
-                               "     AND EMP_NBR = '" + str(user) + "' "
-                               "     AND ACIOGB = '" + str(acIogb) + "' "
-                               "     AND ICUST = '" + str(iCust) + "'"
-                               )
-            connection.commit()
+            cursor.execute(" SELECT MAX(SEQ) FROM OSSIGN WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                           "        AND ACSEQN = '" + str(seq) + "' AND ACIOGB = '" + str(acIogb) + "' AND ICUST = '" + str(iCust) + "' ")
+            result2 = cursor.fetchall()
+            count = int(result2[0][0])
+            count = int(count) + 1
+
+        for i in range(1, count):
+            with connection.cursor() as cursor:
+                cursor.execute("    UPDATE OSSIGN SET "
+                                   "     RETURNS = '" + str(reason) + "' "
+                                   "   , OPT = '" + str(opt) + "' "
+                                   "   , GBN = '" + str(gbn) + "' "
+                                   "   , RTNGBN = '" + str(rtnGbn) + "' "
+                                   "     WHERE ACDATE = '" + str(ioDate).replace("-", "") + "' "
+                                   "     AND ACSEQN = '" + str(seq) + "' "
+                                   "     AND SEQ = '" + str(i) + "' "
+                                   "     AND EMP_NBR = '" + str(user) + "' "
+                                   "     AND ACIOGB = '" + str(acIogb) + "' "
+                                   "     AND ICUST = '" + str(iCust) + "'"
+                                   )
+                connection.commit()
 
         with connection.cursor() as cursor:
             cursor.execute(" UPDATE SISACCTT SET "
