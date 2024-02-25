@@ -38,43 +38,57 @@
                     <div class="card-header pb-0 mb-0">
                         <div class="row p-0">
                             <div class="col-lg-7 col-7">
-                                <div class="d-flex">
-                                    <div class="input-group shadow-none">
-                                        <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>구분</label>
-                                        <select class="form-control border border-light rounded-1 text-center p-0" name="inputGbn" id="inputGbn" style="font-size: 0.8rem; height: 2rem; max-width: 5rem">
-                                            <option value="3" selected>미승인</option>
-                                            <option value="2">승인</option>
-                                            <!--<option value="4">미승인</option>-->
-                                            <!--<option value="5">승인</option>-->
-                                        </select>
-                                    </div>
-                                    <div class="input-group shadow-none">
-                                        <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>일자</label>
-                                        <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="txtDate" id="txtDate" value="" style="height: 2rem; max-width: 8rem">
-                                    </div>
-                                    <div class="input-group shadow-none">
-                                        <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>거래처</label>
-                                        <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" value="" style="height: 2rem; max-width: 12rem">
-                                        <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" value="" style="height: 2rem; max-width: 12rem">
-                                    </div>
-                                    <div class="input-group shadow-none">
-                                        <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>작성자</label>
-                                        <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmpCode" id="txtEmpCode" value="" style="height: 2rem; max-width: 8rem">
-                                        <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmp" id="txtEmp" value="" style="height: 2rem; max-width: 8rem">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2 p-0">
-                            <div class="col-lg-2 col-2">
-                                <div class="input-group shadow-none">
-                                    <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>결재자</label>
-                                    <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" value="{{ request.session.USER_NM }}" style="height: 2rem">
-                                    <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="empCode" id="empCode" value="{{ request.session.userId }}" style="height: 2rem">
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-5 text-end">
-                                <button id="btnSearch" name="btnSearch" class="btn text-white ps-3 pe-3 pt-2 pb-2" type="button" style="background-color: #0066cc; font-size: 0.8rem"><i class="fa fa-magnifying-glass-plus pe-2"></i>조 회</button>
+                                <table>
+                                    <colgroup>
+                                        <col width="4%"/>
+                                        <col width="16%"/>
+                                        <col width="4%"/>
+                                        <col width="10%"/>
+                                        <col width="4%"/>
+                                        <col width="10%"/>
+                                        <col width="10%"/>
+                                    </colgroup>
+                                    <tbody>
+                                    <tr>
+                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>구분</label></td>
+                                        <td>
+                                            <select class="form-control border border-light rounded-1 text-center p-0" name="inputGbn" id="inputGbn" style="font-size: 0.8rem; height: 2rem; max-width: 8rem">
+                                                <option value="3" selected>미승인</option>
+                                                <option value="2">승인</option>
+                                            </select>
+                                        </td>
+                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>일자</label></td>
+                                        <td><input class="form-control border border-light rounded-1 text-center me-2" type="date" name="txtDate" id="txtDate" value="" style="height: 2rem; max-width: 8rem"/></td>
+                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>결재자</label></td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" value="{{ request.session.USER_NM }}" style="height: 2rem; max-width: 8rem">
+                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="empCode" id="empCode" value="{{ request.session.userId }}" style="height: 2rem">
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>거래처</label></td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" value="" style="height: 2rem; max-width: 12rem">
+                                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" value="" style="height: 2rem; max-width: 16rem">
+                                            </div>
+                                        </td>
+                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>작성자</label></td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmpCode" id="txtEmpCode" value="" style="height: 2rem; max-width: 8rem">
+                                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmp" id="txtEmp" value="" style="height: 2rem; max-width: 8rem">
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="pt-2 text-end"><button id="btnSearch" name="btnSearch" class="btn text-white ps-3 pe-3 pt-2 pb-2" type="button" style="background-color: #0066cc; font-size: 0.8rem"><i class="fa fa-magnifying-glass-plus pe-2"></i>조 회</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -256,87 +270,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="DecisionModal" tabindex="-1" role="dialog" aria-labelledby="DecisionModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 30vw">
-            <div class="modal-content">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="modal-header bg-dark" style="height: 5vh">
-                        <h6 class="text-white font-weight-bold mt-2"><i class="fas fa-credit-card fas-4 me-3"></i>결재 승인</h6>
-                        <button class="btn btn-close border border-white"><i class="fas fa-xmark"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="row px-4 py-2">
-                                <div class="col-3 text-start">
-                                    <button class="btn btn-sm btn-success" id="btnApv" name="btnApv"><i class="fa fa-file-signature fs-6 pe-3"></i>결 재</button>
-                                </div>
-                                <div class="col-3 text-start">
-                                    <button class="btn btn-sm btn-instagram" id="btnAbt" name="btnAbt"><i class="fa fa-file-signature fs-6 pe-3"></i>전 결</button>
-                                </div>
-                                <div class="col-3 text-start">
-                                    <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fa fa-file-signature fs-6 pe-3"></i>반 려</button>
-                                </div>
-                            </div>
-                            <div hidden class="row p-0">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-sm">순번</label>
-                                        <input class="form-control" id="modalSeq" name="modalSeq" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-sm">직원코드</label>
-                                        <input class="form-control" id="modalEmp" name="modalEmp" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-sm">폴더</label>
-                                        <input class="form-control" id="modalFolder" name="modalFolder" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div hidden class="row p-0">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-sm">날짜</label>
-                                        <input class="form-control" id="modalDate" name="modalDate" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-sm">총순번</label>
-                                        <input class="form-control" id="modalSeqn" name="modalSeqn" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-sm">구분</label>
-                                        <input class="form-control" id="modalIogb" name="modalIogb" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-0">
-                                <div class="col-12 text-start">
-                                    <div class="form-group">
-                                        <label class="mt-2 text-sm">반려 사유</label>
-                                        <input class="form-control" id="modalReason" name="modalReason" type="text" style="height: 2rem; font-size: 0.85rem"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-
 
 {% endblock %}
 
@@ -370,14 +303,14 @@
     <script>
         $(document).ready(function () {
             $('.buttonLine').hide();
-            var empNbr = document.getElementById('inputEmp').value
             var gbn = document.getElementById('inputGbn').value
-            {#document.getElementById('txtDate').valueAsDate = new Date;#}
+            document.getElementById('txtDate').valueAsDate = new Date;
 
-            var now = new Date
-            var ioDate = now
+            var ioDate = document.getElementById('txtDate').value;
+            var txtEmp = "";
+            var txtCust = "";
 
-            let data = {'empNbr': empNbr, 'gbn': gbn, "ioDate": ioDate}
+            let data = {'gbn': gbn, "ioDate": ioDate, "txtEmp": txtEmp, "txtCust": txtCust}
 
             $.ajax({
                 type: "post",
@@ -434,6 +367,101 @@
             })
 
         });
+
+        $('#txtCust').change(function () {
+            if($('#txtCust').val('')){
+                $('#txtCustCode').val('');
+            }
+        });
+
+
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtCust') {
+
+                    if ($("#txtCust").val().length == 0) {
+                        alert("거래처명 한 글자 이상 입력 후 엔터를 쳐주세요.")
+                        return false
+                    } else {
+                        let thisVal = $("#txtCust").val();
+                        let gbnVal = '2';
+                        let url = '{% url 'popup_cust' %}';
+                        openPop(url + '?val=' + thisVal + '&gbnVal=' + gbnVal, '거래처검색창');
+                    }
+
+                }
+            }
+        });
+
+
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnSearch", function () {
+            $('.buttonLine').hide();
+            var gbn = document.getElementById('inputGbn').value;
+            var ioDate = document.getElementById('txtDate').value;
+            var txtEmp = document.getElementById('txtEmp').value;
+            var txtCust = document.getElementById('txtCustCode').value;
+
+            let data = {'gbn': gbn, "ioDate": ioDate, "txtEmp": txtEmp, "txtCust": txtCust}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "approval_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list2 = data.subList;
+                    var list = data.mainList;
+                    var cust = "";
+                    var inAmts = 0;
+                    var outAmts = 0;
+                    var count = 0;
+
+                    count = list.length;
+
+                    {# 순번, 입.출금구분, 날짜 #}
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+
+                        if(list[i][13] != ''){ cust = list[i][14] }
+                        if(list[i][15] != ''){ cust = list[i][15]}
+
+                        if(list[i][6] == '1'){
+                            outAmts = list[i][2]
+                            inAmts = 0
+                        }
+                        if(list[i][6] == '2'){
+                            inAmts = list[i][2]
+                            outAmts = 0
+                        }
+
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
+                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(inAmts) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(outAmts) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>미승인</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
+                            "</tr> ");
+                    }
+
+                    document.getElementById("inputCnt").value = count;
+                }
+            })
+
+        });
+
+
 
         {# 구분 콤보박스 클릭시 #}
         $('#inputGbn').change(function () {

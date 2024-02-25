@@ -4041,6 +4041,7 @@
         {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
+
             var chk_cust_id_arr = [];
             $('input[name="chkWith[]"]:checked').each(function (i) {
                 chk_cust_id_arr.push($(this).val());
@@ -4055,6 +4056,7 @@
 
             $.ajax({
                 type: "post",
+                async: false,
                 data: {
                     'arrList': JSON.stringify(chk_cust_id_arr),
                 },

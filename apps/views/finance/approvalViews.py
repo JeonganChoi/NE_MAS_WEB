@@ -22,70 +22,249 @@ def approvalViews_search(request):
     iCust = request.session.get('USER_ICUST')
     gbn = request.POST.get('gbn')
     ioDate = request.POST.get('ioDate').replace("-", "")
-    acSeqn = request.POST.get('acSeqn')
-    acIogb = request.POST.get('acIogb')
+    txtEmp = request.POST.get('txtEmp')
+    txtCust = request.POST.get('txtCust')
 
     # 미결재
     if gbn == '3':
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
-                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
-                           "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
-                           "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
-                           "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
-                           "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
-                           "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
-                           " FROM SISACCTT A "
-                           " LEFT OUTER JOIN OSSIGN B "
-                           " ON A.IODATE = B.ACDATE "
-                           " AND A.ACSEQN = B.ACSEQN "
-                           " AND A.ACIOGB = B.ACIOGB "
-                           " AND A.ICUST = B.ICUST "
-                           " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON B.EMP_NBR = C.EMP_NBR "
-                           " LEFT OUTER JOIN PIS1TB001 D "
-                           " ON A.CRE_USER = D.EMP_NBR "
-                           " LEFT OUTER JOIN MIS1TB003 E "
-                           " ON A.ACCUST = E.CUST_NBR "
-                           " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' "
-                           " ORDER BY A.IODATE ")
-            mainresult = cursor.fetchall()
+        if txtEmp != "" and txtCust != "":
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
 
-        return JsonResponse({"mainList": mainresult})
+            return JsonResponse({"mainList": mainresult})
+
+        if txtEmp != "" and txtCust == "":
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                              " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({"mainList": mainresult})
+
+        if txtEmp == "" and txtCust != "":
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' "
+                              " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({"mainList": mainresult})
+
+        if txtEmp == "" and txtCust == "":
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '') "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' "
+                              " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({"mainList": mainresult})
 
     # 결재
     elif gbn == '2':
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
-                           "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
-                           "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
-                           "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
-                           "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
-                           "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
-                           "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
-                           "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
-                           " FROM SISACCTT A "
-                           " LEFT OUTER JOIN OSSIGN B "
-                           " ON A.IODATE = B.ACDATE "
-                           " AND A.ACSEQN = B.ACSEQN "
-                           " AND A.ACIOGB = B.ACIOGB "
-                           " AND A.ICUST = B.ICUST "
-                           " LEFT OUTER JOIN PIS1TB001 C "
-                           " ON B.EMP_NBR = C.EMP_NBR "
-                           " LEFT OUTER JOIN PIS1TB001 D "
-                           " ON A.CRE_USER = D.EMP_NBR "
-                           " LEFT OUTER JOIN MIS1TB003 E "
-                           " ON A.ACCUST = E.CUST_NBR "
-                           " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
-                           " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' "
-                           " ORDER BY A.IODATE ")
-            mainresult = cursor.fetchall()
+        if txtCust != "" and txtEmp != "":
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
 
-        return JsonResponse({"mainList": mainresult})
+            return JsonResponse({"mainList": mainresult})
+        if txtCust != "" and txtEmp == "":
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' "
+                               " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({"mainList": mainresult})
+        if txtCust == "" and txtEmp != "":
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({"mainList": mainresult})
+        if txtCust == "" and txtEmp == "":
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '')"
+                               "        , IFNULL(B.EMP_NBR, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')  "
+                               "        , IFNULL(B.OPT, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.CRE_USER, ''), IFNULL(D.EMP_NME, '')"
+                               "        , IFNULL(B.SEQ, ''), IFNULL(A.APPLYDT, ''), IFNULL(A.ACCUST, ''), IFNULL(E.CUST_NME, ''), IFNULL(A.ACUSE, '') "
+                               "        , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "            LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "            WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "            AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               " FROM SISACCTT A "
+                               " LEFT OUTER JOIN OSSIGN B "
+                               " ON A.IODATE = B.ACDATE "
+                               " AND A.ACSEQN = B.ACSEQN "
+                               " AND A.ACIOGB = B.ACIOGB "
+                               " AND A.ICUST = B.ICUST "
+                               " LEFT OUTER JOIN PIS1TB001 C "
+                               " ON B.EMP_NBR = C.EMP_NBR "
+                               " LEFT OUTER JOIN PIS1TB001 D "
+                               " ON A.CRE_USER = D.EMP_NBR "
+                               " LEFT OUTER JOIN MIS1TB003 E "
+                               " ON A.ACCUST = E.CUST_NBR "
+                               " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
+                               " AND B.ICUST = '" + str(iCust) + "' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' "
+                               " ORDER BY A.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({"mainList": mainresult})
 
     # 미승인
     # elif gbn == '4':
@@ -158,7 +337,7 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' "
+                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' "
                            " ORDER BY A.IODATE ")
             mainresult = cursor.fetchall()
 
