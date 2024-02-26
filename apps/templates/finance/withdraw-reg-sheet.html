@@ -4041,7 +4041,6 @@
         {#체크한 내용 삭제#}
         $(document).on('click', "#btnDlt", function () {
 
-
             var chk_cust_id_arr = [];
             $('input[name="chkWith[]"]:checked').each(function (i) {
                 chk_cust_id_arr.push($(this).val());
@@ -4068,6 +4067,7 @@
                 success: function (data) {
                     if (data.YN === 'Y') {
                         alert('결재 진행된 건은 삭제 할 수 없습니다.')
+                        return false;
                     }
                     else{
                         //체크 한 거래처 삭제
@@ -4089,6 +4089,7 @@
                                     },
                                     success: function (data) {
                                         location.href = "{% url 'with_reg_sheet' %}";
+
                                     }
 
                                 });

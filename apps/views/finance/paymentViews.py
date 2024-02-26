@@ -2688,8 +2688,9 @@ def payment_dlt_check(request):
             result = cursor.fetchall()
 
         # 결재 진행중
-        if result[0][0] == 'Y' or result[0][1] == 'Y':
+        if result[0][0] == 'Y' or result[0][0] == 'R' or result[0][1] == 'Y':
             YN = 'Y'
+
         # 결재 미진행
         if result[0][0] == 'N' and result[0][1] == 'N':
             YN = 'N'
