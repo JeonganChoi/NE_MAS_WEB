@@ -1500,6 +1500,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')"
                            "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, '')"
                            "    , IFNULL(J.GBN, ''), IFNULL(I.EMP_NME,''), IFNULL(A.ACDATE, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.PRE_PAY, ''), IFNULL(A.MID_OPT_GBN, '')   "
+                           "    , IFNULL(A.ACFOLDER, ''), IFNULL(A.ACFOLDER2,''), IFNULL(A.ACFOLDER3, ''), IFNULL(A.ACFOLDER4, ''), IFNULL(A.ACFOLDER5, '')   "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -1651,6 +1652,7 @@ def paymentViews_search(request):
                            "    , IFNULL(A.ACCARD, ''), IFNULL(A.FIN_OPT, ''), IFNULL(A.ACUSE, ''), IFNULL(A.ACINFO, ''), IFNULL(H.ACBKCD, '')"
                            "    , IFNULL(A.APPLYDT, ''), IFNULL(A.CRE_USER, ''), IFNULL(I.EMP_CLS, ''), IFNULL(A.ACINFO, ''), IFNULL(J.CARDTYPE, '')"
                            "    , IFNULL(A.CRE_USER,''), IFNULL(I.EMP_NME,''), IFNULL(A.ACDATE, ''), IFNULL(A.MID_OPT, ''), IFNULL(A.PRE_PAY, ''), IFNULL(A.MID_OPT_GBN, '')  "
+                           "    , IFNULL(A.ACFOLDER, ''), IFNULL(A.ACFOLDER2,''), IFNULL(A.ACFOLDER3, ''), IFNULL(A.ACFOLDER4, ''), IFNULL(A.ACFOLDER5, '')   "
                            "    FROM SISACCTT A "
                            "    LEFT OUTER JOIN MIS1TB003 B "
                            "    ON A.ACCUST = B.CUST_NBR "
@@ -2952,6 +2954,30 @@ def download_file(request):
         return response
     else:
         return render(request, "finance/back.html")
+
+
+
+
+def file_viewer(request):
+
+    # 파일 경로 가져오기
+    file_uri = request.GET.get('file_uri')
+
+    # 도메인 가져오기
+    base_url = f"{request.scheme}://{request.get_host()}"
+
+    # 파일 URL
+    file_url = f"{base_url}{file_uri}"
+
+    # 파일 뷰어 URL
+    file_viewer_url = f'https://view.officeapps.live.com/op/embed.aspx?src={file_url}'
+
+    return render(request, 'finance/file-viewer.html', {'file_viewer_url': file_viewer_url})
+
+
+
+
+
 
 # with connection.cursor() as cursor:
 #     cursor.execute(" SELECT SEQ FROM OSSIGN WHERE ACDATE = '" + str(acDate) + "' AND ACSEQN = '" + str(acSeqn) + "' AND ACIOGB = '" +  str(acIogb) + "' "

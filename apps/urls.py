@@ -14,6 +14,7 @@ urlpatterns = [
     # path('login/', login, name='login'),
     path('pdf_view/', empViews.pdf_view, name='pdf_view'),
     path('pdf_open/', paymentViews.open_file, name='pdf_open'),
+    path('file_viewer/', paymentViews.file_viewer, name='file_viewer'),
 
 
     # 로그인/로그아웃 관리
