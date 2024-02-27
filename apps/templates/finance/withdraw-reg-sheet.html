@@ -794,6 +794,7 @@
             $('.cboAct').hide();
             $('.cboCard').hide();
             $('.creUser').hide();
+            $('#addFileInputBtn').show();
 
             var date = new Date();
             date.setMonth(date.getMonth() - 3);
@@ -2781,6 +2782,27 @@
             $('#fileList').append(fileInput);
         });
 
+        $(document).on('click', '.btnFileDel', function() {
+            var findex = $(this).data('findex');
+            var fileList = JSON.parse($('#fileListInput').val());
+            var fileInput = $(`#file${findex}`);
+
+            // 업로드된 파일이 없을 경우 리턴
+            if(fileList[findex-1] == ''){
+                return;
+            }
+
+            var delYn = confirm('파일을 삭제하시겠습니까?');
+            if(delYn){
+                fileList[findex-1] = '';
+                fileInput.val('');
+                $(`#file_name${findex}`).empty();
+                $(`#file_del_yn${findex}`).val('Y');
+                $('#fileListInput').val(JSON.stringify(fileList));
+                $(`#btnFileLook${findex}`).remove();
+                $(`#btnFileDel${findex}`).remove();
+            }
+        });
 
 
 
