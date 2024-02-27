@@ -13,7 +13,7 @@ from django.http import JsonResponse
 from django.db import connection
 from django.core.files.storage import FileSystemStorage
 from urllib.parse import quote
-
+from django.conf import settings
 
 
 # 출금-수불장
@@ -1972,46 +1972,126 @@ def paymentViews_save(request):
     #     else:
     #         Rfilenameloc = file
 
+    # fileOverwriteYn = request.POST.get("fileOverwriteYn")
+    #
+    # uploaded_file_list = request.FILES.getlist('file')
+    # # if uploaded_file is None:
+    # #     uploaded_file = ''
+    # uploaded_file_full_path = ['', '', '', '', '']
+    # if uploaded_file_list:
+    #     for i in range(len(uploaded_file_list)):
+    #         if i > 4:
+    #             break;
+    #
+    #         uploaded_file = uploaded_file_list[i]
+    #         # 원하는 경로 설정, FileResponse
+    #         # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
+    #         # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
+    #         # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
+    #         # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
+    #         # desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
+    #         # desired_path = "/D:/NE_FTP/사업장/산양화학/Dodument/"
+    #
+    #
+    #         desired_path = "D:/COMPANY/SANYANG/DOCUMENTS/"
+    #         # 해당 디렉토리가 없으면 생성
+    #         if not os.path.exists(desired_path):
+    #             os.makedirs(desired_path)
+    #
+    #         destination = os.path.join(desired_path, uploaded_file.name)
+    #
+    #         # 해당 경로에 동일한 이름의 파일이 있다면
+    #         if os.path.exists(destination):
+    #             if fileOverwriteYn == 'Y':
+    #                 os.remove(destination)
+    #             else:
+    #                 return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
+    #
+    #         with open(destination, 'wb+') as destination_file:
+    #             for chunk in uploaded_file.chunks():
+    #                 destination_file.write(chunk)
+    #
+    #         uploaded_file_full_path[i] = destination
+
     fileOverwriteYn = request.POST.get("fileOverwriteYn")
 
-    uploaded_file_list = request.FILES.getlist('file')
-    # if uploaded_file is None:
-    #     uploaded_file = ''
-    uploaded_file_full_path = ['', '', '', '', '']
-    if uploaded_file_list:
-        for i in range(len(uploaded_file_list)):
-            if i > 4:
-                break;
+    uploaded_file_1 = request.FILES.get('file1')
+    uploaded_file_2 = request.FILES.get('file2')
+    uploaded_file_3 = request.FILES.get('file3')
+    uploaded_file_4 = request.FILES.get('file4')
+    uploaded_file_5 = request.FILES.get('file5')
 
-            uploaded_file = uploaded_file_list[i]
-            # 원하는 경로 설정, FileResponse
-            # desired_path = "D:/NE_FTP/MAS_FILES/중요문건"
-            # desired_path = "D:\\NE_FTP\\MAS_FILES\\"
-            # desired_path = "D:\\NE_FTP\\MAS_FILES\\UploadFiles\\"
-            # desired_path = "D:/NE_FTP/MAS_FILES/UploadFiles/"
-            # desired_path = "/Users/thenaeunsys/Documents/ImportFile/"
-            # desired_path = "/D:/NE_FTP/사업장/산양화학/Dodument/"
+    file_delete_yn_1 = request.POST.get('file_del_yn1')
+    file_delete_yn_2 = request.POST.get('file_del_yn2')
+    file_delete_yn_3 = request.POST.get('file_del_yn3')
+    file_delete_yn_4 = request.POST.get('file_del_yn4')
+    file_delete_yn_5 = request.POST.get('file_del_yn5')
+
+    uploaded_file_list = [uploaded_file_1, uploaded_file_2, uploaded_file_3, uploaded_file_4, uploaded_file_5]
+    file_delete_yn_list = [file_delete_yn_1, file_delete_yn_2, file_delete_yn_3, file_delete_yn_4, file_delete_yn_5]
+
+    uploaded_file_path = ['', '', '', '', '']
+
+    for i in range(len(uploaded_file_list)):
+
+        uploaded_file = uploaded_file_list[i]
+
+        # 파일 삭제 여부가 Y인 경우
+        if file_delete_yn_list[i] == 'Y':
+            # 새로 업로드된 파일이 없는 경우
+            if not uploaded_file:
+                uploaded_file_path[i] = ''
+
+                # 다음 파일로 넘어감
+                continue
+
+            # 새로 업로드된 파일이 있는 경우(새 파일로 덮어쓰기)
+            else:
+                pass
+
+        elif file_delete_yn_list[i] == 'N':
+            # 새로 업로드된 파일이 없는 경우
+            if not uploaded_file:
+                # 기존 파일을 유지
+                uploaded_file_path[i] = 'KEEP FILE'
+
+                # 다음 파일로 넘어감
+                continue
+
+            # 새로 업로드된 파일이 있는 경우(새 파일로 덮어쓰기)
+            else:
+                pass
+
+        # 파일이 없는 경우
+        if uploaded_file is None:
+            # 다음 파일로 넘어감
+            continue
+
+        # 디렉토리가 없으면 생성
+        if not os.path.exists(settings.MEDIA_ROOT):
+            os.makedirs(settings.MEDIA_ROOT)
+
+        # static/media 하위에 파일 저장을 위한 상대 경로 생성
+        relative_path = os.path.join('/static/media', uploaded_file.name)
+
+        # 실제 파일 시스템에 저장될 전체 경로 생성
+        destination = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)
+
+        # 해당 경로에 동일한 이름의 파일이 있다면
+        if os.path.exists(destination):
+            if fileOverwriteYn == 'Y':
+                os.remove(destination)
+            else:
+                return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
+
+        with open(destination, 'wb+') as destination_file:
+            for chunk in uploaded_file.chunks():
+                destination_file.write(chunk)
+
+        uploaded_file_path[i] = relative_path
 
 
-            desired_path = "D:/COMPANY/SANYANG/DOCUMENTS/"
-            # 해당 디렉토리가 없으면 생성
-            if not os.path.exists(desired_path):
-                os.makedirs(desired_path)
 
-            destination = os.path.join(desired_path, uploaded_file.name)
-
-            # 해당 경로에 동일한 이름의 파일이 있다면
-            if os.path.exists(destination):
-                if fileOverwriteYn == 'Y':
-                    os.remove(destination)
-                else:
-                    return JsonResponse({'sucYn': 'N', 'message': "same file name exists"})
-
-            with open(destination, 'wb+') as destination_file:
-                for chunk in uploaded_file.chunks():
-                    destination_file.write(chunk)
-
-            uploaded_file_full_path[i] = destination
 
     if acSeqn:
         # 예정일이 없는경우
@@ -2041,41 +2121,84 @@ def paymentViews_save(request):
             result = cursor.fetchall()
             aCode = result[0][0]
 
+        # with connection.cursor() as cursor:
+        #     cursor.execute("    UPDATE  SISACCTT SET"
+        #                    "     ACGUBN = '" + str(acGubn) + "' "
+        #                    ",    MCODE = '" + str(mCode) + "' "
+        #                    ",    ACODE = '" + str(aCode) + "' "
+        #                    ",    GBN = (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "') "
+        #                    ",    ACTITLE = '" + str(acTitle) + "' "
+        #                    ",    ACAMTS = '" + str(acAmts) + "' "
+        #                    ",    ACACNUMBER = '" + str(acAcnumber) + "' "
+        #                    ",    ACDESC = '" + str(acDesc) + "' "
+        #                    ",    ACGUNO_BK = '" + str(acBank) + "' "
+        #                    ",    ACFOLDER = '" + str(uploaded_file_full_path[0]) + "' "
+        #                    ",    ACFOLDER2 = '" + str(uploaded_file_full_path[1]) + "' "
+        #                    ",    ACFOLDER3 = '" + str(uploaded_file_full_path[2]) + "' "
+        #                    ",    ACFOLDER4 = '" + str(uploaded_file_full_path[3]) + "' "
+        #                    ",    ACFOLDER5 = '" + str(uploaded_file_full_path[4]) + "' "
+        #                    ",    EXDATE = '" + str(exDate) + "' "
+        #                    ",    ACDATE = '" + str(acDate) + "' "
+        #                    ",    ACCARD = '" + str(acCard) + "' "
+        #                    ",    ACUSE = '" + str(acUse) + "' "
+        #                    ",    ACINFO = '" + str(acInfo) + "' "
+        #                    ",    ACCUST = '" + str(acCust) + "' "
+        #                    ",    MID_OPT = '" + str(midOpt) + "' "
+        #                    ",    MID_OPT_GBN = '" + str(midOptGbn) + "' "
+        #                    ",    FIN_OPT = '" + str(finOpt) + "' "
+        #                    ",    APPLYDT = '" + str(acApply).replace('-', '') + "' "
+        #                    ",    PRE_PAY = '" + str(prePay) + "' "
+        #                    ",    UPD_USER = '" + str(creUser) + "' "
+        #                    ",    UPD_DT = date_format(now(), '%Y%m%d') "
+        #                    "     WHERE IODATE = '" + str(ioDate) + "' "
+        #                    "     AND ACIOGB = '" + str(acIogb) + "' "
+        #                    "     AND ACSEQN = '" + str(acSeqn) + "' "
+        #                    "     AND ICUST = '" + str(iCust) + "' "
+        #                    )
+        #     connection.commit()
+
         with connection.cursor() as cursor:
-            cursor.execute("    UPDATE  SISACCTT SET"
-                           "     ACGUBN = '" + str(acGubn) + "' "
-                           ",    MCODE = '" + str(mCode) + "' "
-                           ",    ACODE = '" + str(aCode) + "' "
-                           ",    GBN = (SELECT GBN FROM OSCODEM A WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "') "
-                           ",    ACTITLE = '" + str(acTitle) + "' "
-                           ",    ACAMTS = '" + str(acAmts) + "' "
-                           ",    ACACNUMBER = '" + str(acAcnumber) + "' "
-                           ",    ACDESC = '" + str(acDesc) + "' "
-                           ",    ACGUNO_BK = '" + str(acBank) + "' "
-                           ",    ACFOLDER = '" + str(uploaded_file_full_path[0]) + "' "
-                           ",    ACFOLDER2 = '" + str(uploaded_file_full_path[1]) + "' "
-                           ",    ACFOLDER3 = '" + str(uploaded_file_full_path[2]) + "' "
-                           ",    ACFOLDER4 = '" + str(uploaded_file_full_path[3]) + "' "
-                           ",    ACFOLDER5 = '" + str(uploaded_file_full_path[4]) + "' "                                            
-                           ",    EXDATE = '" + str(exDate) + "' "
-                           ",    ACDATE = '" + str(acDate) + "' "
-                           ",    ACCARD = '" + str(acCard) + "' "
-                           ",    ACUSE = '" + str(acUse) + "' "
-                           ",    ACINFO = '" + str(acInfo) + "' "
-                           ",    ACCUST = '" + str(acCust) + "' "
-                           ",    MID_OPT = '" + str(midOpt) + "' "
-                           ",    MID_OPT_GBN = '" + str(midOptGbn) + "' "
-                           ",    FIN_OPT = '" + str(finOpt) + "' "
-                           ",    APPLYDT = '" + str(acApply).replace('-', '') + "' "
-                           ",    PRE_PAY = '" + str(prePay) + "' "
-                           ",    UPD_USER = '" + str(creUser) + "' "
-                           ",    UPD_DT = date_format(now(), '%Y%m%d') "
-                           "     WHERE IODATE = '" + str(ioDate) + "' "
-                           "     AND ACIOGB = '" + str(acIogb) + "' "
-                           "     AND ACSEQN = '" + str(acSeqn) + "' "
-                           "     AND ICUST = '" + str(iCust) + "' "
-                           )
-            connection.commit()
+            query = "UPDATE SISACCTT SET " \
+                    "ACGUBN = %s, " \
+                    "MCODE = %s, " \
+                    "ACODE = %s, " \
+                    "GBN = (SELECT GBN FROM OSCODEM A WHERE MCODE = %s AND ICUST = %s), " \
+                    "ACTITLE = %s, " \
+                    "ACAMTS = %s, " \
+                    "ACACNUMBER = %s, " \
+                    "ACDESC = %s, " \
+                    "ACGUNO_BK = %s, " \
+                    "EXDATE = %s, " \
+                    "ACDATE = %s, " \
+                    "ACCARD = %s, " \
+                    "ACUSE = %s, " \
+                    "ACINFO = %s, " \
+                    "ACCUST = %s, " \
+                    "MID_OPT = %s, " \
+                    "FIN_OPT = %s, " \
+                    "APPLYDT = %s, " \
+                    "PRE_PAY = %s, " \
+                    "UPD_USER = %s, " \
+                    "UPD_DT = date_format(now(), '%%Y%%m%%d') " \
+
+            params = [str(acGubn), str(mCode), str(aCode), str(mCode), str(iCust), str(acTitle), str(acAmts), str(acAcnumber), str(acDesc), str(acBank), str(exDate), str(acDate), str(acCard), str(acUse), str(acInfo), str(acCust), str(midOpt), str(finOpt), str(acApply).replace('-', ''), str(prePay), str(creUser)]
+
+            # 기존 파일은 유지하고 새로운 파일만 업데이트함.
+            for i in range(len(uploaded_file_path)):
+                if uploaded_file_path[i] != 'KEEP FILE':
+                    if i == 0:
+                        query += ", ACFOLDER = %s "
+                    else:
+                        query += f", ACFOLDER{i + 1} = %s "
+                    params.append(uploaded_file_path[i])
+
+            query += "WHERE IODATE = %s AND ACIOGB = %s AND ACSEQN = %s AND ICUST = %s"
+            params.extend([ioDate, acIogb, acSeqn, iCust])
+
+            cursor.execute(query, params)
+
+        connection.commit()
+
 
 
         with connection.cursor() as cursor:
@@ -2216,11 +2339,11 @@ def paymentViews_save(request):
                                ",   date_format(now(), '%Y%m%d') "
                                ",   '" + str(iCust) + "'"
                                ",   '" + str(acBank) + "'"
-                               ",   '" + str(uploaded_file_full_path[0]) + "'"
-                               ",   '" + str(uploaded_file_full_path[1]) + "'"
-                               ",   '" + str(uploaded_file_full_path[2]) + "'"
-                               ",   '" + str(uploaded_file_full_path[3]) + "'"
-                               ",   '" + str(uploaded_file_full_path[4]) + "'"                                            
+                               ",   '" + str(uploaded_file_path[0]) + "'"
+                               ",   '" + str(uploaded_file_path[1]) + "'"
+                               ",   '" + str(uploaded_file_path[2]) + "'"
+                               ",   '" + str(uploaded_file_path[3]) + "'"
+                               ",   '" + str(uploaded_file_path[4]) + "'"                                            
                                ",    '" + str(exDate) + "'"
                                ",    '" + str(acDate) + "'"
                                ",    '" + str(acCard) + "'"

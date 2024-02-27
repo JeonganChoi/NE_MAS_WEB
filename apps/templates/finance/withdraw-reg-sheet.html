@@ -358,11 +358,17 @@
                                     <div  class="col-6 text-start">
                                         <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
                                         <p class="text-success" style="font-size: 0.8rem">파일을 한번에 여러개 선택해주세요.</p>
-                                        <input name="file" id="file" type="file" class="" style="display: none;" multiple/>
+
+                                        <input type="hidden" id="fileListInput" value="[]" />
+                                        <div id="fileList">
+
+                                        </div>
+                                        <a class="btn btn-outline-primary btn-sm" type="button" id="addFileInputBtn" style="display: none;">파일 추가</a>
+                                        <!--<input name="file" id="file" type="file" class="" style="display: none;" multiple/>
                                         <div class="form-group text-start">
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
                                             <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="col-6 text-start line">
                                         <label class="form-label" id="lineLabel"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
@@ -1565,9 +1571,14 @@
         });
 
         {# 파일 선택 버튼 클릭시 #}
-        $(document).on('click', '#btnFile', function () {
-            $("#file").click();
+        $(document).on('click', '.btnFile', function () {
+            const findex = $(this).data('findex');
+
+            $(`#file${findex}`).click();
         });
+        {#$(document).on('click', '#btnFile', function () {#}
+        {#    $("#file").click();#}
+        {#});#}
 
         {# 파일 보기 버튼 클릭시 #}
         $(document).on('click', '#btnFileLook', function () {
@@ -1579,18 +1590,39 @@
             location.href = "{% url 'download_file' %}?ioDate=" + ioDate + "&acSeqn=" + acSeqn + "&acIogb=" + acIogb + "&acCust=" + acCust;
         });
 
-        $(document).on('change', '#file', function () {
-            $('#file_name').empty();
+        $(document).on('change', '.file', function () {
+            const findex = $(this).data('findex');
+            $(`#file_name${findex}`).empty();
 
+            var fileList = JSON.parse($('#fileListInput').val());
+
+            if(this.files.length > 0) {
+                // 파일명을 배열에 추가
+                fileList[findex-1] = this.files[0].name;
+
+                $('#fileListInput').val(JSON.stringify(fileList));
+
+                // 파일명 추가
+                $(`#file_name${findex}`).append($('<a href="#" class="btn btn-sm btn-outline-info text-dark">').text(this.files[0].name));
+
+                // 파일 삭제 버튼 추가
+                $(`.btnFileDelWrapper${findex}`).append(`<a class="btn btn-outline-danger btn-sm btnFileDel" type="button" id="btnFileDel${findex}" data-findex="${findex}">삭제</a>`);
+            }
+        });
+
+
+{#        $(document).on('change', '#file', function () {#}
+{#            $('#file_name').empty();#}
+{##}
             {# 파일을 한번에 여러개(구현됨) 또는 한개씩 여러번 쌓아서 저장  #}
-            $.each(this.files, function(i, file) {
-
+{#            $.each(this.files, function(i, file) {#}
+{##}
                 {#$('#file_name').append($('<span>').text(file.name));#}
 {#                버튼 밑에 세로로 remove a tag 넣기 : 이 파일 삭제#}
-                $('#file_name').append($('<button class="btn btn-sm btn-outline-info text-dark">').text(file.name));
+{#                $('#file_name').append($('<button class="btn btn-sm btn-outline-info text-dark">').text(file.name));#}
                 {#$('#file_name').append($('<a class="dz-remove">').text('Remove'));#}
-            });
-        });
+{#            });#}
+{#        });#}
 
         {# 전결 버튼 누를시 #}
         {# 버튼색깔: class명: btn-outline-warning #}
@@ -1609,7 +1641,6 @@
         });
 
         {# 테이블 로우 클릭 시 #}
-{#        줄 색 깔 넣어야함 #}
         $(document).on('click', '#withMainTb .withMainTr_tr', function () {
 
             $('#withMainTb .withMainTr_tr').removeClass('active');
@@ -2485,6 +2516,55 @@
                             $('#signTd').append(_td);
                         }
                     }
+
+
+
+
+
+
+                    // 증빙서류 파일 리스트 세팅
+                    if(list.length > 0) {
+                        var fileList = [list[0][37], list[0][38], list[0][39], list[0][40], list[0][41]];
+                        $('#fileListInput').val(JSON.stringify(fileList));
+
+                        // 뷰어허용 확장자
+                        var viewer_allow_ext = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+
+                        $('#fileList').empty();
+
+                        for (var i = 0; i < fileList.length; i++) {
+                            if (fileList[i] != '') {
+
+                                // 파일명
+                                var fileName = fileList[i].split('/')[fileList[i].split('/').length - 1];
+
+                                // 파일 확장자
+                                var file_ext = fileName.split('.').pop().toLowerCase();
+
+                                // 뷰어 지원하는 확장자인지 체크
+                                var is_viewer_allow_ext = viewer_allow_ext.indexOf(file_ext) != -1 ? true : false;
+
+                                var ele =   `<div class="form-group text-start file-wrapper">
+                                                <input name="file${i+1}" id="file${i+1}" type="file" class="file" style="display: none;" data-findex="${i+1}" />
+                                                <a class="btn btn-outline-dark btn-sm btnFile" type="button" id="btnFile${i+1}" data-findex="${i+1}">파일 선택</a>
+                                                <span id="file_name${i+1}" class="file_name">
+                                                    <a href="${fileList[i]}" class="btn btn-sm btn-outline-info text-dark" target="_blank">${fileName}</a>
+                                                </span>
+                                                ${is_viewer_allow_ext ? `<a class="btn btn-outline-danger btn-sm btnFileLook" type="button" id="btnFileLook${i+1}" data-uri="${fileList[i]}">파일 보기</a>` : ''}
+                                                <span class="btnFileDelWrapper${i+1}">
+                                                    <a class="btn btn-outline-danger btn-sm btnFileDel" type="button" id="btnFileDel${i+1}" data-findex="${i+1}">삭제</a>
+                                                </span>
+                                                <input type="hidden" name="file_del_yn${i+1}" id="file_del_yn${i+1}" class="file_del_yn" value="N" />
+                                            </div>`;
+                                $('#fileList').append(ele);
+                            }
+                        }
+                    }
+
+                    // 파일 추가 버튼 표시
+                    $('#addFileInputBtn').show();
+
+
                 }
             })
 
@@ -2637,6 +2717,75 @@
             }
 
         });
+
+
+
+        $(document).on('click', '.btnFileLook', function() {
+            // 파일 경로
+            var file_uri = $(this).data('uri');
+
+            // 파일 확장자
+            var file_ext = file_uri.split('.').pop().toLowerCase();
+
+            // 뷰어허용 확장자
+            var viewer_allow_ext = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf', 'doc', 'docx', 'xls', 'xlsx'];
+
+            // MS뷰어에서 지원하는 확장자
+            var ms_viewer_allow_ext = ['doc', 'docx', 'xls', 'xlsx'];
+
+            if(file_uri != ''){
+
+                if(viewer_allow_ext.indexOf(file_ext) == -1){
+                    alert('지원하지 않는 파일 형식입니다.');
+                    return;
+                }
+
+                if(ms_viewer_allow_ext.indexOf(file_ext) != -1){
+                    // MS뷰어에서 지원하는 확장자면 뷰어로 열기
+                    file_uri = encodeURIComponent(file_uri);
+                    window.open("{% url 'file_viewer' %}" + '?file_uri=' + file_uri, "_blank");
+                } else {
+                    window.open(file_uri, "_blank");
+                }
+            } else {
+                alert('파일이 존재하지 않습니다.');
+                return;
+            }
+        });
+
+
+        $(document).on('click', '#addFileInputBtn', function() {
+            var fileList = JSON.parse($('#fileListInput').val());
+
+            var fileInputCnt = $('#fileList').find('.file').length;
+
+            if(fileInputCnt >= 5){
+                alert('파일은 최대 5개까지 등록 가능합니다.');
+                return;
+            }
+
+            const findEmptyIndex = fileList.findIndex((item, index) => (item === ''));
+
+            if($(`#file${findEmptyIndex+1}`).length > 0){
+                alert('비어있는 파일을 먼저 선택해주세요.');
+                return;
+            }
+
+            var fileInput = `<div class="form-group text-start file-wrapper">
+                                <input name="file${findEmptyIndex+1}" id="file${findEmptyIndex+1}" type="file" class="file" style="display: none;" data-findex="${findEmptyIndex+1}" />
+                                <a class="btn btn-outline-dark btn-sm btnFile" type="button" id="btnFile${findEmptyIndex+1}" data-findex="${findEmptyIndex+1}">파일 선택</a>
+                                <span id="file_name${findEmptyIndex+1}" class="file_name"></span>
+                                <span class="btnFileDelWrapper${findEmptyIndex+1}"></span>
+                            </div>`;
+
+            $('#fileList').append(fileInput);
+        });
+
+
+
+
+
+
 
         {# 카드명 선택시 계좌명 바인딩 #}
         $('#cboCardName').change(function () {
