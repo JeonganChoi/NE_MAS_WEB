@@ -940,19 +940,18 @@
         {# 조회 버튼 #}
         $(document).on('click', "#btnDlt", function () {
 
-            var sub_tr_cnt = $('#subTb tbody tr').length;
+            var subCount = $('#subTb tr').length;
+            subCount = parseInt(subCount) - 1;
 
-            if(sub_tr_cnt > 1){
+            if(subCount > 1){
                 alert('삭제하실 항목을 한 건만 선택해주세요.')
                 return false;
             }
 
-            if(sub_tr_cnt == 1){
-
-                const subCount = $('#subTb tr').length;
+            if(subCount < 2){
 
                 var pmtArr = [];
-                for (var i = 1; i < subCount; i++) {
+                for (var i = 1; i < parseInt(subCount) + 1; i++) {
 
                     var ioDate = $('#ioDate_' + i).text();
                     var acSeqn = $('#acSeqn_' + i).text();
@@ -967,11 +966,10 @@
                         'acGubn': acGubn,
                         'mCode': mCode
                     };
+
                     pmtArr.push(data);
                 }
 
-                alert(pmtArr)
-                return false
 
                 var saveresult = confirm("삭제하시겠습니까?")
 
