@@ -20,11 +20,12 @@
                             <div class="col-lg-6 col-6 text-start">
                                 <h4 class="text-dark font-weight-bold"><i class="fas fa-credit-card fas-4 me-3"></i>시행 관리</h4>
                             </div>
-                            <!--<div class="col-lg-6 col-6 text-end">
-                                <button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>
-                                <button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>
-                                <button type="button" class="btn btn-sm btn-light text-dark text-sm" id="btnDlt" name="btnDlt">삭제</button>
-                            </div>-->
+                            <div class="col-lg-6 col-6 text-end">
+                                <!--<button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>-->
+                                <!--<button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>-->
+                                <button type="button" class="btn text-white text-sm ps-4 pe-4 pt-2 pb-2" style="background-color: darkorange; font-size: 0.8rem" id="btnDlt" name="btnDlt">
+                                    <i class="fa fa-trash-arrow-up fs-6 pe-2"></i>삭제</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -935,6 +936,71 @@
                 return false;
             }
         });
+
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnDlt", function () {
+
+            var sub_tr_cnt = $('#subTb tbody tr').length;
+
+            if(sub_tr_cnt > 1){
+                alert('삭제하실 항목을 한 건만 선택해주세요.')
+                return false;
+            }
+
+            if(sub_tr_cnt == 1){
+
+                const subCount = $('#subTb tr').length;
+
+                var pmtArr = [];
+                for (var i = 1; i < subCount; i++) {
+
+                    var ioDate = $('#ioDate_' + i).text();
+                    var acSeqn = $('#acSeqn_' + i).text();
+                    var acIogb = $('#acIogb_' + i).text();
+                    var acGubn = $('#acGubn_' + i).text();
+                    var mCode = $('#mainCode_' + i).text();
+
+                    let data = {
+                        'ioDate': ioDate,
+                        'acSeqn': acSeqn,
+                        'acIogb': acIogb,
+                        'acGubn': acGubn,
+                        'mCode': mCode
+                    };
+                    pmtArr.push(data);
+                }
+
+                alert(pmtArr)
+                return false
+
+                var saveresult = confirm("삭제하시겠습니까?")
+
+                if(saveresult == true){
+                    $.ajax({
+                        type: "post",
+                        data: {
+                            'pmtArrList': JSON.stringify(pmtArr),
+                        },
+                        dataType: "json",
+                        url: '{% url "permit_reg_dlt" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            if (data.sucYn === 'Y') {
+                                alert('삭제 되었습니다.')
+                                location.href = "{% url 'permit_reg' %}";
+                            }
+                        }
+                    });
+                }
+                if(saveresult == false){
+                    alert('취소되었습니다.')
+                    return false;
+                }
+            }
+        });
+
 
     </script>
 {% endblock %}

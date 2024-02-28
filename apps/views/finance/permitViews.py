@@ -813,3 +813,57 @@ def permitViews_save(request):
                 connection.commit()
 
         return JsonResponse({'sucYn': "Y"})
+
+
+def permitViews_dlt(request):
+    pmtArray = json.loads(request.POST.get('pmtArrList'))
+    iCust = request.session.get('USER_ICUST')
+
+    pmtArrayLists = list(filter(len, pmtArray))
+    for data in range(0, len(pmtArrayLists)):
+        with connection.cursor() as cursor:
+            cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
+                           "                      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                           "                      AND IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
+                           "                      AND MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+                           "                      AND ICUST = '" + str(iCust) + "'")
+            connection.commit()
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT COUNT(SEQ) FROM OSSIGN WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                           "                                AND ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'  AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()
+            count = int(result[0][0])
+
+        if count > 0:
+            with connection.cursor() as cursor:
+                cursor.execute(" DELETE FROM OSSIGN WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
+                               "                      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                               "                      AND ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
+                               "                      AND ICUST = '" + str(iCust) + "'")
+                connection.commit()
+
+    return JsonResponse({'sucYn': "Y"})
+
+
+
+
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" UPDATE SISACCTT SET "
+    #                        "    ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "'"
+    #                        "  , FIN_OPT = '" + str(permit) + "' "
+    #                        "  , FIN_AMTS = '" + str(acAmts) + "' "
+    #                        "  , ACAMTS = '" + str(acAmts) + "' "
+    #                        "  , ACACNUMBER = '" + str(actNum) + "' "
+    #                        "  , ACINFO = '" + str(custBank) + "," + str(custAct) + "' "
+    #                        "  , ACCUST_BNK = '" + str(custBank) + "' "
+    #                        "  , ACCUST_ACT = '" + str(custAct) + "' "
+    #                        "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+    #                        "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
+    #                        "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+    #                        "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+    #                        "     AND ICUST = '" + str(iCust) + "' "
+    #         )
+    #         connection.commit()
+    #
+    # return JsonResponse({'sucYn': "Y"})

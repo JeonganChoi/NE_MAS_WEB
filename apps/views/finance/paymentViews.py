@@ -2972,7 +2972,7 @@ def file_viewer(request):
     # 파일 뷰어 URL
     file_viewer_url = f'https://view.officeapps.live.com/op/embed.aspx?src={file_url}'
 
-    return render(request, 'finance/file-viewer.html', {'file_viewer_url': file_viewer_url})
+    return render(request, 'file/file-viewer.html', {'file_viewer_url': file_viewer_url})
 
 
 

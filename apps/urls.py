@@ -133,6 +133,7 @@ urlpatterns = [
     path('cboCardNum/', permitViews.cboCardNum, name='cboCardNum'),
     path('permit_reg_save/', permitViews.permitViews_save, name='permit_reg_save'),
     path('permit_cbo_search/', permitViews.cboActNum_search, name='permit_cbo_search'),
+    path('permit_reg_dlt/', permitViews.permitViews_dlt, name='permit_reg_dlt'),
 
     # 입금관리
     path('deposit_reg/', depositViews.depositRegViews, name='deposit_reg'),

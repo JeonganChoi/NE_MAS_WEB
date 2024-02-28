@@ -363,7 +363,7 @@
                                         <div id="fileList">
 
                                         </div>
-                                        <a class="btn btn-outline-primary btn-sm" type="button" id="addFileInputBtn" style="display: none;">파일 추가</a>
+                                        <a class="btn btn-outline-primary btn-sm" type="button" id="addFileInputBtn">파일 추가</a>
                                         <!--<input name="file" id="file" type="file" class="" style="display: none;" multiple/>
                                         <div class="form-group text-start">
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
@@ -736,6 +736,10 @@
     <script>
         {#  화면뜰때 #}
         $(document).ready(function () {
+            // 파일 빈 배열 추가
+            var _arr = new Array(5).fill('');
+            $('#fileListInput').val(JSON.stringify(_arr));
+
             var inputBank = "";
             var cboCust = "";
             var cboAct = "";
@@ -2525,7 +2529,7 @@
 
                     // 증빙서류 파일 리스트 세팅
                     if(list.length > 0) {
-                        var fileList = [list[0][37], list[0][38], list[0][39], list[0][40], list[0][41]];
+                        var fileList = [list[0][38], list[0][39], list[0][40], list[0][41], list[0][42]];
                         $('#fileListInput').val(JSON.stringify(fileList));
 
                         // 뷰어허용 확장자
@@ -2561,11 +2565,6 @@
                             }
                         }
                     }
-
-                    // 파일 추가 버튼 표시
-                    $('#addFileInputBtn').show();
-
-
                 }
             })
 
