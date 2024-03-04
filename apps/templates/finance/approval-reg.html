@@ -217,10 +217,23 @@
                                             <input class="form-control text-start bg-transparent" type="text" id="txtSeqn" name="txtSeqn" style="height: 2rem; font-size: 0.8rem"/>
                                         </div>
                                     </div>
-                                    <div class="row mt-5 mb-0 pb-0">
-                                        <div class="col-9">
+                                    <div class="row mt-2 mb-0 pb-0">
+                                        <div class="col-12 text-start">
+                                            <div class="form-group folderArea">
+                                                <label class="form-label"><i class="fa fa-image me-2"></i>증빙 서류</label>
+                                                <input type="hidden" id="fileListInput" value="[]" />
+                                                <div id="fileList">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="line"/>
+                                    <div class="row mb-0 pb-0">
+                                        <div class="col-4 text-start">
+                                            <label class="form-label subTbLabel"><i class="fa fa-users-line me-2"></i>결재 라인</label>
                                             <div class="table-responsive-sm overflow-auto m-0">
-                                                <table class="table mb-0 align-items-center justify-content-center">
+                                                <table class="table border border-warning mb-0 align-items-center justify-content-center" style="width: 10rem">
                                                     <tbody id="subTb">
                                                     <tr id="#subTr" class="subTr_tr">
                                                     </tr>
@@ -228,28 +241,22 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="col-3">
-                                            <div class="form-group text-end m-0">
-                                            <a class="btn btn-success text-dark btn-sm" type="button" id="btnFileLook">파일 보기</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group buttonLine pt-0 mt-0">
-                                    <div class="row p-0">
-                                        <div class="col-9 text-start">
-                                            <div class="d-flex">
-                                                <button class="btn btn-sm btn-success me-4" id="btnApv" name="btnApv"><i class="fa fa-file-signature fs-6 pe-3"></i>결 재</button>
-                                                <button class="btn btn-sm btn-instagram me-4" id="btnAbt" name="btnAbt"><i class="fa fa-file-signature fs-6 pe-3"></i>전 결</button>
-                                                <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fa fa-file-signature fs-6 pe-3"></i>반 려</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row p-0">
-                                        <div class="col-9 text-start">
-                                            <div class="form-group">
-                                                <label class="mt-2 text-sm">반려 사유</label>
-                                                <input class="form-control" id="txtReason" name="txtReason" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                        <div class="col-8 text-start">
+                                            <div class="form-group buttonLine pt-0 mt-0">
+                                                <label class="form-label signLabel"><i class="fa fa-file-signature me-2"></i>결 재</label>
+                                                <div class="row px-3 py-2">
+                                                    <div class="col-12 text-start">
+                                                        <div class="d-flex">
+                                                            <button class="btn btn-sm btn-success me-4" id="btnApv" name="btnApv"><i class="fa fa-file-signature fs-6 pe-3"></i>결 재</button>
+                                                            <button class="btn btn-sm btn-instagram me-4" id="btnAbt" name="btnAbt"><i class="fa fa-file-signature fs-6 pe-3"></i>전 결</button>
+                                                            <button class="btn btn-sm btn-warning" id="btnReturn" name="btnReturn"><i class="fa fa-file-signature fs-6 pe-3"></i>반 려</button>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="text-sm"><i class="fa fa-ban me-2"></i>반려 사유</label>
+                                                            <input class="form-control" id="txtReason" name="txtReason" type="text" style="height: 2rem; font-size: 0.85rem"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -289,20 +296,34 @@
         });
 
         {# 파일 보기 버튼 클릭시 #}
-        $(document).on('click', '#btnFileLook', function () {
-            var ioDate = $("#txtWitRegDate").val();
-            var acSeqn = $("#txtWitSeq").val();
-            var acIogb = $("#cboWitGbn").val();
-            var acCust = $("#cboWitCust").val();
+        {#$(document).on('click', '#btnFileLook', function () {#}
+        {#    var ioDate = $("#txtWitRegDate").val();#}
+        {#    var acSeqn = $("#txtWitSeq").val();#}
+        {#    var acIogb = $("#cboWitGbn").val();#}
+        {#    var acCust = $("#cboWitCust").val();#}
+        {##}
+        {#    location.href = "{% url 'download_file' %}?ioDate=" + ioDate + "&acSeqn=" + acSeqn + "&acIogb=" + acIogb + "&acCust=" + acCust;#}
+        {#});#}
 
-            location.href = "{% url 'download_file' %}?ioDate=" + ioDate + "&acSeqn=" + acSeqn + "&acIogb=" + acIogb + "&acCust=" + acCust;
-        });
+        function checkOnlyOne(element) {
 
+          const checkboxes
+              = document.getElementsByName("chkApv[]");
+
+          checkboxes.forEach((cb) => {
+            cb.checked = false;
+          })
+
+          element.checked = true;
+        }
     </script>
 
     <script>
         $(document).ready(function () {
             $('.buttonLine').hide();
+            $('.subTbLabel').hide();
+            $('.folderArea').hide();
+            $('.line').hide();
             var gbn = document.getElementById('inputGbn').value
             document.getElementById('txtDate').valueAsDate = new Date;
 
@@ -486,6 +507,7 @@
             $("#txtTitle").val("");
             $("#txtExDate").val("");
             $("#subTb").html("");
+            $('.subTbLabel').hide();
             $('.buttonLine').hide();
             $(this).removeClass('bg-gray-100');
 
@@ -591,19 +613,6 @@
             })
         });
 
-
-        function checkOnlyOne(element) {
-
-          const checkboxes
-              = document.getElementsByName("chkApv[]");
-
-          checkboxes.forEach((cb) => {
-            cb.checked = false;
-          })
-
-          element.checked = true;
-        }
-
         $(document).on('change', '#mainTable tbody tr td:first-child input[type=checkbox]', function() {
 
             {#$('#mainTb .mainTr_tr').removeClass('active');#}
@@ -634,7 +643,7 @@
             $("#txtWitRemark").val("");
             $("#txtFolder").val("");
             $("#txtSeqn").val("");
-
+            $('.subTbLabel').show();
 
             var chk_cust_id_arr = [];
             if($(this).is(':checked')) {
@@ -663,6 +672,7 @@
                         var list2 = data.mainList;
 
                         $('.buttonLine').show();
+                        $('.line').show();
 
                         for (var i = 0; i < list2.length; i++) {
                             $("#txtWitSeq").val(list2[i][11])
@@ -733,7 +743,6 @@
                         var empCode = document.getElementById('empCode').value
 
                         $("#subTb").html("");
-                        $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                         for (var i = 0; i < list.length; i++) {
 
                             if(list[i][1] == empCode && list[i][7] == 'Y'){
@@ -742,20 +751,73 @@
 
                             if(list[i][7] == 'Y'){
                                 $("#subTb").append(
-                                    "<td class='text-center rounded-2 border border-warning font-weight-bolder text-dark p-1' style='font-size: 0.85rem; background-color: #fbdcd8'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                    "<tr id='#subTr' class='subTr_tr'>" +
+                                    "<td class='text-center border border-warning font-weight-bolder text-dark p-1' style='font-size: 0.85rem; background-color: #fbdcd8; max-width: 5rem'>" + list[i][0] + "." + list[i][2] + "</td> " +
+                                    "</tr> ");
                             }
                             if(list[i][7] == 'N'){
                                 $("#subTb").append(
-                                    "<td class='text-center rounded-2 border border-warning bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list[i][0] + "." + list[i][2] + "</td> ");
+                                    "<tr id='#subTr' class='subTr_tr'>" +
+                                    "<td class='text-center border border-warning bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem; max-width: 5rem'>" + list[i][0] + "." + list[i][2] + "</td> " +
+                                    "</tr> ");
                             }
 
                         }
                         $("#subTb").append("<tr id='#subTr' class='subTr_tr'>" + "</tr> ");
                         for (var i = 0; i < list.length; i++) {
                             $("#subTb").append(
-                                "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> ");
+                                "<tr id='#subTr' class='subTr_tr'>" +
+                                "<td hidden class='text-center p-1' style='font-size: 0.85rem; max-width: 5rem'>" + list[i][0] + "</td> " +
+                                "</tr> ");
                         }
 
+                        $('.folderArea').show();
+                        // 증빙서류 파일 리스트 세팅
+                        if(list2.length > 0) {
+                            var fileList = [list2[0][14], list2[0][15], list2[0][16], list2[0][17], list2[0][18]];
+                            $('#fileListInput').val(JSON.stringify(fileList));
+
+                            // 뷰어허용 확장자
+                            var viewer_allow_ext = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+
+                            $('#fileList').empty();
+
+                            for (var i = 0; i < fileList.length; i++) {
+                                if (fileList[i] != '') {
+
+                                    // 파일명
+                                    var fileName = fileList[i].split('/')[fileList[i].split('/').length - 1];
+
+                                    // 파일 확장자
+                                    var file_ext = fileName.split('.').pop().toLowerCase();
+
+                                    // 뷰어 지원하는 확장자인지 체크
+                                    var is_viewer_allow_ext = viewer_allow_ext.indexOf(file_ext) != -1 ? true : false;
+
+                                    var ele =   `<table>
+                                                    <tbody>
+                                                        <tr class="border border-light border-top-0 border-bottom border-end-0 border-start-0" style="border-width: 20rem;">
+                                                            <td class="m-0 p-0 pt-2"><input name="file${i+1}" id="file${i+1}" type="file" class="file" style="display: none;" data-findex="${i+1}" /></td>
+                                                            <td class="m-0 p-0 pt-2">
+                                                                <!--<a class="btn btn-outline-dark mb-2 btn-sm btnFile" type="button" id="btnFile${i+1}" data-findex="${i+1}">파일 선택</a>-->
+                                                                <span id="file_name${i+1}" class="file_name">
+                                                                    <a href="${fileList[i]}" class="btn btn-sm btn-white mb-2 text-dark" target="_blank">${fileName}</a>
+                                                                </span>
+                                                            </td>
+                                                            <td class="m-0 p-0 pt-2">${is_viewer_allow_ext ? `<a class="btn btn-outline-primary mb-2 btn-sm btnFileLook" type="button" id="btnFileLook${i+1}" data-uri="${fileList[i]}">파일 보기</a>` : ''}</td>
+                                                            <td class="m-0 p-0 pt-2">
+                                                                <!--<span class="btnFileDelWrapper${i+1}">
+                                                                    <a class="btn btn-outline-danger btn-sm mb-2 btnFileDel" type="button" id="btnFileDel${i+1}" data-findex="${i+1}">선택 취소</a>
+                                                                </span>-->
+                                                                <input type="hidden" name="file_del_yn${i+1}" id="file_del_yn${i+1}" class="file_del_yn" value="N" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>`;
+                                    $('#fileList').append(ele);
+                                }
+                            }
+                        }
 
                         if (cboWitMethod == '1') {
                             $('.colCust').hide();
@@ -966,6 +1028,39 @@
         {#        }#}
         {#    })#}
         {#});#}
+
+        $(document).on('click', '.btnFileLook', function() {
+            // 파일 경로
+            var file_uri = $(this).data('uri');
+
+            // 파일 확장자
+            var file_ext = file_uri.split('.').pop().toLowerCase();
+
+            // 뷰어허용 확장자
+            var viewer_allow_ext = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf', 'doc', 'docx', 'xls', 'xlsx'];
+
+            // MS뷰어에서 지원하는 확장자
+            var ms_viewer_allow_ext = ['doc', 'docx', 'xls', 'xlsx'];
+
+            if(file_uri != ''){
+
+                if(viewer_allow_ext.indexOf(file_ext) == -1){
+                    alert('지원하지 않는 파일 형식입니다.');
+                    return;
+                }
+
+                if(ms_viewer_allow_ext.indexOf(file_ext) != -1){
+                    // MS뷰어에서 지원하는 확장자면 뷰어로 열기
+                    file_uri = encodeURIComponent(file_uri);
+                    window.open("{% url 'file_viewer' %}" + '?file_uri=' + file_uri, "_blank");
+                } else {
+                    window.open(file_uri, "_blank");
+                }
+            } else {
+                alert('파일이 존재하지 않습니다.');
+                return;
+            }
+        });
 
     </script>
 

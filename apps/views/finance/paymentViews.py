@@ -2074,7 +2074,7 @@ def paymentViews_save(request):
             os.makedirs(settings.MEDIA_ROOT)
 
         # static/media 하위에 파일 저장을 위한 상대 경로 생성
-        relative_path = os.path.join('/static/media', uploaded_file.name)
+        relative_path = os.path.join('/static/media/', uploaded_file.name)
 
         # 실제 파일 시스템에 저장될 전체 경로 생성
         destination = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)

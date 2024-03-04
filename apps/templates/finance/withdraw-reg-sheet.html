@@ -345,20 +345,62 @@
                             </div>
                         </div>
                         <div class="card-footer mt-0 pt-0">
-                            <div class="form-group folderArea">
-                                <div class="row mt-3">
-{#                                    <div class="col-6 text-start">#}
-{#                                        <label class="mt-4 form-label">Starting Files</label>#}
-{#                                        <form action="/file-upload" class="form-control dropzone" id="dropzone">#}
-{#                                          <div class="fallback">#}
-{#                                            <input class="" name="file" type="file" multiple/>#}
-{#                                          </div>#}
-{#                                        </form>#}
-{#                                    </div>#}
-                                    <div  class="col-6 text-start">
-                                        <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
-                                        <p class="text-success" style="font-size: 0.8rem">파일을 한번에 여러개 선택해주세요.</p>
+                            <div class="row mt-3">
+                                <div class="col-12 text-start line">
+                                    <label class="form-label" id="lineLabel"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
+                                    <div class="form-group mt-2 mb-0">
+                                        <div class="row">
+                                            <div class="col-12 text-start">
+                                                <div class="d-flex">
+                                                    <button type="button" class="btn btn-sm btn-dark me-3" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
+                                                    {% if request.session.USER_GBN != '3' %}
+                                                    <button type="button" class="btn btn-sm btn-warning btnApv" style="width: 10vw" id="btnApv" name="btnApv" value="">전결</button>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div hidden class="col-12 text-start">
+                                                <input readonly class="form-control border-0 shadow-none bg-transparent" type="text" id="txtApvAll"  name="txtApvAll" style="font-size: 1rem"/>
+                                                <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive-sm overflow-auto bg-transparent">
+                                        <table class="table mb-0 border-0 text-white align-items-center justify-content-center" id="signTb">
+                                          <tbody class="bg-transparent text-center border-0 text-white" id="signTd">
 
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="file_name"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-start">
+                                    <div class="form-group apvArea">
+                                        <label class="form-label"><i class="fas fa-users-line me-2"></i>결재 라인</label>
+                                        <div class="table-responsive-sm border border-warning overflow-auto m-0">
+                                            <table class="table mb-0 align-items-center justify-content-center">
+                                                <tbody id="subTb">
+                                                <tr id="#subTr" class="subTr_tr">
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12 text-start">
+                                    <div class="form-group folderArea">
+                                    <!--<div class="col-6 text-start">
+                                        <label class="mt-4 form-label">Starting Files</label>
+                                        <form action="/file-upload" class="form-control dropzone" id="dropzone">
+                                          <div class="fallback">
+                                            <input class="" name="file" type="file" multiple/>
+                                          </div>
+                                        </form>
+                                    </div>-->
+                                        <label class="form-label"><i class="fas fa-image me-2"></i>증빙서류 등록</label>
                                         <input type="hidden" id="fileListInput" value="[]" />
                                         <div id="fileList">
 
@@ -369,48 +411,6 @@
                                             <a class="btn btn-outline-dark btn-sm" type="button" id="btnFile">파일 선택</a>
                                             <a class="btn btn-outline-danger btn-sm" type="button" id="btnFileLook">파일 보기</a>
                                         </div>-->
-                                    </div>
-                                    <div class="col-6 text-start line">
-                                        <label class="form-label" id="lineLabel"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
-                                        <div class="form-group mt-2 mb-0">
-                                            <div class="row">
-                                                <div class="col-12 text-start">
-                                                    <div class="d-flex">
-                                                        <button type="button" class="btn btn-sm btn-dark me-3" style="width: 10vw" id="btnDst" name="btnDst" data-bs-toggle='modal' data-bs-target='#DecisionModal'>내부 결재</button>
-                                                        {% if request.session.USER_GBN != '3' %}
-                                                        <button type="button" class="btn btn-sm btn-warning btnApv" style="width: 10vw" id="btnApv" name="btnApv" value="">전결</button>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div hidden class="col-12 text-start">
-                                                    <input readonly class="form-control border-0 shadow-none bg-transparent" type="text" id="txtApvAll"  name="txtApvAll" style="font-size: 1rem"/>
-                                                    <input readonly class="form-control border-0 text-danger shadow-none bg-transparent" type="text" id="warning"  name="warning" style="font-size: 1rem"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive-sm overflow-auto bg-transparent">
-                                            <table class="table mb-0 border-0 text-white align-items-center justify-content-center" id="signTb">
-                                              <tbody class="bg-transparent text-center border-0 text-white" id="signTd">
-
-                                              </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div id="file_name"></div>
-                                </div>
-                            </div>
-                            <div class="form-group apvArea">
-                                <div class="row mt-3">
-                                    <div class="col-lg-12 col-12">
-                                        <label class="form-label"><i class="fas fa-users-line me-2"></i>결재 라인</label>
-                                        <div class="table-responsive-sm overflow-auto m-0">
-                                            <table class="table mb-0 align-items-center justify-content-center">
-                                                <tbody id="subTb">
-                                                <tr id="#subTr" class="subTr_tr">
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1586,7 +1586,7 @@
         {#});#}
 
         {# 파일 보기 버튼 클릭시 #}
-        $(document).on('click', '#btnFileLook', function () {
+        $(document).on('click', '#btnFileLook', function (){
             var ioDate = $("#txtWitRegDate").val();
             var acSeqn = $("#txtWitSeq").val();
             var acIogb = $("#cboWitGbn").val();
@@ -2503,11 +2503,11 @@
                     for (var i = 0; i < list2.length; i++) {
                         if(list2[i][7] == 'Y'){
                             $("#subTb").append(
-                                "<td class='text-center rounded-2 border border-warning font-weight-bolder text-dark p-1' style='font-size: 0.85rem; background-color: #fbdcd8'>" + list2[i][0] + "." + list2[i][2] + "</td> ");
+                                "<td class='text-center border border-warning font-weight-bolder text-dark p-1' style='font-size: 0.85rem; background-color: #fbdcd8'>" + list2[i][0] + "." + list2[i][2] + "</td> ");
                         }
                         if(list2[i][7] == 'N'){
                             $("#subTb").append(
-                                "<td class='text-center rounded-2 border border-warning bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list2[i][0] + "." + list2[i][2] + "</td> ");
+                                "<td class='text-center border border-warning bg-white font-weight-bolder text-dark p-1' style='font-size: 0.85rem'>" + list2[i][0] + "." + list2[i][2] + "</td> ");
                         }
                     }
 
@@ -2549,18 +2549,39 @@
                                 // 뷰어 지원하는 확장자인지 체크
                                 var is_viewer_allow_ext = viewer_allow_ext.indexOf(file_ext) != -1 ? true : false;
 
-                                var ele =   `<div class="form-group text-start file-wrapper">
-                                                <input name="file${i+1}" id="file${i+1}" type="file" class="file" style="display: none;" data-findex="${i+1}" />
-                                                <a class="btn btn-outline-dark btn-sm btnFile" type="button" id="btnFile${i+1}" data-findex="${i+1}">파일 선택</a>
-                                                <span id="file_name${i+1}" class="file_name">
-                                                    <a href="${fileList[i]}" class="btn btn-sm btn-outline-info text-dark" target="_blank">${fileName}</a>
-                                                </span>
-                                                ${is_viewer_allow_ext ? `<a class="btn btn-outline-danger btn-sm btnFileLook" type="button" id="btnFileLook${i+1}" data-uri="${fileList[i]}">파일 보기</a>` : ''}
-                                                <span class="btnFileDelWrapper${i+1}">
-                                                    <a class="btn btn-outline-danger btn-sm btnFileDel" type="button" id="btnFileDel${i+1}" data-findex="${i+1}">선택 취소</a>
-                                                </span>
-                                                <input type="hidden" name="file_del_yn${i+1}" id="file_del_yn${i+1}" class="file_del_yn" value="N" />
-                                            </div>`;
+                                var ele =   `<table>
+                                                <tbody>
+                                                    <tr class="border border-light border-top-0 border-bottom border-end-0 border-start-0">
+                                                        <td class="m-0 p-0 pt-2"><input name="file${i+1}" id="file${i+1}" type="file" class="file" style="display: none;" data-findex="${i+1}" /></td>
+                                                        <td class="m-0 p-0 pt-2">
+                                                            <a class="btn btn-outline-dark mb-2 btn-sm btnFile" type="button" id="btnFile${i+1}" data-findex="${i+1}">파일 선택</a>
+                                                            <span id="file_name${i+1}" class="file_name">
+                                                                <a href="${fileList[i]}" class="btn btn-sm btn-white mb-2 text-dark" target="_blank">${fileName}</a>
+                                                            </span>
+                                                        </td>
+                                                        <td class="m-0 p-0 pt-2">${is_viewer_allow_ext ? `<a class="btn btn-outline-primary mb-2 btn-sm btnFileLook" type="button" id="btnFileLook${i+1}" data-uri="${fileList[i]}">파일 보기</a>` : ''}</td>
+                                                        <td class="m-0 p-0 pt-2">
+                                                            <span class="btnFileDelWrapper${i+1}">
+                                                                <a class="btn btn-outline-danger btn-sm mb-2 btnFileDel" type="button" id="btnFileDel${i+1}" data-findex="${i+1}">선택 취소</a>
+                                                            </span>
+                                                            <input type="hidden" name="file_del_yn${i+1}" id="file_del_yn${i+1}" class="file_del_yn" value="N" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>`;
+
+                                {#var ele =   `<div class="form-group text-start file-wrapper m-0">#}
+                                {#                <input name="file${i+1}" id="file${i+1}" type="file" class="file" style="display: none;" data-findex="${i+1}" />#}
+                                {#                <a class="btn btn-outline-dark btn-sm btnFile" type="button" id="btnFile${i+1}" data-findex="${i+1}">파일 선택</a>#}
+                                {#                <span id="file_name${i+1}" class="file_name">#}
+                                {#                    <a href="${fileList[i]}" class="btn btn-sm btn-outline-info text-dark" target="_blank">${fileName}</a>#}
+                                {#                </span>#}
+                                {#                ${is_viewer_allow_ext ? `<a class="btn btn-outline-primary btn-sm btnFileLook" type="button" id="btnFileLook${i+1}" data-uri="${fileList[i]}">파일 보기</a>` : ''}#}
+                                {#                <span class="btnFileDelWrapper${i+1}">#}
+                                {#                    <a class="btn btn-outline-danger btn-sm btnFileDel" type="button" id="btnFileDel${i+1}" data-findex="${i+1}">선택 취소</a>#}
+                                {#                </span>#}
+                                {#                <input type="hidden" name="file_del_yn${i+1}" id="file_del_yn${i+1}" class="file_del_yn" value="N" />#}
+                                {#            </div>`;#}
                                 $('#fileList').append(ele);
                             }
                         }
