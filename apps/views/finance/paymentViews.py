@@ -180,15 +180,431 @@ def receivePay_search(request):
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     inputBank = request.POST.get('inputBank')
+    empName = request.POST.get('empName')
+    payGbn = request.POST.get('payGbn')
+    Gbn = request.POST.get('Gbn')
     inputCard = request.POST.get('inputCard')
     inputCardNum = request.POST.get('inputCardNum')
+
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT EMP_CLS FROM PIS1TB001 WHERE EMP_NBR = '" + str(creUser) + "' ")
         chkEmp = cursor.fetchall()
 
+
     if chkEmp[0][0] != '':
         if int(chkEmp[0][0]) < 2:
+            if Gbn != '':
+                if Gbn == '1' or Gbn == '4':
+                    with connection.cursor() as cursor:
+                        cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                                       " ("
+                                       " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                       " UNION ALL "
+                                       " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                                       "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                       " UNION ALL "
+                                       " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                                       "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                       " ) AA ")
+                        balresult = cursor.fetchall()
+
+                    with connection.cursor() as cursor:
+                        cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                                       "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                                       "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                                       "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                                       "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')" 
+                                       "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                                       " ( "
+                                       "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                       "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME"
+                                       "     FROM SISACCTT A "
+                                       "     LEFT OUTER JOIN MIS1TB003 B "
+                                       "     ON A.ACCUST = B.CUST_NBR "
+                                       "     LEFT OUTER JOIN ACNUMBER C "
+                                       "     ON A.ACACNUMBER = C.ACNUMBER "
+                                       "     LEFT OUTER JOIN OSCODEM D "
+                                       "     ON A.MCODE = D.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP E "
+                                       "    ON A.ACODE = E.RESKEY "
+                                       "    AND E.RECODE = 'ACD' "
+                                       "    LEFT OUTER JOIN OSCODEM F "
+                                       "    ON A.MCODE = F.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP G "
+                                       "    ON F.GBN = G.RESKEY "
+                                       "    AND G.RECODE = 'CGB' "
+                                       "     WHERE A.ACIOGB = '2' "
+                                       "     AND A.ICUST = '" + str(iCust) + "'"
+                                       "    AND A.MID_OPT = 'Y'"
+                                       "    AND A.FIN_OPT = 'N'"
+                                       "     UNION ALL "
+                                       "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                       "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                                       "     FROM SISACCTT A "
+                                       "     LEFT OUTER JOIN MIS1TB003 B "
+                                       "     ON A.ACCUST = B.CUST_NBR "
+                                       "     LEFT OUTER JOIN ACNUMBER C "
+                                       "     ON A.ACACNUMBER = C.ACNUMBER "
+                                       "     LEFT OUTER JOIN OSCODEM D "
+                                       "     ON A.MCODE = D.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP E "
+                                       "    ON A.ACODE = E.RESKEY "
+                                       "    AND E.RECODE = 'ACD' "
+                                       "    LEFT OUTER JOIN OSCODEM F "
+                                       "    ON A.MCODE = F.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP G "
+                                       "    ON F.GBN = G.RESKEY "
+                                       "    AND G.RECODE = 'CGB' "                                   
+                                       "     WHERE A.ACIOGB = '1' "
+                                       "     AND A.ICUST = '" + str(iCust) + "'"
+                                       "    AND A.MID_OPT = 'Y'"
+                                       "    AND A.FIN_OPT = 'N'"
+                                       " ) AA "
+                                       " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                                       " ORDER BY AA.IODATE ")
+                        mainresult = cursor.fetchall()
+
+                        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+                if Gbn == '2':
+                    with connection.cursor() as cursor:
+                        cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                                       " ("
+                                       " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                       " UNION ALL "
+                                       " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                                       "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                       " UNION ALL "
+                                       " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                                       "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                       " ) AA ")
+                        balresult = cursor.fetchall()
+
+                    with connection.cursor() as cursor:
+                        cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                                       "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                                       "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                                       "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                                       "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')" 
+                                       "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                                       " ( "
+                                       "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                       "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME"
+                                       "     FROM SISACCTT A "
+                                       "     LEFT OUTER JOIN MIS1TB003 B "
+                                       "     ON A.ACCUST = B.CUST_NBR "
+                                       "     LEFT OUTER JOIN ACNUMBER C "
+                                       "     ON A.ACACNUMBER = C.ACNUMBER "
+                                       "     LEFT OUTER JOIN OSCODEM D "
+                                       "     ON A.MCODE = D.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP E "
+                                       "    ON A.ACODE = E.RESKEY "
+                                       "    AND E.RECODE = 'ACD' "
+                                       "    LEFT OUTER JOIN OSCODEM F "
+                                       "    ON A.MCODE = F.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP G "
+                                       "    ON F.GBN = G.RESKEY "
+                                       "    AND G.RECODE = 'CGB' "
+                                       "     WHERE A.ACIOGB = '2' "
+                                       "     AND A.ICUST = '" + str(iCust) + "'"
+                                       "    AND A.MID_OPT = 'N'"
+                                       "    AND A.FIN_OPT = 'N'"
+                                       "     UNION ALL "
+                                       "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                       "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                                       "     FROM SISACCTT A "
+                                       "     LEFT OUTER JOIN MIS1TB003 B "
+                                       "     ON A.ACCUST = B.CUST_NBR "
+                                       "     LEFT OUTER JOIN ACNUMBER C "
+                                       "     ON A.ACACNUMBER = C.ACNUMBER "
+                                       "     LEFT OUTER JOIN OSCODEM D "
+                                       "     ON A.MCODE = D.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP E "
+                                       "    ON A.ACODE = E.RESKEY "
+                                       "    AND E.RECODE = 'ACD' "
+                                       "    LEFT OUTER JOIN OSCODEM F "
+                                       "    ON A.MCODE = F.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP G "
+                                       "    ON F.GBN = G.RESKEY "
+                                       "    AND G.RECODE = 'CGB' "                                   
+                                       "     WHERE A.ACIOGB = '1' "
+                                       "     AND A.ICUST = '" + str(iCust) + "'"
+                                       "    AND A.MID_OPT = 'N'"
+                                       "    AND A.FIN_OPT = 'N'"
+                                       " ) AA "
+                                       " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                                       " ORDER BY AA.IODATE ")
+                        mainresult = cursor.fetchall()
+
+                        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+                if Gbn == '3':
+                    with connection.cursor() as cursor:
+                        cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                                       " ("
+                                       " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                       " UNION ALL "
+                                       " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                                       "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                       " UNION ALL "
+                                       " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                                       "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                       " ) AA ")
+                        balresult = cursor.fetchall()
+
+                    with connection.cursor() as cursor:
+                        cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                                       "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                                       "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                                       "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                                       "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')" 
+                                       "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                                       " ( "
+                                       "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                       "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME"
+                                       "     FROM SISACCTT A "
+                                       "     LEFT OUTER JOIN MIS1TB003 B "
+                                       "     ON A.ACCUST = B.CUST_NBR "
+                                       "     LEFT OUTER JOIN ACNUMBER C "
+                                       "     ON A.ACACNUMBER = C.ACNUMBER "
+                                       "     LEFT OUTER JOIN OSCODEM D "
+                                       "     ON A.MCODE = D.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP E "
+                                       "    ON A.ACODE = E.RESKEY "
+                                       "    AND E.RECODE = 'ACD' "
+                                       "    LEFT OUTER JOIN OSCODEM F "
+                                       "    ON A.MCODE = F.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP G "
+                                       "    ON F.GBN = G.RESKEY "
+                                       "    AND G.RECODE = 'CGB' "
+                                       "     WHERE A.ACIOGB = '2' "
+                                       "     AND A.ICUST = '" + str(iCust) + "'"
+                                       "    AND A.MID_OPT = 'Y'"
+                                       "    AND A.FIN_OPT = 'Y'"
+                                       "     UNION ALL "
+                                       "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                       "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                                       "     FROM SISACCTT A "
+                                       "     LEFT OUTER JOIN MIS1TB003 B "
+                                       "     ON A.ACCUST = B.CUST_NBR "
+                                       "     LEFT OUTER JOIN ACNUMBER C "
+                                       "     ON A.ACACNUMBER = C.ACNUMBER "
+                                       "     LEFT OUTER JOIN OSCODEM D "
+                                       "     ON A.MCODE = D.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP E "
+                                       "    ON A.ACODE = E.RESKEY "
+                                       "    AND E.RECODE = 'ACD' "
+                                       "    LEFT OUTER JOIN OSCODEM F "
+                                       "    ON A.MCODE = F.MCODE "
+                                       "    LEFT OUTER JOIN OSREFCP G "
+                                       "    ON F.GBN = G.RESKEY "
+                                       "    AND G.RECODE = 'CGB' "                                   
+                                       "     WHERE A.ACIOGB = '1' "
+                                       "     AND A.ICUST = '" + str(iCust) + "'"
+                                       "    AND A.MID_OPT = 'Y'"
+                                       "    AND A.FIN_OPT = 'Y'"
+                                       " ) AA "
+                                       " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                                       " ORDER BY AA.IODATE ")
+                        mainresult = cursor.fetchall()
+
+                        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+            if empName != '':
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT EMP_NBR FROM PIS1TB001 WHERE EMP_NME LIKE '%" + str(empName) + "%' ")
+                    result = cursor.fetchall()
+                    empCode = result[0][0]
+
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                                   " ("
+                                   " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                   " UNION ALL "
+                                   " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                                   "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                   " UNION ALL "
+                                   " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                                   "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                   " ) AA ")
+                    balresult = cursor.fetchall()
+
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                                   "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                                   "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                                   "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                                   "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')" 
+                                   "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                                   " ( "
+                                   "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                   "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                   "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                   "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                   "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                   "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME"
+                                   "     FROM SISACCTT A "
+                                   "     LEFT OUTER JOIN MIS1TB003 B "
+                                   "     ON A.ACCUST = B.CUST_NBR "
+                                   "     LEFT OUTER JOIN ACNUMBER C "
+                                   "     ON A.ACACNUMBER = C.ACNUMBER "
+                                   "     LEFT OUTER JOIN OSCODEM D "
+                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP E "
+                                   "    ON A.ACODE = E.RESKEY "
+                                   "    AND E.RECODE = 'ACD' "
+                                   "    LEFT OUTER JOIN OSCODEM F "
+                                   "    ON A.MCODE = F.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP G "
+                                   "    ON F.GBN = G.RESKEY "
+                                   "    AND G.RECODE = 'CGB' "
+                                   "     WHERE A.ACIOGB = '2' "
+                                   "     AND A.ICUST = '" + str(iCust) + "'"
+                                   "     AND A.CRE_USER = '" + str(empCode) + "'"
+                                   "     UNION ALL "
+                                   "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                   "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                   "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                   "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                   "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                   "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                                   "     FROM SISACCTT A "
+                                   "     LEFT OUTER JOIN MIS1TB003 B "
+                                   "     ON A.ACCUST = B.CUST_NBR "
+                                   "     LEFT OUTER JOIN ACNUMBER C "
+                                   "     ON A.ACACNUMBER = C.ACNUMBER "
+                                   "     LEFT OUTER JOIN OSCODEM D "
+                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP E "
+                                   "    ON A.ACODE = E.RESKEY "
+                                   "    AND E.RECODE = 'ACD' "
+                                   "    LEFT OUTER JOIN OSCODEM F "
+                                   "    ON A.MCODE = F.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP G "
+                                   "    ON F.GBN = G.RESKEY "
+                                   "    AND G.RECODE = 'CGB' "                                   
+                                   "     WHERE A.ACIOGB = '1' "
+                                   "     AND A.ICUST = '" + str(iCust) + "'"
+                                   "     AND A.CRE_USER = '" + str(empCode) + "'"
+                                   " ) AA "
+                                   " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                                   " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+            if payGbn != '':
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
+                                   " ("
+                                   " SELECT SUM(IFNULL(ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' "
+                                   " UNION ALL "
+                                   " SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT "
+                                   "        WHERE ACIOGB = '2' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                   " UNION ALL "
+                                   " SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT "
+                                   "        WHERE ACIOGB = '1' AND ACDATE < '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                   " ) AA ")
+                    balresult = cursor.fetchall()
+
+                with connection.cursor() as cursor:
+                    cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                                   "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                                   "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                                   "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                                   "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')" 
+                                   "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                                   " ( "
+                                   "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                   "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                   "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                   "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                   "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                   "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME"
+                                   "     FROM SISACCTT A "
+                                   "     LEFT OUTER JOIN MIS1TB003 B "
+                                   "     ON A.ACCUST = B.CUST_NBR "
+                                   "     LEFT OUTER JOIN ACNUMBER C "
+                                   "     ON A.ACACNUMBER = C.ACNUMBER "
+                                   "     LEFT OUTER JOIN OSCODEM D "
+                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP E "
+                                   "    ON A.ACODE = E.RESKEY "
+                                   "    AND E.RECODE = 'ACD' "
+                                   "    LEFT OUTER JOIN OSCODEM F "
+                                   "    ON A.MCODE = F.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP G "
+                                   "    ON F.GBN = G.RESKEY "
+                                   "    AND G.RECODE = 'CGB' "
+                                   "     WHERE A.ACIOGB = '2' "
+                                   "     AND A.ICUST = '" + str(iCust) + "'"
+                                   "     AND A.ACGUBN = '" + str(payGbn) + "'"
+                                   "     UNION ALL "
+                                   "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                                   "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                                   "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                                   "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                                   "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                                   "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                                   "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                                   "     FROM SISACCTT A "
+                                   "     LEFT OUTER JOIN MIS1TB003 B "
+                                   "     ON A.ACCUST = B.CUST_NBR "
+                                   "     LEFT OUTER JOIN ACNUMBER C "
+                                   "     ON A.ACACNUMBER = C.ACNUMBER "
+                                   "     LEFT OUTER JOIN OSCODEM D "
+                                   "     ON A.MCODE = D.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP E "
+                                   "    ON A.ACODE = E.RESKEY "
+                                   "    AND E.RECODE = 'ACD' "
+                                   "    LEFT OUTER JOIN OSCODEM F "
+                                   "    ON A.MCODE = F.MCODE "
+                                   "    LEFT OUTER JOIN OSREFCP G "
+                                   "    ON F.GBN = G.RESKEY "
+                                   "    AND G.RECODE = 'CGB' "                                   
+                                   "     WHERE A.ACIOGB = '1' "
+                                   "     AND A.ICUST = '" + str(iCust) + "'"
+                                   "     AND A.ACGUBN = '" + str(payGbn) + "'"
+                                   " ) AA "
+                                   " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                                   " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
             if strDate != '' and endDate != '' and cboAct == '' and cboCust == '':
                 with connection.cursor() as cursor:
                     cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
@@ -289,13 +705,11 @@ def receivePay_search(request):
                                    "     UNION ALL "
                                    "    SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT A"
                                    "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
-                                   "           WHERE A.ACIOGB = '2' AND A.ACCUST = '" + str(cboCust) + "' "
-                                   "           AND A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                   "           WHERE A.ACIOGB = '2' AND A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
                                    "    UNION ALL "
                                    "    SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT A"
                                    "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
-                                   "           WHERE A.ACIOGB = '1' AND A.ACCUST = '" + str(cboCust) + "' "
-                                   "           AND A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
+                                   "           WHERE A.ACIOGB = '1' AND A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
                                    " ) AA ")
                     balresult = cursor.fetchall()
 
@@ -465,12 +879,12 @@ def receivePay_search(request):
                                    "     UNION ALL "
                                    "    SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM SISACCTT A"
                                    "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
-                                   "           WHERE A.ACIOGB = '2' AND A.ACCUST = '" + str(cboCust) + "' AND A.ACACNUMBER = '" + str(cboAct) + "' "
+                                   "           WHERE A.ACIOGB = '2' AND A.ACACNUMBER = '" + str(cboAct) + "' "
                                    "           AND A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
                                    "    UNION ALL "
                                    "    SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM SISACCTT A"
                                    "           LEFT OUTER JOIN ACNUMBER B ON A.ACACNUMBER = B.ACNUMBER"
-                                   "           WHERE A.ACIOGB = '1' AND A.ACCUST = '" + str(cboCust) + "' AND A.ACACNUMBER = '" + str(cboAct) + "' "
+                                   "           WHERE A.ACIOGB = '1' AND A.ACACNUMBER = '" + str(cboAct) + "' "
                                    "           AND A.ACDATE < '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND FIN_OPT = 'Y' "
                                    " ) AA ")
                     # cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM ACBALANCE WHERE ACDATE < '" + str(strDate) + "' AND ACNUMBER = '" + str(cboAct) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -548,14 +962,387 @@ def receivePay_search(request):
 
                 return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
-        # 등급이 1이거나 비어있으면 총금액은 조회되지 않는다.
-
+        # 등급이 1이거나 아니면 총금액은 조회되지 않는다.
         if int(chkEmp[0][0]) == 2:
             with connection.cursor() as cursor:
                 cursor.execute(" SELECT EMP_DEPT FROM PIS1TB001 WHERE EMP_NBR = '" + str(creUser) + "' AND ICUST = '" + str(iCust) + "' ")
                 emp = cursor.fetchall()
 
                 empDept = emp[0][0]
+
+            if Gbn != '':
+                if Gbn == '1' or Gbn == '4':
+                    balresult = ''
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                            "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                            "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                            "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                            "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                            "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                            " ( "
+                            "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                            "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                            "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                            "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                            "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                            "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                            "     FROM SISACCTT A "
+                            "     LEFT OUTER JOIN MIS1TB003 B "
+                            "     ON A.ACCUST = B.CUST_NBR "
+                            "     LEFT OUTER JOIN ACNUMBER C "
+                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                            "     LEFT OUTER JOIN OSCODEM D "
+                            "     ON A.MCODE = D.MCODE "
+                            "    LEFT OUTER JOIN OSREFCP E "
+                            "    ON A.ACODE = E.RESKEY "
+                            "    AND E.RECODE = 'ACD' "
+                            "    LEFT OUTER JOIN OSCODEM F "
+                            "    ON A.MCODE = F.MCODE "
+                            "    LEFT OUTER JOIN OSREFCP G "
+                            "    ON F.GBN = G.RESKEY "
+                            "    AND G.RECODE = 'CGB' "
+                            "    LEFT OUTER JOIN PIS1TB001 I "
+                            "    ON A.CRE_USER = I.EMP_NBR "
+                            "    WHERE A.ACIOGB = '2' "
+                            "    AND A.ICUST = '" + str(iCust) + "'"
+                            "    AND A.MID_OPT = 'Y'"
+                            "    AND A.FIN_OPT = 'N'"
+                           "    UNION ALL "
+                           "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                           "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                           "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                           "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                           "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                           "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                           "    FROM SISACCTT A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.ACCUST = B.CUST_NBR "
+                           "    LEFT OUTER JOIN ACNUMBER C "
+                           "    ON A.ACACNUMBER = C.ACNUMBER "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.MCODE = D.MCODE "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACODE = E.RESKEY "
+                           "    AND E.RECODE = 'ACD' "
+                           "    LEFT OUTER JOIN OSCODEM F "
+                           "    ON A.MCODE = F.MCODE "
+                           "    LEFT OUTER JOIN OSREFCP G "
+                           "    ON F.GBN = G.RESKEY "
+                           "    AND G.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN PIS1TB001 I "
+                           "    ON A.CRE_USER = I.EMP_NBR "
+                           "    WHERE A.ACIOGB = '1' "
+                           "    AND A.ICUST = '" + str(iCust) + "'"
+                            "    AND A.MID_OPT = 'Y'"
+                            "    AND A.FIN_OPT = 'N'"
+                           " ) AA "
+                           " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                           " ORDER BY AA.IODATE ")
+                        mainresult = cursor.fetchall()
+                        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+                if Gbn == '2':
+                    balresult = ''
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                            "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                            "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                            "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                            "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                            "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                            " ( "
+                            "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                            "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                            "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                            "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                            "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                            "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                            "     FROM SISACCTT A "
+                            "     LEFT OUTER JOIN MIS1TB003 B "
+                            "     ON A.ACCUST = B.CUST_NBR "
+                            "     LEFT OUTER JOIN ACNUMBER C "
+                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                            "     LEFT OUTER JOIN OSCODEM D "
+                            "     ON A.MCODE = D.MCODE "
+                            "    LEFT OUTER JOIN OSREFCP E "
+                            "    ON A.ACODE = E.RESKEY "
+                            "    AND E.RECODE = 'ACD' "
+                            "    LEFT OUTER JOIN OSCODEM F "
+                            "    ON A.MCODE = F.MCODE "
+                            "    LEFT OUTER JOIN OSREFCP G "
+                            "    ON F.GBN = G.RESKEY "
+                            "    AND G.RECODE = 'CGB' "
+                            "    LEFT OUTER JOIN PIS1TB001 I "
+                            "    ON A.CRE_USER = I.EMP_NBR "
+                            "    WHERE A.ACIOGB = '2' "
+                            "    AND A.ICUST = '" + str(iCust) + "'"
+                            "    AND A.MID_OPT = 'N'"
+                            "    AND A.FIN_OPT = 'N'"
+                           "    UNION ALL "
+                           "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                           "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                           "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                           "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                           "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                           "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                           "    FROM SISACCTT A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.ACCUST = B.CUST_NBR "
+                           "    LEFT OUTER JOIN ACNUMBER C "
+                           "    ON A.ACACNUMBER = C.ACNUMBER "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.MCODE = D.MCODE "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACODE = E.RESKEY "
+                           "    AND E.RECODE = 'ACD' "
+                           "    LEFT OUTER JOIN OSCODEM F "
+                           "    ON A.MCODE = F.MCODE "
+                           "    LEFT OUTER JOIN OSREFCP G "
+                           "    ON F.GBN = G.RESKEY "
+                           "    AND G.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN PIS1TB001 I "
+                           "    ON A.CRE_USER = I.EMP_NBR "
+                           "    WHERE A.ACIOGB = '1' "
+                           "    AND A.ICUST = '" + str(iCust) + "'"
+                            "    AND A.MID_OPT = 'N'"
+                            "    AND A.FIN_OPT = 'N'"
+                           " ) AA "
+                           " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                           " ORDER BY AA.IODATE ")
+                        mainresult = cursor.fetchall()
+                        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+                if Gbn == '3':
+                    balresult = ''
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                            "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                            "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                            "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                            "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                            "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                            " ( "
+                            "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                            "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                            "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                            "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                            "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                            "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                            "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                            "     FROM SISACCTT A "
+                            "     LEFT OUTER JOIN MIS1TB003 B "
+                            "     ON A.ACCUST = B.CUST_NBR "
+                            "     LEFT OUTER JOIN ACNUMBER C "
+                            "     ON A.ACACNUMBER = C.ACNUMBER "
+                            "     LEFT OUTER JOIN OSCODEM D "
+                            "     ON A.MCODE = D.MCODE "
+                            "    LEFT OUTER JOIN OSREFCP E "
+                            "    ON A.ACODE = E.RESKEY "
+                            "    AND E.RECODE = 'ACD' "
+                            "    LEFT OUTER JOIN OSCODEM F "
+                            "    ON A.MCODE = F.MCODE "
+                            "    LEFT OUTER JOIN OSREFCP G "
+                            "    ON F.GBN = G.RESKEY "
+                            "    AND G.RECODE = 'CGB' "
+                            "    LEFT OUTER JOIN PIS1TB001 I "
+                            "    ON A.CRE_USER = I.EMP_NBR "
+                            "    WHERE A.ACIOGB = '2' "
+                            "    AND A.ICUST = '" + str(iCust) + "'"
+                            "    AND A.MID_OPT = 'Y'"
+                            "    AND A.FIN_OPT = 'Y'"
+                           "    UNION ALL "
+                           "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                           "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                           "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                           "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                           "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                           "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                           "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                           "    FROM SISACCTT A "
+                           "    LEFT OUTER JOIN MIS1TB003 B "
+                           "    ON A.ACCUST = B.CUST_NBR "
+                           "    LEFT OUTER JOIN ACNUMBER C "
+                           "    ON A.ACACNUMBER = C.ACNUMBER "
+                           "    LEFT OUTER JOIN OSCODEM D "
+                           "    ON A.MCODE = D.MCODE "
+                           "    LEFT OUTER JOIN OSREFCP E "
+                           "    ON A.ACODE = E.RESKEY "
+                           "    AND E.RECODE = 'ACD' "
+                           "    LEFT OUTER JOIN OSCODEM F "
+                           "    ON A.MCODE = F.MCODE "
+                           "    LEFT OUTER JOIN OSREFCP G "
+                           "    ON F.GBN = G.RESKEY "
+                           "    AND G.RECODE = 'CGB' "
+                           "    LEFT OUTER JOIN PIS1TB001 I "
+                           "    ON A.CRE_USER = I.EMP_NBR "
+                           "    WHERE A.ACIOGB = '1' "
+                           "    AND A.ICUST = '" + str(iCust) + "'"
+                            "    AND A.MID_OPT = 'Y'"
+                            "    AND A.FIN_OPT = 'Y'"
+                           " ) AA "
+                           " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                           " ORDER BY AA.IODATE ")
+                        mainresult = cursor.fetchall()
+                        return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+            if empName != '':
+                with connection.cursor() as cursor:
+                    cursor.execute(" SELECT EMP_NBR FROM PIS1TB001 WHERE EMP_NME LIKE '%" + str(empName) + "%' ")
+                    result = cursor.fetchall()
+                    empCode = result[0][0]
+
+                balresult = ''
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                        "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                        "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                        "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                        " ( "
+                        "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     LEFT OUTER JOIN OSCODEM D "
+                        "     ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '2' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.CRE_USER = '" + str(empCode) + "'"
+                       "    UNION ALL "
+                       "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                       "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                       "    FROM SISACCTT A "
+                       "    LEFT OUTER JOIN MIS1TB003 B "
+                       "    ON A.ACCUST = B.CUST_NBR "
+                       "    LEFT OUTER JOIN ACNUMBER C "
+                       "    ON A.ACACNUMBER = C.ACNUMBER "
+                       "    LEFT OUTER JOIN OSCODEM D "
+                       "    ON A.MCODE = D.MCODE "
+                       "    LEFT OUTER JOIN OSREFCP E "
+                       "    ON A.ACODE = E.RESKEY "
+                       "    AND E.RECODE = 'ACD' "
+                       "    LEFT OUTER JOIN OSCODEM F "
+                       "    ON A.MCODE = F.MCODE "
+                       "    LEFT OUTER JOIN OSREFCP G "
+                       "    ON F.GBN = G.RESKEY "
+                       "    AND G.RECODE = 'CGB' "
+                       "    LEFT OUTER JOIN PIS1TB001 I "
+                       "    ON A.CRE_USER = I.EMP_NBR "
+                       "    WHERE A.ACIOGB = '1' "
+                       "    AND A.ICUST = '" + str(iCust) + "'"
+                       "    AND A.CRE_USER = '" + str(empCode) + "' "
+                       " ) AA "
+                       " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                       " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+            if payGbn != '':
+                balresult = ''
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                        "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                        "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                        "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                        " ( "
+                        "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     LEFT OUTER JOIN OSCODEM D "
+                        "     ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '2' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.ACGUBN = '" + str(payGbn) + "'"
+                       "    UNION ALL "
+                       "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                       "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                       "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                       "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                       "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                       "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                       "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                       "    FROM SISACCTT A "
+                       "    LEFT OUTER JOIN MIS1TB003 B "
+                       "    ON A.ACCUST = B.CUST_NBR "
+                       "    LEFT OUTER JOIN ACNUMBER C "
+                       "    ON A.ACACNUMBER = C.ACNUMBER "
+                       "    LEFT OUTER JOIN OSCODEM D "
+                       "    ON A.MCODE = D.MCODE "
+                       "    LEFT OUTER JOIN OSREFCP E "
+                       "    ON A.ACODE = E.RESKEY "
+                       "    AND E.RECODE = 'ACD' "
+                       "    LEFT OUTER JOIN OSCODEM F "
+                       "    ON A.MCODE = F.MCODE "
+                       "    LEFT OUTER JOIN OSREFCP G "
+                       "    ON F.GBN = G.RESKEY "
+                       "    AND G.RECODE = 'CGB' "
+                       "    LEFT OUTER JOIN PIS1TB001 I "
+                       "    ON A.CRE_USER = I.EMP_NBR "
+                       "    WHERE A.ACIOGB = '1' "
+                       "    AND A.ICUST = '" + str(iCust) + "'"
+                       "    AND A.ACGUBN = '" + str(payGbn) + "' "
+                       " ) AA "
+                       " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                       " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
             if strDate != '' and endDate != '' and cboAct == '' and cboCust == '':
                 balresult = ''
@@ -876,6 +1663,370 @@ def receivePay_search(request):
                 return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
     if chkEmp[0][0] == '' or int(chkEmp[0][0]) > 2:
+        if Gbn != '':
+            if Gbn == '1' or Gbn == '4':
+                balresult = ''
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                        "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                        "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                        "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                        " ( "
+                        "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     LEFT OUTER JOIN OSCODEM D "
+                        "     ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '2' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.MID_OPT = 'Y'"
+                        "    AND A.FIN_OPT = 'N'"
+                        "    UNION ALL "
+                        "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "    FROM SISACCTT A "
+                        "    LEFT OUTER JOIN MIS1TB003 B "
+                        "    ON A.ACCUST = B.CUST_NBR "
+                        "    LEFT OUTER JOIN ACNUMBER C "
+                        "    ON A.ACACNUMBER = C.ACNUMBER "
+                        "    LEFT OUTER JOIN OSCODEM D "
+                        "    ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '1' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.MID_OPT = 'Y'"
+                        "    AND A.FIN_OPT = 'N'"
+                        " ) AA "
+                        " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                        " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+            if Gbn == '2':
+                balresult = ''
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                        "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                        "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                        "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                        " ( "
+                        "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     LEFT OUTER JOIN OSCODEM D "
+                        "     ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '2' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.MID_OPT = 'N'"
+                        "    AND A.FIN_OPT = 'N'"
+                        "    UNION ALL "
+                        "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "    FROM SISACCTT A "
+                        "    LEFT OUTER JOIN MIS1TB003 B "
+                        "    ON A.ACCUST = B.CUST_NBR "
+                        "    LEFT OUTER JOIN ACNUMBER C "
+                        "    ON A.ACACNUMBER = C.ACNUMBER "
+                        "    LEFT OUTER JOIN OSCODEM D "
+                        "    ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '1' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.MID_OPT = 'N'"
+                        "    AND A.FIN_OPT = 'N'"
+                        " ) AA "
+                        " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                        " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+            if Gbn == '3':
+                balresult = ''
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                        "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                        "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                        "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                        "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                        " ( "
+                        "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "     FROM SISACCTT A "
+                        "     LEFT OUTER JOIN MIS1TB003 B "
+                        "     ON A.ACCUST = B.CUST_NBR "
+                        "     LEFT OUTER JOIN ACNUMBER C "
+                        "     ON A.ACACNUMBER = C.ACNUMBER "
+                        "     LEFT OUTER JOIN OSCODEM D "
+                        "     ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '2' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.MID_OPT = 'Y'"
+                        "    AND A.FIN_OPT = 'Y'"
+                        "    UNION ALL "
+                        "    SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                        "           , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                        "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE "
+                        "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                        "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                        "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                        "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                        "    FROM SISACCTT A "
+                        "    LEFT OUTER JOIN MIS1TB003 B "
+                        "    ON A.ACCUST = B.CUST_NBR "
+                        "    LEFT OUTER JOIN ACNUMBER C "
+                        "    ON A.ACACNUMBER = C.ACNUMBER "
+                        "    LEFT OUTER JOIN OSCODEM D "
+                        "    ON A.MCODE = D.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP E "
+                        "    ON A.ACODE = E.RESKEY "
+                        "    AND E.RECODE = 'ACD' "
+                        "    LEFT OUTER JOIN OSCODEM F "
+                        "    ON A.MCODE = F.MCODE "
+                        "    LEFT OUTER JOIN OSREFCP G "
+                        "    ON F.GBN = G.RESKEY "
+                        "    AND G.RECODE = 'CGB' "
+                        "    LEFT OUTER JOIN PIS1TB001 I "
+                        "    ON A.CRE_USER = I.EMP_NBR "
+                        "    WHERE A.ACIOGB = '1' "
+                        "    AND A.ICUST = '" + str(iCust) + "'"
+                        "    AND A.MID_OPT = 'Y'"
+                        "    AND A.FIN_OPT = 'Y'"
+                        " ) AA "
+                        " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                        " ORDER BY AA.IODATE ")
+                    mainresult = cursor.fetchall()
+                    return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+        if empName != '':
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT EMP_NBR FROM PIS1TB001 WHERE EMP_NME LIKE '%" + str(empName) + "%' ")
+                result = cursor.fetchall()
+                empCode = result[0][0]
+
+            balresult = ''
+            with connection.cursor() as cursor:
+                cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                               "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                               "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                               "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                               "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                               "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                               " ( "
+                               "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                               "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                               "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE  "
+                               "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               "     FROM SISACCTT A "
+                               "     LEFT OUTER JOIN MIS1TB003 B "
+                               "     ON A.ACCUST = B.CUST_NBR "
+                               "     LEFT OUTER JOIN ACNUMBER C "
+                               "     ON A.ACACNUMBER = C.ACNUMBER "
+                               "     LEFT OUTER JOIN OSCODEM D "
+                               "     ON A.MCODE = D.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP E "
+                               "    ON A.ACODE = E.RESKEY "
+                               "    AND E.RECODE = 'ACD' "
+                               "    LEFT OUTER JOIN OSCODEM F "
+                               "    ON A.MCODE = F.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP G "
+                               "    ON F.GBN = G.RESKEY "
+                               "    AND G.RECODE = 'CGB' "
+                               "     WHERE A.ACIOGB = '2' "
+                               "     AND A.ICUST = '" + str(iCust) + "'"
+                               "     AND A.CRE_USER = '" + str(empCode) + "'"
+                               "     UNION ALL "
+                               "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                               "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                               "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE  "
+                               "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               "     FROM SISACCTT A "
+                               "     LEFT OUTER JOIN MIS1TB003 B "
+                               "     ON A.ACCUST = B.CUST_NBR "
+                               "     LEFT OUTER JOIN ACNUMBER C "
+                               "     ON A.ACACNUMBER = C.ACNUMBER "
+                               "     LEFT OUTER JOIN OSCODEM D "
+                               "     ON A.MCODE = D.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP E "
+                               "    ON A.ACODE = E.RESKEY "
+                               "    AND E.RECODE = 'ACD' "
+                               "    LEFT OUTER JOIN OSCODEM F "
+                               "    ON A.MCODE = F.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP G "
+                               "    ON F.GBN = G.RESKEY "
+                               "    AND G.RECODE = 'CGB' "                                   
+                               "     WHERE A.ACIOGB = '1' "
+                               "     AND A.ICUST = '" + str(iCust) + "'"
+                               "     AND A.CRE_USER = '" + str(empCode) + "'"
+                               " ) AA "
+                               " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                               " ORDER BY AA.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
+        if payGbn != '':
+            balresult = ''
+            with connection.cursor() as cursor:
+                cursor.execute("  SELECT IFNULL(AA.ACIOGB, ''), IFNULL(AA.IODATE, ''), IFNULL(AA.IN_ACAMTS, 0), IFNULL(AA.OUT_ACAMTS, 0)"
+                               "        , IFNULL(AA.ACCUST, ''), IFNULL(AA.CUST_NME, ''), IFNULL(AA.ACACNUMBER, ''), IFNULL(AA.ACNUM_NAME, '')"
+                               "        , IFNULL(AA.MCODE, ''), IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MCODENM, ''), IFNULL(AA.ACTITLE, '')"
+                               "        , IFNULL(AA.ACSEQN, ''), IFNULL(AA.ACODE, ''), IFNULL(AA.ACODENM, ''), IFNULL(AA.GBN, '')"
+                               "        , IFNULL(AA.GBNNM, ''), IFNULL(AA.APPLYDT, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.GBN, '')"
+                               "        , IFNULL(AA.FIN_OPT, ''), IFNULL(AA.MID_OPT, ''), IFNULL(AA.ACUSE, ''), IFNULL(AA.ACGUBN, ''), IFNULL(AA.NME, '') FROM "
+                               " ( "
+                               "     SELECT A.ACIOGB, A.IODATE, A.ACAMTS AS IN_ACAMTS, 0 AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                               "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                               "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE  "
+                               "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               "     FROM SISACCTT A "
+                               "     LEFT OUTER JOIN MIS1TB003 B "
+                               "     ON A.ACCUST = B.CUST_NBR "
+                               "     LEFT OUTER JOIN ACNUMBER C "
+                               "     ON A.ACACNUMBER = C.ACNUMBER "
+                               "     LEFT OUTER JOIN OSCODEM D "
+                               "     ON A.MCODE = D.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP E "
+                               "    ON A.ACODE = E.RESKEY "
+                               "    AND E.RECODE = 'ACD' "
+                               "    LEFT OUTER JOIN OSCODEM F "
+                               "    ON A.MCODE = F.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP G "
+                               "    ON F.GBN = G.RESKEY "
+                               "    AND G.RECODE = 'CGB' "
+                               "     WHERE A.ACIOGB = '2' "
+                               "     AND A.ICUST = '" + str(iCust) + "'"
+                               "     AND A.ACGUBN = '" + str(payGbn) + "'"
+                               "     UNION ALL "
+                               "     SELECT A.ACIOGB, A.IODATE, 0 AS IN_ACAMTS, A.ACAMTS AS OUT_ACAMTS, A.ACCUST, B.CUST_NME"
+                               "            , A.ACACNUMBER, C.ACNUM_NAME, A.MCODE, A.FIN_OPT, D.MCODENM, A.ACTITLE, A.ACSEQN"
+                               "            , A.ACODE, E.RESNAM AS ACODENM, F.GBN, G.RESNAM AS GBNNM, A.APPLYDT, A.ACGUBN, A.MID_OPT, A.ACUSE  "
+                               "            , IFNULL((SELECT X.EMP_NME FROM OSSIGN Y "
+                               "                LEFT OUTER JOIN PIS1TB001 X ON Y.EMP_NBR = X.EMP_NBR "
+                               "                WHERE Y.ICUST = A.ICUST AND Y.ACDATE = A.IODATE AND Y.ACSEQN = A.ACSEQN AND Y.ACIOGB = A.ACIOGB "
+                               "                AND Y.SEQ = (SELECT IFNULL(MAX(SEQ), '') FROM OSSIGN WHERE ICUST = A.ICUST AND ACDATE = A.IODATE AND ACSEQN = A.ACSEQN AND ACIOGB = A.ACIOGB AND OPT = 'Y')), '') AS NME "
+                               "     FROM SISACCTT A "
+                               "     LEFT OUTER JOIN MIS1TB003 B "
+                               "     ON A.ACCUST = B.CUST_NBR "
+                               "     LEFT OUTER JOIN ACNUMBER C "
+                               "     ON A.ACACNUMBER = C.ACNUMBER "
+                               "     LEFT OUTER JOIN OSCODEM D "
+                               "     ON A.MCODE = D.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP E "
+                               "    ON A.ACODE = E.RESKEY "
+                               "    AND E.RECODE = 'ACD' "
+                               "    LEFT OUTER JOIN OSCODEM F "
+                               "    ON A.MCODE = F.MCODE "
+                               "    LEFT OUTER JOIN OSREFCP G "
+                               "    ON F.GBN = G.RESKEY "
+                               "    AND G.RECODE = 'CGB' "                                   
+                               "     WHERE A.ACIOGB = '1' "
+                               "     AND A.ICUST = '" + str(iCust) + "'"
+                               "     AND A.ACGUBN = '" + str(payGbn) + "'"
+                               " ) AA "
+                               " WHERE AA.IODATE BETWEEN '" + str(strDate) + "' AND '" + str(endDate) + "' "
+                               " ORDER BY AA.IODATE ")
+                mainresult = cursor.fetchall()
+
+            return JsonResponse({'balList': balresult, 'mainList': mainresult})
+
         if strDate != '' and endDate != '' and cboAct == '' and cboCust == '':
             balresult = ''
             with connection.cursor() as cursor:
@@ -1180,7 +2331,6 @@ def receivePay_search(request):
 
             return JsonResponse({'balList': balresult, 'mainList': mainresult})
 
-
     else:
         balresult = ''
         with connection.cursor() as cursor:
@@ -1396,64 +2546,94 @@ def cboList(request):
                 cursor.execute(
                     " SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3' ")
                 cboCust = cursor.fetchall()
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '5%' ORDER BY MCODE ASC ")
+                cboMCode = cursor.fetchall()
+
         if gbn == '2':
             with connection.cursor() as cursor:
                 cursor.execute(
                     " SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_GBN = '1' OR CUST_GBN = '3' ")
                 cboCust = cursor.fetchall()
 
-    # 입출금구분
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
-        cboGgn = cursor.fetchall()
-
-    # 관리계정
-    if gbn != '':
-        if gbn == '1':
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    " SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '5%' ORDER BY MCODE ASC ")
-                cboMCode = cursor.fetchall()
-        if gbn == '2':
             with connection.cursor() as cursor:
                 cursor.execute(
                     " SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' AND MCODE LIKE '4%' ORDER BY MCODE ASC ")
                 cboMCode = cursor.fetchall()
 
+        # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(
+                iCust) + "' ORDER BY RESKEY ")
+            cboPay = cursor.fetchall()
+
+        # 계좌번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
+            cboAcnumber = cursor.fetchall()
+
+        # 카드번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
+            cboCard = cursor.fetchall()
+
+        # 은행명
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(
+                    iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cboBank = cursor.fetchall()
+
+        # 입출금구분
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'OUA' AND ICUST = '" + str(
+                iCust) + "' ORDER BY RESKEY ")
+            cboGgn = cursor.fetchall()
+
+        # 카드명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cardName = cursor.fetchall()
+
+            return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay,
+                                 'cboAcnumber': cboAcnumber, 'cboCard': cboCard,
+                                 "cboBank": cboBank, "cardName": cardName})
     # 회계게정
     # with connection.cursor() as cursor:
     #     cursor.execute(" SELECT ACODE, ACODENM FROM OSCODEA WHERE ICUST = '" + iCust + "' ORDER BY ACODE ASC ")
     #     cboACode = cursor.fetchall()
 
-    # 결제방법
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
-        cboPay = cursor.fetchall()
+    if gbn == '':
+        # 결제방법
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'PGB' AND ICUST = '" + str(iCust) + "' ORDER BY RESKEY ")
+            cboPay = cursor.fetchall()
 
-    # 계좌번호
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
-        cboAcnumber = cursor.fetchall()
+        # 계좌번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
+            cboAcnumber = cursor.fetchall()
 
-    # 카드번호
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
-        cboCard = cursor.fetchall()
+        # 카드번호
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "' ")
+            cboCard = cursor.fetchall()
 
-    # 은행명
-    with connection.cursor() as cursor:
-        cursor.execute(
-            " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
-        cboBank = cursor.fetchall()
+        # 은행명
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD ")
+            cboBank = cursor.fetchall()
 
-    # 카드명
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
-        cardName = cursor.fetchall()
+        # 카드명
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'COC' AND ICUST = '" + str(iCust) + "' ")
+            cardName = cursor.fetchall()
 
-
-        return JsonResponse({'cboCust': cboCust, 'cboGgn': cboGgn, 'cboMCode': cboMCode, 'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard,
-                             "cboBank": cboBank, "cardName": cardName})
+            return JsonResponse({'cboPay': cboPay, 'cboAcnumber': cboAcnumber, 'cboCard': cboCard,
+                                 "cboBank": cboBank, "cardName": cardName})
 
 
 
