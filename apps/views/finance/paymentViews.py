@@ -46,7 +46,7 @@ def chkDate(request):
 
         return JsonResponse({'chkDate': chkDate, "chkBank": chkBank, "chkAct": chkAct})
 
-    if method == '3' and cardNum != '':
+    if method == '3' and cardNum != '' or method == '4' and cardNum != '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACPAYDTE FROM ACCARD WHERE CARDNUM = '" + str(cardNum) + "' AND ICUST = '" + str(iCust) + "'")
         chkDate = cursor.fetchall()

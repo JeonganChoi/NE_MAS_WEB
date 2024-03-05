@@ -1910,22 +1910,22 @@
                             $('.line').hide();
 
                             $('.basic').show();
-                            if(cboWitMethod == '4'){
-
-                                $('.txtUser').show();
-                                $('.cboCard').hide();
-                                $('.cboBank').hide();
-                                $('.cboAct').hide();
-                                $('.writer').hide();
-                                $('.cashDate').show();
-                                $('.cardName').hide();
-                                $('.cboCust').hide();
-                                $('.txtApply').show();
-                                $('.txtExpect').hide();
-                                $('.creUser').show();
-                                $('.checkPre').show();
-                            }
-                            else if(cboWitMethod == '3'){
+                            {#if(cboWitMethod == '4'){#}
+                            {##}
+                            {#    $('.txtUser').show();#}
+                            {#    $('.cboCard').hide();#}
+                            {#    $('.cboBank').hide();#}
+                            {#    $('.cboAct').hide();#}
+                            {#    $('.writer').hide();#}
+                            {#    $('.cashDate').show();#}
+                            {#    $('.cardName').hide();#}
+                            {#    $('.cboCust').hide();#}
+                            {#    $('.txtApply').show();#}
+                            {#    $('.txtExpect').hide();#}
+                            {#    $('.creUser').show();#}
+                            {#    $('.checkPre').show();#}
+                            {#}#}
+                            if(cboWitMethod == '3' || cboWitMethod == '4'){
 
                                 $('.txtUser').show();
                                 $('.cboBank').hide();
@@ -2432,21 +2432,21 @@
                             }
 
                             $('.basic').show();
-                            if(cboWitMethod == '4'){
-                                $('.txtUser').show();
-                                $('.cboCard').hide();
-                                $('.cboBank').hide();
-                                $('.cboAct').hide();
-                                $('.writer').hide();
-                                $('.cashDate').show();
-                                $('.cardName').hide();
-                                $('.cboCust').hide();
-                                $('.txtApply').show();
-                                $('.txtExpect').hide();
-                                $('.creUser').show();
-                                $('.checkPre').show();
-                            }
-                            else if(cboWitMethod == '3'){
+                            {#if(cboWitMethod == '4'){#}
+                            {#    $('.txtUser').show();#}
+                            {#    $('.cboCard').hide();#}
+                            {#    $('.cboBank').hide();#}
+                            {#    $('.cboAct').hide();#}
+                            {#    $('.writer').hide();#}
+                            {#    $('.cashDate').show();#}
+                            {#    $('.cardName').hide();#}
+                            {#    $('.cboCust').hide();#}
+                            {#    $('.txtApply').show();#}
+                            {#    $('.txtExpect').hide();#}
+                            {#    $('.creUser').show();#}
+                            {#    $('.checkPre').show();#}
+                            {#}#}
+                            if(cboWitMethod == '3' || cboWitMethod == '4'){
                                 $('.txtUser').show();
                                 $('.cboBank').hide();
                                 $('.cardName').show();
@@ -2596,27 +2596,27 @@
             $('.basic').show();
 
             {# 체크카드 #}
-            if(method == '4'){
-
-                $('.cboCust').hide();
-                $('.cboCard').hide();
-                $('.cboBank').hide();
-                $('.cboAct').hide();
-                $('.writer').hide();
-                $('.cashDate').show();
-                $('.txtUser').show();
-                $('.cardName').hide();
-                $('.txtApply').show();
-                $('.txtExpect').hide();
-                $('.checkPre').show();
-                $('.line').show();
-                $("#txtExDate").val("");
-                $("#cboWitActNum").val("");
-                document.getElementById('txtRegDate').innerHTML = "사용일자";
-
-            }
+            {#if(method == '4'){#}
+            {##}
+            {#    $('.cboCust').hide();#}
+            {#    $('.cboCard').hide();#}
+            {#    $('.cboBank').hide();#}
+            {#    $('.cboAct').hide();#}
+            {#    $('.writer').hide();#}
+            {#    $('.cashDate').show();#}
+            {#    $('.txtUser').show();#}
+            {#    $('.cardName').hide();#}
+            {#    $('.txtApply').show();#}
+            {#    $('.txtExpect').hide();#}
+            {#    $('.checkPre').show();#}
+            {#    $('.line').show();#}
+            {#    $("#txtExDate").val("");#}
+            {#    $("#cboWitActNum").val("");#}
+            {#    document.getElementById('txtRegDate').innerHTML = "사용일자";#}
+            {##}
+            {#}#}
             {# 신용카드 #}
-            else if(method == '3'){
+            if(method == '3' || method == '4'){
 
                 $('.cboCust').hide();
                 $('.cboBank').hide();
@@ -2834,7 +2834,7 @@
             var cboCardName = document.getElementById('cboCardName').value
             var method = document.getElementById('cboWitMethod').value
             var cboCardType = "";
-            if(method == '3'){ cboCardType = '1' }
+            if(method == '3' || method == '4'){ cboCardType = '1' }
             {#if(method == '4'){ cboCardType = '2' }#}
 
             var data = {"cboCardName": cboCardName, "cboCardType": cboCardType}
@@ -2945,7 +2945,7 @@
 
             var date = 0;
             var gbn = "";
-            if(method == '3'){
+            if(method == '3' || method == '4'){
 
                 $.ajax({
                     type: "post",
@@ -3586,7 +3586,7 @@
                 }
             }
             {# 신용카드 #}
-            if(cboWitMethod == '3'){
+            if(cboWitMethod == '3' || cboWitMethod == '4'){
                 if(txtWitRegDate == ''){
                     alert('사용 일자를 입력해주세요.')
                     return false;
@@ -3625,40 +3625,40 @@
                 }
             }
             {# 이체 #}
-            if(cboWitMethod == '4'){
-                if(txtWitRegDate == ''){
-                    alert('사용 일자를 입력해주세요.')
-                    return false;
-                }
-                if(cboAdminCode == ''){
-                    alert('관리 계정을 입력해주세요.')
-                    return false;
-                }
-                if(txtTitle == ''){
-                    alert('제목을 입력해주세요.')
-                    return false;
-                }
-                if(txtWhere == ''){
-                    alert('사용처를 입력해주세요.')
-                    return false;
-                }
-                if(txtWitPrice == ''){
-                    alert('금액을 입력해주세요.')
-                    return false;
-                }
-                if(txtApplyDate == ''){
-                    alert('적용 년월을 선택해주세요.')
-                    return false;
-                }
-                if(txtWitRemark == ''){
-                    alert('세부 내용을 입력해주세요.')
-                    return false;
-                }
-                if(txtCashDate == ''){
-                    alert('지급 요청일을 선택해주세요.')
-                    return false;
-                }
-            }
+            {#if(cboWitMethod == '4'){#}
+            {#    if(txtWitRegDate == ''){#}
+            {#        alert('사용 일자를 입력해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(cboAdminCode == ''){#}
+            {#        alert('관리 계정을 입력해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(txtTitle == ''){#}
+            {#        alert('제목을 입력해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(txtWhere == ''){#}
+            {#        alert('사용처를 입력해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(txtWitPrice == ''){#}
+            {#        alert('금액을 입력해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(txtApplyDate == ''){#}
+            {#        alert('적용 년월을 선택해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(txtWitRemark == ''){#}
+            {#        alert('세부 내용을 입력해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#    if(txtCashDate == ''){#}
+            {#        alert('지급 요청일을 선택해주세요.')#}
+            {#        return false;#}
+            {#    }#}
+            {#}#}
 
 
             var empArr = [];
