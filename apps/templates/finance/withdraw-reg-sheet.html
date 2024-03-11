@@ -2865,8 +2865,8 @@
             var cboCardName = document.getElementById('cboCardName').value
             var method = document.getElementById('cboWitMethod').value
             var cboCardType = "";
-            if(method == '3' || method == '4'){ cboCardType = '1' }
-            {#if(method == '4'){ cboCardType = '2' }#}
+            if(method == '3'){ cboCardType = '1' }
+            if(method == '4'){ cboCardType = '2' }
 
             var data = {"cboCardName": cboCardName, "cboCardType": cboCardType}
 

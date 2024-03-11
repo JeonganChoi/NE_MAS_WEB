@@ -3442,9 +3442,9 @@ def paymentViews_save(request):
                 exDate = ''
                 acDate = ioDate
         # 체크카드시 없을시
-        if acGubn == '4':
-            midOpt = 'Y'
-            finOpt = 'Y'
+        # if acGubn == '4':
+        #     midOpt = 'Y'
+        #     finOpt = 'Y'
         # 현금선택시 예정일지정
         if acGubn == '1':
             exDate = cashDate.replace('-', '')
