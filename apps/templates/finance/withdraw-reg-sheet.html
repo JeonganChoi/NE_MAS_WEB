@@ -93,12 +93,14 @@
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>-->
+                            {% if request.session.USER_GBN == '1' or request.session.USER_GBN == '2' %}
                             <div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>통장명</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
+                            {% endif %}
                             <div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래처</label>
@@ -259,8 +261,10 @@
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 cboAct">
+                                    {% if request.session.USER_GBN == '1' or request.session.USER_GBN == '2' %}
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>계좌번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
+                                    {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1038,7 +1042,7 @@
                                 check = '미시행';
                             }
                             if(list[i][21] == 'Y' ){
-                                apv = '승인';
+                                apv = '결재';
                             }
                             if(list[i][21] == 'R'){
                                 apv = '반려';
@@ -1047,7 +1051,7 @@
                                apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
-                               apv = '미승인';
+                               apv = '미결';
                             }
                             if(list[i][18] == '2'){
                                 cust = list[i][5]
@@ -1113,7 +1117,7 @@
                                 check = '미시행';
                             }
                             if(list[i][21] == 'Y' ){
-                                apv = '승인';
+                                apv = '결재';
                             }
                             if(list[i][21] == 'R'){
                                 apv = '반려';
@@ -1122,7 +1126,7 @@
                                apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
-                               apv = '미승인';
+                               apv = '미결';
                             }
                             if(list[i][18] == '2'){
                                 cust = list[i][5]
@@ -1276,7 +1280,7 @@
                                 check = '미시행';
                             }
                             if(list[i][21] == 'Y' ){
-                                apv = '승인';
+                                apv = '결재';
                             }
                             if(list[i][21] == 'R'){
                                 apv = '반려';
@@ -1285,7 +1289,7 @@
                                apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
-                               apv = '미승인';
+                               apv = '미결';
                             }
                             if(list[i][18] == '2'){
                                 cust = list[i][5]
@@ -1326,7 +1330,7 @@
                                 check = '미시행';
                             }
                             if(list[i][21] == 'Y' ){
-                                apv = '승인';
+                                apv = '결재';
                             }
                             if(list[i][21] == 'R'){
                                 apv = '반려';
@@ -1335,7 +1339,7 @@
                                apv = list[i][24];
                             }
                             if(list[i][21] == 'N' && list[i][24] == ''){
-                               apv = '미승인';
+                               apv = '미결';
                             }
                             if(list[i][18] == '2'){
                                 cust = list[i][5]
