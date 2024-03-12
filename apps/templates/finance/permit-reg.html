@@ -94,14 +94,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 col-4">
-                                <div class="input-group shadow-none sange">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fa fa-search  me-2"></i>상계 금액</label>
-                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20"
-                                           type="text" name="CostOffSet" id="CostOffSet"
-                                           style="height: 2rem; width: 10rem">
-                                    <input type="hidden" id="real_CostOffSet" value="0" />
-                                </div>
+
                             </div>
                             <div hidden class="col-lg-2 col-2">
                                 <label class="me-3" style="font-size: 0.85rem; width: 5rem" id="offLabel"></label>
@@ -113,13 +106,15 @@
                             <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
                                 <colgroup>
                                     <col width="2%">
-                                    <col width="2%">
+                                    <col hidden width="2%">
                                     <col width="8%">
                                     <col width="8%">
                                     <col width="12%">
                                     <col width="6%">
                                     <col width="6%">
                                     <col width="10%">
+                                    <col width="6%">
+                                    <col width="6%">
                                     <col width="6%">
                                     <col width="6%">
                                     <col hidden width="6%">
@@ -129,15 +124,17 @@
                                 </colgroup>
                                 <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue; position: sticky; top: 0; z-index: 1;">
                                 <tr>
-                                    <th style="font-size: 0.85rem; position: sticky; left: 0; background: darkslateblue;" class="p-1 perTh">시행</th>
-                                    <th style="font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: darkslateblue;" class="p-1 apvTh">상계</th>
+                                    <th style="font-size: 0.85rem; position: sticky; left: 0; background: darkslateblue;" class="p-1 perTh">선 택</th>
+                                    <th hidden style="font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: darkslateblue;" class="p-1 apvTh">상계</th>
                                     <th style="font-size: 0.85rem; position: sticky; left: calc(8% - 17px); background: darkslateblue;" class="p-1">등록일자</th>
                                     <th style="font-size: 0.85rem" class="p-1">예정일자</th>
                                     <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                     <th style="font-size: 0.85rem" class="p-1">계정 과목</th>
                                     <th style="font-size: 0.85rem" class="p-1">은 행</th>
                                     <th style="font-size: 0.85rem" class="p-1">계좌번호</th>
-                                    <th style="font-size: 0.85rem" class="p-1">금액</th>
+                                    <th style="font-size: 0.85rem" class="p-1">전표금액</th>
+                                    <th style="font-size: 0.85rem" class="p-1">기결재액</th>
+                                    <th style="font-size: 0.85rem" class="p-1">잔 액</th>
                                     <th style="font-size: 0.85rem" class="p-1">작성자</th>
                                     <th style="font-size: 0.85rem" class="p-1">지급정보</th>
                                 </tr>
@@ -170,11 +167,29 @@
                         <div class="row p-0">
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fa fa-circle-exclamation me-2"></i>이체 구분</label>
+                                    <!--<button class="btn btn-sm btn-white font-weight-bold" style="background-color: #a193be" id="cboTransGbn" name="cboTransGbn">시행</button>-->
+                                    <select class="form-control border border-light rounded-1 text-center p-1 font-weight-bold" name="cboTransGbn" id="cboTransGbn" style="height: 2rem; font-size: 0.8rem; max-width: 10rem; background-color: #cdc5dd">
+                                        <option value="1" selected>시행</option>
+                                        <option value="2">상계</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none sange">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
+                                            class="fa fa-search  me-2"></i>상계 금액</label>
+                                    <input class="form-control border border-light rounded-1 text-end me-2 w-20"
+                                           type="text" name="CostOffSet" id="CostOffSet"
+                                           style="height: 2rem; width: 10rem">
+                                    <input type="hidden" id="real_CostOffSet" value="0" />
+                                </div>
+                                <div hidden class="input-group shadow-none">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>시행 일자</label>
                                     <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-4">
+                            <div hidden class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌 번호</label>
                                     <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actNumber" id="actNumber" style="height: 2rem; font-size: 0.8rem"></select>
@@ -235,6 +250,7 @@
     <script>
         $(document).ready(function () {
 
+            var balance = 0;
             var inputBank = "";
             var inputAct = "";
             var inputCust = "";
@@ -251,7 +267,7 @@
             $("#inputBank").html("");
             $("#inputAct").html("");
             $("#inputCard").html("");
-            $("#inputCard").html("");
+            $("#inputCardNum").html("");
             $("#inputCust").html("");
             $("#actNumber").html("");
 
@@ -285,14 +301,17 @@
                     var count = 0;
                     var total = 0;
 
+                    {#"<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: white;'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +#}
                     count = list.length;
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
                     for (var i = 0; i < list.length; i++) {
+
+                        balance = parseInt(list[i][2]) - parseInt(list[i][16])
+
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: white;'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(8% - 17px); background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
@@ -301,6 +320,8 @@
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
@@ -379,6 +400,81 @@
                 }
             })
         });
+
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnSearch", function () {
+
+            var total = 0;
+            var balance = 0;
+
+            var sDate = document.getElementById('inputDate').value;
+            var perDate = sDate.replace(/\-/g, '')
+            var custCode = document.getElementById('inputCust').value;
+            var offSet = $('input[name=inputOffSet]:checked').val();
+            var permitGbn = document.getElementById('inputPermit').value;
+            var bankCode = document.getElementById('inputBank').value;
+            var actCode = document.getElementById('inputAct').value;
+            var inputCard = document.getElementById('inputCard').value;
+            var inputCardNum = document.getElementById('inputCardNum').value;
+
+            if(inputCard != '' && inputCardNum == ''){
+                alert('카드번호를 선택해주세요.')
+                return false
+            }
+            if(bankCode != '' && actCode == ''){
+                alert('계좌번호를 선택해주세요.')
+                return false
+            }
+
+            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "permit_reg_search" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var list = data.mainList;
+
+                    {# 순번, 입.출금구분, 날짜 #}
+                    $("#mainTb").html("");
+                    for (var i = 0; i < list.length; i++) {
+
+                        balance = parseInt(list[i][2]) - parseInt(list[i][16])
+                        $("#mainTb").append(
+                            "<tr id='#mainTr' class='mainTr_tr'>" +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "</tr> ");
+
+                        total += parseInt(list[i][2])
+                    }
+
+                    document.getElementById('inputPrice').value = addComma(total)
+                }
+            })
+        });
+
+
 
         {# 결제방법 선택시 계좌명 바인딩 #}
         $('#inputCard').change(function () {
@@ -556,6 +652,7 @@
                         "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                         "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
+                        "<td hidden class='text-center p-1' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acBank + "</td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
                         "<td hidden class='text-center p-1' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
@@ -613,6 +710,13 @@
            $(this).parents('tr.subTr_tr').find('td[name=acNumber]').text(_val);
         });
 
+        $(document).on('change', 'select[name=cboBank]', function() {
+           var _val = $(this).val();
+
+           $(this).parents('tr.subTr_tr').find('td[name=acBnkCode]').text(_val);
+        });
+
+
         {# 승인 체크박스 선택시 #}
         $(document).on('change', '#selectTb tbody tr td input.chkPer', function () {
             var tr = $(this).parent().parent();
@@ -620,6 +724,7 @@
             var ioDate = iDate.replace(/\-/g, '')
             var acTitle = tr.children().eq(4).text()
             var acMcode = tr.children().eq(16).text()
+            alert(acMcode)
             var acBank = tr.children().eq(6).text()
             var acNum = tr.children().eq(8).text()
             var acAmts = tr.children().eq(9).text()
@@ -653,7 +758,11 @@
             $("#cboBank_"+count).html("");
             $("#cboMcode_"+count).html("");
 
-            let data = {"acIogb": acIogb}
+            // 시행/상계 구분
+            var transGbn = document.getElementById('cboTransGbn').value;
+
+
+            let data = {"acIogb": acIogb, "transGbn": transGbn}
 
             $.ajax({
                 type: "post",
@@ -721,9 +830,11 @@
                         "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                         "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acBank + "</td> " +
                         "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
                         "</tr> ");
 
 
@@ -769,74 +880,6 @@
         {#   }#}
         {#});#}
 
-        {# 조회 버튼 #}
-        $(document).on('click', "#btnSearch", function () {
-
-            var sDate = document.getElementById('inputDate').value;
-            var perDate = sDate.replace(/\-/g, '')
-            var custCode = document.getElementById('inputCust').value;
-            var offSet = $('input[name=inputOffSet]:checked').val();
-            var permitGbn = document.getElementById('inputPermit').value;
-            var bankCode = document.getElementById('inputBank').value;
-            var actCode = document.getElementById('inputAct').value;
-            var inputCard = document.getElementById('inputCard').value;
-            var inputCardNum = document.getElementById('inputCardNum').value;
-
-            if(inputCard != '' && inputCardNum == ''){
-                alert('카드번호를 선택해주세요.')
-                return false
-            }
-            if(bankCode != '' && actCode == ''){
-                alert('계좌번호를 선택해주세요.')
-                return false
-            }
-
-            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
-
-            $.ajax({
-                type: "post",
-                data: data,
-                url: '{% url "permit_reg_search" %}',
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    var list = data.mainList;
-
-                    var total = 0;
-                    {# 순번, 입.출금구분, 날짜 #}
-                    $("#mainTb").html("");
-                    for (var i = 0; i < list.length; i++) {
-                        $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-1 border-end' style='font-size: 0.85rem; position: sticky; left: calc(4%); background: white;'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "</tr> ");
-
-                        total += parseInt(list[i][2])
-                    }
-
-                    document.getElementById('inputPrice').value = addComma(total)
-                }
-            })
-        });
-
         {#$("#cboActNum_").on("change", function(){#}
         {#    //selected value#}
         {#    $(this).val();#}
@@ -853,7 +896,8 @@
 
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             const subCount = $('#subTb tr').length;
-            var offSet = $('input[name=inputOffSet]:checked').val();
+            var offSet = document.getElementById('cboTransGbn').value;
+            //var offSet = $('input[name=inputOffSet]:checked').val();
             var actNum = document.getElementById('actNumber').value;
             var perDate = document.getElementById('permitDate').value;
 
@@ -869,6 +913,8 @@
                 var acNum = $('#acNumber_' + i).text();
                 var acGubn = $('#acGubn_' + i).text();
                 var mCode = $('#mainCode_' + i).text();
+                var transGbn = $('#acTrans_' + i).text();
+                var acBnkCode = $('#acBnkCode_' + i).text();
 
                 if (acNum == '' || acNum == null) {
                     acNum = document.getElementById('actNumber').value;
@@ -902,7 +948,9 @@
                     'acNum': acNum,
                     'acAmts': acAmts,
                     'acGubn': acGubn,
-                    'mCode': mCode
+                    'mCode': mCode,
+                    'transGbn': transGbn,
+                    'acBnkCode': acBnkCode,
                 };
                 pmtArr.push(data);
             }
