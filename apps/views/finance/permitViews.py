@@ -87,11 +87,11 @@ def permitViews_search(request):
         if permitGbn == '':
             if actCode == '':
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute(" SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -114,11 +114,11 @@ def permitViews_search(request):
 
             if actCode != '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -143,11 +143,11 @@ def permitViews_search(request):
         if permitGbn != '':
             if actCode == '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -170,11 +170,11 @@ def permitViews_search(request):
                 return JsonResponse({"mainList": mainresult})
             if actCode != '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -201,11 +201,11 @@ def permitViews_search(request):
         if permitGbn == '':
             if actCode == '' and inputCardNum == '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -249,11 +249,11 @@ def permitViews_search(request):
 
             if actCode != '' and inputCardNum == '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -298,11 +298,11 @@ def permitViews_search(request):
 
             if actCode == '' and inputCardNum != '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -347,11 +347,11 @@ def permitViews_search(request):
 
             if actCode != '' and inputCardNum != '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -398,11 +398,11 @@ def permitViews_search(request):
         if permitGbn != '':
             if actCode == '' and inputCardNum == '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -446,11 +446,11 @@ def permitViews_search(request):
 
             if actCode != '' and inputCardNum == '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -495,11 +495,11 @@ def permitViews_search(request):
 
             if actCode == '' and inputCardNum != '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -544,11 +544,11 @@ def permitViews_search(request):
 
             if actCode != '' and inputCardNum != '':
                 with connection.cursor() as cursor:
-                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, '') "
+                    cursor.execute("  SELECT IFNULL(A.IODATE, ''), IFNULL(A.ACTITLE, ''), IFNULL(A.ACAMTS, 0) "
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, '') "
+                                   "        , IFNULL(A.FIN_AMTS, 0) "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -683,6 +683,7 @@ def permitViews_save(request):
 
     if offSet == '2':
         balance = 0
+        custCode = ""
         custBank = ""
         custAct = ""
         pmtArrayLists = list(filter(len, pmtArray))
@@ -794,6 +795,7 @@ def permitViews_save(request):
     else:
         pmtArrayLists = list(filter(len, pmtArray))
         for data in range(0, len(pmtArrayLists)):
+            custCode = ""
             custBank = ""
             custAct = ""
             if pmtArrayLists[data]["acIogb"]:
@@ -817,10 +819,29 @@ def permitViews_save(request):
                         custAct = result[0][2]
 
             with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0) FROM SISACCTT "
+                               " WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-","") + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                               " AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ")
+
+                result2 = cursor.fetchall()
+                if (len(result2) != 0):
+                    acode = result2[0][0]
+                    acgubn = result2[0][2]
+                    mcode = result2[0][3]
+                    finAmts = result2[0][4]
+                    orgAmts = result2[0][5]
+
+            final = int(finAmts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
+
+            # 지출금액이 잔액보다 작을때 시행 완료되지않은것으로 처리:
+            if int(final) < int(orgAmts):
+                permit = 'N'
+
+            with connection.cursor() as cursor:
                 cursor.execute(" UPDATE SISACCTT SET "
                                "    ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "'"
                                "  , FIN_OPT = '" + str(permit) + "' "
-                               "  , FIN_AMTS = '" + str(acAmts) + "' "
+                               "  , FIN_AMTS = '" + str(final) + "' "
                                "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
                                "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
                                "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
@@ -829,53 +850,43 @@ def permitViews_save(request):
                 )
                 connection.commit()
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT ACODE, ACCUST, ACGUBN, MCODE FROM SISACCTT "
-                               " WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-","") + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               " AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ")
-
-                result2 = cursor.fetchall()
-                if (len(result2) != 0):
-                    acode = result2[0][0]
-                    acgubn = result2[0][1]
-                    mcode = result2[0][2]
-
+            # 금액이 얼마이던 시행으로 처리
             with connection.cursor() as cursor:
                 cursor.execute(" INSERT INTO ACTSTMENT "
                                "   (    "
                                "     ACDATE "
-                               ",    SEQ "
-                               ",    ACSEQN "
-                               ",    ACIOGB "
-                               ",    ACODE "
-                               ",    ACCUST "
-                               ",    ACCUST_BNK "
-                               ",    ACCUST_ACT "
-                               ",    ACGUBN "
-                               ",    ACAMTS "
-                               ",    ACACNUMBER "
-                               ",    MCODE "
-                               ",    CRE_USER "
-                               ",    CRE_DT "
-                               ",    ICUST "
+                               "    , SEQ "
+                               "    , ACSEQN "
+                               "    , ACIOGB "
+                               "    , ACODE "
+                               "    , ACCUST "
+                               "    , ACCUST_BNK "
+                               "    , ACCUST_ACT "
+                               "    , ACGUBN "
+                               "    , ACAMTS "
+                               "    , ACACNUMBER "
+                               "    , MCODE "
+                               "    , CRE_USER "
+                               "    , CRE_DT "
+                               "    , ICUST "
                                "    ) "
                                "    VALUES "
                                "    (   "
                                "    '" + pmtArrayLists[data]["perDate"].replace("-","") + "' "
-                               ",   (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(perDate).replace("-", "") + "' AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' AND ICUST = '" + str(iCust) + "') "
-                               ",   '" + pmtArrayLists[data]["acSeqn"] + "'"
-                               ",   '" + pmtArrayLists[data]["acIogb"] + "'"
-                               ",   '" + str(acode) + "'"
-                               ",   '" + str(custCode) + "'"
-                               ",   '" + str(custBank) + "'"
-                               ",   '" + str(custAct) + "' "
-                               ",   '" + str(acgubn) + "' "
-                               ",   '" + pmtArrayLists[data]["acAmts"] + "' "
-                               ",   '" + pmtArrayLists[data]["acNum"] + "' "
-                               ",   '" + pmtArrayLists[data]["mCode"] + "' "
-                               ",   '" + str(user) + "' "
-                               ",   date_format(now(), '%Y%m%d') "
-                               ",   '" + str(iCust) + "' "
+                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(perDate).replace("-", "") + "' AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' AND ICUST = '" + str(iCust) + "') "
+                               "    , '" + pmtArrayLists[data]["acSeqn"] + "' "
+                               "    , '" + pmtArrayLists[data]["acIogb"] + "' "
+                               "    , '" + str(acode) + "' "
+                               "    , '" + str(custCode) + "'"
+                               "    , '" + str(custBank) + "'"
+                               "    , '" + str(custAct) + "' "
+                               "    , '" + str(acgubn) + "' "
+                               "    , '" + pmtArrayLists[data]["acAmts"].replace(",","") + "' "
+                               "    , '" + pmtArrayLists[data]["acNum"] + "' "
+                               "    , '" + pmtArrayLists[data]["mCode"] + "' "
+                               "    , '" + str(user) + "' "
+                               "    , date_format(now(), '%Y%m%d') "
+                               "    , '" + str(iCust) + "' "
                                "    )   "
                                )
                 connection.commit()
