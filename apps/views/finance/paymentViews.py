@@ -3126,7 +3126,7 @@ def paymentViews_save(request):
     acDesc = request.POST.get("txtWitRemark")     # 비고
     acUse = request.POST.get("txtWhere")  # 사용처
     acApply = request.POST.get("txtApplyDate")  # 적용년월
-    prePay = request.POST.get("chkPre")  # 선지급
+    # prePay = request.POST.get("chkPre")  # 선지급
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
     acDate = request.POST.get("txtExDate").replace('-', '')
@@ -3295,8 +3295,8 @@ def paymentViews_save(request):
             midOpt = 'Y'
             midOptGbn = 'Y'
         # 선지급
-        if prePay != 'Y':
-            prePay = 'N'
+        # if prePay != 'Y':
+        #     prePay = 'N'
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -3359,11 +3359,10 @@ def paymentViews_save(request):
                     "MID_OPT = %s, " \
                     "FIN_OPT = %s, " \
                     "APPLYDT = %s, " \
-                    "PRE_PAY = %s, " \
                     "UPD_USER = %s, " \
                     "UPD_DT = date_format(now(), '%%Y%%m%%d') " \
 
-            params = [str(acGubn), str(mCode), str(aCode), str(mCode), str(iCust), str(acTitle), str(acAmts), str(acAcnumber), str(acDesc), str(acBank), str(exDate), str(acDate), str(acCard), str(acUse), str(acInfo), str(acCust), str(midOpt), str(finOpt), str(acApply).replace('-', ''), str(prePay), str(creUser)]
+            params = [str(acGubn), str(mCode), str(aCode), str(mCode), str(iCust), str(acTitle), str(acAmts), str(acAcnumber), str(acDesc), str(acBank), str(exDate), str(acDate), str(acCard), str(acUse), str(acInfo), str(acCust), str(midOpt), str(finOpt), str(acApply).replace('-', ''), str(creUser)]
 
             # 기존 파일은 유지하고 새로운 파일만 업데이트함.
             for i in range(len(uploaded_file_path)):
@@ -3457,8 +3456,8 @@ def paymentViews_save(request):
             midOpt = 'Y'
             midOptGbn = 'Y'
         # 선지급
-        if prePay != 'Y':
-            prePay = 'N'
+        # if prePay != 'Y':
+        #     prePay = 'N'
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT ACODE FROM OSCODEM WHERE MCODE = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "' ")
@@ -3497,7 +3496,7 @@ def paymentViews_save(request):
                                ",    ACUSE "
                                ",    APPLYDT "
                                ",    ACINFO "
-                               ",    PRE_PAY "
+                               # ",    PRE_PAY "
                                ",    MID_OPT "
                                ",    MID_OPT_GBN "
                                ",    FIN_OPT "
@@ -3532,7 +3531,7 @@ def paymentViews_save(request):
                                ",    '" + str(acUse) + "'"
                                ",    '" + str(acApply).replace('-', '') + "'"
                                ",    '" + str(acInfo) + "'"
-                               ",    '" + str(prePay) + "' "
+                               # ",    '" + str(prePay) + "' "
                                ",    '" + str(midOpt) + "' "
                                ",    '" + str(midOptGbn) + "' "
                                ",    '" + str(finOpt) + "' "
