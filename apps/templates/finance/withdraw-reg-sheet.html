@@ -28,6 +28,7 @@
             <div class="col-lg-12">
                 <div class="card card-header blur border border-white rounded-2 shadow-xs pb-0">
                     <h6 id="gbn" hidden>{{ request.session.USER_GBN }}</h6>
+                    <input hidden type="text" id="empGbn" name="empGbn" value="{{ request.session.USER_GBN }}"/>
                     <div class="row">
                         <div class="col-lg-6 col-6 text-start px-3 py-2">
                             <h5 class="text-dark font-weight-bold"><i class="fa fa-credit-card fs-4 me-3"></i>입/출금 등록</h5>
@@ -93,14 +94,12 @@
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>-->
-                            {% if request.session.USER_GBN == '1' or request.session.USER_GBN == '2' %}
-                            <div class="col-lg-3 col-3">
+                            <div class="col-lg-3 col-3 inputAct">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>통장명</label>
                                     <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem"></select>
                                 </div>
                             </div>
-                            {% endif %}
                             <div class="col-lg-3 col-3">
                                 <div class="input-group shadow-none">
                                     <label style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>거래처</label>
@@ -157,7 +156,6 @@
                                 <th style="font-size: 0.85rem" class="p-1">거래처/사용처</th>
                                 <th style="font-size: 0.85rem" class="p-1">입 금</th>
                                 <th style="font-size: 0.85rem" class="p-1">출 금</th>
-                                <!--<th style="font-size: 0.85rem" class="p-1">잔 액</th>-->
                                 <th style="font-size: 0.85rem" class="p-1">통장명</th>
                                 <th style="font-size: 0.85rem" class="p-1">결재</th>
                                 <th style="font-size: 0.85rem" class="p-1">승인</th>
@@ -232,12 +230,6 @@
                                         <label class="text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>금액</label>
                                         <input class="form-control text-end" type="text" id="txtWitPrice" name="txtWitPrice" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                    <!--<div class="col-3 checkPre">
-                                        <div class="d-flex">
-                                            <label class="text-sm mt-1 me-3"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>선지급</label>
-                                            <input class="" type="checkbox" id="chkPre" name="chkPre" value="Y" style="font-size: 0.8rem"/>
-                                        </div>
-                                    </div>-->
                                 </div>
                                 <div class="row">
                                     <div class="col-4 cboBank">
@@ -261,10 +253,8 @@
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitCard" id="cboWitCard" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
                                     <div class="col-4 cboAct">
-                                    {% if request.session.USER_GBN == '1' or request.session.USER_GBN == '2' %}
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>계좌번호</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1" name="cboWitActNum" id="cboWitActNum" style="height: 2rem; font-size: 0.8rem"></select>
-                                    {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1197,7 +1187,11 @@
                     $("#inputBank").append(inputBankTxt);
                     $("#inputAct").append(cboActTxt);
 
-
+                    var empGbn = document.getElementById('empGbn').value;
+                    if(empGbn == '3'){
+                        $('.inputAct').hide();
+                        $('.cboAct').hide();
+                    }
                 }
             });
         });
@@ -1360,9 +1354,8 @@
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                                 "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + apv + "</td> " +
                                 "<td class='text-start p-1' style='font-size: 0.85rem'>" + check + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                 "</tr> ");
@@ -1819,14 +1812,6 @@
                             cboBank = list[i][26]
                             cboCardName = list[i][31]
 
-                            {# Y이면 체크박스 체크되야함 #}
-                            if(list[i][36] == 'Y'){
-                                $('#chkPre').val('Y').prop("checked",true);
-                            }
-                            {# N이거나 비어있으면 체크박스 체크되야함 #}
-                            else{
-                                $('#chkPre').val('N').prop("checked",false);
-                            }
 
                             var combolist = data.cboCust;
                             for (var i = 0; i < combolist.length; i++) {
@@ -1973,7 +1958,6 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
-                                //$('.checkPre').hide();
                             }
                             else if(cboWitMethod == '2'){
                                 $('.txtUser').hide();
@@ -1987,7 +1971,6 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
-                                //$('.checkPre').hide();
                             }
                             else if(cboWitMethod == '1'){
                                 $('.txtUser').show();
@@ -2001,7 +1984,6 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
-                                //$('.checkPre').show();
                             }
                         }
                         else{
@@ -2032,12 +2014,6 @@
                                 cboBank = list[i][26]
                                 cboCardName = list[i][31]
 
-                                if(list[i][36] == 'Y'){
-                                    $('#chkPre').prop("checked",true);
-                                }
-                                else{
-                                    $('#chkPre').prop("checked",false);
-                                }
                                 if(list[i][37] == 'Y'){
                                     $('.apvArea').hide();
                                     $('.line').hide();
@@ -2188,14 +2164,6 @@
                                 cboCardName = list[i][31]
 
 
-                                {# Y이면 체크박스 체크되야함 #}
-                                if(list[i][36] == 'Y'){
-                                    $('#chkPre').val('Y').prop("checked",true);
-                                }
-                                {# N이거나 비어있으면 체크박스 체크되야함 #}
-                                else{
-                                    $('#chkPre').val('N').prop("checked",false);
-                                }
                                 if(list[i][37] == 'Y'){
                                     $('.apvArea').hide();
                                     $('.line').hide();
@@ -2370,14 +2338,7 @@
                                 if(list[i][35] != ''){ $("#txtApvAll").val(list[i][35]) }
                                 if(list[i][35] == ''){ $("#txtApvAll").val(check) }
 
-                                {# Y이면 체크박스 체크되야함 #}
-                                if(list[i][36] == 'Y'){
-                                    $('#chkPre').val('Y').prop("checked",true);
-                                }
-                                {# N이거나 비어있으면 체크박스 체크되야함 #}
-                                else{
-                                    $('#chkPre').val('N').prop("checked",false);
-                                }
+
                                 if(list[i][37] == 'Y'){
                                     $('.apvArea').hide();
                                     $('.line').hide();
@@ -2493,7 +2454,6 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
-                                //$('.checkPre').hide();
                             }
                             else if(cboWitMethod == '2'){
                                 $('.txtUser').hide();
@@ -2507,7 +2467,6 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').show();
                                 $('.creUser').show();
-                                //$('.checkPre').hide();
                             }
                             else if(cboWitMethod == '1'){
                                 $('.txtUser').show();
@@ -2521,7 +2480,6 @@
                                 $('.txtApply').show();
                                 $('.txtExpect').hide();
                                 $('.creUser').show();
-                                //$('.checkPre').show();
                             }
                         }
                     }
@@ -2663,7 +2621,6 @@
                 $('.txtUser').show();
                 $('.txtApply').show();
                 $('.txtExpect').show();
-                //$('.checkPre').hide();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2730,7 +2687,6 @@
                 $('.cboCust').show();
                 $('.txtApply').show();
                 $('.txtExpect').show();
-                //$('.checkPre').hide();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -2749,7 +2705,6 @@
                 $('.cardName').hide();
                 $('.txtApply').show();
                 $('.txtExpect').hide();
-                //$('.checkPre').show();
                 $('.line').show();
                 $("#txtExDate").val("");
                 $("#cboWitActNum").val("");
@@ -4072,6 +4027,12 @@
             document.getElementById("inputStrDate").valueAsDate = date;
             document.getElementById("inputEndDate").valueAsDate = new Date;
 
+            var empGbn = document.getElementById('empGbn').value;
+            if(empGbn == '3'){
+                $('.inputAct').hide();
+                $('.cboAct').hide();
+            }
+
             var gbn = "";
 
             let data = {"gbn": gbn}
@@ -4189,7 +4150,6 @@
             $("#txtCashDate").val("");
             $("#txtApvAll").val("");
             $('.creUser').hide();
-            $(`#chkPre`).prop("checked",false);
 
             var gbn = '1'
 
