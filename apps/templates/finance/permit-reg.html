@@ -104,30 +104,13 @@
                     <div class="card-body height-500 mt-0 pt-1">
                         <div class="table-responsive-sm height-400 overflow-auto border border-light">
                             <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
-                                <colgroup>
-                                    <col width="2%">
-                                    <col hidden width="2%">
-                                    <col width="8%">
-                                    <col width="8%">
-                                    <col width="12%">
-                                    <col width="6%">
-                                    <col width="6%">
-                                    <col width="10%">
-                                    <col width="6%">
-                                    <col width="6%">
-                                    <col width="6%">
-                                    <col width="6%">
-                                    <col hidden width="6%">
-                                    <col width="10%">
-                                    <col hidden width="6%">
-                                    <col hidden width="6%">
-                                </colgroup>
+
                                 <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue; position: sticky; top: 0; z-index: 1;">
                                 <tr>
                                     <th style="font-size: 0.85rem; position: sticky; left: 0; background: darkslateblue;" class="p-1 perTh">선 택</th>
                                     <th hidden style="font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: darkslateblue;" class="p-1 apvTh">상계</th>
-                                    <th style="font-size: 0.85rem; position: sticky; left: calc(8% - 17px); background: darkslateblue;" class="p-1">등록일자</th>
-                                    <th style="font-size: 0.85rem" class="p-1">예정일자</th>
+                                    <th style="font-size: 0.85rem; position: sticky; left: 35px; background: darkslateblue;" class="p-1">등록일자</th>
+                                    <th style="font-size: 0.85rem; position: sticky; left: 114px; background: darkslateblue;" class="p-1">예정일자</th>
                                     <th style="font-size: 0.85rem" class="p-1">제 목</th>
                                     <th style="font-size: 0.85rem" class="p-1">계정 과목</th>
                                     <th style="font-size: 0.85rem" class="p-1">은 행</th>
@@ -312,8 +295,8 @@
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(8% - 32px); background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
@@ -740,13 +723,11 @@
             var aa = parseInt(acAmts) - parseInt(finAmts)
             if(parseInt(aa) > 0){ balance = aa }
 
-
             var count = $(this).closest('tr').prevAll().length;
 
             var offTotal = 0;
 
-            var offSet = $('input[name=inputOffSet]:checked').val();
-
+            {#var offSet = $('input[name=inputOffSet]:checked').val();#}
             var isChkSetOffChecked = tr.find('input.chkSetOff').is(':checked');
 
             var pDate = document.getElementById('permitDate').value
@@ -765,7 +746,6 @@
 
             // 시행/상계 구분
             var transGbn = document.getElementById('cboTransGbn').value;
-
 
             let data = {"acIogb": acIogb, "transGbn": transGbn}
 
@@ -844,6 +824,18 @@
                         "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
                         "</tr> ");
 
+                    if(transGbn == '2'){
+                        var costOffSet_val = parseInt($('#real_CostOffSet').val().replaceAll(',', ''));
+                        var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
+
+                        if (acIogb == '1') {
+                            acAmts_num *= -1;
+                        }
+
+                        $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
+                        $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
+                    }
+
                 }
 
             } else {
@@ -853,6 +845,17 @@
                     $('#subTr' + count).remove();
                 }
 
+                if(transGbn == '2'){
+                    var costOffSet_val = parseInt($('#real_CostOffSet').val().replaceAll(',', ''));
+                    var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
+
+                    if (acIogb == '2') {
+                        acAmts_num *= -1;
+                    }
+
+                    $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
+                    $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
+                }
             }
         });
 
