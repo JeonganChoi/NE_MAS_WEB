@@ -312,6 +312,7 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
                             "</tr> ");
 
                         total += parseInt(list[i][2])
@@ -447,6 +448,7 @@
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
                             "</tr> ");
 
                         total += parseInt(list[i][2])
@@ -715,6 +717,7 @@
             var acSeqn = tr.children().eq(14).text()
             var acIogb = tr.children().eq(15).text()
             var acGubn = tr.children().eq(16).text()
+            var acDate = tr.children().eq(18).text()
 
             var acAmts = tr.children().eq(8).text().replace(/\,/g, '')
             var finAmts = tr.children().eq(9).text().replace(/\,/g, '')
@@ -822,6 +825,7 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='acDate'  id='acDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acDate + "</td> " +
                         "</tr> ");
 
                     if(transGbn == '2'){
@@ -1003,7 +1007,7 @@
             subCount = parseInt(subCount) - 1;
 
             if(subCount > 1){
-                alert('삭제하실 항목을 한 건만 선택해주세요.')
+                alert('시행 취소하실 항목을 한 건만 선택해주세요.')
                 return false;
             }
 
@@ -1012,6 +1016,7 @@
                 var pmtArr = [];
                 for (var i = 1; i < parseInt(subCount) + 1; i++) {
 
+                    var acDate = $('#acDate_' + i).text();
                     var ioDate = $('#ioDate_' + i).text();
                     var acSeqn = $('#acSeqn_' + i).text();
                     var acIogb = $('#acIogb_' + i).text();
@@ -1019,6 +1024,7 @@
                     var mCode = $('#mainCode_' + i).text();
 
                     let data = {
+                        'acDate': acDate,
                         'ioDate': ioDate,
                         'acSeqn': acSeqn,
                         'acIogb': acIogb,
@@ -1030,7 +1036,7 @@
                 }
 
 
-                var saveresult = confirm("삭제하시겠습니까?")
+                var saveresult = confirm("시행을 취소하시겠습니까?")
 
                 if(saveresult == true){
                     $.ajax({
@@ -1045,7 +1051,7 @@
                         },
                         success: function (data) {
                             if (data.sucYn === 'Y') {
-                                alert('삭제 되었습니다.')
+                                alert('시행이 취소 되었습니다.')
                                 location.href = "{% url 'permit_reg' %}";
                             }
                         }

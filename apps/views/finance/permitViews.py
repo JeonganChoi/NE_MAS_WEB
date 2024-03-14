@@ -91,7 +91,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -118,7 +118,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -147,7 +147,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -174,7 +174,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -205,7 +205,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -253,7 +253,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -302,7 +302,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -351,7 +351,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''),  IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -402,7 +402,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -450,7 +450,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -499,7 +499,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -548,7 +548,7 @@ def permitViews_search(request):
                                    "        , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.ACSEQN, ''), IFNULL(A.ACIOGB, '')"
                                    "        , IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.FIN_OPT, '')"
                                    "        , IFNULL(A.ACINFO, ''), IFNULL(E.ACBKCD, ''), IFNULL(F.RESNAM, ''), IFNULL(A.EXDATE, ''), IFNULL(A.ACGUBN, '')"
-                                   "        , IFNULL(A.FIN_AMTS, 0) "
+                                   "        , IFNULL(A.FIN_AMTS, 0), IFNULL(A.ACDATE, '') "
                                    " FROM SISACCTT A "
                                    " LEFT OUTER JOIN PIS1TB001 C "
                                    " ON A.CRE_USER = C.EMP_NBR "
@@ -897,30 +897,53 @@ def permitViews_save(request):
 def permitViews_dlt(request):
     pmtArray = json.loads(request.POST.get('pmtArrList'))
     iCust = request.session.get('USER_ICUST')
+    permit = 'N'
+    final = 0
 
     pmtArrayLists = list(filter(len, pmtArray))
     for data in range(0, len(pmtArrayLists)):
         with connection.cursor() as cursor:
-            cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
+            cursor.execute(" DELETE FROM ACTSTMENT WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
                            "                      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                           "                      AND IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
+                           "                      AND ACDATE = '" + pmtArrayLists[data]["acDate"].replace("-", "") + "'"
                            "                      AND MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
                            "                      AND ICUST = '" + str(iCust) + "'")
             connection.commit()
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT COUNT(SEQ) FROM OSSIGN WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                           "                                AND ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'  AND ICUST = '" + str(iCust) + "' ")
-            result = cursor.fetchall()
-            count = int(result[0][0])
+            cursor.execute(" UPDATE SISACCTT SET "
+                           "    ACDATE = '" + pmtArrayLists[data]["acDate"].replace("-", "") + "'"
+                           "  , FIN_OPT = '" + str(permit) + "' "
+                           "  , FIN_AMTS = '" + str(final) + "' "
+                           "     WHERE ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
+                           "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                           "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                           "     AND ICUST = '" + str(iCust) + "' "
+            )
+            connection.commit()
 
-        if count > 0:
-            with connection.cursor() as cursor:
-                cursor.execute(" DELETE FROM OSSIGN WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
-                               "                      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               "                      AND ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
-                               "                      AND ICUST = '" + str(iCust) + "'")
-                connection.commit()
+
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" DELETE FROM SISACCTT WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
+        #                    "                      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+        #                    "                      AND IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
+        #                    "                      AND MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+        #                    "                      AND ICUST = '" + str(iCust) + "'")
+        #     connection.commit()
+
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT COUNT(SEQ) FROM OSSIGN WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+        #                    "                                AND ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'  AND ICUST = '" + str(iCust) + "' ")
+        #     result = cursor.fetchall()
+        #     count = int(result[0][0])
+        #
+        # if count > 0:
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(" DELETE FROM OSSIGN WHERE ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'"
+        #                        "                      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+        #                        "                      AND ACDATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
+        #                        "                      AND ICUST = '" + str(iCust) + "'")
+        #         connection.commit()
 
     return JsonResponse({'sucYn': "Y"})
 
