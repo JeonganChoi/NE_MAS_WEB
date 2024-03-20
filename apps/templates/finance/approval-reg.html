@@ -59,11 +59,11 @@
                                         </td>
                                         <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>일자</label></td>
                                         <td><input class="form-control border border-light rounded-1 text-center me-2" type="date" name="txtDate" id="txtDate" value="" style="height: 2rem; max-width: 8rem"/></td>
-                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>결재자</label></td>
+                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>작성자</label></td>
                                         <td>
                                             <div class="d-flex">
-                                                <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" value="{{ request.session.USER_NM }}" style="height: 2rem; max-width: 8rem">
-                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="empCode" id="empCode" value="{{ request.session.userId }}" style="height: 2rem">
+                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmpCode" id="txtEmpCode" value="" style="height: 2rem; max-width: 8rem">
+                                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmp" id="txtEmp" value="" style="height: 2rem; max-width: 8rem">
                                             </div>
                                         </td>
                                         <td></td>
@@ -76,19 +76,26 @@
                                                 <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" value="" style="height: 2rem; max-width: 16rem">
                                             </div>
                                         </td>
-                                        <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>작성자</label></td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmpCode" id="txtEmpCode" value="" style="height: 2rem; max-width: 8rem">
-                                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtEmp" id="txtEmp" value="" style="height: 2rem; max-width: 8rem">
-                                            </div>
-                                        </td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td class="pt-2 text-end"><button id="btnSearch" name="btnSearch" class="btn text-white ps-3 pe-3 pt-2 pb-2" type="button" style="background-color: #0066cc; font-size: 0.8rem"><i class="fa fa-magnifying-glass-plus pe-2"></i>조 회</button></td>
                                     </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="col-lg-5 col-5">
+                                <div class="row">
+                                    <div class="col-8"></div>
+                                    <div class="col-4 justify-content-end align-content-end">
+                                        <div class="d-flex justify-content-end align-content-end">
+                                            <label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-user me-2"></i>결재자</label>
+                                            <input readonly class="form-control border border-light rounded-1 text-center me-2" type="text" name="inputEmp" id="inputEmp" value="{{ request.session.USER_NM }}" style="height: 2rem; max-width: 8rem">
+                                            <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="empCode" id="empCode" value="{{ request.session.userId }}" style="height: 2rem">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -144,7 +151,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-5">
-                                <div class="form-group">
+                                <div class="form-group mt-2">
                                     <div class="row">
                                         <div class="col-4">
                                             <label class="text-sm text-danger"><i class="far fa-edit me-2"></i>입/출금</label>
@@ -348,6 +355,7 @@
                     var inAmts = 0;
                     var outAmts = 0;
                     var count = 0;
+                    var name = "";
 
                     count = list.length;
 
@@ -366,6 +374,12 @@
                             inAmts = list[i][2]
                             outAmts = 0
                         }
+                        if(gbn == '3'){
+                            name = '미승인'
+                        }
+                        if(gbn == '2'){
+                            name = '승인'
+                        }
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
@@ -378,7 +392,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(outAmts) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>미승인</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + name + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                             "</tr> ");
                     }
@@ -441,6 +455,7 @@
                     var inAmts = 0;
                     var outAmts = 0;
                     var count = 0;
+                    var name = "";
 
                     count = list.length;
 
@@ -459,6 +474,12 @@
                             inAmts = list[i][2]
                             outAmts = 0
                         }
+                        if(gbn == '3'){
+                            name = '미승인'
+                        }
+                        if(gbn == '2'){
+                            name = '승인'
+                        }
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
@@ -471,7 +492,7 @@
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(outAmts) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem'>미승인</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem'>" + gbn + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
                             "</tr> ");
                     }
