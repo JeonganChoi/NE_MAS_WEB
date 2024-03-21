@@ -314,7 +314,7 @@ def accountCodeViews_saveM(request):
 
     if count > 0:
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY = '" + str(mCode) + "%' AND ICUST = '" + str(iCust) + "'")
+            cursor.execute(" SELECT RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY = '" + str(mCode) + "' AND ICUST = '" + str(iCust) + "'")
             result2 = cursor.fetchall()
             mCodeNme = result2[0][0]
 
