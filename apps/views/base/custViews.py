@@ -295,6 +295,11 @@ def custViews_save(request):
         count = int(result[0][0])
 
     if count > 0:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT COUNT(CUST_NBR) FROM MIS1TB003 WHERE CUST_NBR = '" + str(custCode) + "' AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()
+            count = int(result[0][0])
 
         with connection.cursor() as cursor:
             cursor.execute(" UPDATE MIS1TB003 SET "
@@ -403,7 +408,7 @@ def custViews_save(request):
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(MAX(CUST_NBR) + 1, 0) AS COUNTED FROM MIS1TB003 A "
-                           "    WHERE CUST_GBN = '" + str(custType) + "' AND ICUST = '" + str(iCust) + "' ")
+                           "    WHERE CUST_NBR LIKE '" + str(custType) + "%' AND ICUST = '" + str(iCust) + "' ")
             custresult = cursor.fetchall()
             cust = int(custresult[0][0])
 
