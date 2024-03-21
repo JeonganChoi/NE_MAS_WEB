@@ -22,134 +22,243 @@ def accountCodeViews_search(request):
     iCust = request.session.get("USER_ICUST")
 
     if mainCode:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
-                           "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
-                           "    FROM OSCODEM A "
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.GBN = B.RESKEY "
-                           "    AND B.RECODE = 'CGB' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.GBN2 = C.RESKEY "
-                           "    AND C.RECODE = 'AGB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.MCODE_M = D.RESKEY "
-                           "    AND D.RECODE = 'MCD' "
-                           "    LEFT OUTER JOIN OSREFCP E "
-                           "    ON A.ACODE = E.RESKEY "
-                           "    AND E.RECODE = 'ACD' "
-                           "    LEFT OUTER JOIN OSREFCP F "
-                           "    ON A.YUD = F.RESKEY "
-                           "    AND F.RECODE = 'YUD' "
-                           "    WHERE A.MCODE = '" + mainCode + "' "
-                           "    AND A.ICUST = '" + str(iCust) + "'"
-                           # "    WHERE MCODE = '" + mainCode + "' "
-                           )
-            mresult = cursor.fetchall()
+        if codeType == '4':
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
+                               "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
+                               "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
+                               "    FROM OSCODEM A "
+                               "    LEFT OUTER JOIN OSREFCP B "
+                               "    ON A.GBN = B.RESKEY "
+                               "    AND B.RECODE = 'CGB' "
+                               "    LEFT OUTER JOIN OSREFCP C "
+                               "    ON A.GBN2 = C.RESKEY "
+                               "    AND C.RECODE = 'AGB' "
+                               "    LEFT OUTER JOIN OSREFCP D "
+                               "    ON A.MCODE_M = D.RESKEY "
+                               "    AND D.RECODE = 'MCD' "
+                               "    LEFT OUTER JOIN OSREFCP E "
+                               "    ON A.ACODE = E.RESKEY "
+                               "    AND E.RECODE = 'ACD' "
+                               "    LEFT OUTER JOIN OSREFCP F "
+                               "    ON A.YUD = F.RESKEY "
+                               "    AND F.RECODE = 'YUD' "
+                               "    WHERE A.MCODE = '" + mainCode + "' "
+                               "    AND A.ICUST = '" + str(iCust) + "'"
+                               # "    WHERE MCODE = '" + mainCode + "' "
+                               )
+                mresult = cursor.fetchall()
 
-        # 상위계정과목
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
-            cboMCode = cursor.fetchall()
+            # 상위계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+                cboMCode = cursor.fetchall()
 
-        # 회계계정과목
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
-            cboACode = cursor.fetchall()
+            # 회계계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+                cboACode = cursor.fetchall()
 
-        if codeType != '':
-            if codeType == '4':
-                # 관리계정과목
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '4%' AND ICUST = '" + str(iCust) + "' ")
-                    cboRecCode = cursor.fetchall()
-            if codeType == '5':
-                # 관리계정과목
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '5%' AND ICUST = '" + str(iCust) + "' ")
-                    cboRecCode = cursor.fetchall()
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '4%' AND ICUST = '" + str(iCust) + "' ")
+                cboRecCode = cursor.fetchall()
 
-        # 구분1
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "' ")
-            gbnesult = cursor.fetchall()
+            # 구분1
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "' ")
+                gbnesult = cursor.fetchall()
 
-        # 구분2
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "' ")
-            gbn2result = cursor.fetchall()
+            # 구분2
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "' ")
+                gbn2result = cursor.fetchall()
 
-        # 유동항목
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "' ")
-            cboYud = cursor.fetchall()
+            # 유동항목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "' ")
+                cboYud = cursor.fetchall()
 
+            return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode,
+                             'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
-        return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
+        if codeType == '5':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MDESC, ''), IFNULL(A.MSEQ, '')"
+                    "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
+                    "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
+                    "    FROM OSCODEM A "
+                    "    LEFT OUTER JOIN OSREFCP B "
+                    "    ON A.GBN = B.RESKEY "
+                    "    AND B.RECODE = 'CGB' "
+                    "    LEFT OUTER JOIN OSREFCP C "
+                    "    ON A.GBN2 = C.RESKEY "
+                    "    AND C.RECODE = 'AGB' "
+                    "    LEFT OUTER JOIN OSREFCP D "
+                    "    ON A.MCODE_M = D.RESKEY "
+                    "    AND D.RECODE = 'MCD' "
+                    "    LEFT OUTER JOIN OSREFCP E "
+                    "    ON A.ACODE = E.RESKEY "
+                    "    AND E.RECODE = 'ACD' "
+                    "    LEFT OUTER JOIN OSREFCP F "
+                    "    ON A.YUD = F.RESKEY "
+                    "    AND F.RECODE = 'YUD' "
+                    "    WHERE A.MCODE = '" + mainCode + "' "
+                                                         "    AND A.ICUST = '" + str(iCust) + "'"
+                    # "    WHERE MCODE = '" + mainCode + "' "
+                    )
+                mresult = cursor.fetchall()
+
+            # 상위계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(
+                    codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+                cboMCode = cursor.fetchall()
+
+            # 회계계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(
+                    codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+                cboACode = cursor.fetchall()
+
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '5%' AND ICUST = '" + str(iCust) + "' ")
+                cboRecCode = cursor.fetchall()
+
+            # 구분1
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "' ")
+                gbnesult = cursor.fetchall()
+
+            # 구분2
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "' ")
+                gbn2result = cursor.fetchall()
+
+            # 유동항목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "' ")
+                cboYud = cursor.fetchall()
+
+            return JsonResponse({"subMList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
     else:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
-                           "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
-                           "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
-                           "    FROM OSCODEM A "
-                           "    LEFT OUTER JOIN OSREFCP B "
-                           "    ON A.GBN = B.RESKEY "
-                           "    AND B.RECODE = 'CGB' "
-                           "    LEFT OUTER JOIN OSREFCP C "
-                           "    ON A.GBN2 = C.RESKEY "
-                           "    AND C.RECODE = 'AGB' "
-                           "    LEFT OUTER JOIN OSREFCP D "
-                           "    ON A.MCODE_M = D.RESKEY "
-                           "    AND D.RECODE = 'MCD' "
-                           "    LEFT OUTER JOIN OSREFCP E "
-                           "    ON A.ACODE = E.RESKEY "
-                           "    AND E.RECODE = 'ACD' "
-                           "    LEFT OUTER JOIN OSREFCP F "
-                           "    ON A.YUD = F.RESKEY "
-                           "    AND F.RECODE = 'YUD' "
-                           "    WHERE A.MCODE LIKE '" + str(codeType) + "%' AND A.ICUST = '" + str(iCust) + "' ORDER BY MCODE ")
-            mresult = cursor.fetchall()
-            print(mresult)
+        if codeType == '4':
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
+                               "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
+                               "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
+                               "    FROM OSCODEM A "
+                               "    LEFT OUTER JOIN OSREFCP B "
+                               "    ON A.GBN = B.RESKEY "
+                               "    AND B.RECODE = 'CGB' "
+                               "    LEFT OUTER JOIN OSREFCP C "
+                               "    ON A.GBN2 = C.RESKEY "
+                               "    AND C.RECODE = 'AGB' "
+                               "    LEFT OUTER JOIN OSREFCP D "
+                               "    ON A.MCODE_M = D.RESKEY "
+                               "    AND D.RECODE = 'MCD' "
+                               "    LEFT OUTER JOIN OSREFCP E "
+                               "    ON A.ACODE = E.RESKEY "
+                               "    AND E.RECODE = 'ACD' "
+                               "    LEFT OUTER JOIN OSREFCP F "
+                               "    ON A.YUD = F.RESKEY "
+                               "    AND F.RECODE = 'YUD' "
+                               "    WHERE A.MCODE LIKE '" + str(codeType) + "%' AND A.ICUST = '" + str(iCust) + "' ORDER BY MCODE ")
+                mresult = cursor.fetchall()
+                print(mresult)
 
-        # 상위계정과목
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
-            cboMCode = cursor.fetchall()
+            # 상위계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+                cboMCode = cursor.fetchall()
 
-        # 회계계정과목
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "'")
-            cboACode = cursor.fetchall()
+            # 회계계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(codeType) + "%' AND ICUST = '" + str(iCust) + "'")
+                cboACode = cursor.fetchall()
 
-        if codeType != '':
-            if codeType == '4':
-                # 관리계정과목
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '4%' AND ICUST = '" + str(iCust) + "' ")
-                    cboRecCode = cursor.fetchall()
-            if codeType == '5':
-                # 관리계정과목
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '5%' AND ICUST = '" + str(iCust) + "' ")
-                    cboRecCode = cursor.fetchall()
-        # 구분1
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "'")
-            gbnesult = cursor.fetchall()
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '4%' AND ICUST = '" + str(iCust) + "' ")
+                cboRecCode = cursor.fetchall()
 
-        # 구분2
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "'")
-            gbn2result = cursor.fetchall()
+            # 구분1
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "'")
+                gbnesult = cursor.fetchall()
 
-        # 유동항목
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "'")
-            cboYud = cursor.fetchall()
+            # 구분2
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "'")
+                gbn2result = cursor.fetchall()
 
-        return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
+            # 유동항목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "'")
+                cboYud = cursor.fetchall()
+
+            return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
+
+        if codeType == '5':
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " SELECT IFNULL(A.MCODE_M, ''), IFNULL(D.RESNAM, ''), IFNULL(A.MCODE, ''), IFNULL(A.MCODENM, ''), IFNULL(A.MSEQ, ''), IFNULL(A.MDESC, '')"
+                    "    , IFNULL(A.GBN, ''), IFNULL(B.RESNAM, ''), IFNULL(A.GBN2, ''), IFNULL(C.RESNAM, ''), IFNULL(A.ACODE, ''), IFNULL(E.RESNAM, '')"
+                    "    , IFNULL(A.OPT, ''), IFNULL(A.YUD, ''), IFNULL(F.RESNAM, '') "
+                    "    FROM OSCODEM A "
+                    "    LEFT OUTER JOIN OSREFCP B "
+                    "    ON A.GBN = B.RESKEY "
+                    "    AND B.RECODE = 'CGB' "
+                    "    LEFT OUTER JOIN OSREFCP C "
+                    "    ON A.GBN2 = C.RESKEY "
+                    "    AND C.RECODE = 'AGB' "
+                    "    LEFT OUTER JOIN OSREFCP D "
+                    "    ON A.MCODE_M = D.RESKEY "
+                    "    AND D.RECODE = 'MCD' "
+                    "    LEFT OUTER JOIN OSREFCP E "
+                    "    ON A.ACODE = E.RESKEY "
+                    "    AND E.RECODE = 'ACD' "
+                    "    LEFT OUTER JOIN OSREFCP F "
+                    "    ON A.YUD = F.RESKEY "
+                    "    AND F.RECODE = 'YUD' "
+                    "    WHERE A.MCODE LIKE '" + str(codeType) + "%' AND A.ICUST = '" + str(
+                        iCust) + "' ORDER BY MCODE ")
+                mresult = cursor.fetchall()
+                print(mresult)
+
+            # 상위계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'MCD' AND RESKEY LIKE '" + str(
+                    codeType) + "%' AND ICUST = '" + str(iCust) + "' ")
+                cboMCode = cursor.fetchall()
+
+            # 회계계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'ACD' AND RESKEY LIKE '" + str(
+                    codeType) + "%' AND ICUST = '" + str(iCust) + "'")
+                cboACode = cursor.fetchall()
+
+            # 관리계정과목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'REC' AND RESKEY LIKE '5%' AND ICUST = '" + str(iCust) + "' ")
+                cboRecCode = cursor.fetchall()
+
+            # 구분1
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'CGB' AND ICUST = '" + str(iCust) + "'")
+                gbnesult = cursor.fetchall()
+
+            # 구분2
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'AGB' AND ICUST = '" + str(iCust) + "'")
+                gbn2result = cursor.fetchall()
+
+            # 유동항목
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT RESKEY, RESNAM FROM OSREFCP WHERE RECODE = 'YUD' AND ICUST = '" + str(iCust) + "'")
+                cboYud = cursor.fetchall()
+
+            return JsonResponse({"mList": mresult, 'cboMCode': cboMCode, 'cboACode': cboACode, 'cboRecCode': cboRecCode, 'cboGbn': gbnesult, 'cboGbn2': gbn2result, "cboYud": cboYud})
 
 def chkcodeM(request):
     codeType = request.POST.get('codeType')

@@ -419,7 +419,7 @@
             {#$("#cboOpt").html("");#}
 
             let mainCode = $(this).attr('main_code');
-            var cboCodeType = "";
+            var cboCodeType = document.getElementById('cboCodeType').value;
 
             let data = {'mainCode': mainCode, 'cboCodeType': cboCodeType}
 
