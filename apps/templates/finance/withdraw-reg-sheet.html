@@ -2131,7 +2131,7 @@
                                 document.getElementById("txtCreUser").classList.add('bg-transparent')
                                 document.getElementById("txtCustName").classList.add('bg-transparent')
 
-                                $('.folderArea').hide();
+                                $('.folderArea').show();
                                 $('.apvArea').show();
                                 $('.line').hide();
 
@@ -2281,7 +2281,7 @@
                                 document.getElementById("txtCreUser").classList.add('bg-transparent')
                                 document.getElementById("txtCustName").classList.add('bg-transparent')
 
-                                $('.folderArea').hide();
+                                $('.folderArea').show();
                                 $('.apvArea').show();
 
                             }
@@ -4254,6 +4254,16 @@
             $("#modalMainTd").html("");
             $("#modalSubTd").html("");
             $("#subTb").html("");
+
+
+            // file reset
+            // 파일 빈 배열 추가
+            var _arr = new Array(5).fill('');
+            $('#fileListInput').val(JSON.stringify(_arr));
+
+            $('#fileList').empty();
+
+
 
         });
 

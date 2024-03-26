@@ -22,6 +22,7 @@ def approvalViews_search(request):
     iCust = request.session.get('USER_ICUST')
     gbn = request.POST.get('gbn')
     ioDate = request.POST.get('ioDate').replace("-", "")
+    endDate = request.POST.get('endDate').replace("-", "")
     txtEmp = request.POST.get('txtEmp')
     txtCust = request.POST.get('txtCust')
 
@@ -51,7 +52,8 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' "
+                               " AND A.ACCUST = '" + str(txtCust) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' OR A.ACUSE LIKE '%" + str(txtCust) + "%' "
                                " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -81,7 +83,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
                               " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -111,7 +113,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' AND A.ACCUST = '" + str(txtCust) + "' OR A.ACUSE LIKE '%" + str(txtCust) + "%' "
                               " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -141,7 +143,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' "
+                               " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' "
                               " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -173,7 +175,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' AND A.ACCUST = '" + str(txtCust) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' OR A.ACUSE LIKE '%" + str(txtCust) + "%' "
                                " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -202,7 +204,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' AND A.ACCUST = '" + str(txtCust) + "' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' AND A.ACCUST = '" + str(txtCust) + "' OR A.ACUSE LIKE '%" + str(txtCust) + "%' "
                                " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -231,7 +233,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' AND D.EMP_NME LIKE '%" + str(txtEmp) + "%' "
                                " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -260,7 +262,7 @@ def approvalViews_search(request):
                                " ON A.ACCUST = E.CUST_NBR "
                                " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                                " AND B.ICUST = '" + str(iCust) + "' "
-                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE <= '" + str(ioDate) + "' "
+                               " AND B.OPT = 'Y' AND A.MID_OPT = 'Y' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' "
                                " ORDER BY A.IODATE ")
                 mainresult = cursor.fetchall()
 
@@ -337,7 +339,7 @@ def approvalViews_search(request):
                            " ON A.ACCUST = E.CUST_NBR "
                            " WHERE B.EMP_NBR = '" + str(empNbr) + "' "
                            " AND B.ICUST = '" + str(iCust) + "' "
-                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE <= '" + str(ioDate) + "' "
+                           " AND B.OPT = 'N' AND A.MID_OPT = 'N' AND B.ACDATE >= '" + str(ioDate) + "' AND B.ACDATE <= '" + str(endDate) + "' "
                            " ORDER BY A.IODATE ")
             mainresult = cursor.fetchall()
 

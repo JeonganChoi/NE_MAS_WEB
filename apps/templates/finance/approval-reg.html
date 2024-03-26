@@ -58,7 +58,13 @@
                                             </select>
                                         </td>
                                         <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>일자</label></td>
-                                        <td><input class="form-control border border-light rounded-1 text-center me-2" type="date" name="txtDate" id="txtDate" value="" style="height: 2rem; max-width: 8rem"/></td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="txtStrDate" id="txtStrDate" value="" style="height: 2rem; max-width: 8rem"/>
+                                                <label class="me-2" style="font-size: 0.85rem">-</label>
+                                                <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="txtEndDate" id="txtEndDate" value="" style="height: 2rem; max-width: 8rem"/>
+                                            </div>
+                                        </td>
                                         <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>작성자</label></td>
                                         <td>
                                             <div class="d-flex">
@@ -72,8 +78,8 @@
                                         <td><label style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>거래처</label></td>
                                         <td>
                                             <div class="d-flex">
-                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" value="" style="height: 2rem; max-width: 12rem">
-                                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" value="" style="height: 2rem; max-width: 16rem">
+                                                <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" style="height: 2rem; max-width: 12rem">
+                                                <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" style="height: 2rem; max-width: 16rem">
                                             </div>
                                         </td>
                                         <td></td>
@@ -332,13 +338,18 @@
             $('.folderArea').hide();
             $('.line').hide();
             var gbn = document.getElementById('inputGbn').value
-            document.getElementById('txtDate').valueAsDate = new Date;
+            var date = new Date();
+            date.setMonth(date.getMonth() - 3);
 
-            var ioDate = document.getElementById('txtDate').value;
+            document.getElementById('txtStrDate').valueAsDate = date;
+            document.getElementById('txtEndDate').valueAsDate = new Date;
+
+            var ioDate = document.getElementById('txtStrDate').value;
+            var endDate = document.getElementById('txtEndDate').value;
             var txtEmp = "";
             var txtCust = "";
 
-            let data = {'gbn': gbn, "ioDate": ioDate, "txtEmp": txtEmp, "txtCust": txtCust}
+            let data = {'gbn': gbn, "ioDate": ioDate, "endDate": endDate, "txtEmp": txtEmp, "txtCust": txtCust}
 
             $.ajax({
                 type: "post",
@@ -383,7 +394,7 @@
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input onclick='checkOnlyOne(this)' class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><input onclick='checkOnlyOne(this)' class='' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
@@ -398,16 +409,21 @@
                     }
 
                     document.getElementById("inputCnt").value = count;
+                    {#$('#mainTable tbody tr td:first-child input[type=checkbox]').trigger('click')#}
+                    $('#mainTable tbody tr:first-child td:first-child input[type=checkbox]').trigger('click');
+
+
+
                 }
             })
 
         });
 
-        $('#txtCust').change(function () {
-            if($('#txtCust').val('')){
-                $('#txtCustCode').val('');
-            }
-        });
+        {#$('#txtCust').change(function () {#}
+        {#    if($('#txtCust').val('')){#}
+        {#        $('#txtCustCode').val('');#}
+        {#    }#}
+        {#});#}
 
 
         $('input[type="text"]').keydown(function (event) {
@@ -433,12 +449,16 @@
         {# 조회 버튼 #}
         $(document).on('click', "#btnSearch", function () {
             $('.buttonLine').hide();
+
             var gbn = document.getElementById('inputGbn').value;
-            var ioDate = document.getElementById('txtDate').value;
+            var ioDate = document.getElementById('txtStrDate').value;
+            var endDate = document.getElementById('txtEndDate').value;
             var txtEmp = document.getElementById('txtEmp').value;
             var txtCust = document.getElementById('txtCustCode').value;
+            var inputCust = document.getElementById('txtCust').value;
+            if(txtCust == ''){ txtCust = inputCust }
 
-            let data = {'gbn': gbn, "ioDate": ioDate, "txtEmp": txtEmp, "txtCust": txtCust}
+            let data = {'gbn': gbn, "ioDate": ioDate, "endDate": endDate, "txtEmp": txtEmp, "txtCust": txtCust}
 
             $.ajax({
                 type: "post",
@@ -483,7 +503,7 @@
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr' main_code='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'>" +
-                            "<td class='text-center p-1'><div class='form-check text-xs text-center'><input onclick='checkOnlyOne(this)' class='form-check-input' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></div></td>" +
+                            "<td class='text-center p-1'><input onclick='checkOnlyOne(this)' class='' type='checkbox' id='chkApv[]' name='chkApv[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "," + list[i][3] + "'/></td>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][12].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
@@ -860,7 +880,9 @@
 
                     }
                 })
-            } else {
+            }
+            else {
+
                 $("#cboWitCust").html("");
                 $("#cboWitGbn").html("");
                 $("#cboAdminCode").html("");
@@ -877,6 +899,7 @@
                 $("#subTb").html("");
                 $('.buttonLine').hide();
                 $(this).removeClass('bg-gray-100');
+                alert('들어옴')
             }
         });
 
