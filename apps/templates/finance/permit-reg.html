@@ -53,13 +53,16 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-4">
+                            <div class="col-lg-5 col-5">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 4rem"><i class="fa fa-search me-2"></i>거래처</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputCust" id="inputCust" style="height: 2rem; font-size: 0.8rem"></select>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 8rem"><i class="fa fa-search me-2"></i>거래처/사용처</label>
+                                    <div class="d-flex">
+                                        <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" style="height: 2rem; max-width: 12rem">
+                                        <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" style="height: 2rem; max-width: 16rem">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-3"></div>
+                            <div class="col-lg-2 col-2"></div>
                             <div class="col-lg-2 col-2 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white" style="font-size: 0.8rem" id="btnSearch" name="btnSearch">
                                         <i class="fa fa-search me-2 fs-6"></i>조 회
@@ -107,7 +110,16 @@
 
                                 <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue; position: sticky; top: 0; z-index: 1;">
                                 <tr>
-                                    <th style="font-size: 0.85rem; position: sticky; left: 0; background: darkslateblue;" class="p-1 perTh">선 택</th>
+                                    <th style="font-size: 0.85rem" class="p-1">선택</th>
+                                    <th style="font-size: 0.85rem" class="p-1">사용일자</th>
+                                    <th style="font-size: 0.85rem" class="p-1">적용년월</th>
+                                    <th style="font-size: 0.85rem" class="p-1">제 목</th>
+                                    <th style="font-size: 0.85rem" class="p-1">거래처/사용처</th>
+                                    <th style="font-size: 0.85rem" class="p-1">전표 금액</th>
+                                    <th style="font-size: 0.85rem" class="p-1">기결 금액</th>
+                                    <th style="font-size: 0.85rem" class="p-1">잔 액</th>
+                                    <th style="font-size: 0.85rem" class="p-1">작성자</th>
+                                    <!--<th style="font-size: 0.85rem; position: sticky; left: 0; background: darkslateblue;" class="p-1 perTh">선 택</th>
                                     <th hidden style="font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: darkslateblue;" class="p-1 apvTh">상계</th>
                                     <th style="font-size: 0.85rem; position: sticky; left: 35px; background: darkslateblue;" class="p-1">등록일자</th>
                                     <th style="font-size: 0.85rem; position: sticky; left: 114px; background: darkslateblue;" class="p-1">예정일자</th>
@@ -119,7 +131,7 @@
                                     <th style="font-size: 0.85rem" class="p-1">기결재액</th>
                                     <th style="font-size: 0.85rem" class="p-1">잔 액</th>
                                     <th style="font-size: 0.85rem" class="p-1">작성자</th>
-                                    <th style="font-size: 0.85rem" class="p-1">지급정보</th>
+                                    <th style="font-size: 0.85rem" class="p-1">지급정보</th>-->
                                 </tr>
                                 </thead>
                                 <tbody id="mainTb">
@@ -236,7 +248,6 @@
             var balance = 0;
             var inputBank = "";
             var inputAct = "";
-            var inputCust = "";
             var inputCard = "";
             var inputCardNum = "";
             var actNumber = "";
@@ -244,14 +255,12 @@
             var inputActTxt = "<option value=''>:: 선택 ::</option>";
             var inputCardTxt = "<option value=''>:: 선택 ::</option>";
             var inputCardNumTxt = "<option value=''>:: 선택 ::</option>";
-            var inputCustTxt = "<option value=''>:: 선택 ::</option>";
             var actNumberTxt = "";
 
             $("#inputBank").html("");
             $("#inputAct").html("");
             $("#inputCard").html("");
             $("#inputCardNum").html("");
-            $("#inputCust").html("");
             $("#actNumber").html("");
 
             document.getElementById('inputDate').valueAsDate = new Date
@@ -265,8 +274,6 @@
             var permitGbn = "";
             var bankCode = "";
             var actCode = "";
-            var inputCard = "";
-            var inputCardNum = "";
 
 
             let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
@@ -283,6 +290,7 @@
                     var list = data.mainList;
                     var count = 0;
                     var total = 0;
+                    var cust = "";
 
                     {#"<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: white;'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +#}
                     count = list.length;
@@ -291,44 +299,35 @@
                     for (var i = 0; i < list.length; i++) {
 
                         balance = parseInt(list[i][2]) - parseInt(list[i][16])
+                        if(list[i][19] != ''){ cust = list[i][20] }
+                        if(list[i][21] != ''){ cust = list[i][21]}
+
 
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
                             "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "</tr> ");
 
                         total += parseInt(list[i][2])
                     }
                     document.getElementById('inputCnt').value = addComma(count)
                     document.getElementById('inputPrice').value = addComma(total)
-
-
-                    var combolist = data.cboCust;
-                    for (var i = 0; i < combolist.length; i++) {
-                        if (combolist[i][0] == inputCust) {
-                            inputCustTxt = inputCustTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
-                        } else {
-                            inputCustTxt = inputCustTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
-                        }
-                    }
 
                     var combolist2 = data.cboAct;
                     for (var i = 0; i < combolist2.length; i++) {
@@ -375,7 +374,6 @@
                         }
                     }
 
-                    $("#inputCust").append(inputCustTxt);
                     $("#actNumber").append(actNumberTxt);
                     $("#inputBank").append(inputBankTxt);
                     $("#inputAct").append(inputActTxt);
@@ -385,15 +383,38 @@
             })
         });
 
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtCust') {
+
+                    if ($("#txtCust").val().length == 0) {
+                        alert("거래처명 한 글자 이상 입력 후 엔터를 쳐주세요.")
+                        return false
+                    } else {
+                        let thisVal = $("#txtCust").val();
+                        let gbnVal = '2';
+                        let url = '{% url 'popup_cust' %}';
+                        openPop(url + '?val=' + thisVal + '&gbnVal=' + gbnVal, '거래처검색창');
+                    }
+
+                }
+            }
+        });
+
+
         {# 조회 버튼 #}
         $(document).on('click', "#btnSearch", function () {
 
             var total = 0;
             var balance = 0;
+            var cust = "";
 
             var sDate = document.getElementById('inputDate').value;
             var perDate = sDate.replace(/\-/g, '')
-            var custCode = document.getElementById('inputCust').value;
+            var txtCustCode = document.getElementById('txtCustCode').value;
+            var custCode = document.getElementById('txtCust').value;
+            if(txtCustCode == ''){ custCode == ''; }
             var offSet = $('input[name=inputOffSet]:checked').val();
             var permitGbn = document.getElementById('inputPermit').value;
             var bankCode = document.getElementById('inputBank').value;
@@ -428,28 +449,31 @@
                     for (var i = 0; i < list.length; i++) {
 
                         balance = parseInt(list[i][2]) - parseInt(list[i][16])
+                        if(list[i][19] != ''){ cust = list[i][20] }
+                        if(list[i][21] != ''){ cust = list[i][21]}
+
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
                             "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(8% - 32px); background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][8] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
                             "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                             "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                             "</tr> ");
+
+                        //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
 
                         total += parseInt(list[i][2])
                     }
@@ -534,18 +558,24 @@
         {# 상계 체크박스 선택시 #}
         $(document).on('change', '#selectTb tbody tr td input.chkSetOff', function () {
             var tr = $(this).parent().parent();
-            var iDate = tr.children().eq(2).text()
+            var aDate = tr.children().eq(1).text()
+            var acDate = aDate.replace(/\-/g, '')
+            var acTitle = tr.children().eq(3).text()
+            var acMcode = tr.children().eq(13).text()
+            var acBank = tr.children().eq(15).text()
+            var acNum = tr.children().eq(16).text()
+            var acEmp = tr.children().eq(8).text()
+            var acNme = tr.children().eq(9).text()
+            alert(acEmp)
+            var acSeqn = tr.children().eq(11).text()
+            var acIogb = tr.children().eq(12).text()
+            var acGubn = tr.children().eq(14).text()
+            var iDate = tr.children().eq(10).text()
             var ioDate = iDate.replace(/\-/g, '')
-            var acTitle = tr.children().eq(4).text()
-            var acMcode = tr.children().eq(16).text()
-            var acBank = tr.children().eq(6).text()
-            var acNum = tr.children().eq(8).text()
-            var acAmts = tr.children().eq(11).text()
-            var acEmp = tr.children().eq(12).text()
-            var acNme = tr.children().eq(13).text()
-            var acSeqn = tr.children().eq(15).text()
-            var acIogb = tr.children().eq(16).text()
-            var acGubn = tr.children().eq(17).text()
+
+            var acAmts = tr.children().eq(5).text().replace(/\,/g, '')
+            var finAmts = tr.children().eq(6).text().replace(/\,/g, '')
+            var balance = tr.children().eq(7).text().replace(/\,/g, '')
 
 
             var count = $(this).closest('tr').prevAll().length;
@@ -644,8 +674,6 @@
                         "<td hidden class='text-center p-1' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "</tr> ");
 
-
-
                 }
 
                 {#    2. "상계 체크란이 체크됬을때만 "#}
@@ -708,20 +736,22 @@
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(1).text()
             var ioDate = iDate.replace(/\-/g, '')
+            //var aDate = tr.children().eq(1).text()
+            //var acDate = aDate.replace(/\-/g, '')
             var acTitle = tr.children().eq(3).text()
-            var acMcode = tr.children().eq(17).text()
-            var acBank = tr.children().eq(5).text()
-            var acNum = tr.children().eq(7).text()
-            var acEmp = tr.children().eq(11).text()
-            var acNme = tr.children().eq(12).text()
-            var acSeqn = tr.children().eq(14).text()
-            var acIogb = tr.children().eq(15).text()
-            var acGubn = tr.children().eq(16).text()
-            var acDate = tr.children().eq(18).text()
+            var acMcode = tr.children().eq(13).text()
+            var acBank = tr.children().eq(15).text()
+            var acNum = tr.children().eq(16).text()
+            var acEmp = tr.children().eq(8).text()
+            var acNme = tr.children().eq(9).text()
+            var acSeqn = tr.children().eq(11).text()
+            var acIogb = tr.children().eq(12).text()
+            var acGubn = tr.children().eq(14).text()
 
-            var acAmts = tr.children().eq(8).text().replace(/\,/g, '')
-            var finAmts = tr.children().eq(9).text().replace(/\,/g, '')
-            var balance = tr.children().eq(10).text().replace(/\,/g, '')
+
+            var acAmts = tr.children().eq(5).text().replace(/\,/g, '')
+            var finAmts = tr.children().eq(6).text().replace(/\,/g, '')
+            var balance = tr.children().eq(7).text().replace(/\,/g, '')
 
             var aa = parseInt(acAmts) - parseInt(finAmts)
             if(parseInt(aa) > 0){ balance = aa }
@@ -806,7 +836,6 @@
                     $("#subTb").append(
                         "<tr id='subTr" + count + "' class='subTr_tr'>" +
                         "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                        "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
                         "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
@@ -815,9 +844,6 @@
                         "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
-                        "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
-                        "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
-                        "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                         "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acBank + "</td> " +
@@ -825,7 +851,10 @@
                         "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
-                        "<td hidden class='text-center p-1 text-danger' name='acDate'  id='acDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acDate + "</td> " +
+                        "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
+                        "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
+                        "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                        "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                         "</tr> ");
 
                     if(transGbn == '2'){
