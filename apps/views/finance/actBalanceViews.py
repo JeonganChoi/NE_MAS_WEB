@@ -27,7 +27,7 @@ def actBalRegViews_search(request):
     if bankCode != '' and actNum == '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
-                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
+                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACDESC, '') "
                            "       FROM ACNUMBER B "
                            "       LEFT OUTER JOIN ACBALANCE  A ON A.ACNUMBER = B.ACNUMBER "
                            "       LEFT OUTER JOIN OSREFCP C ON B.ACBKCD = C.RESKEY AND C.RECODE = 'BNK' "
@@ -45,7 +45,7 @@ def actBalRegViews_search(request):
     if actNum != '' and bankCode != '' and regDate == '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
-                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
+                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACDESC, '') "
                            "       FROM ACNUMBER B "
                            "       LEFT OUTER JOIN ACBALANCE  A ON A.ACNUMBER = B.ACNUMBER "
                            "       LEFT OUTER JOIN OSREFCP C ON B.ACBKCD = C.RESKEY AND C.RECODE = 'BNK' "
@@ -75,7 +75,7 @@ def actBalRegViews_search(request):
     if actNum != '' and bankCode != '' and regDate != '':
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
-                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
+                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACDESC, '') "
                            "       FROM ACNUMBER B "
                            "       LEFT OUTER JOIN ACBALANCE  A ON A.ACNUMBER = B.ACNUMBER "
                            "       LEFT OUTER JOIN OSREFCP C ON B.ACBKCD = C.RESKEY AND C.RECODE = 'BNK' "
@@ -106,7 +106,7 @@ def actBalRegViews_search(request):
     else:
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(B.ACNUMBER,''), IFNULL(B.ACNUM_NAME,''), IFNULL(B.ACBKCD, ''), IFNULL(C.RESNAM,'') "
-                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, 0), IFNULL(A.ACDESC, '') "
+                           "        ,IFNULL(A.ACDATE,''), IFNULL(A.ACAMTS, ''), IFNULL(A.ACDESC, '') "
                            "       FROM ACNUMBER B "
                            "       LEFT OUTER JOIN ACBALANCE  A ON A.ACNUMBER = B.ACNUMBER "
                            "       LEFT OUTER JOIN OSREFCP C ON B.ACBKCD = C.RESKEY AND C.RECODE = 'BNK' "

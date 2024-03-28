@@ -218,8 +218,6 @@
                                     <col width="6%">
                                     <col hidden width="10%">
                                     <col hidden width="6%">
-                                    <col width="6%">
-                                    <col width="10%">
                                 </colgroup>
                                 <thead class="text-white font-weight-bolder text-center"
                                        style="background-color: darkgreen; position: sticky; top: 0">
@@ -229,8 +227,6 @@
                                     <th style="font-size: 0.85rem" class="p-1">계정과목</th>
                                     <th style="font-size: 0.85rem" class="p-1">지출금액</th>
                                     <th style="font-size: 0.85rem" class="p-1">작성자</th>
-                                    <th style="font-size: 0.85rem" class="p-1">은 행</th>
-                                    <th style="font-size: 0.85rem" class="p-1">계좌번호</th>
                                 </tr>
                                 </thead>
                                 <tbody id="subTb">
@@ -627,7 +623,6 @@
             var acNum = tr.children().eq(16).text()
             var acEmp = tr.children().eq(8).text()
             var acNme = tr.children().eq(9).text()
-            alert(acEmp)
             var acSeqn = tr.children().eq(11).text()
             var acIogb = tr.children().eq(12).text()
             var acGubn = tr.children().eq(14).text()
@@ -827,6 +822,10 @@
             var pDate = document.getElementById('permitDate').value
             var perDate = pDate.replace(/\-/g, '')
 
+            //은행, 계좌번호는 각각 입력하지 않고 한번에 처리
+            var actBank = document.getElementById('actBank').value
+            var actNum = document.getElementById('actNumber').value
+
             var cboActNum = "";
             var cboBank = "";
             var cboMcode = "";
@@ -889,7 +888,7 @@
             var total = 0;
             if ($(this).is(':checked')) {
 
-                if (balance <= 0){ alert('승인할 잔액이 없습니다.'); return false;   }
+                //if (balance <= 0){ alert('승인할 잔액이 없습니다.'); return false;   }
                 if ($('#subTr' + count).length == 0 && balance > 0) {
 
                     var sub_tr_cnt = $('#chkTb tbody tr').length;
@@ -905,12 +904,8 @@
                         "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
                         "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                         "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
-                        "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
-                        "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +
-                        "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acBank + "</td> " +
-                        "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
-                        "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +
-                        "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNum + "</td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actBank + "</td> " +
+                        "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actNum + "</td> " +
                         "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
                         "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
@@ -1002,7 +997,13 @@
             var offSet = document.getElementById('cboTransGbn').value;
             //var offSet = $('input[name=inputOffSet]:checked').val();
             var actNum = document.getElementById('actNumber').value;
+            var actBank = document.getElementById('actBank').value;
             var perDate = document.getElementById('permitDate').value;
+
+            if (actNum == '' || actNum == null) {
+                alert('계좌번호를 선택 해주세요.')
+                return false
+            }
 
             var pmtArr = [];
             for (var i = 1; i < subCount; i++) {
@@ -1014,34 +1015,34 @@
                 var acIogb = $('#acIogb_' + i).text();
                 var finAmts = $('#finAmts_' + i).text();
                 var acAmts = $('#txtAmts_' + i).val();
-                var acNum = $('#acNumber_' + i).text();
+                //var acNum = $('#acNumber_' + i).text();
                 var acGubn = $('#acGubn_' + i).text();
                 var mCode = $('#mainCode_' + i).text();
                 var transGbn = $('#acTrans_' + i).text();
-                var acBnkCode = $('#acBnkCode_' + i).text();
+                //var acBnkCode = $('#acBnkCode_' + i).text();
 
-                if (acNum == '' || acNum == null) {
-                    acNum = document.getElementById('actNumber').value;
-                }
+                {#if (acNum == '' || acNum == null) {#}
+                {#    acNum = document.getElementById('actNumber').value;#}
+                {#}#}
 
-                {#let chk = {"acNum": acNum}#}
-                {##}
-                {#$.ajax({#}
-                {#    type: "post",#}
-                {#    data: chk,#}
-                {#    url: '{% url "balanceChk" %}',#}
-                {#    headers: {#}
-                {#        'X-CSRFTOKEN': '{{ csrf_token }}'#}
-                {#    },#}
-                {#    dataType: 'json',#}
-                {#    success: function (data) {#}
-                {#        var act = "";#}
-                {#        if (data.balance < acAmts) {#}
-                {#            alert('선택한 통장의 잔고가 부족합니다.')#}
-                {#            return false;#}
-                {#        }#}
-                {#    }#}
-                {#});#}
+                let chk = {"actNum": actNum}
+
+                $.ajax({
+                    type: "post",
+                    data: chk,
+                    url: '{% url "balanceChk" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var act = "";
+                        if (data.balance < acAmts) {
+                            alert('선택한 통장의 잔고가 부족합니다.')
+                            return false;
+                        }
+                    }
+                });
 
                 let data = {
                     'perDate': perDate,
@@ -1049,13 +1050,11 @@
                     'acEmp': acEmp,
                     'acSeqn': acSeqn,
                     'acIogb': acIogb,
-                    'acNum': acNum,
                     'finAmts': finAmts,
                     'acAmts': acAmts,
                     'acGubn': acGubn,
                     'mCode': mCode,
                     'transGbn': transGbn,
-                    'acBnkCode': acBnkCode,
                 };
                 pmtArr.push(data);
             }
@@ -1069,7 +1068,8 @@
                         'pmtArrList': JSON.stringify(pmtArr),
                         'offSet': offSet,
                         'actNum': actNum,
-                        'perDate': perDate
+                        'perDate': perDate,
+                        'actBank': actBank,
                     },
                     dataType: "json",
                     url: '{% url "permit_reg_save" %}',
@@ -1090,7 +1090,7 @@
             }
         });
 
-        {# 조회 버튼 #}
+        {# 취소 버튼 #}
         $(document).on('click', "#btnDlt", function () {
 
             var subCount = $('#subTb tr').length;
@@ -1157,3 +1157,27 @@
 
     </script>
 {% endblock %}
+
+
+{#                        "<tr id='subTr" + count + "' class='subTr_tr'>" +#}
+{#                        "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + perDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +#}
+{#                        "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +#}
+{#                        "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +#}
+{#                        "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +#}
+{#                        "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +#}
+{#                        "<td hidden class='text-center p-1 text-danger' name='finAmts'  id='finAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + balance + "</td> " +#}
+{#                        "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +#}
+{#                        "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +#}
+{#                        "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +#}
+{#                        "<td class='text-center p-1' name='acBank'  id='acBank_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +#}
+{#                        "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboBank_" + count + "' name='cboBank'></select></td> " +#}
+{#                        "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actBank + "</td> " +#}
+{#                        "<td class='text-center p-1' name='acNum'  id='acNum_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +#}
+{#                        "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboActNum_" + count + "' name='cboActNum'></select></td> " +#}
+{#                        "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actNum + "</td> " +#}
+{#                        "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +#}
+{#                        "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +#}
+{#                        "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +#}
+{#                        "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +#}
+{#                        "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +#}
+{#                        "</tr> ");#}

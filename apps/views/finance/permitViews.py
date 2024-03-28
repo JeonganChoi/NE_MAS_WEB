@@ -668,38 +668,28 @@ def cboActNum_search(request):
 
 
 def balanceChk(request):
-    acNumber = request.POST.get('acNum')
+    acNumber = request.POST.get('actNum')
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(ACAMTS, 0) FROM ACBALANCE WHERE ACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + str(iCust) + "' ")
         result = cursor.fetchall()
+        total = int(result[0][0])
 
-        if result:
-            total = result[0][0]
-        else:
-            total = 0
     # 출금
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '1' AND ACACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + str(iCust) + "' ")
         result2 = cursor.fetchall()
+        outTotal = int(result2[0][0])
 
-        if result:
-            outTotal = result2[0][0]
-        else:
-            outTotal = 0
     # 입금
     with connection.cursor() as cursor:
         cursor.execute(" SELECT IFNULL(SUM(ACAMTS), 0) FROM SISACCTT WHERE ACIOGB = '2' AND ACACNUMBER = '" + str(acNumber) + "' AND ICUST = '" + iCust + "' ")
         result3 = cursor.fetchall()
+        inTotal = int(result3[0][0])
 
-        if result:
-            inTotal = result3[0][0]
-        else:
-            inTotal = 0
-
-        balance = (total - outTotal) + inTotal
+        balance = (int(total) - int(outTotal)) + int(inTotal)
         print(balance)
 
         return JsonResponse({'balance': balance, 'acNumber': acNumber})
@@ -710,6 +700,7 @@ def permitViews_save(request):
     iCust = request.session.get('USER_ICUST')
     offSet = request.POST.get('offSet')
     actNum = request.POST.get('actNum')
+    actBank = request.POST.get('actBank')
     perDate = request.POST.get('perDate')
     permit = 'Y'
 
@@ -886,7 +877,7 @@ def permitViews_save(request):
             with connection.cursor() as cursor:
                 cursor.execute(" INSERT INTO ACTSTMENT "
                                "   (    "
-                               "     ACDATE "
+                               "      ACDATE "
                                "    , SEQ "
                                "    , ACSEQN "
                                "    , ACIOGB "
@@ -914,7 +905,7 @@ def permitViews_save(request):
                                "    , '" + str(custAct) + "' "
                                "    , '" + str(acgubn) + "' "
                                "    , '" + pmtArrayLists[data]["acAmts"].replace(",","") + "' "
-                               "    , '" + pmtArrayLists[data]["acNum"] + "' "
+                               "    , '" + str(actNum) + "' "
                                "    , '" + pmtArrayLists[data]["mCode"] + "' "
                                "    , '" + str(user) + "' "
                                "    , date_format(now(), '%Y%m%d') "
