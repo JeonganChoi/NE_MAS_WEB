@@ -53,7 +53,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-5">
+                            <div class="col-lg-6 col-6">
                                 <div class="input-group shadow-none">
                                     <label class="me-3" style="font-size: 0.85rem; width: 8rem"><i class="fa fa-search me-2"></i>거래처/사용처</label>
                                     <div class="d-flex">
@@ -62,8 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-2"></div>
-                            <div class="col-lg-2 col-2 text-end">
+                            <div class="col-lg-3 col-3 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white" style="font-size: 0.8rem" id="btnSearch" name="btnSearch">
                                         <i class="fa fa-search me-2 fs-6"></i>조 회
                                 </button>
@@ -173,27 +172,37 @@
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none sange">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i
-                                            class="fa fa-search  me-2"></i>상계 금액</label>
+                                            class="fa fa-file-invoice me-2"></i>상계 금액</label>
                                     <input class="form-control border border-light rounded-1 text-end me-2 w-20"
                                            type="text" name="CostOffSet" id="CostOffSet"
                                            style="height: 2rem; width: 10rem">
                                     <input type="hidden" id="real_CostOffSet" value="0" />
                                 </div>
-                                <div hidden class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search  me-2"></i>시행 일자</label>
-                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
-                                </div>
-                            </div>
-                            <div hidden class="col-lg-4 col-4">
-                                <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>계좌 번호</label>
-                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actNumber" id="actNumber" style="height: 2rem; font-size: 0.8rem"></select>
-                                </div>
                             </div>
                             <div class="col-lg-4 col-4 text-end">
                                 <button type="button" class="btn btn-sm text-white font-weight-bolder" style="background-color: seagreen; font-size: 0.8rem" id="btnPermit" name="btnPermit">
-                                    <i class="fas fa-file-signature me-2 fs-6"></i>시행
+                                    <i class="fas fa-file-signature me-2 fs-6"></i>등록
                                 </button>
+                            </div>
+                        </div>
+                        <div class="row p-0">
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="ni ni-calendar-grid-58 me-2"></i>시행 일자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="permitDate" id="permitDate" style="height: 2rem; width: 10rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fa fa-file-invoice me-2"></i>은행명</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actBank" id="actBank" style="height: 2rem; font-size: 0.8rem"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-4">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fa fa-file-invoice me-2"></i>계좌 번호</label>
+                                    <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="actNumber" id="actNumber" style="height: 2rem; font-size: 0.8rem"></select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -251,17 +260,20 @@
             var inputCard = "";
             var inputCardNum = "";
             var actNumber = "";
+            var actBank = "";
             var inputBankTxt = "<option value=''>:: 선택 ::</option>";
             var inputActTxt = "<option value=''>:: 선택 ::</option>";
             var inputCardTxt = "<option value=''>:: 선택 ::</option>";
             var inputCardNumTxt = "<option value=''>:: 선택 ::</option>";
-            var actNumberTxt = "";
+            var actNumberTxt = "<option value=''>:: 선택 ::</option>";
+            var actBankTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputBank").html("");
             $("#inputAct").html("");
             $("#inputCard").html("");
             $("#inputCardNum").html("");
             $("#actNumber").html("");
+            $("#actBank").html("");
 
             document.getElementById('inputDate').valueAsDate = new Date
             document.getElementById('permitDate').valueAsDate = new Date
@@ -374,11 +386,21 @@
                         }
                     }
 
+                    var combolist7 = data.cboBank;
+                    for (var i = 0; i < combolist7.length; i++) {
+                        if (combolist7[i][0] == actBank) {
+                            actBankTxt = actBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
+                        } else {
+                            actBankTxt = actBankTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
+                        }
+                    }
+
                     $("#actNumber").append(actNumberTxt);
                     $("#inputBank").append(inputBankTxt);
                     $("#inputAct").append(inputActTxt);
                     $("#inputCard").append(inputCardTxt);
                     $("#inputCardNum").append(inputCardNumTxt);
+                    $("#actBank").append(actBankTxt);
                 }
             })
         });
@@ -544,7 +566,7 @@
                     var combolist5 = data.cboAct;
                     for (var i = 0; i < combolist5.length; i++) {
                         if (combolist5[i][0] == inputAct) {
-                            inputActTxt = cboWitActNumTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                            inputActTxt = inputActTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
                         } else {
                             inputActTxt = inputActTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
                         }
@@ -554,6 +576,45 @@
                 }
             });
         });
+
+        {# 은행 선택시 계좌명 바인딩 #}
+        $('#actBank').change(function () {
+            var actNumber = "";
+            var actNumberTxt = "<option value=''>:: 선택 ::</option>";
+
+            $("#actNumber").html("");
+
+            var cboBank = document.getElementById('actBank').value
+
+            var data = {"cboBank": cboBank}
+
+            $.ajax({
+                type: "post",
+                url: '{% url "cboAct" %}',
+                data: data,
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist5 = data.cboAct;
+                    for (var i = 0; i < combolist5.length; i++) {
+                        if (combolist5[i][0] == actNumber) {
+                            actNumberTxt = actNumberTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][0] + "</option>";
+                        } else {
+                            actNumberTxt = actNumberTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][0] + "</option>";
+                        }
+                    }
+
+                    $("#actNumber").append(actNumberTxt);
+                }
+            });
+        });
+
+
+
+
 
         {# 상계 체크박스 선택시 #}
         $(document).on('change', '#selectTb tbody tr td input.chkSetOff', function () {
