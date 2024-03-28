@@ -24,15 +24,15 @@
                 <div class="table-responsive-sm overflow-auto height-400 border border-light">
                     <table class="table">
                         <colgroup>
-                            <col width="10%">
-                            <col width="10%">
+                            <col hidden width="10%">
+                            <col hidden width="10%">
                             <col width="10%">
                             <col width="30%">
                         </colgroup>
                         <thead class="bg-primary text-white text-center" style="position: sticky; top: 0">
                         <tr>
-                            <th class="p-1" style="font-size: 0.8rem">상위 계정 과목</th>
-                            <th class="p-1" style="font-size: 0.8rem">회계 계정 명</th>
+                            <th hidden class="p-1" style="font-size: 0.8rem">상위 계정 과목</th>
+                            <th hidden class="p-1" style="font-size: 0.8rem">회계 계정 명</th>
                             <th class="p-1" style="font-size: 0.8rem">관리 계정 명</th>
                             <th class="p-1" style="font-size: 0.8rem">비 고</th>
                         </tr>
@@ -79,10 +79,10 @@
                     for (var i = 0; i < list.length; i++) {
                         $("#mainTb").append(
                             "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
+                            "<td class='text-start text-dark border border-light p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td>" +
+                            "<td class='text-start text-dark border border-light p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td>" +
                             "</tr> ");
                     }
 
@@ -119,10 +119,10 @@
                             for (var i = 0; i < list.length; i++) {
                                 $("#mainTb").append(
                                     "<tr id='#mainTr' class='mainTr_tr'>" +
-                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td>" +
-                                    "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td>" +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][1] + "</td>" +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][3] + "</td>" +
+                                    "<td class='text-start text-dark border border-light p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td>" +
+                                    "<td class='text-start text-dark border border-light p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td>" +
                                     "</tr> ");
                             }
                         }
