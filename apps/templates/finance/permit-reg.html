@@ -432,7 +432,7 @@
             var perDate = sDate.replace(/\-/g, '')
             var txtCustCode = document.getElementById('txtCustCode').value;
             var custCode = document.getElementById('txtCust').value;
-            if(txtCustCode == ''){ custCode == ''; }
+            if(txtCustCode != ''){ custCode = txtCustCode; }
             var offSet = $('input[name=inputOffSet]:checked').val();
             var permitGbn = document.getElementById('inputPermit').value;
             var bankCode = document.getElementById('inputBank').value;
