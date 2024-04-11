@@ -948,6 +948,12 @@
             }
         });
 
+        $(document).on('change', 'input[name=permitDate]', function() {
+           var _val = $(this).val();
+
+           $('tr.subTr_tr').find('td[name=perDate]').text(_val);
+        });
+
 
 
         {#$(document).on('change', '#inputOffSet', function() {#}
