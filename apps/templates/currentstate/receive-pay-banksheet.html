@@ -285,8 +285,10 @@
                 success: function (data) {
                     var list2 = data.totalList;
                     var list = data.mainList;
+                    var list4 = data.dateList;
 
                     var total = Number(list2[0][0])
+                    var balDate = list4[0][0]
                     var gbn = '';
 
                     $("#sheetTb").html("");
@@ -294,7 +296,7 @@
 
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -393,8 +395,10 @@
 
                     var list2 = data.totalList;
                     var list = data.mainList;
+                    var list4 = data.dateList;
 
                     var total = Number(list2[0][0])
+                    var balDate = list4[0][0]
                     var gbn = '';
 
                     $("#sheetTb").html("");
@@ -402,7 +406,7 @@
 
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
@@ -414,37 +418,37 @@
 
                     for (var i = 0; i < list.length; i++) {
 
-                        gbn = list[i][1]
-                        if(gbn == '1'){
-                            total -= Number(list[i][3])
+                       gbn = list[i][1]
+                       if(gbn == '1'){
+                           total -= Number(list[i][3])
 
-                            $("#sheetTb").append(
-                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                                "</tr> ");
-                        }
-                        if(gbn == '2'){
-                            total += Number(list[i][4])
+                           $("#sheetTb").append(
+                               "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                               "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
+                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                               "</tr> ");
+                       }
+                       if(gbn == '2'){
+                           total += Number(list[i][4])
 
-                            $("#sheetTb").append(
-                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                                "</tr> ");
-                        }
+                           $("#sheetTb").append(
+                               "<tr id='#sheetTr' class='sheetTr_tr'>" +
+                               "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
+                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                               "</tr> ");
+                       }
                     }
 
                     var list3 = data.subList;
@@ -572,8 +576,10 @@
                 success: function (data) {
                     var list = data.mainList;
                     var list2 = data.totalList;
+                    var list4 = data.dateList;
 
                     var total = Number(list2[0][0])
+                    var balDate = list4[0][0]
                     var gbn = '';
 
                     $("#sheetTb").html("");
@@ -581,7 +587,7 @@
 
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'></td>" +
+                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
                         "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +

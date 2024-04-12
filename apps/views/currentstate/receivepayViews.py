@@ -38,6 +38,12 @@ def receivepaySheetViews_search(request):
             titleresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(A.ACDATE, '') FROM ACBALANCE A LEFT OUTER JOIN ACNUMBER B ON A.ACNUMBER = B.ACNUMBER  "
+                           " WHERE A.ACDATE <= '" + str(strDate) + "' AND A.ICUST = '" + str(iCust) + "' AND B.ACBKCD = '" + str(cboBank) + "' ")
+
+            dateresult = cursor.fetchall()
+
+        with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
                            "        (SELECT SUM(IFNULL(A.ACAMTS, 0)) AS BAL, 0 AS INTOTAL, 0 AS OUTTOTAL, B.ACBKCD FROM ACBALANCE A "
                            "        LEFT OUTER JOIN ACNUMBER B ON A.ACNUMBER = B.ACNUMBER "
@@ -115,9 +121,14 @@ def receivepaySheetViews_search(request):
 
             subresult = cursor.fetchall()
 
-        return JsonResponse({'cboAccount': cboAresult, 'titleList': titleresult, 'totalList': totalresult, 'mainList': mainresult, 'subList': subresult})
+        return JsonResponse({'cboAccount': cboAresult, 'titleList': titleresult, 'totalList': totalresult, 'mainList': mainresult, 'subList': subresult, 'dateList': dateresult})
 
     if cboAccount != '':
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(ACDATE, '') FROM ACBALANCE WHERE ACDATE <= '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND ACNUMBER = '" + str(cboAccount) + "' ")
+
+            dateresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(SUM(BAL), 0), IFNULL(SUM(INTOTAL), 0), IFNULL(SUM(OUTTOTAL), 0), IFNULL(SUM(BAL + INTOTAL - OUTTOTAL), 0) FROM "
@@ -126,7 +137,7 @@ def receivepaySheetViews_search(request):
                            "        SELECT 0 AS BAL, SUM(IFNULL(ACAMTS, 0)) AS INTOTAL, 0 AS OUTTOTAL FROM ACTSTMENT "
                            "        WHERE ACIOGB = '2' AND ICUST = '" + str(iCust) + "' AND ACDATE <= '" + str(strDate) + "' AND ACACNUMBER = '" + str(cboAccount) + "' "
                            " UNION ALL "
-                           "        SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTAL FROM ACTSTMENT "
+                           "        SELECT 0 AS BAL, 0 AS INTOTAL, SUM(IFNULL(ACAMTS, 0)) AS OUTTOTA FROM ACTSTMENT "
                            "        WHERE ACIOGB = '1' AND ICUST = '" + str(iCust) + "' AND ACDATE <= '" + str(strDate) + "' AND ACACNUMBER = '" + str(cboAccount) + "' "
                            " ) AA ")
 
@@ -189,7 +200,7 @@ def receivepaySheetViews_search(request):
 
         subresult = cursor.fetchall()
 
-        return JsonResponse({'totalList': totalresult, 'mainList': mainresult, 'subList': subresult})
+        return JsonResponse({'totalList': totalresult, 'mainList': mainresult, 'subList': subresult, 'dateList': dateresult})
 
     else:
         with connection.cursor() as cursor:
