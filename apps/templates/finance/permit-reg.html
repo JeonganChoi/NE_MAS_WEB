@@ -25,6 +25,8 @@
                                 <!--<button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>-->
                                 <button type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: darkorange; font-size: 0.8rem" id="btnDlt" name="btnDlt">
                                     <i class="fa fa-trash-arrow-up fs-6 pe-2"></i>취소</button>
+                                <button type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: royalblue; font-size: 0.8rem" id="btnUpt" name="btnUpt">
+                                    <i class="fa fa-cloud-arrow-up fs-6 pe-2"></i>수정</button>
                             </div>
                         </div>
                     </div>
@@ -1160,6 +1162,105 @@
             }
         });
 
+        //수정 버튼
+        $(document).on('click', "#btnUpt", function () {
+            {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
+            const subCount = $('#subTb tr').length;
+            var offSet = document.getElementById('cboTransGbn').value;
+            //var offSet = $('input[name=inputOffSet]:checked').val();
+            var actNum = document.getElementById('actNumber').value;
+            var actBank = document.getElementById('actBank').value;
+            var perDate = document.getElementById('permitDate').value;
+
+            if (actNum == '' || actNum == null) {
+                alert('계좌번호를 선택 해주세요.')
+                return false
+            }
+
+            var pmtArr = [];
+            for (var i = 1; i < subCount; i++) {
+
+                var perDate = $('#perDate_' + i).text();
+                var ioDate = $('#ioDate_' + i).text();
+                var acEmp = $('#acEmp_' + i).text();
+                var acSeqn = $('#acSeqn_' + i).text();
+                var acIogb = $('#acIogb_' + i).text();
+                var finAmts = $('#finAmts_' + i).text();
+                var acAmts = $('#txtAmts_' + i).val();
+                //var acNum = $('#acNumber_' + i).text();
+                var acGubn = $('#acGubn_' + i).text();
+                var mCode = $('#mainCode_' + i).text();
+                var transGbn = $('#acTrans_' + i).text();
+                //var acBnkCode = $('#acBnkCode_' + i).text();
+
+                {#if (acNum == '' || acNum == null) {#}
+                {#    acNum = document.getElementById('actNumber').value;#}
+                {#}#}
+
+                let chk = {"actNum": actNum}
+
+                $.ajax({
+                    type: "post",
+                    data: chk,
+                    url: '{% url "balanceChk" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var act = "";
+                        if (data.balance < acAmts) {
+                            alert('선택한 통장의 잔고가 부족합니다.')
+                            return false;
+                        }
+                    }
+                });
+
+                let data = {
+                    'perDate': perDate,
+                    'ioDate': ioDate,
+                    'acEmp': acEmp,
+                    'acSeqn': acSeqn,
+                    'acIogb': acIogb,
+                    'finAmts': finAmts,
+                    'acAmts': acAmts,
+                    'acGubn': acGubn,
+                    'mCode': mCode,
+                    'transGbn': transGbn,
+                };
+                pmtArr.push(data);
+            }
+
+            var saveresult = confirm("수정하시겠습니까?")
+
+            if(saveresult == true){
+                $.ajax({
+                    type: "post",
+                    data: {
+                        'pmtArrList': JSON.stringify(pmtArr),
+                        'offSet': offSet,
+                        'actNum': actNum,
+                        'perDate': perDate,
+                        'actBank': actBank,
+                    },
+                    dataType: "json",
+                    url: '{% url "permit_reg_save" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.sucYn === 'Y') {
+                            alert('수정 되었습니다.')
+                            location.href = "{% url 'permit_reg' %}";
+                        }
+                    }
+                });
+            }
+            if(saveresult == false){
+                alert('취소되었습니다.')
+                return false;
+            }
+        });
 
     </script>
 {% endblock %}

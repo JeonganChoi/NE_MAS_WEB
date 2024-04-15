@@ -1033,6 +1033,100 @@ def permitViews_save(request):
         return JsonResponse({'sucYn': "Y"})
 
 
+
+def permitViews_update(request):
+    pmtArray = json.loads(request.POST.get('pmtArrList'))
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+    offSet = request.POST.get('offSet')
+    actNum = request.POST.get('actNum')
+    actBank = request.POST.get('actBank')
+    perDate = request.POST.get('perDate')
+    permit = 'Y'
+
+    pmtArrayLists = list(filter(len, pmtArray))
+    for data in range(0, len(pmtArrayLists)):
+        custCode = ""
+        custBank = ""
+        custAct = ""
+        if pmtArrayLists[data]["acIogb"]:
+            amts = pmtArrayLists[data]["acAmts"]
+            acAmts = amts.replace(",", "")
+            print(acAmts)
+
+        if pmtArrayLists[data]["acGubn"] == '2':
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT A.ACCUST, B.CUST_BKCD, B.CUST_ACNUM FROM SISACCTT A "
+                               " LEFT OUTER JOIN MIS1TB003_D B "
+                               " ON A.ACCUST = B.CUST_NBR "
+                               " WHERE A.IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                               " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ICUST = '" + str(iCust) + "' ")
+
+                result = cursor.fetchall()
+
+                if (len(result) != 0):
+                    custCode = result[0][0]
+                    custBank = result[0][1]
+                    custAct = result[0][2]
+
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0) FROM SISACCTT "
+                           " WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-","") + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                           " AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ")
+
+            result2 = cursor.fetchall()
+            if (len(result2) != 0):
+                acode = result2[0][0]
+                acgubn = result2[0][2]
+                mcode = result2[0][3]
+                finAmts = result2[0][4]
+                orgAmts = result2[0][5]
+
+        final = int(finAmts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
+
+        # 지출금액이 잔액보다 작을때 시행 완료되지않은것으로 처리:
+        if int(final) < int(orgAmts):
+            permit = 'N'
+
+        with connection.cursor() as cursor:
+            cursor.execute(" UPDATE SISACCTT SET "
+                           "    ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "'"
+                           "  , FIN_OPT = '" + str(permit) + "' "
+                           "  , FIN_AMTS = '" + str(final) + "' "
+                           "  , ACACNUMBER = '" + str(actNum) + "' "
+                           "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+                           "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
+                           "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                           "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                           "     AND ICUST = '" + str(iCust) + "' "
+            )
+            connection.commit()
+
+        # 금액이 얼마이던 시행으로 처리
+        with connection.cursor() as cursor:
+            cursor.execute(" UPDATE ACTSTMENT SET "
+                           "      ACODE = '" + str(acode) + "' "
+                           "    , ACCUST = '" + str(custCode) + "' "
+                           "    , ACCUST_BNK = '" + str(custBank) + "' "
+                           "    , ACCUST_ACT = '" + str(custAct) + "' "
+                           "    , ACGUBN = '" + str(acgubn) + "' "
+                           "    , ACAMTS = '" + pmtArrayLists[data]["acAmts"].replace(",","") + "' "
+                           "    , ACACNUMBER = '" + str(actNum) + "' "
+                           "    , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+                           "    , CRE_USER = '" + str(user) + "' "
+                           "    , CRE_DT = date_format(now(), '%Y%m%d') "
+                           "    , ICUST = '" + str(iCust) + "' "
+                           "    WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-","") + "' "
+                           "      AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "'  "
+                           "      AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "'  "
+                           "      AND SEQ = '" + pmtArrayLists[data]["seq"] + "'  "
+                           )
+            connection.commit()
+
+    return JsonResponse({'sucYn': "Y"})
+
+
+
 def permitViews_dlt(request):
     pmtArray = json.loads(request.POST.get('pmtArrList'))
     iCust = request.session.get('USER_ICUST')
