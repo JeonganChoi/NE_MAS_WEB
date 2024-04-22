@@ -466,44 +466,83 @@
 
                     {# 순번, 입.출금구분, 날짜 #}
                     $("#mainTb").html("");
-                    for (var i = 0; i < list.length; i++) {
+                    if(permitGbn == ''){
+                        for (var i = 0; i < list.length; i++) {
 
-                        balance = parseInt(list[i][2]) - parseInt(list[i][16])
-                        if(list[i][19] != ''){ cust = list[i][20] }
-                        if(list[i][21] != ''){ cust = list[i][21]}
+                            balance = parseInt(list[i][2]) - parseInt(list[i][16])
+                            if(list[i][19] != ''){ cust = list[i][20] }
+                            if(list[i][21] != ''){ cust = list[i][21]}
 
-                        $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "</tr> ");
+                            $("#mainTb").append(
+                                "<tr id='#mainTr' class='mainTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                                "</tr> ");
 
-                        //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
+                            //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
 
-                        total += parseInt(list[i][2])
+                            total += parseInt(list[i][2])
+                        }
                     }
+                    if(permitGbn == '1'){
+                        for (var i = 0; i < list.length; i++) {
 
+                            balance = parseInt(list[i][8]) - parseInt(list[i][9])
+                            if(list[i][5] != ''){ cust = list[i][6] }
+                            if(list[i][7] != ''){ cust = list[i][7]}
+
+                            $("#mainTb").append(
+                                "<tr id='#mainTr' class='mainTr_tr'>" +
+                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][3].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td> " +
+                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
+                                "</tr> ");
+
+                            //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
+
+                            total += parseInt(list[i][8])
+                        }
+                    }
                     document.getElementById('inputPrice').value = addComma(total)
                 }
             })
         });
 
-
+        {# 미시행선택하고 왼쪽 테이블에 체크박스 체크했는데, 시행으로 콤보박스 바꾸면 오른쪽 테이블 내용 지워지고 왼쪽 테이블 체크박스 빠져야함. #}
+        $('#inputPermit').change(function () {
+            $("#subTb").html("");
+            var count = $('#selectTb').closest('tr').prevAll().length;
+            $('#mainTr' + count).remove();
+        });
 
         {# 결제방법 선택시 계좌명 바인딩 #}
         $('#inputCard').change(function () {
@@ -620,6 +659,7 @@
             var aDate = tr.children().eq(1).text()
             var acDate = aDate.replace(/\-/g, '')
             var acTitle = tr.children().eq(3).text()
+            var acCust = tr.children().eq(4).text()
             var acMcode = tr.children().eq(13).text()
             var acBank = tr.children().eq(15).text()
             var acNum = tr.children().eq(16).text()
@@ -796,6 +836,7 @@
             var ioDate = iDate.replace(/\-/g, '')
             //var aDate = tr.children().eq(1).text()
             //var acDate = aDate.replace(/\-/g, '')
+            var acCust = tr.children().eq(4).text()
             var acTitle = tr.children().eq(3).text()
             var acMcode = tr.children().eq(13).text()
             var acBank = tr.children().eq(15).text()
@@ -815,11 +856,10 @@
             if(parseInt(aa) > 0){ balance = aa }
 
             var count = $(this).closest('tr').prevAll().length;
-
             var offTotal = 0;
 
             {#var offSet = $('input[name=inputOffSet]:checked').val();#}
-            var isChkSetOffChecked = tr.find('input.chkSetOff').is(':checked');
+            //var isChkSetOffChecked = tr.find('input.chkPer').is(':checked');
 
             var pDate = document.getElementById('permitDate').value
             var perDate = pDate.replace(/\-/g, '')
@@ -842,7 +882,7 @@
             // 시행/상계 구분
             var transGbn = document.getElementById('cboTransGbn').value;
 
-            let data = {"acIogb": acIogb, "transGbn": transGbn}
+            let data = {"acIogb": acIogb}
 
             $.ajax({
                 type: "post",
@@ -913,6 +953,7 @@
                         "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
                         "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                         "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
+                        "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
                         "</tr> ");
 
                     if(transGbn == '2'){
@@ -932,7 +973,7 @@
             } else {
 
                 {#document.getElementById('CostOffSet').value = addComma(offTotal)#}
-                if(isChkSetOffChecked == false) {
+                if(transGbn == '1') {
                     $('#subTr' + count).remove();
                 }
 
@@ -944,8 +985,8 @@
                         acAmts_num *= -1;
                     }
 
-                    $('#CostOffSet').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
-                    $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
+                    $('#CostOffSet').val(addComma(Math.abs(costOffSet_val - acAmts_num)));
+                    $('#real_CostOffSet').val(costOffSet_val - acAmts_num);
                 }
             }
         });
@@ -1003,7 +1044,6 @@
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             const subCount = $('#subTb tr').length;
             var offSet = document.getElementById('cboTransGbn').value;
-            //var offSet = $('input[name=inputOffSet]:checked').val();
             var actNum = document.getElementById('actNumber').value;
             var actBank = document.getElementById('actBank').value;
             var perDate = document.getElementById('permitDate').value;
@@ -1027,6 +1067,7 @@
                 var acGubn = $('#acGubn_' + i).text();
                 var mCode = $('#mainCode_' + i).text();
                 var transGbn = $('#acTrans_' + i).text();
+                var acCust = $('#acCust_' + i).text();
                 //var acBnkCode = $('#acBnkCode_' + i).text();
 
                 {#if (acNum == '' || acNum == null) {#}
@@ -1063,6 +1104,7 @@
                     'acGubn': acGubn,
                     'mCode': mCode,
                     'transGbn': transGbn,
+                    'acCust': acCust,
                 };
                 pmtArr.push(data);
             }
@@ -1191,6 +1233,7 @@
                 var acGubn = $('#acGubn_' + i).text();
                 var mCode = $('#mainCode_' + i).text();
                 var transGbn = $('#acTrans_' + i).text();
+                var acCust = $('#acCust_' + i).text();
                 //var acBnkCode = $('#acBnkCode_' + i).text();
 
                 {#if (acNum == '' || acNum == null) {#}
@@ -1227,6 +1270,7 @@
                     'acGubn': acGubn,
                     'mCode': mCode,
                     'transGbn': transGbn,
+                    'acCust': acCust,
                 };
                 pmtArr.push(data);
             }
@@ -1244,7 +1288,7 @@
                         'actBank': actBank,
                     },
                     dataType: "json",
-                    url: '{% url "permit_reg_save" %}',
+                    url: '{% url "permit_reg_update" %}',
                     headers: {
                         'X-CSRFTOKEN': '{{ csrf_token }}'
                     },

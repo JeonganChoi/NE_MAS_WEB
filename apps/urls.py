@@ -108,7 +108,7 @@ urlpatterns = [
     path('purchase_reg_search/', purchaseViews.purchaseRegViews_search, name='purchase_reg_search'),
     path('purchase_reg_save/', purchaseViews.purchaseRegViews_save, name='purchase_reg_save'),
     path('purchase_reg_dlt/', purchaseViews.purchaseRegViews_dlt, name='purchase_reg_dlt'),
-    #  매출관리
+    #  매출 관리
     path('sales_reg/', salesViews.salesRegViews, name='sales_reg'),
     path('sales_reg_search/', salesViews.salesRegViews_search, name='sales_reg_search'),
     path('sales_reg_save/', salesViews.salesRegViews_save, name='sales_reg_save'),
@@ -132,6 +132,7 @@ urlpatterns = [
     path('balanceChk/', permitViews.balanceChk, name='balanceChk'),
     path('cboCardNum/', permitViews.cboCardNum, name='cboCardNum'),
     path('permit_reg_save/', permitViews.permitViews_save, name='permit_reg_save'),
+    path('permit_reg_update/', permitViews.permitViews_update, name='permit_reg_update'),
     path('permit_cbo_search/', permitViews.cboActNum_search, name='permit_cbo_search'),
     path('permit_reg_dlt/', permitViews.permitViews_dlt, name='permit_reg_dlt'),
 
