@@ -204,11 +204,11 @@
                                     </div>
                                 </div>
                                 <div class="row mt-2">
-                                    <div class="col-4">
+                                    <div class="col-4 cboAdminCode">
                                         <label class="text-sm"><i class="fa fa-check-square-o me-2 text-dark text-sm"></i>관리계정</label>
                                         <select class="form-control border border-light rounded-1 text-center p-1 bg-danger-soft" name="cboAdminCode" id="cboAdminCode" style="height: 2rem; font-size: 0.8rem"></select>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-8 txtTitle">
                                         <label class="text-sm"><i class="fa fa-edit me-2"></i>제 목</label>
                                         <input class="form-control text-start bg-danger-soft" type="text" id="txtTitle" name="txtTitle" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
@@ -297,12 +297,12 @@
                                 </div>
                             </div>
                             <div class="form-group replace">
-                                <div class="row">
+                                <!--<div class="row">
                                     <div class="col-4">
                                         <label class="text-sm"><i class="fa fa-calendar me-2" style="font-size: 0.7rem"></i>등록 일자</label>
                                         <input class="form-control text-center" type="date" id="txtWitRegDate2" name="txtWitRegDate2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="row">
                                     <div class="col-4">
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2" style="font-size: 0.7rem"></i>출금 은행</label>
@@ -324,17 +324,16 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-4">
+                                    <!--<div class="col-4">
                                         <i class="far fa-calendar me-2" style="font-size: 0.7rem"></i><label class="mt-2" id="dateLabel">대체 일자</label>
                                         <input class="form-control text-center" type="date" id="txtOffDate" name="txtOffDate" style="height: 2rem; font-size: 0.8rem"/>
-                                    </div>
+                                    </div>-->
                                     <div class="col-6">
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>금액</label>
                                         <input class="form-control text-end" type="number" id="txtWitPrice2" name="txtWitPrice2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div hidden class="col-4">
                                         <input class="form-control text-end" type="number" id="txtWitSeq2" name="txtWitSeq2"/>
-                                        <input class="form-control text-end" type="number" id="txtWitRecn2" name="txtWitRecn2"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -350,7 +349,7 @@
 
                             </div>
                         </div>
-                        <div class="card-footer mt-0 pt-0">
+                        <div class="card-footer mt-0 pt-0 footer">
                             <div class="row mt-3">
                                 <div class="col-12 text-start line">
                                     <label class="form-label" id="lineLabel"><i class="fas fa-pen me-2"></i>내부 결재 지정</label>
@@ -3254,7 +3253,9 @@
                 $('.replace').show();
                 $('.basic').hide();
                 $('.method').hide();
-                $('.line').hide();
+                $('.cboAdminCode').hide();
+                $('.txtTitle').hide();
+                $('.footer').hide();
 
                 var cboOutAct = "";
                 var cboOutBank = "";
@@ -3650,30 +3651,37 @@
             {#    }#}
             {#}#}
 
+            if(cboWitGbn != '3'){
+                var empArr = [];
+                for (var i = 0; i < 10; i++) {
 
-            var empArr = [];
-            for (var i = 0; i < 10; i++) {
+                    var empNbr = $('#subEmpNbr_' + i).text();
 
-                var empNbr = $('#subEmpNbr_' + i).text();
+                    if(empNbr){
+                        let data = {
+                            'empNbr': empNbr
+                        };
+                        empArr.push(data);
+                    }
+                }
 
-                if(empNbr){
-                    let data = {
-                        'empNbr': empNbr
-                    };
-                    empArr.push(data);
+                if(txtApvAll == '' && empArr == ''){
+                    alert('결재라인을 지정해주세요.')
+                    return false;
                 }
             }
 
-            if(txtApvAll == '' && empArr == ''){
-                alert('결재라인을 지정해주세요.')
-                return false;
-            }
 
 
             {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
             if(cboWitGbn == '3'){
                 {#const subCount = $('#signTd tr').length;#}
 
+                var regDate = document.getElementById('txtWitRegDate').value
+                var acSeqn = document.getElementById('txtWitSeq2').value
+                var acIogb = document.getElementById('cboWitGbn').value
+                var acAmts = document.getElementById('txtWitPrice2').value
+                var acDesc = document.getElementById('txtWitRemark2').value
                 var outAct = document.getElementById('cboOutAct').value
                 var inAct = document.getElementById('cboInBank').value
                 if(outAct == ''){
@@ -3685,144 +3693,38 @@
                     return false
                 }
 
-                if(txtApvAll == '100'){
-                    var apvresult = confirm("전결건입니다. 저장하시겠습니까?")
-                    if(apvresult == true){
-                        var empArr = [];
-                        for (var i = 0; i < 10; i++) {
+                var apvresult = confirm("대채건입니다. 저장하시겠습니까?")
+                if(apvresult == true){
 
-                            var empNbr = $('#subEmpNbr_' + i).text();
-
-                            if(empNbr){
-                                let data = {
-                                    'empNbr': empNbr
-                                };
-                                empArr.push(data);
+                    $.ajax({
+                        type: "post",
+                        data: {
+                            'regDate': regDate,
+                            'acSeqn': acSeqn,
+                            'acIogb': acIogb,
+                            'acAmts': acAmts,
+                            'acDesc': acDesc,
+                            'outAct': outAct,
+                            'inAct': inAct,
+                        },
+                        dataType: "json",
+                        url: '{% url "offSet_save" %}',
+                        headers: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            if (data.sucYn === 'Y') {
+                                alert('저장 되었습니다.')
+                                location.href = "{% url 'with_reg_sheet' %}";
                             }
                         }
-                        formData.append('empArrList', JSON.stringify(empArr))
-
-                        $.ajax({
-                            type: "post",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            url: '{% url "offSet_save" %}',
-                            headers: {
-                                'X-CSRFTOKEN': '{{ csrf_token }}'
-                            },
-                            success: function (data) {
-                                if (data.sucYn === 'Y') {
-                                    alert('저장 되었습니다.')
-                                    location.href = "{% url 'with_reg_sheet' %}";
-                                }
-                                else if(data.sucYn === 'N' && data.message == 'same file name exists') {
-
-                                    formData.append('fileOverwriteYn', 'Y');
-
-                                    $.ajax({
-                                        type: "post",
-                                        data: formData,
-                                        cache: false,
-                                        contentType: false,
-                                        processData: false,
-                                        dataType: "json",
-                                        url: '{% url "offSet_save" %}',
-                                        headers: {
-                                            'X-CSRFTOKEN': '{{ csrf_token }}'
-                                        },
-                                        success: function (data) {
-                                            if (data.sucYn === 'Y') {
-                                                alert('저장 되었습니다.')
-                                                location.href = "{% url 'with_reg_sheet' %}";
-                                            }
-                                        }
-                                    });
-
-                                    {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
-                                    {##}
-                                    {#}#}
-                                }
-                            }
-                        });
-                    }
-                    if(apvresult == false){
+                    });
+                }
+                if(apvresult == false){
                     alert('취소되었습니다.')
                      return false;
-                    }
                 }
-                else{
-                    var empArr = [];
-                    for (var i = 0; i < 10; i++) {
 
-                        var empNbr = $('#subEmpNbr_' + i).text();
-
-                        if(empNbr){
-                            let data = {
-                                'empNbr': empNbr
-                            };
-                            empArr.push(data);
-                        }
-                    }
-
-                    formData.append('empArrList', JSON.stringify(empArr))
-
-                    var saveresult = confirm("저장하시겠습니까?")
-
-                    if(saveresult == true){
-                        $.ajax({
-                            type: "post",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            url: '{% url "offSet_save" %}',
-                            headers: {
-                                'X-CSRFTOKEN': '{{ csrf_token }}'
-                            },
-                            success: function (data) {
-                                if (data.sucYn === 'Y') {
-                                    alert('저장 되었습니다.')
-                                    location.href = "{% url 'with_reg_sheet' %}";
-                                }
-                                else if(data.sucYn === 'N' && data.message == 'same file name exists') {
-
-                                    formData.append('fileOverwriteYn', 'Y');
-
-                                    $.ajax({
-                                        type: "post",
-                                        data: formData,
-                                        cache: false,
-                                        contentType: false,
-                                        processData: false,
-                                        dataType: "json",
-                                        url: '{% url "offSet_save" %}',
-                                        headers: {
-                                            'X-CSRFTOKEN': '{{ csrf_token }}'
-                                        },
-                                        success: function (data) {
-                                            if (data.sucYn === 'Y') {
-                                                alert('저장 되었습니다.')
-                                                location.href = "{% url 'with_reg_sheet' %}";
-                                            }
-                                        }
-                                    });
-
-                                    {#if(confirm('동일한 파일명이 존재합니다. 덮어쓰시겠습니까?')) {#}
-                                    {##}
-                                    {#}#}
-                                }
-                            }
-                        });
-                    }
-                    if(saveresult == false){
-                        alert('취소되었습니다.')
-                         return false;
-                    }
-                }
             }
             else{
                 {# 전결 저장 #}
