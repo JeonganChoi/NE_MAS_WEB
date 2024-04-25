@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-lg-6 col-6">
                 <div class="card border border-white shadow-xs">
-                    <div class="card-header height-150 pb-0">
+                    <div class="card-header height-200 pb-0">
                         <div class="row p-0 pb-0">
                             <div hidden class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
@@ -55,15 +55,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-6">
-                                <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 8rem"><i class="fa fa-search me-2"></i>거래처/사용처</label>
-                                    <div class="d-flex">
-                                        <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" style="height: 2rem; max-width: 12rem">
-                                        <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" style="height: 2rem; max-width: 16rem">
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="col-lg-6 col-6 text-end"></div>
                             <div class="col-lg-3 col-3 text-end">
                                 <button type="button" class="btn btn-sm btn-primary text-white" style="font-size: 0.8rem" id="btnSearch" name="btnSearch">
                                         <i class="fa fa-search me-2 fs-6"></i>조 회
@@ -71,6 +63,23 @@
                             </div>
                         </div>
                         <div class="row p-0 pt-0">
+                            <div class="col-lg-7 col-7">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>일 자</label>
+                                    <input class="form-control border border-light rounded-1 text-center me-2 w-20" type="date" name="strDate" id="strDate" style="height: 2rem; width: 10rem">
+                                    <label class="p-0" style="font-size: 0.85rem; width: 1rem">-</label>
+                                    <input class="form-control border border-light rounded-1 text-center w-20" type="date" name="endDate" id="endDate" style="height: 2rem; width: 10rem">
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-5">
+                                <div class="input-group shadow-none">
+                                    <label class="me-3" style="font-size: 0.85rem; width: 7rem"><i class="fa fa-search me-2"></i>거래처/사용처</label>
+                                    <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" style="height: 2rem; max-width: 12rem">
+                                    <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" style="height: 2rem; max-width: 16rem">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row p-0 mt-2">
                             <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fas fa-search me-2"></i>카드명</label>
@@ -105,8 +114,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body height-500 mt-0 pt-1">
-                        <div class="table-responsive-sm height-400 overflow-auto border border-light">
+                    <div class="card-body mt-0 pt-1">
+                        <div class="table-responsive-sm height-600 overflow-auto border border-light">
                             <table class="table mb-0 align-items-center justify-content-center" id="selectTb">
 
                                 <thead class="text-white font-weight-bolder text-center" style="background-color: darkslateblue; position: sticky; top: 0; z-index: 1;">
@@ -208,8 +217,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body height-500 mt-0 pt-1">
-                        <div class="table-responsive-sm overflow-auto border border-light height-400">
+                    <div class="card-body mt-0 pt-1">
+                        <div class="table-responsive-sm overflow-auto border border-light height-600">
                             <table class="table mb-0 align-items-center justify-content-center" id="chkTb">
                                 <colgroup>
                                     <col width="8%">
@@ -237,6 +246,19 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-5"></div>
+                            <div class="col-lg-7 col-7">
+                                <div class="d-flex" style="float: right">
+                                    <label style="font-size: 0.85rem; width: 3rem"><i class="fa fa-server me-2"></i>총</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-end me-2" type="text" name="inputCnt2" id="inputCnt2" style="font-size: 0.8rem; height: 2rem; max-width: 4rem">
+                                    <label class="me-4" style="font-size: 0.85rem; width: 1rem">건</label>
+                                    <label class="me-3" style="font-size: 0.85rem"><i class="ni ni-money-coins me-2"></i>합계 금액</label>
+                                    <input readonly class="form-control border border-light rounded-1 text-end" type="text" name="inputPrice2" id="inputPrice2" style="height: 2rem; width: 10rem">
+                                    <input type="hidden" id="real_CostOffSet2" value="0" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -273,9 +295,15 @@
             $("#actNumber").html("");
             $("#actBank").html("");
 
-            document.getElementById('inputDate').valueAsDate = new Date
+            var date = new Date();
+            date.setMonth(date.getMonth() - 3);
+
+            document.getElementById('strDate').valueAsDate = date;
+            document.getElementById('endDate').valueAsDate = new Date
             document.getElementById('permitDate').valueAsDate = new Date
 
+            var strDate = document.getElementById('strDate').value
+            var endDate = document.getElementById('endDate').value
             var pDate = document.getElementById('inputDate').value
             var perDate = pDate.replace(/\-/g, '')
 
@@ -286,7 +314,7 @@
             var actCode = "";
 
 
-            let data = {"perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
+            let data = {"strDate": strDate, "endDate": endDate, "perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",
@@ -831,6 +859,8 @@
 
         {# 승인 체크박스 선택시 #} //////////////////////////
         $(document).on('change', '#selectTb tbody tr td input.chkPer', function () {
+
+            var count = 0;
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(1).text()
             var ioDate = iDate.replace(/\-/g, '')
@@ -1002,6 +1032,20 @@
                         $('#real_CostOffSet').val(costOffSet_val + acAmts_num);
                     }
 
+                    //시행 체크하면 오른쪽 시행 리스트 총금액 쌓임
+                    var costOffSet_val = parseInt($('#real_CostOffSet2').val().replaceAll(',', ''));
+                    var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
+
+                    if (acIogb == '1') {
+                        acAmts_num *= -1;
+                    }
+
+                    $('#inputPrice2').val(addComma(Math.abs(costOffSet_val + acAmts_num)));
+                    $('#real_CostOffSet2').val(costOffSet_val + acAmts_num);
+
+                    count += 1;
+                    $('#inputCnt2').val(count);
+
                 }
 
             } else {
@@ -1026,6 +1070,19 @@
                     $('#CostOffSet').val(addComma(Math.abs(costOffSet_val - acAmts_num)));
                     $('#real_CostOffSet').val(costOffSet_val - acAmts_num);
                 }
+
+                var costOffSet_val = parseInt($('#real_CostOffSet2').val().replaceAll(',', ''));
+                var acAmts_num = parseInt(acAmts.replaceAll(',', ''));
+
+                if (acIogb == '1') {
+                    acAmts_num *= -1;
+                }
+
+                $('#inputPrice2').val(addComma(Math.abs(costOffSet_val - acAmts_num)));
+                $('#real_CostOffSet2').val(costOffSet_val - acAmts_num);
+
+                count -= 1;
+                $('#inputCnt2').val(count);
             }
         });
 
@@ -1168,6 +1225,14 @@
                         if (data.sucYn === 'Y') {
                             alert('승인 되었습니다.')
                             location.href = "{% url 'permit_reg' %}";
+                            $("#real_CostOffSet").val("");
+                            $("#CostOffSet").val("");
+                            $("#actBank").html("");
+                            $("#actNumber").html("");
+                            $("#inputPrice2").val("");
+                            $("#inputCnt2").val("");
+                            document.getElementById('permitDate').valueAsDate = new Date;
+                            $("#subTb").html("");
                         }
                     }
                 });
