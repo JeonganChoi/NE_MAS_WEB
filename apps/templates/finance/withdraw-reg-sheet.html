@@ -330,10 +330,10 @@
                                     </div>-->
                                     <div class="col-6">
                                         <label class="mt-2 text-sm"><i class="fa fa-edit me-2"></i>금액</label>
-                                        <input class="form-control text-end" type="number" id="txtWitPrice2" name="txtWitPrice2" style="height: 2rem; font-size: 0.8rem"/>
+                                        <input class="form-control text-end" type="text" id="txtWitPrice2" name="txtWitPrice2" style="height: 2rem; font-size: 0.8rem"/>
                                     </div>
                                     <div hidden class="col-4">
-                                        <input class="form-control text-end" type="number" id="txtWitSeq2" name="txtWitSeq2"/>
+                                        <input class="form-control text-end" type="text" id="txtWitSeq2" name="txtWitSeq2"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -984,6 +984,7 @@
                     var total = 0;
                     var apv = "";
                     var cust = "";
+                    var check = "";
                     var chkOpt = "";
                     var count = 0;
                     count = list.length;
@@ -1014,7 +1015,9 @@
 
                     if(list2 != ''){
                         for (var i = 0; i < list.length; i++) {
-
+                            apv = "";
+                            cust = "";
+                            check = "";
                             {# 입금 #}
                             if (list[i][0] == '2') {
                                 total += list[i][2]
@@ -1048,7 +1051,9 @@
                             if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
-
+                            if(list[i][0] == '3'){
+                                cust = '대체'
+                            }
                             if(list[i][9] == 'Y'){
                                 $("#withMainTb").append(
                                     "<tr id='#withMainTr' class='withMainTr_tr excel-hidden' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
@@ -1097,8 +1102,9 @@
                     if(list2 == ''){
 
                         for (var i = 0; i < list.length; i++) {
-
-                            var check = "";
+                            apv = "";
+                            cust = "";
+                            check = "";
                             if(list[i][9] == 'Y' ){
                                 check = '시행';
                             }
@@ -1123,7 +1129,9 @@
                             if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
-
+                            if(list[i][0] == '3'){
+                                cust = '대체'
+                            }
                             if(list[i][9] == 'Y'){
                                 $("#withMainTb").append(
                                     "<tr id='#withMainTr' class='withMainTr_tr excel-hidden' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
@@ -1257,7 +1265,9 @@
 
                     if(list2 != ''){
                         for (var i = 0; i < list.length; i++) {
-
+                            check = "";
+                            apv = "";
+                            cust = "";
                             {# 입금 #}
                             if(list[i][0] == '2'){
                                 total += parseInt(list[i][2])
@@ -1290,7 +1300,9 @@
                             if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
-
+                            if(list[i][0] == '3'){
+                                cust = '대체'
+                            }
                             $("#withMainTb").append(
                                 "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
                                 "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
@@ -1314,8 +1326,9 @@
                     }
                     if(list2 == ''){
                         for (var i = 0; i < list.length; i++) {
-
-                            var check = "";
+                            check = "";
+                            apv = "";
+                            cust = "";
                             if(list[i][9] == 'Y' ){
                                 check = '시행';
                             }
@@ -1340,7 +1353,9 @@
                             if(list[i][18] == '1' || list[i][18] == '3' || list[i][18] == '4'){
                                 cust = list[i][22]
                             }
-
+                            if(list[i][0] == '3'){
+                                cust = '대체'
+                            }
                             $("#withMainTb").append(
                                 "<tr id='#withMainTr' class='withMainTr_tr' main_code='" + list[i][0] + "," + list[i][1] + "," + list[i][6] + "," + list[i][4] + "," + list[i][8] + "," + list[i][12] + "'>" +
                                 "<td hidden class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td>" +
@@ -3909,6 +3924,20 @@
             $(this).val(regex_txtRegNum);
 
         });
+
+        $('input[name=txtWitPrice2]').on('input', function () {
+            var txtRegNum = $(this).val().replaceAll(',','');
+
+            if(txtRegNum != '-' && isNaN(Math.abs(txtRegNum))) {
+                txtRegNum = 0;
+            }
+
+            {#var regex_txtRegNum = txtRegNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");#}
+            var regex_txtRegNum = txtRegNum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            $(this).val(regex_txtRegNum);
+
+        });
+
 
         {# 조회 초기화 버튼 #}
         $(document).on('click', "#btnClear2", function () {

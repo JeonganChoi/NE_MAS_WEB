@@ -3586,77 +3586,78 @@ def offSetViews_save(request):
     acIogb = request.POST.get("acIogb")  # 구분(입금2/출금1)
     acAmts = request.POST.get("acAmts").replace(',', '')      # 금액
     acDesc = request.POST.get("acDesc")     # 비고
-    outAct = request.POST.get("cboOutAct")     # 출금계좌
-    inAct = request.POST.get("cboInAct")  # 입금계좌
+    outAct = request.POST.get("outAct")     # 출금계좌
+    inAct = request.POST.get("inAct")  # 입금계좌
     creUser = request.session.get("userId")
     iCust = request.session.get("USER_ICUST")
 
     if acIogb == '3':
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT COUNT(ACSEQN) AS COUNTED FROM SISACCTT A "
-                           "    WHERE ACDATE = '" + str(ioDate) + "' "
-                           "    AND ACIOGB = '" + str(acIogb) + "' "
-                           "    AND ICUST = '" + str(iCust) + "' ")
-            result = cursor.fetchall()
-            count = int(result[0][0])
+        # with connection.cursor() as cursor:
+        #     cursor.execute(" SELECT COUNT(ACSEQN) AS COUNTED FROM SISACCTT A "
+        #                    "    WHERE ACDATE = '" + str(ioDate) + "' "
+        #                    "    AND ACIOGB = '" + str(acIogb) + "' "
+        #                    "    AND ACSEQN = '" + str(acIogb) + "' "                               ""
+        #                    "    AND ICUST = '" + str(iCust) + "' ")
+        #     result = cursor.fetchall()
+        #     count = int(result[0][0])
 
-    if count > 0:
-        # 출금정보
-        with connection.cursor() as cursor:
-            cursor.execute( " UPDATE SISACCTT SET "
-                            "       ACAMTS = '" + str(acAmts) + "' "
-                            "     , ACACNUMBER = '" + str(outAct) + "' "
-                            "     , ACDESC = '" + str(acDesc) + "' "
-                            "     , UPD_USER = '" + str(creUser) + "' "
-                            "     , UPD_DT = date_format(now(), '%Y%m%d') "
-                            "     , EXDATE = '" + str(ioDate) + "' "
-                            "     , ACDATE = '" + str(ioDate) + "' "
-                            " WHERE ACSEQN = '" + str(acSeqn) + "' "
-                            " AND ACIOGB = '1' "
-                            " AND IODATE = '" + str(ioDate) + "' "
-                            " AND ICUST = '" + str(iCust) + "' "
-                            )
-            connection.commit()
-        # 입금정보
-        with connection.cursor() as cursor:
-            cursor.execute( " UPDATE SISACCTT SET "
-                            "       ACAMTS = '" + str(acAmts) + "' "
-                            "     , ACACNUMBER = '" + str(inAct) + "' "
-                            "     , ACDESC = '" + str(acDesc) + "' "
-                            "     , UPD_USER = '" + str(creUser) + "' "
-                            "     , UPD_DT = date_format(now(), '%Y%m%d') "
-                            "     , EXDATE = '" + str(ioDate) + "' "
-                            "     , ACDATE = '" + str(ioDate) + "' "
-                            " WHERE ACSEQN = '" + str(acSeqn) + "' "
-                            " AND ACIOGB = '2' "
-                            " AND IODATE = '" + str(ioDate) + "' "
-                            " AND ICUST = '" + str(iCust) + "' "
-                            )
-            connection.commit()
-
-        # 대체정보
-        with connection.cursor() as cursor:
-            cursor.execute( " UPDATE SISACCTT SET "
-                            "       ACAMTS = '" + str(acAmts) + "' "
-                            "     , ACDESC = '" + str(acDesc) + "' "
-                            "     , UPD_USER = '" + str(creUser) + "' "
-                            "     , UPD_DT = date_format(now(), '%Y%m%d') "
-                            "     , EXDATE = '" + str(ioDate) + "' "
-                            "     , ACDATE = '" + str(ioDate) + "' "
-                            "     , OFF_DATE = '" + str(ioDate) + "' "
-                            "     , OFF_AMTS = '" + str(acAmts) + "' "
-                            " WHERE ACSEQN = '" + str(acSeqn) + "' "
-                            " AND ACIOGB = '3' "
-                            " AND IODATE = '" + str(ioDate) + "' "
-                            " AND ICUST = '" + str(iCust) + "' "
-                            " AND OFF_GBN = 'off' "
-                            " AND FIN_OPT = 'Y' "
-                            )
-            connection.commit()
-
-        return JsonResponse({'sucYn': "Y"})
-
-    else:
+    # if count > 0:
+    #     # 출금정보
+    #     with connection.cursor() as cursor:
+    #         cursor.execute( " UPDATE SISACCTT SET "
+    #                         "       ACAMTS = '" + str(acAmts) + "' "
+    #                         "     , ACACNUMBER = '" + str(outAct) + "' "
+    #                         "     , ACDESC = '" + str(acDesc) + "' "
+    #                         "     , UPD_USER = '" + str(creUser) + "' "
+    #                         "     , UPD_DT = date_format(now(), '%Y%m%d') "
+    #                         "     , EXDATE = '" + str(ioDate) + "' "
+    #                         "     , ACDATE = '" + str(ioDate) + "' "
+    #                         " WHERE ACSEQN = '" + str(acSeqn) + "' "
+    #                         " AND ACIOGB = '1' "
+    #                         " AND IODATE = '" + str(ioDate) + "' "
+    #                         " AND ICUST = '" + str(iCust) + "' "
+    #                         )
+    #         connection.commit()
+    #     # 입금정보
+    #     with connection.cursor() as cursor:
+    #         cursor.execute( " UPDATE SISACCTT SET "
+    #                         "       ACAMTS = '" + str(acAmts) + "' "
+    #                         "     , ACACNUMBER = '" + str(inAct) + "' "
+    #                         "     , ACDESC = '" + str(acDesc) + "' "
+    #                         "     , UPD_USER = '" + str(creUser) + "' "
+    #                         "     , UPD_DT = date_format(now(), '%Y%m%d') "
+    #                         "     , EXDATE = '" + str(ioDate) + "' "
+    #                         "     , ACDATE = '" + str(ioDate) + "' "
+    #                         " WHERE ACSEQN = '" + str(acSeqn) + "' "
+    #                         " AND ACIOGB = '2' "
+    #                         " AND IODATE = '" + str(ioDate) + "' "
+    #                         " AND ICUST = '" + str(iCust) + "' "
+    #                         )
+    #         connection.commit()
+    #
+    #     # 대체정보
+    #     with connection.cursor() as cursor:
+    #         cursor.execute( " UPDATE SISACCTT SET "
+    #                         "       ACAMTS = '" + str(acAmts) + "' "
+    #                         "     , ACDESC = '" + str(acDesc) + "' "
+    #                         "     , UPD_USER = '" + str(creUser) + "' "
+    #                         "     , UPD_DT = date_format(now(), '%Y%m%d') "
+    #                         "     , EXDATE = '" + str(ioDate) + "' "
+    #                         "     , ACDATE = '" + str(ioDate) + "' "
+    #                         "     , OFF_DATE = '" + str(ioDate) + "' "
+    #                         "     , OFF_AMTS = '" + str(acAmts) + "' "
+    #                         " WHERE ACSEQN = '" + str(acSeqn) + "' "
+    #                         " AND ACIOGB = '3' "
+    #                         " AND IODATE = '" + str(ioDate) + "' "
+    #                         " AND ICUST = '" + str(iCust) + "' "
+    #                         " AND OFF_GBN = 'off' "
+    #                         " AND FIN_OPT = 'Y' "
+    #                         )
+    #         connection.commit()
+    #
+    #     return JsonResponse({'sucYn': "Y"})
+    #
+    # else:
         # 출금정보
         with connection.cursor() as cursor:
             cursor.execute( "INSERT INTO SISACCTT "

@@ -1,6 +1,6 @@
 from django.urls import path,re_path
 from apps.views.account import mainViews, regInfoViews, indexViews
-from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews, cardViews
+from apps.views.base import baseCodeViews, empViews, custViews, accountViews, accountCodeViews, targetIndexViews, baseChargeViews, cardViews, baseCboListViews
 from apps.views.finance import purchaseViews, salesViews, depositViews, withdrawalViews, custBalanceViews, actBalanceViews\
     , cashBalanceViews, financeSearchViews, depreciationViews, payrollViews, paymentViews, approvalViews, permitViews
 from apps.views.currentstate import receivepayViews, yearlyMonthlyAnalysisViews, yearlyMonthlyAccountAnalysisViews\
@@ -160,7 +160,7 @@ urlpatterns = [
     path('payment_dlt/', paymentViews.paymentViews_dlt, name='payment_dlt'),
     path('apvLine_modal/', paymentViews.apvLine_modal_search, name='apvLine_modal'),
     path('checkLimit/', paymentViews.checkLimit_search, name='checkLimit'),
-    path('cboAct/', paymentViews.cboActNum_search, name='cboAct'),
+    #path('cboAct/', paymentViews.cboActNum_search, name='cboAct'),
     path('cboBank/', paymentViews.cboBank_search, name='cboBank'),
     path('chkDate/', paymentViews.chkDate, name='chkDate'),
     path('chkWriter/', paymentViews.chkWriter, name='chkWriter'),
@@ -227,5 +227,10 @@ urlpatterns = [
     path('nonPayment/', nonPayGetVIews.nonPaymentView, name='nonPayment'),
     path('nonPayment_search/', nonPayGetVIews.nonPaymentView_search, name='nonPayment_search'),
 
+    # 콤보박스 리스트
+    # 사용중인 은행
+    path('cboUseBank/', baseCboListViews.cboUseBank, name='cboUseBank'),
 
+    # 계좌번호
+    path('cboAct/', baseCboListViews.cboAct, name='cboAct'),
 ]

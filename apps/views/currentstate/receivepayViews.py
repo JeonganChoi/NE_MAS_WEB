@@ -28,11 +28,6 @@ def receivepaySheetViews_search(request):
 
     if cboBank != '' and cboAccount == '':
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "' ")
-
-            cboAresult = cursor.fetchall()
-
-        with connection.cursor() as cursor:
             cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ")
 
             titleresult = cursor.fetchall()
@@ -121,9 +116,13 @@ def receivepaySheetViews_search(request):
 
             subresult = cursor.fetchall()
 
-        return JsonResponse({'cboAccount': cboAresult, 'titleList': titleresult, 'totalList': totalresult, 'mainList': mainresult, 'subList': subresult, 'dateList': dateresult})
+        return JsonResponse({'titlaList': titleresult, 'totalList': totalresult, 'mainList': mainresult, 'subList': subresult, 'dateList': dateresult})
 
-    if cboAccount != '':
+    if cboBank != '' and cboAccount != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT MCODE, MCODENM FROM OSCODEM WHERE ICUST = '" + str(iCust) + "' ")
+
+            titleresult = cursor.fetchall()
 
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(ACDATE, '') FROM ACBALANCE WHERE ACDATE <= '" + str(strDate) + "' AND ICUST = '" + str(iCust) + "' AND ACNUMBER = '" + str(cboAccount) + "' ")
@@ -200,18 +199,7 @@ def receivepaySheetViews_search(request):
 
         subresult = cursor.fetchall()
 
-        return JsonResponse({'totalList': totalresult, 'mainList': mainresult, 'subList': subresult, 'dateList': dateresult})
-
-    else:
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD  ")
-            bankresult = cursor.fetchall()
-
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ")
-            cboAresult = cursor.fetchall()
-
-        return JsonResponse({"cboBank": bankresult, 'cboAccount': cboAresult})
+        return JsonResponse({'titleList': titleresult, 'totalList': totalresult, 'mainList': mainresult, 'subList': subresult, 'dateList': dateresult})
 
 
 

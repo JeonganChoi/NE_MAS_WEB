@@ -127,7 +127,7 @@
                         <div class="row">
                             <div class="col-lg-9 col-9">
                                 <label class="mx-3 my-2 text-sm"><i class="ni ni-books me-3"></i>날짜별 내역서</label>
-                                <div class="m-1 table-responsive-sm overflow-auto height-500">
+                                <div class="table-responsive-sm overflow-auto height-500">
                                     <table class="table mb-0 align-items-center justify-content-center">
                                         <colgroup>
                                             <col width="8%"/>
@@ -139,7 +139,7 @@
                                             <col width="8%"/>
                                             <col width="6%"/>
                                         </colgroup>
-                                        <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151);">
+                                        <thead class="text-white font-weight-bolder text-center" style="background-color: rgb(0, 92, 151); position: sticky; top: 0">
                                         <tr>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">거래일시</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">입 금</th>
@@ -156,22 +156,11 @@
 
                                         </tr>
                                       </tbody>
-                                    </table>
-                                    <table>
-                                        <colgroup>
-                                            <col width="8%"/>
-                                            <col width="8%"/>
-                                            <col width="8%"/>
-                                            <col width="8%"/>
-                                            <col width="8%"/>
-                                            <col width="15%"/>
-                                            <col width="8%"/>
-                                            <col width="6%"/>
-                                        </colgroup>
-                                        <tbody class="text-dark" id="subTb">
-                                            <tr id="#subTr" class="subTr_tr">
-                                            </tr>
-                                        </tbody>
+                                      <tfoot id="totalTb" class="text-dark bg-gray-200 text-center" style="position: relative; bottom: 0">
+                                        <tr id="#totalTr" class="totalTr_tr">
+
+                                        </tr>
+                                      </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -225,15 +214,10 @@
             $("#cboBank").html("");
             $("#cboAccount").html("");
 
-            var startDate = "";
-            var endDate = "";
-
-            let data = {'cboBank': cboBank, 'cboAccount': cboAccount, "startDate": startDate, "endDate": endDate}
 
             $.ajax({
                 type: "post",
-                data: data,
-                url: '{% url "receive_pay_search" %}',
+                url: '{% url "cboUseBank" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
@@ -247,112 +231,31 @@
                             cboBankTxt = cboBankTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
-
-                    var combolist2 = data.cboAccount;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboAccount) {
-                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
-                        } else {
-                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
-                        }
-                    }
-
                     $("#cboBank").append(cboBankTxt);
-                    $("#cboAccount").append(cboAccountTxt);
-
                 }
-            })
-
-
-            var sDate = document.getElementById('inputStrDate').value
-            var eDate = document.getElementById('inputEndDate').value
-            var startDate = sDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
-            var cboBank = document.getElementById('cboBank').selectedIndex.toString();
-            cboBank = cboBank.replace(/\-/g, '')
-            cboAccount = "";
-
-            let data2 = {'cboBank': cboBank, 'cboAccount':cboAccount, 'startDate': startDate, 'endDate': endDate}
+            });
 
             $.ajax({
                 type: "post",
-                data: data2,
-                url: '{% url "receive_pay_search" %}',
+                url: '{% url "cboAct" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list2 = data.totalList;
-                    var list = data.mainList;
-                    var list4 = data.dateList;
 
-                    var total = Number(list2[0][0])
-                    var balDate = list4[0][0]
-                    var gbn = '';
-
-                    $("#sheetTb").html("");
-                    $("#acTb").html("");
-
-                    $("#sheetTb").append(
-                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "</tr> ");
-
-                    for (var i = 0; i < list.length; i++) {
-
-                        gbn = list[i][1]
-                        if(gbn == '1'){
-                            total -= Number(list[i][3])
-
-                            $("#sheetTb").append(
-                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                                "</tr> ");
-                        }
-                        if(gbn == '2'){
-                            total += Number(list[i][4])
-
-                            $("#sheetTb").append(
-                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                                "</tr> ");
+                    var combolist = data.cboAct;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboAccount) {
+                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
                         }
                     }
+                    $("#cboAccount").append(cboAccountTxt);
 
-                    var list3 = data.subList;
-
-                    for (var i = 0; i < list3.length; i++) {
-                        $("#acTb").append(
-                            "<tr id='#acTb' class='acTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td> " +
-                            "</tr> ");
-                    }
                 }
             })
-
         });
 
         {# 은행명에 따른 조회 #}
@@ -363,103 +266,29 @@
 
             $("#cboAccount").html("");
 
-            var sDate = document.getElementById('inputStrDate').value
-            var eDate = document.getElementById('inputEndDate').value
-            var startDate = sDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
             var cboBank = document.getElementById('cboBank').value;
-            cboBank = cboBank.replace(/\-/g, '')
 
-            let data = {'cboBank': cboBank, 'cboAccount': cboAccount, 'startDate': startDate, 'endDate': endDate}
+            let data = {'cboBank': cboBank}
 
             $.ajax({
                 type: "post",
                 data: data,
-                url: '{% url "receive_pay_search" %}',
+                url: '{% url "cboAct" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
 
-                    var combolist2 = data.cboAccount;
-                    for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == cboAccount) {
-                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                    var combolist = data.cboAct;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == cboAccount) {
+                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
                         } else {
-                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                            cboAccountTxt = cboAccountTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
                         }
                     }
-
                     $("#cboAccount").append(cboAccountTxt);
-
-                    var list2 = data.totalList;
-                    var list = data.mainList;
-                    var list4 = data.dateList;
-
-                    var total = Number(list2[0][0])
-                    var balDate = list4[0][0]
-                    var gbn = '';
-
-                    $("#sheetTb").html("");
-                    $("#acTb").html("");
-
-                    $("#sheetTb").append(
-                        "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "</tr> ");
-
-                    for (var i = 0; i < list.length; i++) {
-
-                       gbn = list[i][1]
-                       if(gbn == '1'){
-                           total -= Number(list[i][3])
-
-                           $("#sheetTb").append(
-                               "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                               "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                               "</tr> ");
-                       }
-                       if(gbn == '2'){
-                           total += Number(list[i][4])
-
-                           $("#sheetTb").append(
-                               "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                               "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                               "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                               "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
-                               "</tr> ");
-                       }
-                    }
-
-                    var list3 = data.subList;
-
-                    for (var i = 0; i < list3.length; i++) {
-                        $("#acTb").append(
-                            "<tr id='#acTr' class='acTr_tr'>" +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list3[i][2]) + "</td> " +
-                            "</tr> ");
-                    }
                 }
             })
         });
@@ -558,12 +387,12 @@
         $(document).on('click', '#btnSearch', function () {
             var sDate = document.getElementById('inputStrDate').value
             var eDate = document.getElementById('inputEndDate').value
-            var startDate = sDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
+            //var startDate = sDate.replace(/\-/g, '')
+            //var endDate = eDate.replace(/\-/g, '')
             var cboBank = document.getElementById('cboBank').value;
             var cboAccount = document.getElementById('cboAccount').value;
 
-            let data = {'startDate': startDate, 'endDate': endDate, 'cboBank': cboBank, 'cboAccount': cboAccount}
+            let data = {'startDate': sDate, 'endDate': eDate, 'cboBank': cboBank, 'cboAccount': cboAccount}
 
             $.ajax({
                 type: "post",
@@ -578,23 +407,27 @@
                     var list2 = data.totalList;
                     var list4 = data.dateList;
 
+                    var totalIn = 0;
+                    var totalOut = 0;
+                    var totalBal = 0;
                     var total = Number(list2[0][0])
                     var balDate = list4[0][0]
                     var gbn = '';
 
                     $("#sheetTb").html("");
+                    $("#totalTb").html("");
                     $("#acTb").html("");
 
                     $("#sheetTb").append(
                         "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                        "<td class='text-center p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'>통장 이월</td> " +
-                        "<td class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-center border border-light p-1' style='font-size: 0.85rem'>" + balDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                        "<td class='text-end border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-end border border-light p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                        "<td class='text-start border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start border border-light p-1' style='font-size: 0.85rem'></td> " +
+                        "<td class='text-start border border-light p-1' style='font-size: 0.85rem'>통장 이월</td> " +
+                        "<td class='text-start border border-light p-1' style='font-size: 0.85rem'></td> " +
                         "</tr> ");
 
                     for (var i = 0; i < list.length; i++) {
@@ -602,39 +435,54 @@
                         gbn = list[i][1]
                         if(gbn == '1'){
                             total -= Number(list[i][3])
+                            totalIn += parseInt(list[i][3])
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                                "<td class='border border-light text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                                "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
+                                "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                         if(gbn == '2'){
                             total += Number(list[i][4])
+                            totalOut += parseInt(list[i][4])
 
                             $("#sheetTb").append(
                                 "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                                "<td class='border border-light text-center p-1' style='font-size: 0.85rem'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                                "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
+                                "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
+                                "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                     }
+                    $("#totalTb").append(
+                        "<tr id='#totalTr' class='totalTr_tr'>" +
+                        "<td class='border border-white text-center p-1' style='font-size: 0.8rem'>총 금액</td>" +
+                        "<td class='border border-white text-danger text-end p-1' style='font-size: 0.8rem'>" + addComma(totalIn) + "</td> " +
+                        "<td class='border border-white text-danger text-end p-1' style='font-size: 0.8rem'>" + addComma(totalOut) + "</td> " +
+                        "<td class='border border-white text-danger text-end p-1' style='font-size: 0.8rem'>" + addComma(total) + "</td> " +
+                        "<td class='border border-white text-danger text-start p-1' style='font-size: 0.8rem'></td> " +
+                        "<td class='border border-white text-start p-1' style='font-size: 0.8rem'></td> " +
+                        "<td class='border border-white text-start p-1' style='font-size: 0.8rem'></td> " +
+                        "<td class='border border-white text-start p-1' style='font-size: 0.8rem'></td> " +
+                        "</tr> ");
 
+                    //계정별 총액
                     var list3 = data.subList;
 
                     for (var i = 0; i < list3.length; i++) {
+
                         $("#acTb").append(
                             "<tr id='#acTr' class='acTr_tr'>" +
                             "<td class='text-start p-1' style='font-size: 0.85rem'>" + list3[i][1] + "</td>" +
