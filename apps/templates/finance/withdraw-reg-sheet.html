@@ -1547,11 +1547,11 @@
 
             var inputCard = document.getElementById('inputCard').value;
 
-            let data = {"cboCardName": inputCard}
+            let data = {"cboCard": inputCard}
 
             $.ajax({
                 type: "post",
-                url: '{% url "cboAct" %}',
+                url: '{% url "cboCard" %}',
                 data: data,
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -2837,15 +2837,14 @@
 
             var cboCardName = document.getElementById('cboCardName').value
             var method = document.getElementById('cboWitMethod').value
-            var cboCardType = "";
             if(method == '3'){ cboCardType = '1' }
             if(method == '4'){ cboCardType = '2' }
 
-            var data = {"cboCardName": cboCardName, "cboCardType": cboCardType}
+            var data = {"cboCard": cboCardName}
 
             $.ajax({
                 type: "post",
-                url: '{% url "cboAct" %}',
+                url: '{% url "cboCard" %}',
                 data: data,
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -2915,13 +2914,13 @@
 
             $("#cboWitActNum").html("");
 
-            var card = document.getElementById('cboWitCard').value
+            var cardNum = document.getElementById('cboWitCard').value
 
-            var data = {"card": card}
+            var data = {"cardNum": cardNum}
 
             $.ajax({
                 type: "post",
-                url: '{% url "cboAct" %}',
+                url: '{% url "cboCardAct" %}',
                 data: data,
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
@@ -2945,7 +2944,7 @@
             var method = document.getElementById('cboWitMethod').value
             var custCode = "";
 
-            let data2 = {"method": method, "cardNum": card, "custCode": custCode}
+            let data2 = {"method": method, "cardNum": cardNum, "custCode": custCode}
 
             var date = 0;
             var gbn = "";

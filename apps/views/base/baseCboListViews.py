@@ -67,6 +67,30 @@ def cboAct(request):
             return JsonResponse({"cboBank": result})
 
 
+def cboCard(request):
+    cboCard = request.POST.get('cboCard')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT A.CARDNUM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' AND CARDTYPE = '" + str(cboCard) + "' ")
+        result = cursor.fetchall()
+
+        return JsonResponse({"cboCard": result})
+
+def cboCardAct(request):
+    cardNum = request.POST.get('cardNum')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            " SELECT ACNUMBER FROM ACCARD WHERE ICUST = '" + str(iCust) + "' AND CARDNUM = '" + str(cardNum) + "' ")
+        result = cursor.fetchall()
+
+        return JsonResponse({"cboAct": result})
+
+
+
+
 def cboMcode(request):
     iCust = request.session.get('USER_ICUST')
 

@@ -233,4 +233,9 @@ urlpatterns = [
 
     # 계좌번호
     path('cboAct/', baseCboListViews.cboAct, name='cboAct'),
+
+    # 카드번호
+    path('cboCard/', baseCboListViews.cboCard, name='cboCard'),
+    # 카드연결계좌번호
+    path('cboCardAct/', baseCboListViews.cboCardAct, name='cboCardAct'),
 ]
