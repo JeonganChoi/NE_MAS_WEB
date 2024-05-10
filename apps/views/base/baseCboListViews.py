@@ -50,11 +50,22 @@ def cboAct(request):
     cboBank = request.POST.get('cboBank')
     iCust = request.session.get('USER_ICUST')
 
-    with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "' ")
-        result = cursor.fetchall()
+    if cboBank != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ACBKCD = '" + str(cboBank) + "' AND ICUST = '" + str(iCust) + "' ")
+            result = cursor.fetchall()
 
-        return JsonResponse({"cboAct": result})
+            return JsonResponse({"cboAct": result})
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A "
+                " LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK' AND A.ICUST = '" + str(iCust) + "' "
+                " GROUP BY A.ACBKCD, B.RESNAM ORDER BY A.ACBKCD  ")
+            result = cursor.fetchall()
+
+            return JsonResponse({"cboBank": result})
+
 
 def cboMcode(request):
     iCust = request.session.get('USER_ICUST')

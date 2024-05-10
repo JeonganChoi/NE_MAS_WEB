@@ -3286,31 +3286,35 @@
                 $("#cboInAct").html("");
                 $("#cboInBank").html("");
 
+                var cboBank = "";
+                let data = {"cboBank": cboBank}
+
                 $.ajax({
                     type: "post",
+                    data: data,
                     url: '{% url "cboAct" %}',
                     headers: {
                         'X-CSRFTOKEN': '{{ csrf_token }}'
                     },
                     dataType: 'json',
                     success: function (data) {
-                        var combolist = data.cboAct;
-                        for (var i = 0; i < combolist.length; i++) {
-                            if (combolist[i][0] == cboOutAct) {
-                                cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
-                            } else {
-                                cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
-                            }
-                        }
-
-                        var combolist2 = data.cboAct;
-                        for (var i = 0; i < combolist2.length; i++) {
-                            if (combolist2[i][0] == cboInAct) {
-                                cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
-                            } else {
-                                cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
-                            }
-                        }
+                        {#var combolist = data.cboAct;#}
+                        {#for (var i = 0; i < combolist.length; i++) {#}
+                        {#    if (combolist[i][0] == cboOutAct) {#}
+                        {#        cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";#}
+                        {#    } else {#}
+                        {#        cboOutActTxt = cboOutActTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";#}
+                        {#    }#}
+                        {#}#}
+                        {##}
+                        {#var combolist2 = data.cboAct;#}
+                        {#for (var i = 0; i < combolist2.length; i++) {#}
+                        {#    if (combolist2[i][0] == cboInAct) {#}
+                        {#        cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";#}
+                        {#    } else {#}
+                        {#        cboInActTxt = cboInActTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";#}
+                        {#    }#}
+                        {#}#}
 
                         var combolist3 = data.cboBank;
                         for (var i = 0; i < combolist3.length; i++) {
@@ -3330,9 +3334,9 @@
                             }
                         }
 
-                        $("#cboOutAct").append(cboOutActTxt);
+                        {#$("#cboOutAct").append(cboOutActTxt);#}
                         $("#cboOutBank").append(cboOutBankTxt);
-                        $("#cboInAct").append(cboInActTxt);
+                        {#$("#cboInAct").append(cboInActTxt);#}
                         $("#cboInBank").append(cboInBankTxt);
                     }
                 })
