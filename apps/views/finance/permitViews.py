@@ -22,7 +22,7 @@ def permitViews(request):
 def permitViews_search(request):
     strDate = request.POST.get('strDate').replace("-", "")
     endDate = request.POST.get('endDate').replace("-", "")
-    perDate = request.POST.get('perDate')
+    # perDate = request.POST.get('perDate')
     # 미시행 ''/ 시행 = 1
     permitGbn = request.POST.get('permitGbn','')
     custCode = request.POST.get('custCode','')
@@ -810,7 +810,7 @@ def permitViews_save(request):
     offSet = request.POST.get('offSet')
     actNum = request.POST.get('actNum')
     actBank = request.POST.get('actBank')
-    perDate = request.POST.get('perDate').reaplace("-", "")
+    permitDate = request.POST.get('permitDate')
     permit = 'Y'
 
     if offSet == '2':
@@ -821,7 +821,7 @@ def permitViews_save(request):
         custAct = ""
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(perDate) + "' ")
+            cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(permitDate).reaplace("-", "") + "' ")
             result3 = cursor.fetchall()
             pmSeqn = result3[0][0]
 
@@ -893,10 +893,10 @@ def permitViews_save(request):
                                "    ) "
                                "    VALUES "
                                "    (   "
-                               "    '" + str(perDate) + "' "
+                               "    '" + str(permitDate).reaplace("-", "") + "' "
                                ",   '" + str(pmSeqn) + "' " 
                                ",   '" + pmtArrayLists[data]["acSeqn"] + "' "                                        
-                               ",   (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(perDate).replace("-", "") + "' AND ACIOGB = '" + str(finalacIogb) + "' AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ) "
+                               ",   (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' AND ACIOGB = '" + str(finalacIogb) + "' AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ) "
                                ",   '" + str(finalacIogb) + "'"
                                ",   '" + str(finalTitle) + "'"
                                ",   '" + pmtArrayLists[data]["acAmts"] + "'"
@@ -915,7 +915,7 @@ def permitViews_save(request):
     else:
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(perDate) + "' ")
+            cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(permitDate).replace("-", "") + "' ")
             result3 = cursor.fetchall()
             pmSeqn = result3[0][0]
 
@@ -1009,7 +1009,7 @@ def permitViews_save(request):
                                "    (   "
                                "    '" + pmtArrayLists[data]["perDate"].replace("-","") + "' "
                                "    , '" + str(pmSeqn) + "' "
-                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(perDate).replace("-", "") + "'AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' AND ICUST = '" + str(iCust) + "'  ) "
+                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-","") + "'AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' AND ICUST = '" + str(iCust) + "'  ) "
                                "    , '" + pmtArrayLists[data]["acSeqn"] + "' "
                                "    , '" + pmtArrayLists[data]["acIogb"] + "' "
                                "    , '" + str(acode) + "' "
