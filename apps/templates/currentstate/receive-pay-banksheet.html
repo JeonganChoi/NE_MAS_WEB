@@ -145,7 +145,7 @@
                                             <th class="text-center p-1" style="font-size: 0.8rem;">입 금</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">출 금</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">잔금</th>
-                                            <th class="text-center p-1" style="font-size: 0.8rem;">거래처</th>
+                                            <th class="text-center p-1" style="font-size: 0.8rem;">거래처/사용처</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">내역</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">계정</th>
                                             <th class="text-center p-1" style="font-size: 0.8rem;">처리</th>
@@ -208,7 +208,7 @@
 
             var cboBank = "";
             var cboAccount = "";
-            var cboBankTxt = "";
+            var cboBankTxt = "<option value=''>:: 전체 ::</option>";
             var cboAccountTxt = "<option value=''>:: 전체 ::</option>"
 
             $("#cboBank").html("");
@@ -412,6 +412,7 @@
                     var totalBal = 0;
                     var balDate = "";
                     var total = 0;
+                    var cust = "";
                     total = Number(list2[0][0])
                     balDate = list4[0][0]
                     var gbn = '';
@@ -436,6 +437,8 @@
 
                         gbn = list[i][1]
                         if(gbn == '1'){
+                            if(list[i][6] == ''){cust = list[i][14]}
+                            else{cust = list[i][6]}
                             total -= parseInt(list[i][3])
                             totalOut += parseInt(list[i][3])
 
@@ -445,13 +448,15 @@
                                 "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                                 "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
                         }
                         if(gbn == '2'){
+                            if(list[i][6] == ''){cust = list[i][14]}
+                            else{cust = list[i][6]}
                             total += parseInt(list[i][4])
                             totalIn += parseInt(list[i][4])
 
@@ -461,8 +466,8 @@
                                 "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][4]) + "</td> " +
                                 "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                 "<td class='border border-light text-end p-1' style='font-size: 0.85rem'>" + addComma(total) + "</td> " +
-                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                                "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                                 "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
                                 "<td class='border border-light text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
                                 "</tr> ");
