@@ -830,17 +830,19 @@ def permitViews_save(request):
         for data in range(0, len(pmtArrayLists)):
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT B.CUST_BKCD, B.CUST_ACNUM FROM SISACCTT A "
+                cursor.execute(" SELECT B.CUST_BKCD, B.CUST_ACNUM, A.ACDESC FROM SISACCTT A "
                                " LEFT OUTER JOIN MIS1TB003_D B "
                                " ON A.ACCUST = B.CUST_NBR "
                                " WHERE A.IODATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                                " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ICUST = '" + str(iCust) + "' ")
 
                 result = cursor.fetchall()
+                check = int(result[0][0])
 
-                if (len(result) != 0):
+                if check > 0:
                     custBank = result[0][0]
                     custAct = result[0][1]
+                    acDesc = result[0][2]
 
             if pmtArrayLists[data]["acIogb"]:
                 with connection.cursor() as cursor:
@@ -934,7 +936,7 @@ def permitViews_save(request):
             # 세금계산서일경우
             if pmtArrayLists[data]["acGubn"] == '2':
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.ACCUST, B.CUST_BKCD, B.CUST_ACNUM FROM SISACCTT A "
+                    cursor.execute(" SELECT A.ACCUST, B.CUST_BKCD, B.CUST_ACNUM, A.ACDESC FROM SISACCTT A "
                                    " LEFT OUTER JOIN MIS1TB003_D B "
                                    " ON A.ACCUST = B.CUST_NBR "
                                    " WHERE A.IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
@@ -945,23 +947,25 @@ def permitViews_save(request):
                     if (len(result) != 0):
                         custCode = result[0][0]
                         custBank = result[0][1]
-                        custAct = result[0][2]
+                        acDesc = result[0][2]
             # 세금계산서 아닐경우
             if pmtArrayLists[data]["acGubn"] != '2':
                 acUse = pmtArrayLists[data]["acCust"]
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0) FROM SISACCTT "
+                cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0), IFNULL(ACDESC, '') FROM SISACCTT "
                                " WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-","") + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                                " AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ")
 
                 result2 = cursor.fetchall()
+
                 if (len(result2) != 0):
                     acode = result2[0][0]
                     acgubn = result2[0][2]
                     mcode = result2[0][3]
                     finAmts = result2[0][4]
                     orgAmts = result2[0][5]
+                    acDesc = result2[0][6]
 
             final = int(finAmts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
 
@@ -1003,6 +1007,7 @@ def permitViews_save(request):
                                "    , ACGUNO_BK "
                                "    , ACACNUMBER "
                                "    , MCODE "
+                               "    , ACDESC "
                                "    , CRE_USER "
                                "    , CRE_DT "
                                "    , ICUST "
@@ -1024,6 +1029,7 @@ def permitViews_save(request):
                                "    , '" + str(actBank) + "' "
                                "    , '" + str(actNum) + "' "
                                "    , '" + pmtArrayLists[data]["mCode"] + "' "
+                               "    , '" + str(acDesc) + "' "
                                "    , '" + str(user) + "' "
                                "    , date_format(now(), '%Y%m%d') "
                                "    , '" + str(iCust) + "' "
