@@ -1016,7 +1016,7 @@ def permitViews_save(request):
                                "    (   "
                                "    '" + pmtArrayLists[data]["perDate"].replace("-","") + "' "
                                "    , '" + str(pmSeqn) + "' "
-                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-","") + "'AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' AND ICUST = '" + str(iCust) + "'  ) "
+                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-","") + "'AND PMSEQN = '" + str(pmSeqn) + "' AND ICUST = '" + str(iCust) + "'  ) "
                                "    , '" + pmtArrayLists[data]["acSeqn"] + "' "
                                "    , '" + pmtArrayLists[data]["acIogb"] + "' "
                                "    , '" + str(acode) + "' "

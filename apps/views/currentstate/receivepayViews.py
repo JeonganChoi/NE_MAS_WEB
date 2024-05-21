@@ -58,12 +58,12 @@ def receivepaySheetViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(UN.ACDATE, ''), IFNULL(UN.ACIOGB, ''), IFNULL(UN.RESNAM, ''), IFNULL(UN.OACAMTS, 0), IFNULL(UN.IACAMTS, 0) "
                            "        , IFNULL(UN.ACCUST, ''), IFNULL(UN.CUST_NME, ''), IFNULL(UN.ACACNUMBER, ''), IFNULL(UN.ACNUM_NAME, ''), IFNULL(UN.MCODE, ''), IFNULL(UN.MCODENM, '')"
-                           "        , IFNULL(UN.ACDESC, ''), IFNULL(UN.GBN, ''), IFNULL(UN.RESNAM2, ''), IFNULL(UN.ACUSE, '') "
+                           "        , IFNULL(UN.ACDESC, ''), IFNULL(UN.GBN, ''), IFNULL(UN.RESNAM2, ''), IFNULL(UN.ACUSE, ''), IFNULL(UN.PMSEQN, ''), IFNULL(UN.SEQ, '') "
                            " FROM( "
                            "         SELECT IFNULL(A.ACDATE, '') AS ACDATE, IFNULL(A.ACIOGB, '') AS ACIOGB, IFNULL(B.RESNAM, '') AS RESNAM, IFNULL(A.ACAMTS, 0) AS OACAMTS, 0 AS IACAMTS "
                            "                , IFNULL(A.ACCUST, '') AS ACCUST, IFNULL(C.CUST_NME, '') AS CUST_NME "
                            "                , IFNULL(A.ACACNUMBER, '') AS ACACNUMBER, IFNULL(D.ACNUM_NAME, '') AS ACNUM_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM"
-                           "                , IFNULL(A.ACDESC, '') AS ACDESC, IFNULL(A.GBN, '') AS GBN, IFNULL(F.RESNAM, '') AS RESNAM2, IFNULL(A.ACUSE, '') AS ACUSE "
+                           "                , IFNULL(A.ACDESC, '') AS ACDESC, IFNULL(A.GBN, '') AS GBN, IFNULL(F.RESNAM, '') AS RESNAM2, IFNULL(A.ACUSE, '') AS ACUSE, IFNULL(A.PMSEQN, '') AS PMSEQN, IFNULL(A.SEQ, '') AS SEQ   "
                            "         FROM ACTSTMENT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -81,8 +81,8 @@ def receivepaySheetViews_search(request):
                            "         AND A.ICUST = '" + str(iCust) + "'"
                            "         UNION ALL "
                            "         SELECT IFNULL(A.ACDATE, ''), IFNULL(A.ACIOGB, ''), IFNULL(B.RESNAM, ''), 0 AS OACAMTS, IFNULL(A.ACAMTS, 0) AS IACAMTS "
-                           "                , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '')"
-                           "                , IFNULL(A.ACDESC, ''), IFNULL(A.GBN, ''), IFNULL(F.RESNAM, ''), IFNULL(A.ACUSE, '') AS ACUSE"
+                           "                , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
+                           "                , IFNULL(A.ACDESC, ''), IFNULL(A.GBN, ''), IFNULL(F.RESNAM, ''), IFNULL(A.ACUSE, '') AS ACUSE, IFNULL(A.PMSEQN, '') AS PMSEQN, IFNULL(A.SEQ, '') AS SEQ   "
                            "         FROM ACTSTMENT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -101,7 +101,7 @@ def receivepaySheetViews_search(request):
                            "         ) UN "
                            " LEFT OUTER JOIN ACNUMBER CC "
                            " ON UN.ACACNUMBER = CC.ACNUMBER "
-                           " WHERE UN.ACDATE >= '" + str(strDate) + "' AND UN.ACDATE <= '" + str(endDate) + "' AND CC.ACBKCD = '" + str(cboBank) + "'  ORDER BY UN.ACDATE ")
+                           " WHERE UN.ACDATE >= '" + str(strDate) + "' AND UN.ACDATE <= '" + str(endDate) + "' AND CC.ACBKCD = '" + str(cboBank) + "'  ORDER BY UN.ACDATE, UN.PMSEQN, UN.SEQ; ")
 
             mainresult = cursor.fetchall()
 
@@ -145,12 +145,12 @@ def receivepaySheetViews_search(request):
         with connection.cursor() as cursor:
             cursor.execute(" SELECT IFNULL(UN.ACDATE, ''), IFNULL(UN.ACIOGB, ''), IFNULL(UN.RESNAM, ''), IFNULL(UN.OACAMTS, 0), IFNULL(UN.IACAMTS, 0) "
                            "      , IFNULL(UN.ACCUST, ''), IFNULL(UN.CUST_NME, ''), IFNULL(UN.ACACNUMBER, ''), IFNULL(UN.ACNUM_NAME, ''), IFNULL(UN.MCODE, ''), IFNULL(UN.MCODENM, '') "
-                           "        , IFNULL(UN.ACDESC, ''), IFNULL(UN.GBN, ''), IFNULL(UN.RESNAM2, ''), IFNULL(UN.ACUSE, '') "
+                           "        , IFNULL(UN.ACDESC, ''), IFNULL(UN.GBN, ''), IFNULL(UN.RESNAM2, ''), IFNULL(UN.ACUSE, ''), IFNULL(UN.PMSEQN, ''), IFNULL(UN.SEQ, '') "
                            " FROM( "
                            "         SELECT IFNULL(A.ACDATE, '') AS ACDATE, IFNULL(A.ACIOGB, '') AS ACIOGB, IFNULL(B.RESNAM, '') AS RESNAM, IFNULL(A.ACAMTS, 0) AS OACAMTS, 0 AS IACAMTS "
                            "                , IFNULL(A.ACCUST, '') AS ACCUST, IFNULL(C.CUST_NME, '') AS CUST_NME "
                            "                , IFNULL(A.ACACNUMBER, '') AS ACACNUMBER, IFNULL(D.ACNUM_NAME, '') AS ACNUM_NAME, IFNULL(A.MCODE, '') AS MCODE, IFNULL(E.MCODENM, '') AS MCODENM "
-                           "                , IFNULL(A.ACDESC, '') AS ACDESC, IFNULL(A.GBN, '') AS GBN, IFNULL(F.RESNAM, '') AS RESNAM2, IFNULL(A.ACUSE, '') AS ACUSE "
+                           "                , IFNULL(A.ACDESC, '') AS ACDESC, IFNULL(A.GBN, '') AS GBN, IFNULL(F.RESNAM, '') AS RESNAM2, IFNULL(A.ACUSE, '') AS ACUSE, IFNULL(A.PMSEQN, '') AS PMSEQN, IFNULL(A.SEQ, '') AS SEQ "
                            "         FROM ACTSTMENT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -169,7 +169,7 @@ def receivepaySheetViews_search(request):
                            "         UNION ALL "
                            "         SELECT IFNULL(A.ACDATE, ''), IFNULL(A.ACIOGB, ''), IFNULL(B.RESNAM, ''), 0 AS OACAMTS, IFNULL(A.ACAMTS, 0) AS IACAMTS "
                            "                , IFNULL(A.ACCUST, ''), IFNULL(C.CUST_NME, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(D.ACNUM_NAME, ''), IFNULL(A.MCODE, ''), IFNULL(E.MCODENM, '') "
-                           "                , IFNULL(A.ACDESC, ''), IFNULL(A.GBN, ''), IFNULL(F.RESNAM, ''), IFNULL(A.ACUSE, '') AS ACUSE "
+                           "                , IFNULL(A.ACDESC, ''), IFNULL(A.GBN, ''), IFNULL(F.RESNAM, ''), IFNULL(A.ACUSE, '') AS ACUSE, IFNULL(A.PMSEQN, '') AS PMSEQN, IFNULL(A.SEQ, '') AS SEQ "
                            "         FROM ACTSTMENT A "
                            "         LEFT OUTER JOIN OSREFCP B "
                            "         ON A.ACIOGB = B.RESKEY "
@@ -186,7 +186,7 @@ def receivepaySheetViews_search(request):
                            "         WHERE A.ACIOGB = '2' "
                            "         AND A.ICUST = '" + str(iCust) + "' "
                            "         ) UN "
-                           " WHERE UN.ACDATE >= '" + str(strDate) + "' AND UN.ACDATE <= '" + str(endDate) + "' AND UN.ACACNUMBER = '" + str(cboAccount) + "'  ORDER BY UN.ACDATE ")
+                           " WHERE UN.ACDATE >= '" + str(strDate) + "' AND UN.ACDATE <= '" + str(endDate) + "' AND UN.ACACNUMBER = '" + str(cboAccount) + "'  ORDER BY UN.ACDATE, UN.PMSEQN, UN.SEQ; ")
 
             mainresult = cursor.fetchall()
 
