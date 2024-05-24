@@ -338,7 +338,7 @@
 
                         balance = parseInt(list[i][2]) - parseInt(list[i][16])
                         if(list[i][19] != ''){ cust = list[i][20] }
-                        if(list[i][21] != ''){ cust = list[i][21]}
+                        if(list[i][21] != '' && list[i][19] == ''){ cust = list[i][21]}
 
 
                         $("#mainTb").append(
@@ -500,7 +500,7 @@
 
                             balance = parseInt(list[i][2]) - parseInt(list[i][16])
                             if(list[i][19] != ''){ cust = list[i][20] }
-                            if(list[i][21] != ''){ cust = list[i][21]}
+                            if(list[i][21] != '' && list[i][19] == ''){ cust = list[i][21]}
 
                             $("#mainTb").append(
                                 "<tr id='#mainTr' class='mainTr_tr'>" +
@@ -533,7 +533,7 @@
 
                             balance = parseInt(list[i][8]) - parseInt(list[i][9])
                             if(list[i][5] != ''){ cust = list[i][6] }
-                            if(list[i][7] != ''){ cust = list[i][7]}
+                            if(list[i][7] != '' && list[i][5] == ''){ cust = list[i][7]}
 
                             $("#mainTb").append(
                                 "<tr id='#mainTr' class='mainTr_tr'>" +
