@@ -934,20 +934,20 @@ def permitViews_save(request):
                 print(acAmts)
 
             # 세금계산서일경우
-            if pmtArrayLists[data]["acGubn"] == '2':
+            if pmtArrayLists[data]["acCust"] != '':
                 with connection.cursor() as cursor:
-                    cursor.execute(" SELECT A.ACCUST, B.CUST_BKCD, B.CUST_ACNUM, A.ACDESC FROM SISACCTT A "
+                    cursor.execute(" SELECT IFNULL(A.ACCUST, ''), IFNULL(B.CUST_BKCD, ''), IFNULL(B.CUST_ACNUM, ''), IFNULL(A.ACDESC, '') FROM SISACCTT A "
                                    " LEFT OUTER JOIN MIS1TB003_D B "
                                    " ON A.ACCUST = B.CUST_NBR "
                                    " WHERE A.IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                                   " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ICUST = '" + str(iCust) + "' ")
+                                   " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ACCUST = '" + pmtArrayLists[data]["acCust"] + "' AND A.ICUST = '" + str(iCust) + "' ")
 
                     result = cursor.fetchall()
 
                     if (len(result) != 0):
-                        custCode = result[0][0]
                         custBank = result[0][1]
-                        acDesc = result[0][2]
+                        custAct = result[0][2]
+                        acDesc = result[0][3]
             # 세금계산서 아닐경우
             if pmtArrayLists[data]["acGubn"] != '2':
                 acUse = pmtArrayLists[data]["acCust"]
@@ -1014,13 +1014,13 @@ def permitViews_save(request):
                                "    ) "
                                "    VALUES "
                                "    (   "
-                               "    '" + pmtArrayLists[data]["perDate"].replace("-","") + "' "
+                               "    '" + str(pmtArrayLists[data]["perDate"].replace("-","")) + "' "
                                "    , '" + str(pmSeqn) + "' "
-                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-","") + "'AND PMSEQN = '" + str(pmSeqn) + "' AND ICUST = '" + str(iCust) + "'  ) "
-                               "    , '" + pmtArrayLists[data]["acSeqn"] + "' "
-                               "    , '" + pmtArrayLists[data]["acIogb"] + "' "
+                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-","")) + "'AND PMSEQN = '" + str(pmSeqn) + "' AND ICUST = '" + str(iCust) + "'  ) "
+                               "    , '" + str(pmtArrayLists[data]["acSeqn"]) + "' "
+                               "    , '" + str(pmtArrayLists[data]["acIogb"]) + "' "
                                "    , '" + str(acode) + "' "
-                               "    , '" + str(custCode) + "'"
+                               "    , '" + str(pmtArrayLists[data]["acCust"]) + "'"
                                "    , '" + str(custBank) + "'"
                                "    , '" + str(custAct) + "' "
                                "    , '" + str(acUse) + "' "
