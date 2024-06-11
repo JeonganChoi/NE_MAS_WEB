@@ -487,23 +487,25 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '')"
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST = '" + str(custCode) + "' "
                                    " OR G.CUST_NME LIKE '%" + str(custCode) + "%' "
                                    " OR A.ACUSE LIKE '%" + str(custCode) + "%' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -516,16 +518,18 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST = '" + str(custCode) + "' "
@@ -533,7 +537,7 @@ def permitViews_search(request):
                                    " OR G.CUST_NME LIKE '%" + str(custCode) + "%' "
                                    " OR A.ACUSE LIKE '%" + str(custCode) + "%' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -546,16 +550,18 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST = '" + str(custCode) + "' "
@@ -564,7 +570,7 @@ def permitViews_search(request):
                                    " OR G.CUST_NME LIKE '%" + str(custCode) + "%' "
                                    " OR A.ACUSE LIKE '%" + str(custCode) + "%' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -577,16 +583,18 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACCUST = '" + str(custCode) + "' "
@@ -594,7 +602,7 @@ def permitViews_search(request):
                                    " OR G.CUST_NME LIKE '%" + str(custCode) + "%' "
                                    " OR A.ACUSE LIKE '%" + str(custCode) + "%' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -607,21 +615,23 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND B.ACCARD = '" + str(inputCardNum) + "' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -634,22 +644,24 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
                                    " AND B.ACCARD = '" + str(inputCardNum) + "' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -662,21 +674,23 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " AND A.ACACNUMBER = '" + str(actCode) + "' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -689,20 +703,22 @@ def permitViews_search(request):
                                    "      , IFNULL(G.CUST_NME, ''), IFNULL(A.ACUSE, ''), IFNULL(B.ACAMTS, 0), SUM(IFNULL(A.ACAMTS, 0)) AS TOTAL "
                                    "      , IFNULL(A.CRE_USER, ''), IFNULL(C.EMP_NME, ''), IFNULL(A.MCODE, ''), IFNULL(D.MCODENM, '') "
                                    "      , IFNULL(A.ACODE, ''), IFNULL(H.RESNAM, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(A.ACCUST_BNK, '') "
-                                   "      , IFNULL(A.ACCUST_ACT, '') "
+                                   "      , IFNULL(A.ACCUST_ACT, ''), IFNULL(A.ACGUBN, ''), IFNULL(A.ACACNUMBER, ''), IFNULL(E.ACBKCD, '') "
+                                   "      , IFNULL(A.SEQ, ''), IFNULL(A.PMSEQN, '')   "
                                    " FROM ACTSTMENT A "
                                    " LEFT OUTER JOIN SISACCTT B "
-                                   " ON A.ACDATE = B.ACDATE "
+                                   " ON A.IODATE = B.IODATE "
                                    " AND A.ACSEQN = B.ACSEQN "
                                    " AND A.ACIOGB = B.ACIOGB "
                                    " LEFT OUTER JOIN PIS1TB001 C  ON A.CRE_USER = C.EMP_NBR "
                                    " LEFT OUTER JOIN OSCODEM D  ON A.MCODE = D.MCODE "
                                    " LEFT OUTER JOIN MIS1TB003 G  ON A.ACCUST = G.CUST_NBR "
                                    " LEFT OUTER JOIN OSREFCP H ON A.ACODE = H.RESKEY AND H.RECODE = 'ACD' "
+                                   " LEFT OUTER JOIN ACNUMBER E ON A.ACACNUMBER = E.ACNUMBER "
                                    " WHERE A.ACDATE >= '" + str(strDate) + "' AND A.ACDATE <= '" + str(endDate) + "' "
                                    " AND A.ICUST = '" + str(iCust) + "' "
                                    " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, B.APPLYDT, B.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, B.ACAMTS, A.CRE_USER"
-                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN "
+                                   "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN "
                                    " ORDER BY A.ACDATE ASC ")
                     mainresult = cursor.fetchall()
 
@@ -716,15 +732,13 @@ def permitViews_search(request):
 
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(
-                            iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
+                        " SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
                     cboBank = cursor.fetchall()
 
                 # 카드명
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        " SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(
-                            iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
+                        " SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
                     cboCard = cursor.fetchall()
                 # 카드번호
                 with connection.cursor() as cursor:
@@ -813,147 +827,110 @@ def permitViews_save(request):
     permitDate = request.POST.get('permitDate')
     permit = 'Y'
 
-    if offSet == '2':
-        balance = 0
-        acUse = ""
-        custCode = ""
-        custBank = ""
-        custAct = ""
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(permitDate).replace("-", "") + "' ")
+        result3 = cursor.fetchall()
+        seqKey = result3[0][0]
+
+    pmtArrayLists = list(filter(len, pmtArray))
+    for data in range(0, len(pmtArrayLists)):
 
         with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(permitDate).reaplace("-", "") + "' ")
-            result3 = cursor.fetchall()
-            pmSeqn = result3[0][0]
+            cursor.execute(" SELECT COUNT(PMSEQN) AS COUNTED FROM ACTSTMENT "
+                           " WHERE ICUST = '" + str(iCust) + "' AND ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "' AND SEQ = '" + str(pmtArrayLists[data]["seq"]) + "' AND PMSEQN = '" + pmtArrayLists[data]["pmSeqn"] + "' ")
+            result = cursor.fetchall()
+            check = int(result[0][0])
 
-
-        pmtArrayLists = list(filter(len, pmtArray))
-        for data in range(0, len(pmtArrayLists)):
-
+        if check > 0:
+            # 변경 전 총 금액 확인
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT B.CUST_BKCD, B.CUST_ACNUM, A.ACDESC FROM SISACCTT A "
-                               " LEFT OUTER JOIN MIS1TB003_D B "
-                               " ON A.ACCUST = B.CUST_NBR "
-                               " WHERE A.IODATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ICUST = '" + str(iCust) + "' ")
+                cursor.execute(" SELECT SUM(IFNULL(ACAMTS, 0)) FROM ACTSTMENT "
+                               " WHERE ICUST = '" + str(iCust) + "' AND ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "' "
+                               " AND SEQ = '" + str(pmtArrayLists[data]["seq"]) + "' ")
 
-                result = cursor.fetchall()
-                check = int(result[0][0])
+                result2 = cursor.fetchall()
+                lastAmts = int(result2[0][0])
 
-                if check > 0:
-                    custBank = result[0][0]
-                    custAct = result[0][1]
-                    acDesc = result[0][2]
-
-            if pmtArrayLists[data]["acIogb"]:
-                with connection.cursor() as cursor:
-                    cursor.execute(" UPDATE SISACCTT SET "
-                                   "    ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "'"
-                                   "  , FIN_OPT = '" + str(permit) + "' "
-                                   "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"].replace(",", "") + "' "
-                                   "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
-                                   "  , OFF_GBN = '" + str(offSet) + "' "
-                                   "  , OFF_DATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' "
-                                   "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
-                                   "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                                   "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
-                                   "     AND ICUST = '" + str(iCust) + "' "
-                    )
-                    connection.commit()
-
-            if pmtArrayLists[data]["acIogb"] == '1':
-                balance -= pmtArrayLists[data]["acAmts"]
-            if pmtArrayLists[data]["acIogb"] == '2':
-                balance += pmtArrayLists[data]["acAmts"]
-
-            if balance < 0:
-                finalacIogb = '2'
-                finalTitle = '상계 매입'
-            if balance >= 0:
-                finalacIogb = '1'
-                finalTitle = '상계 매출'
-
-            # mCode, aCode 계정코드를 어떻게 저장하면 되는지 물어보
-
-            # 입금 or 출금 전표 저장
-            now = datetime.date
+            # 금액 등 변경
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO ACTSTMENT "
-                               "   (    "
-                               "     ACDATE "
-                               ",    PMSEQN "
-                               ",    ACSEQN "
-                               ",    SEQ "
-                               ",    ACIOGB "
-                               ",    ACTITLE "
-                               ",    ACAMTS "
-                               ",    ACACNUMBER "
-                               ",    ICUST "
-                               ",    OFF_GBN "
-                               ",    ACINFO "
-                               ",    ACCUST_BNK "
-                               ",    ACCUST_ACT "
-                               "    ) "
-                               "    VALUES "
-                               "    (   "
-                               "    '" + str(permitDate).reaplace("-", "") + "' "
-                               ",   '" + str(pmSeqn) + "' " 
-                               ",   '" + pmtArrayLists[data]["acSeqn"] + "' "                                        
-                               ",   (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' AND ACIOGB = '" + str(finalacIogb) + "' AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ) "
-                               ",   '" + str(finalacIogb) + "'"
-                               ",   '" + str(finalTitle) + "'"
-                               ",   '" + pmtArrayLists[data]["acAmts"] + "'"
-                               ",   '" + str(actNum) + "'"
-                               ",   '" + str(iCust) + "'"
-                               ",   '" + str(offSet) + "' "
-                               ",   '" + str(custBank) + "," + str(custAct) + "' "
-                               ",   '" + str(custBank) + "' "
-                               ",   '" + str(custAct) + "' "
-                               "    )   "
-                               )
+                cursor.execute(" UPDATE ACTSTMENT SET "
+                               "      ACAMTS = '" + str(pmtArrayLists[data]["acAmts"].replace(",","")) + "' "
+                               "    , ACGUNO_BK = '" + str(actBank) + "' "
+                               "    , ACACNUMBER = '" + str(actNum) + "' "
+                               "    , MCODE = '" + str(pmtArrayLists[data]["mCode"]) + "' "
+                               "    , CRE_USER = '" + str(user) + "' "
+                               "    , CRE_DT = date_format(now(), '%Y%m%d') "
+                               " WHERE ICUST = '" + str(iCust) + "' AND ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "' "
+                               " AND SEQ = '" + str(pmtArrayLists[data]["seq"]) + "' AND PMSEQN = '" + str(pmtArrayLists[data]["pmSeqn"]) + "' ")
                 connection.commit()
 
-        return JsonResponse({'sucYn': "Y"})
+            # 변경된 총 금액 확인
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT SUM(IFNULL(ACAMTS, 0)) FROM ACTSTMENT "
+                               " WHERE ICUST = '" + str(iCust) + "' AND ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "' "
+                               " AND SEQ = '" + str(pmtArrayLists[data]["seq"]) + "' ")
 
-    else:
+                result2 = cursor.fetchall()
+                currentAmts = int(result2[0][0])
 
-        with connection.cursor() as cursor:
-            cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(permitDate).replace("-", "") + "' ")
-            result3 = cursor.fetchall()
-            pmSeqn = result3[0][0]
+            current = int(lastAmts) - int(currentAmts)
+            # 기존금액보다 많을때
+            if int(current) < 0:
+                current = str(current).replace("-", "")
+                final = int(lastAmts) + int(current)
+            # 기존금액보다 적을때
+            if int(current) > 0:
+                final = int(lastAmts) - int(current)
+            # 지출금액이 잔액보다 작을때 시행 완료되지않은것으로 처리:
+            # if int(final) < int(orgAmts):
+            #     permit = 'N'
 
+            with connection.cursor() as cursor:
+                cursor.execute(" UPDATE SISACCTT SET "
+                               "    ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "'"
+                               "  , FIN_OPT = (CASE WHEN FIN_AMTS < '" + str(final) + "' THEN 'N' ELSE 'Y' END) "
+                               "  , FIN_AMTS = '" + str(final) + "' "
+                               "  , ACGUNO_BK = '" + str(actBank) + "' "
+                               "  , ACACNUMBER = '" + str(actNum) + "' "
+                               "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+                               "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
+                               "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                               "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                               "     AND ICUST = '" + str(iCust) + "' "
+                )
+                connection.commit()
 
-        pmtArrayLists = list(filter(len, pmtArray))
-        for data in range(0, len(pmtArrayLists)):
+        else:
+
             acUse = ""
-            custCode = ""
+            acTitle = ""
             custBank = ""
             custAct = ""
-            if pmtArrayLists[data]["acIogb"]:
-                amts = pmtArrayLists[data]["acAmts"]
-                acAmts = amts.replace(",", "")
-                print(acAmts)
+            acode = ""
+            acgubn = ""
+            finAmts = ""
+            orgAmts = ""
 
-            # 세금계산서일경우
-            if pmtArrayLists[data]["acCust"] != '':
-                with connection.cursor() as cursor:
-                    cursor.execute(" SELECT IFNULL(A.ACCUST, ''), IFNULL(B.CUST_BKCD, ''), IFNULL(B.CUST_ACNUM, ''), IFNULL(A.ACDESC, '') FROM SISACCTT A "
-                                   " LEFT OUTER JOIN MIS1TB003_D B "
-                                   " ON A.ACCUST = B.CUST_NBR "
-                                   " WHERE A.IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                                   " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ACCUST = '" + pmtArrayLists[data]["acCust"] + "' AND A.ICUST = '" + str(iCust) + "' ")
+                # 거래처 조회
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT IFNULL(A.ACCUST, ''), IFNULL(B.CUST_BKCD, ''), IFNULL(B.CUST_ACNUM, ''), IFNULL(A.ACTITLE, '') FROM SISACCTT A "
+                               " LEFT OUTER JOIN MIS1TB003_D B "
+                               " ON A.ACCUST = B.CUST_NBR "
+                               " WHERE A.IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                               " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ACCUST = '" + pmtArrayLists[data]["acCust"] + "' AND A.ICUST = '" + str(iCust) + "' ")
 
-                    result = cursor.fetchall()
+                result = cursor.fetchall()
 
-                    if (len(result) != 0):
-                        custBank = result[0][1]
-                        custAct = result[0][2]
-                        acDesc = result[0][3]
+                if (len(result) != 0):
+                    custBank = result[0][1]
+                    custAct = result[0][2]
+                    acTitle = result[0][3]
             # 세금계산서 아닐경우
             if pmtArrayLists[data]["acGubn"] != '2':
                 acUse = pmtArrayLists[data]["acCust"]
 
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0), IFNULL(ACDESC, '') FROM SISACCTT "
+                cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0) FROM SISACCTT "
                                " WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-","") + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
                                " AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ")
 
@@ -962,10 +939,8 @@ def permitViews_save(request):
                 if (len(result2) != 0):
                     acode = result2[0][0]
                     acgubn = result2[0][2]
-                    mcode = result2[0][3]
                     finAmts = result2[0][4]
                     orgAmts = result2[0][5]
-                    acDesc = result2[0][6]
 
             final = int(finAmts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
 
@@ -993,8 +968,8 @@ def permitViews_save(request):
                 cursor.execute(" INSERT INTO ACTSTMENT "
                                "   (    "
                                "      ACDATE "
-                               "    , PMSEQN "
                                "    , SEQ "
+                               "    , PMSEQN "
                                "    , ACSEQN "
                                "    , ACIOGB "
                                "    , ACODE "
@@ -1011,12 +986,13 @@ def permitViews_save(request):
                                "    , CRE_USER "
                                "    , CRE_DT "
                                "    , ICUST "
+                               "    , IODATE "
                                "    ) "
                                "    VALUES "
                                "    (   "
                                "    '" + str(pmtArrayLists[data]["perDate"].replace("-","")) + "' "
-                               "    , '" + str(pmSeqn) + "' "
-                               "    , (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-","")) + "'AND PMSEQN = '" + str(pmSeqn) + "' AND ICUST = '" + str(iCust) + "'  ) "
+                               "    , '" + str(seqKey) + "' "
+                               "    , (SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-","")) + "'AND SEQ = '" + str(seqKey) + "' AND ICUST = '" + str(iCust) + "'  ) "
                                "    , '" + str(pmtArrayLists[data]["acSeqn"]) + "' "
                                "    , '" + str(pmtArrayLists[data]["acIogb"]) + "' "
                                "    , '" + str(acode) + "' "
@@ -1029,10 +1005,11 @@ def permitViews_save(request):
                                "    , '" + str(actBank) + "' "
                                "    , '" + str(actNum) + "' "
                                "    , '" + pmtArrayLists[data]["mCode"] + "' "
-                               "    , '" + str(acDesc) + "' "
+                               "    , '" + str(acTitle) + "' "
                                "    , '" + str(user) + "' "
                                "    , date_format(now(), '%Y%m%d') "
                                "    , '" + str(iCust) + "' "
+                               "    , '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "'"
                                "    )   "
                                )
                 connection.commit()
@@ -1216,3 +1193,106 @@ def permitViews_dlt(request):
     #         connection.commit()
     #
     # return JsonResponse({'sucYn': "Y"})
+
+
+    # 상계 ###########################################################################################################
+    # if offSet == '2':
+    #     balance = 0
+    #     acUse = ""
+    #     custCode = ""
+    #     custBank = ""
+    #     custAct = ""
+    #
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(" SELECT IFNULL (MAX(PMSEQN) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + str(permitDate).reaplace("-", "") + "' ")
+    #         result3 = cursor.fetchall()
+    #         pmSeqn = result3[0][0]
+    #
+    #
+    #     pmtArrayLists = list(filter(len, pmtArray))
+    #     for data in range(0, len(pmtArrayLists)):
+    #
+    #         with connection.cursor() as cursor:
+    #             cursor.execute(" SELECT B.CUST_BKCD, B.CUST_ACNUM, A.ACDESC FROM SISACCTT A "
+    #                            " LEFT OUTER JOIN MIS1TB003_D B "
+    #                            " ON A.ACCUST = B.CUST_NBR "
+    #                            " WHERE A.IODATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+    #                            " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ICUST = '" + str(iCust) + "' ")
+    #
+    #             result = cursor.fetchall()
+    #             check = int(result[0][0])
+    #
+    #             if check > 0:
+    #                 custBank = result[0][0]
+    #                 custAct = result[0][1]
+    #                 acDesc = result[0][2]
+    #
+    #         if pmtArrayLists[data]["acIogb"]:
+    #             with connection.cursor() as cursor:
+    #                 cursor.execute(" UPDATE SISACCTT SET "
+    #                                "    ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "'"
+    #                                "  , FIN_OPT = '" + str(permit) + "' "
+    #                                "  , FIN_AMTS = '" + pmtArrayLists[data]["acAmts"].replace(",", "") + "' "
+    #                                "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+    #                                "  , OFF_GBN = '" + str(offSet) + "' "
+    #                                "  , OFF_DATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' "
+    #                                "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
+    #                                "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+    #                                "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+    #                                "     AND ICUST = '" + str(iCust) + "' "
+    #                 )
+    #                 connection.commit()
+    #
+    #         if pmtArrayLists[data]["acIogb"] == '1':
+    #             balance -= pmtArrayLists[data]["acAmts"]
+    #         if pmtArrayLists[data]["acIogb"] == '2':
+    #             balance += pmtArrayLists[data]["acAmts"]
+    #
+    #         if balance < 0:
+    #             finalacIogb = '2'
+    #             finalTitle = '상계 매입'
+    #         if balance >= 0:
+    #             finalacIogb = '1'
+    #             finalTitle = '상계 매출'
+    #
+    #         # mCode, aCode 계정코드를 어떻게 저장하면 되는지 물어보
+    #
+    #         # 입금 or 출금 전표 저장
+    #         now = datetime.date
+    #         with connection.cursor() as cursor:
+    #             cursor.execute("INSERT INTO ACTSTMENT "
+    #                            "   (    "
+    #                            "     ACDATE "
+    #                            ",    PMSEQN "
+    #                            ",    ACSEQN "
+    #                            ",    SEQ "
+    #                            ",    ACIOGB "
+    #                            ",    ACTITLE "
+    #                            ",    ACAMTS "
+    #                            ",    ACACNUMBER "
+    #                            ",    ICUST "
+    #                            ",    OFF_GBN "
+    #                            ",    ACINFO "
+    #                            ",    ACCUST_BNK "
+    #                            ",    ACCUST_ACT "
+    #                            "    ) "
+    #                            "    VALUES "
+    #                            "    (   "
+    #                            "    '" + str(permitDate).reaplace("-", "") + "' "
+    #                            ",   '" + str(pmSeqn) + "' "
+    #                            ",   '" + pmtArrayLists[data]["acSeqn"] + "' "
+    #                            ",   (SELECT IFNULL (MAX(SEQ) + 1,1) AS COUNTED FROM ACTSTMENT A WHERE ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "' AND ACIOGB = '" + str(finalacIogb) + "' AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ) "
+    #                            ",   '" + str(finalacIogb) + "'"
+    #                            ",   '" + str(finalTitle) + "'"
+    #                            ",   '" + pmtArrayLists[data]["acAmts"] + "'"
+    #                            ",   '" + str(actNum) + "'"
+    #                            ",   '" + str(iCust) + "'"
+    #                            ",   '" + str(offSet) + "' "
+    #                            ",   '" + str(custBank) + "," + str(custAct) + "' "
+    #                            ",   '" + str(custBank) + "' "
+    #                            ",   '" + str(custAct) + "' "
+    #                            "    )   "
+    #                            )
+    #             connection.commit()
+    #
+    #     return JsonResponse({'sucYn': "Y"})

@@ -25,7 +25,7 @@
                                 <!--<button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>-->
                                 <button type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: darkorange; font-size: 0.8rem" id="btnDlt" name="btnDlt">
                                     <i class="fa fa-trash-arrow-up fs-6 pe-2"></i>취소</button>
-                                <button type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: royalblue; font-size: 0.8rem" id="btnUpt" name="btnUpt">
+                                <button hidden type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: royalblue; font-size: 0.8rem" id="btnUpt" name="btnUpt">
                                     <i class="fa fa-cloud-arrow-up fs-6 pe-2"></i>수정</button>
                             </div>
                         </div>
@@ -521,6 +521,8 @@
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
                                 "</tr> ");
 
                             //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
@@ -550,10 +552,12 @@
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][13] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
                                 "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td> " +
+                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
                                 "</tr> ");
 
                             //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
@@ -877,7 +881,8 @@
             var acSeqn = tr.children().eq(11).text()
             var acIogb = tr.children().eq(12).text()
             var acGubn = tr.children().eq(14).text()
-
+            var seq = tr.children().eq(17).text()
+            var pmSeqn = tr.children().eq(18).text()
 
             var acAmts = tr.children().eq(5).text().replace(/\,/g, '')
             var finAmts = tr.children().eq(6).text().replace(/\,/g, '')
@@ -906,8 +911,10 @@
             var cboBankTxt = "<option value=''>:: 선택 ::</option>";
             var cboMcodeTxt = "<option value=''>:: 선택 ::</option>";
 
-            $("#cboActNum_"+count).html("");
-            $("#cboBank_"+count).html("");
+            $("#actNumber").html("");
+            $("#actBank").html("");
+            $("#cboMcode_"+count).html("");
+            $("#cboMcode_"+count).html("");
             $("#cboMcode_"+count).html("");
 
             //시행/미시행 구분
@@ -953,6 +960,8 @@
                         }
                     }
 
+                    $("#actNumber").append(cboActNumTxt);
+                    $("#actBank").append(cboBankTxt);
                     $("#cboActNum_"+count).append(cboActNumTxt);
                     $("#cboBank_"+count).append(cboBankTxt);
                     $("#cboMcode_"+count).append(cboMcodeTxt);
@@ -995,6 +1004,8 @@
                             "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                             "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                             "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
+                            "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
+                            "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
                             "</tr> ");
                         }
                         //시행
@@ -1018,7 +1029,11 @@
                                 "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
                                 "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
                                 "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
+                                "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + seq + "</td> " +
+                                "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + pmSeqn + "</td> " +
                                 "</tr> ");
+
+
                         }
                     }
 
@@ -1154,7 +1169,7 @@
             }
 
             var pmtArr = [];
-            for (var i = 1; i < subCount; i++) {
+            for (var i = 0; i < subCount; i++) {
 
                 var perDate = $('#perDate_' + i).text();
                 var ioDate = $('#ioDate_' + i).text();
@@ -1163,16 +1178,12 @@
                 var acIogb = $('#acIogb_' + i).text();
                 var finAmts = $('#finAmts_' + i).text();
                 var acAmts = $('#txtAmts_' + i).val();
-                //var acNum = $('#acNumber_' + i).text();
                 var acGubn = $('#acGubn_' + i).text();
                 var mCode = $('#mainCode_' + i).text();
                 var transGbn = $('#acTrans_' + i).text();
                 var acCust = $('#acCust_' + i).text();
-                //var acBnkCode = $('#acBnkCode_' + i).text();
-
-                {#if (acNum == '' || acNum == null) {#}
-                {#    acNum = document.getElementById('actNumber').value;#}
-                {#}#}
+                var seq = $('#seq_' + i).text();
+                var pmSeqn = $('#pmSeqn_' + i).text();
 
                 let chk = {"actNum": actNum}
 
@@ -1205,6 +1216,8 @@
                     'mCode': mCode,
                     'transGbn': transGbn,
                     'acCust': acCust,
+                    'seq': seq,
+                    'pmSeqn': pmSeqn,
                 };
                 pmtArr.push(data);
             }
