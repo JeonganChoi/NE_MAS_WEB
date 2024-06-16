@@ -99,3 +99,57 @@ def cboMcode(request):
         result = cursor.fetchall()
 
         return JsonResponse({"cboMcode": result})
+
+
+
+def cboCustList(request):
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
+        cboCust = cursor.fetchall()
+
+    return JsonResponse({"cboCust": cboCust})
+
+# 계좌번호
+def cboActNumList(request):
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
+        cboAct = cursor.fetchall()
+
+    return JsonResponse({"cboAct": cboAct})
+
+
+# 은행
+def cboBankList(request):
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT A.ACBKCD, B.RESNAM FROM ACNUMBER A LEFT OUTER JOIN OSREFCP B ON A.ACBKCD = B.RESKEY AND B.RECODE = 'BNK'WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.ACBKCD, B.RESNAM ")
+        cboBank = cursor.fetchall()
+    return JsonResponse({"cboBank": cboBank})
+
+# 카드명
+def cboCardNameList(request):
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT A.CARDTYPE, B.RESNAM FROM ACCARD A LEFT OUTER JOIN OSREFCP B ON A.CARDTYPE = B.RESKEY AND B.RECODE = 'COC' WHERE A.ICUST = '" + str(iCust) + "' GROUP BY A.CARDTYPE, B.RESNAM ")
+        cboCard = cursor.fetchall()
+
+    return JsonResponse({"cboCard": cboCard})
+
+# 카드번호
+def cboCardNumList(request):
+    user = request.session.get('userId')
+    iCust = request.session.get('USER_ICUST')
+
+    with connection.cursor() as cursor:
+        cursor.execute(" SELECT CARDNUM FROM ACCARD WHERE ICUST = '" + str(iCust) + "'")
+        cboCardNum = cursor.fetchall()
+
+    return JsonResponse({"cboCardNum": cboCardNum})

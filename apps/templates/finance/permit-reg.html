@@ -50,7 +50,7 @@
                                 <div class="input-group shadow-none">
                                     <label class="me-3" style="font-size: 0.85rem; width: 5rem"><i class="fa fa-search me-2"></i>시행</label>
                                     <select class="form-control border border-light rounded-1 text-center p-1 w-20" name="inputPermit" id="inputPermit" style="height: 2rem; font-size: 0.8rem">
-                                        <option value="">미시행</option>
+                                        <option value="0">미시행</option>
                                         <option value="1">시행</option>
                                     </select>
                                 </div>
@@ -71,9 +71,9 @@
                                     <input class="form-control border border-light rounded-1 text-center w-20" type="date" name="endDate" id="endDate" style="height: 2rem; width: 10rem">
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-5">
+                            <div class="col-lg-4 col-4">
                                 <div class="input-group shadow-none">
-                                    <label class="me-3" style="font-size: 0.85rem; width: 7rem"><i class="fa fa-search me-2"></i>거래처/사용처</label>
+                                    <label class="me-3" style="font-size: 0.85rem; width: 7rem"><i class="fa fa-search me-2"></i>거래처/사용</label>
                                     <input hidden class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCustCode" id="txtCustCode" style="height: 2rem; max-width: 12rem">
                                     <input class="form-control border border-light rounded-1 text-center me-2" type="text" name="txtCust" id="txtCust" style="height: 2rem; max-width: 16rem">
                                 </div>
@@ -302,280 +302,64 @@
             document.getElementById('endDate').valueAsDate = new Date
             document.getElementById('permitDate').valueAsDate = new Date
 
-            var strDate = document.getElementById('strDate').value
-            var endDate = document.getElementById('endDate').value
-            var pDate = document.getElementById('inputDate').value
-            var perDate = pDate.replace(/\-/g, '')
-
-            var custCode = "";
-            var offSet = "";
-            var permitGbn = "";
-            var bankCode = "";
-            var actCode = "";
-
-
-            let data = {"strDate": strDate, "endDate": endDate, "perDate": perDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",
-                data: data,
-                url: '{% url "permit_reg_search" %}',
+                url: '{% url "cboBank_list" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.mainList;
-                    var count = 0;
-                    var total = 0;
-                    var cust = "";
 
-                    {#"<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: calc(4% - 5px); background: white;'><input class='chkSetOff' type='checkbox' id='chkSetOff_" + i + "' name='chkSetOff[]' value=''/></td> " +#}
-                    count = list.length;
-                    {# 순번, 입.출금구분, 날짜 #}
-                    $("#mainTb").html("");
-                    for (var i = 0; i < list.length; i++) {
-
-                        balance = parseInt(list[i][2]) - parseInt(list[i][16])
-                        if(list[i][19] != ''){ cust = list[i][20] }
-                        if(list[i][21] != '' && list[i][19] == ''){ cust = list[i][21]}
-
-
-                        $("#mainTb").append(
-                            "<tr id='#mainTr' class='mainTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                            "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
-                            "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                            "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                            "</tr> ");
-
-                        total += parseInt(list[i][2])
+                    var combolist = data.cboBank;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputBank) {
+                            inputBankTxt = inputBankTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputBankTxt = inputBankTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
+                        }
                     }
-                    document.getElementById('inputCnt').value = addComma(count)
-                    document.getElementById('inputPrice').value = addComma(total)
 
-                    var combolist2 = data.cboAct;
+                    var combolist2 = data.cboBank;
                     for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == actNumber) {
-                            actNumberTxt = actNumberTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        if (combolist2[i][0] == actBank) {
+                            actBankTxt = actBankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                         } else {
-                            actNumberTxt = actNumberTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                            actBankTxt = actBankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
                         }
                     }
 
-                    var combolist3 = data.cboBank;
-                    for (var i = 0; i < combolist3.length; i++) {
-                        if (combolist3[i][0] == inputBank) {
-                            inputBankTxt = inputBankTxt + "<option value='" + combolist3[i][0] + "' selected>" + combolist3[i][1] + "</option>";
-                        } else {
-                            inputBankTxt = inputBankTxt + "<option value='" + combolist3[i][0] + "'>" + combolist3[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist4 = data.cboAct;
-                    for (var i = 0; i < combolist4.length; i++) {
-                        if (combolist4[i][0] == inputAct) {
-                            inputActTxt = inputActTxt + "<option value='" + combolist4[i][0] + "' selected>" + combolist4[i][0] + "</option>";
-                        } else {
-                            inputActTxt = inputActTxt + "<option value='" + combolist4[i][0] + "'>" + combolist4[i][0] + "</option>";
-                        }
-                    }
-
-                    var combolist5 = data.cboCard;
-                    for (var i = 0; i < combolist5.length; i++) {
-                        if (combolist5[i][0] == inputCard) {
-                            inputCardTxt = inputCardTxt + "<option value='" + combolist5[i][0] + "' selected>" + combolist5[i][1] + "</option>";
-                        } else {
-                            inputCardTxt = inputCardTxt + "<option value='" + combolist5[i][0] + "'>" + combolist5[i][1] + "</option>";
-                        }
-                    }
-
-                    var combolist6 = data.cboCardNum;
-                    for (var i = 0; i < combolist6.length; i++) {
-                        if (combolist6[i][0] == inputCardNum) {
-                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist6[i][0] + "' selected>" + combolist6[i][0] + "</option>";
-                        } else {
-                            inputCardNumTxt = inputCardNumTxt + "<option value='" + combolist6[i][0] + "'>" + combolist6[i][0] + "</option>";
-                        }
-                    }
-
-                    var combolist7 = data.cboBank;
-                    for (var i = 0; i < combolist7.length; i++) {
-                        if (combolist7[i][0] == actBank) {
-                            actBankTxt = actBankTxt + "<option value='" + combolist7[i][0] + "' selected>" + combolist7[i][1] + "</option>";
-                        } else {
-                            actBankTxt = actBankTxt + "<option value='" + combolist7[i][0] + "'>" + combolist7[i][1] + "</option>";
-                        }
-                    }
-
-                    $("#actNumber").append(actNumberTxt);
                     $("#inputBank").append(inputBankTxt);
-                    $("#inputAct").append(inputActTxt);
-                    $("#inputCard").append(inputCardTxt);
-                    $("#inputCardNum").append(inputCardNumTxt);
                     $("#actBank").append(actBankTxt);
                 }
-            })
-        });
+            });
 
-        $('input[type="text"]').keydown(function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                if (event.currentTarget.id === 'txtCust') {
-
-                    if ($("#txtCust").val().length == 0) {
-                        alert("거래처명 한 글자 이상 입력 후 엔터를 쳐주세요.")
-                        return false
-                    } else {
-                        let thisVal = $("#txtCust").val();
-                        let gbnVal = '2';
-                        let url = '{% url 'popup_cust' %}';
-                        openPop(url + '?val=' + thisVal + '&gbnVal=' + gbnVal, '거래처검색창');
-                    }
-
-                }
-            }
-        });
-
-
-        {# 조회 버튼 #}
-        $(document).on('click', "#btnSearch", function () {
-
-            var total = 0;
-            var balance = 0;
-            var cust = "";
-
-            var strDate = document.getElementById('strDate').value;
-            var endDate = document.getElementById('endDate').value;
-            //var perDate = sDate.replace(/\-/g, '')
-            var txtCustCode = document.getElementById('txtCustCode').value;
-            var custCode = document.getElementById('txtCust').value;
-            if(txtCustCode != ''){ custCode = txtCustCode; }
-            var offSet = $('input[name=inputOffSet]:checked').val();
-            var permitGbn = document.getElementById('inputPermit').value;
-            var bankCode = document.getElementById('inputBank').value;
-            var actCode = document.getElementById('inputAct').value;
-            var inputCard = document.getElementById('inputCard').value;
-            var inputCardNum = document.getElementById('inputCardNum').value;
-
-            if(inputCard != '' && inputCardNum == ''){
-                alert('카드번호를 선택해주세요.')
-                return false
-            }
-            if(bankCode != '' && actCode == ''){
-                alert('계좌번호를 선택해주세요.')
-                return false
-            }
-
-            let data = {"strDate": strDate, "endDate": endDate, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
 
             $.ajax({
                 type: "post",
-                data: data,
-                url: '{% url "permit_reg_search" %}',
+                url: '{% url "cboCardName_list" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.mainList;
 
-                    {# 순번, 입.출금구분, 날짜 #}
-                    $("#mainTb").html("");
-                    if(permitGbn == ''){
-                        for (var i = 0; i < list.length; i++) {
-
-                            balance = parseInt(list[i][2]) - parseInt(list[i][16])
-                            if(list[i][19] != ''){ cust = list[i][20] }
-                            if(list[i][21] != '' && list[i][19] == ''){ cust = list[i][21]}
-
-                            $("#mainTb").append(
-                                "<tr id='#mainTr' class='mainTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
-                                "</tr> ");
-
-                            //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
-
-                            total += parseInt(list[i][2])
+                    var combolist = data.cboCard;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == inputCard) {
+                            inputCardTxt = inputCardTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][1] + "</option>";
+                        } else {
+                            inputCardTxt = inputCardTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
-                    if(permitGbn == '1'){
-                        for (var i = 0; i < list.length; i++) {
 
-                            balance = parseInt(list[i][8]) - parseInt(list[i][9])
-                            if(list[i][5] != ''){ cust = list[i][6] }
-                            if(list[i][7] != '' && list[i][5] == ''){ cust = list[i][7]}
-
-                            $("#mainTb").append(
-                                "<tr id='#mainTr' class='mainTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value=''/></td> " +
-                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                                "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][3].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][9]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][11] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
-                                "</tr> ");
-
-                            //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
-
-                            total += parseInt(list[i][8])
-                        }
-                    }
-                    document.getElementById('inputPrice').value = addComma(total)
+                    $("#inputCard").append(inputCardTxt);
                 }
-            })
+            });
+
         });
 
-        {# 미시행선택하고 왼쪽 테이블에 체크박스 체크했는데, 시행으로 콤보박스 바꾸면 오른쪽 테이블 내용 지워지고 왼쪽 테이블 체크박스 빠져야함. #}
-        $('#inputPermit').change(function () {
-            $("#subTb").html("");
-            var count = $('#selectTb').closest('tr').prevAll().length;
-            $('#mainTr' + count).remove();
-        });
 
         {# 결제방법 선택시 계좌명 바인딩 #}
         $('#inputCard').change(function () {
@@ -683,8 +467,184 @@
         });
 
 
+        //거래처조회
+        $('input[type="text"]').keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if (event.currentTarget.id === 'txtCust') {
+
+                    if ($("#txtCust").val().length == 0) {
+                        alert("거래처명 한 글자 이상 입력 후 엔터를 쳐주세요.")
+                        return false
+                    } else {
+                        let thisVal = $("#txtCust").val();
+                        let gbnVal = '2';
+                        let url = '{% url 'popup_cust' %}';
+                        openPop(url + '?val=' + thisVal + '&gbnVal=' + gbnVal, '거래처검색창');
+                    }
+
+                }
+            }
+        });
 
 
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnSearch", function () {
+
+            var total = 0;
+            var balance = 0;
+            var cust = "";
+
+            var strDate = document.getElementById('strDate').value;
+            var endDate = document.getElementById('endDate').value;
+            var txtCustCode = document.getElementById('txtCustCode').value;
+            var custCode = document.getElementById('txtCust').value;
+            if(txtCustCode != ''){ custCode = txtCustCode}
+            var offSet = $('input[name=inputOffSet]:checked').val();
+            var permitGbn = document.getElementById('inputPermit').value;
+            var bankCode = document.getElementById('inputBank').value;
+            var actCode = document.getElementById('inputAct').value;
+            var inputCard = document.getElementById('inputCard').value;
+            var inputCardNum = document.getElementById('inputCardNum').value;
+
+
+            if(inputCard != '' && inputCardNum == ''){
+                alert('카드번호를 선택해주세요.')
+                return false
+            }
+            if(bankCode != '' && actCode == ''){
+                alert('계좌번호를 선택해주세요.')
+                return false
+            }
+
+            let data = {"strDate": strDate, "endDate": endDate, "txtCustCode": txtCustCode, "custCode": custCode, "offSet": offSet, "permitGbn": permitGbn, "bankCode": bankCode, "actCode": actCode, "inputCard": inputCard, "inputCardNum": inputCardNum}
+
+            //미시행
+            if(permitGbn == '0'){
+                $.ajax({
+                    type: "post",
+                    data: data,
+                    url: '{% url "permit_reg_search" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var list = data.mainList;
+
+                        {# 순번, 입.출금구분, 날짜 #}
+                        $("#mainTb").html("");
+                        if(permitGbn == '0'){
+                            for (var i = 0; i < list.length; i++) {
+                                balance = 0;
+                                balance = parseInt(list[i][2]) - parseInt(list[i][16])
+                                //거래처or사용처
+                                if(list[i][19] != ''){ cust = list[i][20] }
+                                if(list[i][21] != '' && list[i][19] == ''){ cust = list[i][21]}
+
+                                $("#mainTb").append(
+                                    "<tr id='#mainTr' class='mainTr_tr'>" +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value='" + list[i][0] + "," + list[i][5] + "," + list[i][6] + "'/></td> " +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][18].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][2]) + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][16]) + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][3] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][7] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "</tr> ");
+
+                                //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호, 회계코드, 거래처코드, 거래처계좌번호, 거래처은행코드
+
+                                total += parseInt(list[i][2])
+                            }
+                        }
+                        document.getElementById('inputPrice').value = addComma(total)
+                    }
+                })
+            }
+            //시행
+            if(permitGbn == '1'){
+                $.ajax({
+                    type: "post",
+                    data: data,
+                    url: '{% url "permited_list" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var list = data.mainList;
+
+                        {# 순번, 입.출금구분, 날짜 #}
+                        $("#mainTb").html("");
+                        if(permitGbn == '1'){
+                            for (var i = 0; i < list.length; i++) {
+                                balance = 0;
+                                balance = parseInt(list[i][23]) - parseInt(list[i][8])
+                                if(list[i][5] != ''){ cust = list[i][6] }
+                                if(list[i][7] != '' && list[i][5] == ''){ cust = list[i][7]}
+
+                                $("#mainTb").append(
+                                    "<tr id='#mainTr' class='mainTr_tr'>" +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value='" + list[i][22] + "," + list[i][23] + "'/></td> " +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][3].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
+                                    "</tr> ");
+
+                                //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
+
+                                total += parseInt(list[i][8])
+                            }
+                        }
+                        document.getElementById('inputPrice').value = addComma(total)
+                    }
+                })
+            }
+
+        });
+
+        {# 미시행선택하고 왼쪽 테이블에 체크박스 체크했는데, 시행으로 콤보박스 바꾸면 오른쪽 테이블 내용 지워지고 왼쪽 테이블 체크박스 빠져야함. #}
+        $('#inputPermit').change(function () {
+            $("#subTb").html("");
+            var count = $('#selectTb').closest('tr').prevAll().length;
+            $('#mainTr' + count).remove();
+        });
 
         {# 상계 체크박스 선택시 #}
 {#        $(document).on('change', '#selectTb tbody tr td input.chkSetOff', function () {#}

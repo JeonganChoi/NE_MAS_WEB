@@ -129,6 +129,7 @@ urlpatterns = [
     # 실행등록
     path('permit_reg/', permitViews.permitViews, name='permit_reg'),
     path('permit_reg_search/', permitViews.permitViews_search, name='permit_reg_search'),
+    path('permited_list/', permitViews.permited_search, name='permited_list'),
     path('balanceChk/', permitViews.balanceChk, name='balanceChk'),
     path('cboCardNum/', permitViews.cboCardNum, name='cboCardNum'),
     path('permit_reg_save/', permitViews.permitViews_save, name='permit_reg_save'),
@@ -238,4 +239,15 @@ urlpatterns = [
     path('cboCard/', baseCboListViews.cboCard, name='cboCard'),
     # 카드연결계좌번호
     path('cboCardAct/', baseCboListViews.cboCardAct, name='cboCardAct'),
+
+
+
+
+
+    path('cboCust_list/', baseCboListViews.cboCustList, name='cboCust_list'),
+    path('cboActNum_list/', baseCboListViews.cboActNumList, name='cboActNum_list'),
+    path('cboBank_list/', baseCboListViews.cboBankList, name='cboBank_list'),
+    path('cboCardName_list/', baseCboListViews.cboCardNameList, name='cboCardName_list'),
+    path('cboCardNum_list/', baseCboListViews.cboCardNumList, name='cboCardNum_list'),
+
 ]
