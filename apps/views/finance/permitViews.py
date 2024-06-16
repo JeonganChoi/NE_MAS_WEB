@@ -474,6 +474,8 @@ def permited_search(request):
                                " GROUP BY A.ACDATE, A.ACSEQN, A.ACIOGB, A.APPLYDT, A.ACTITLE, A.ACCUST, G.CUST_NME, A.ACUSE, A.ACAMTS, A.CRE_USER "
                                "        , C.EMP_NME, A.MCODE, D.MCODENM, A.ACODE, H.RESNAM, A.ACACNUMBER, A.ACCUST_BNK, A.ACCUST_ACT, A.ACGUBN, A.ACACNUMBER, E.ACBKCD, A.SEQ, A.PMSEQN,A.FIN_AMTS "
                                " ORDER BY A.ACDATE ASC ")
+                mainresult = cursor.fetchall()
+
 
                 return JsonResponse({"mainList": mainresult})
 
@@ -648,28 +650,22 @@ def permitViews_save(request):
             check = int(result[0][0])
 
         if check > 0:
-            # 변경 전 총 금액 확인
+
+            # 최종금액보다 작으면 N, 같으면 Y
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT SUM(IFNULL(ACAMTS, 0)) FROM ACTSTMENT "
-                               " WHERE ICUST = '" + str(iCust) + "' AND ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "' "
-                               " AND SEQ = '" + str(pmtArrayLists[data]["seq"]) + "' AND PMSEQN = '" + str(pmtArrayLists[data]["pmSeqn"]) + "' ")
-
-                result2 = cursor.fetchall()
-                lastAmts = int(result2[0][0])
-
-            # 전표 금액 조회
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT SUM(IFNULL(FIN_AMTS, 0)) FROM ACTSTMENT "
-                               " WHERE ICUST = '" + str(iCust) + "' AND ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "' "
-                               " AND SEQ = '" + str(pmtArrayLists[data]["seq"]) + "' AND PMSEQN = '" + str(pmtArrayLists[data]["pmSeqn"]) + "' ")
-
-                result3 = cursor.fetchall()
-                finalAmts = int(result3[0][0])
-
-            if int(lastAmts) > 0:
-                final = int(lastAmts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
-            else:
-                final = pmtArrayLists[data]["acAmts"].replace(",","")
+                cursor.execute(" UPDATE SISACCTT SET "
+                               "    ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "'"
+                               "  , FIN_OPT = (CASE WHEN FIN_AMTS < '" + str(pmtArrayLists[data]["acAmts"].replace(",","")) + "' THEN 'N' ELSE 'Y' END) "
+                               "  , FIN_AMTS = '" + str(pmtArrayLists[data]["acAmts"].replace(",","")) + "' "
+                               "  , ACGUNO_BK = '" + str(actBank) + "' "
+                               "  , ACACNUMBER = '" + str(actNum) + "' "
+                               "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
+                               "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
+                               "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
+                               "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
+                               "     AND ICUST = '" + str(iCust) + "' "
+                )
+                connection.commit()
 
              # 금액 등 변경
             with connection.cursor() as cursor:
@@ -685,75 +681,46 @@ def permitViews_save(request):
                 connection.commit()
 
 
-            # 최종금액보다 작으면 N, 같으면 Y
-            with connection.cursor() as cursor:
-                cursor.execute(" UPDATE SISACCTT SET "
-                               "    ACDATE = '" + str(pmtArrayLists[data]["perDate"].replace("-", "")) + "'"
-                               "  , FIN_OPT = (CASE WHEN FIN_AMTS < '" + str(final) + "' THEN 'N' ELSE 'Y' END) "
-                               "  , FIN_AMTS = '" + str(final) + "' "
-                               "  , ACGUNO_BK = '" + str(actBank) + "' "
-                               "  , ACACNUMBER = '" + str(actNum) + "' "
-                               "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
-                               "     WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' "
-                               "     AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               "     AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' "
-                               "     AND ICUST = '" + str(iCust) + "' "
-                )
-                connection.commit()
-
         else:
 
-            acUse = ""
-            acTitle = ""
-            custBank = ""
-            custAct = ""
-            acode = ""
-            acgubn = ""
-            finAmts = ""
-            orgAmts = ""
-
-            # 거래처 조회
             with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(A.ACCUST, ''), IFNULL(B.CUST_BKCD, ''), IFNULL(B.CUST_ACNUM, ''), IFNULL(A.ACTITLE, '') FROM SISACCTT A "
-                               " LEFT OUTER JOIN MIS1TB003_D B "
-                               " ON A.ACCUST = B.CUST_NBR "
-                               " WHERE A.IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-", "") + "' AND A.ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               " AND A.ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND A.ACCUST = '" + pmtArrayLists[data]["acCust"] + "' AND A.ICUST = '" + str(iCust) + "' ")
+                cursor.execute(" SELECT COUNT(*) AS COUNTED FROM ACTSTMENT "
+                               " WHERE ICUST = '" + str(iCust) + "' AND IODATE = '" + str(pmtArrayLists[data]["ioDate"].replace("-", "")) + "' "
+                               " AND ACIOGB = '" + str(pmtArrayLists[data]["acIogb"]) + "' AND ACSEQN = '" + str(pmtArrayLists[data]["acSeqn"]) + "' ")
 
                 result = cursor.fetchall()
+                count = int(result[0][0])
 
-                if (len(result) != 0):
-                    custBank = result[0][1]
-                    custAct = result[0][2]
-                    acTitle = result[0][3]
-            # 세금계산서 아닐경우
-            if pmtArrayLists[data]["acGubn"] != '2':
-                acUse = pmtArrayLists[data]["acCust"]
+                # 입/출금 전표건으로 시행된 건이 있으면
+                if count > 0:
+                    with connection.cursor() as cursor:
+                        cursor.execute(" SELECT SUM(IFNULL(FIN_AMTS, 0)) FROM SISACCTT "
+                                       " WHERE ICUST = '" + str(iCust) + "' AND IODATE = '" + str(pmtArrayLists[data]["ioDate"].replace("-", "")) + "' "
+                                       " AND ACIOGB = '" + str(pmtArrayLists[data]["acIogb"]) + "' AND ACSEQN = '" + str(pmtArrayLists[data]["acSeqn"]) + "' ")
 
-            with connection.cursor() as cursor:
-                cursor.execute(" SELECT IFNULL(ACODE, ''), IFNULL(ACCUST, ''), IFNULL(ACGUBN, ''), IFNULL(MCODE, ''), IFNULL(FIN_AMTS, 0), IFNULL(ACAMTS, 0) FROM SISACCTT "
-                               " WHERE IODATE = '" + pmtArrayLists[data]["ioDate"].replace("-","") + "' AND ACIOGB = '" + pmtArrayLists[data]["acIogb"] + "' "
-                               " AND ACSEQN = '" + pmtArrayLists[data]["acSeqn"] + "' AND ICUST = '" + str(iCust) + "' ")
+                        result2 = cursor.fetchall()
+                        fin_amts = int(result2[0][0])
 
-                result2 = cursor.fetchall()
+                        fin_amts = int(fin_amts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
 
-                if (len(result2) != 0):
-                    acode = result2[0][0]
-                    acgubn = result2[0][2]
-                    finAmts = result2[0][4]
-                    orgAmts = result2[0][5]
+                # 입/출금 전표건으로 시행된 건이 없으면
+                else:
+                    fin_amts = pmtArrayLists[data]["acAmts"].replace(",","")
 
-            final = int(finAmts) + int(pmtArrayLists[data]["acAmts"].replace(",",""))
-
-            # 지출금액이 잔액보다 작을때 시행 완료되지않은것으로 처리:
-            if int(final) < int(orgAmts):
-                permit = 'N'
+            # 입/출금 금액만큼 시행했는지 확인하여 시행처리된 항목인지 확인
+            # with connection.cursor() as cursor:
+            #     cursor.execute(" SELECT SUM(IFNULL(AMTS, 0)) FROM SISACCTT "
+            #                    " WHERE ICUST = '" + str(iCust) + "' AND IODATE = '" + str(pmtArrayLists[data]["ioDate"].replace("-", "")) + "' "
+            #                    " AND ACIOGB = '" + str(pmtArrayLists[data]["acIogb"]) + "' AND ACSEQN = '" + str(pmtArrayLists[data]["acSeqn"]) + "' ")
+            #
+            #     result2 = cursor.fetchall()
+            #     regAcamts = int(result2[0][0])
 
             with connection.cursor() as cursor:
                 cursor.execute(" UPDATE SISACCTT SET "
                                "    ACDATE = '" + pmtArrayLists[data]["perDate"].replace("-", "") + "'"
-                               "  , FIN_OPT = '" + str(permit) + "' "
-                               "  , FIN_AMTS = '" + str(final) + "' "
+                               "  , FIN_OPT = (CASE WHEN '" + str(fin_amts) + "' < ACAMTS THEN 'N' ELSE 'Y' END) "
+                               "  , FIN_AMTS = '" + str(fin_amts) + "' "
                                "  , ACGUNO_BK = '" + str(actBank) + "' "
                                "  , ACACNUMBER = '" + str(actNum) + "' "
                                "  , MCODE = '" + pmtArrayLists[data]["mCode"] + "' "
