@@ -23,7 +23,7 @@
                             <div class="col-lg-6 col-6 text-end">
                                 <!--<button type="button" class="btn btn-sm btn-primary text-white text-sm" id="btnSave" name="btnSave">저 장</button>-->
                                 <!--<button type="button" class="btn btn-sm btn-linkedin text-white text-sm" id="btnClear" name="btnClear">초기화</button>-->
-                                <button type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: darkorange; font-size: 0.8rem" id="btnDlt" name="btnDlt">
+                                <button hidden type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: darkorange; font-size: 0.8rem" id="btnDlt" name="btnDlt">
                                     <i class="fa fa-trash-arrow-up fs-6 pe-2"></i>취소</button>
                                 <button hidden type="button" class="btn text-white text-sm ps-3 pe-3 pt-1 pb-1" style="background-color: royalblue; font-size: 0.8rem" id="btnUpt" name="btnUpt">
                                     <i class="fa fa-cloud-arrow-up fs-6 pe-2"></i>수정</button>
@@ -596,43 +596,40 @@
                         if(permitGbn == '1'){
                             for (var i = 0; i < list.length; i++) {
                                 balance = 0;
-                                balance = parseInt(list[i][23]) - parseInt(list[i][8])
-                                if(list[i][5] != ''){ cust = list[i][6] }
-                                if(list[i][7] != '' && list[i][5] == ''){ cust = list[i][7]}
+                                balance = parseInt(list[i][7]) - parseInt(list[i][3])
+                                if(list[i][10] != ''){ cust = list[i][11] }
+                                if(list[i][12] != '' && list[i][10] == ''){ cust = list[i][12]}
 
                                 $("#mainTb").append(
                                     "<tr id='#mainTr' class='mainTr_tr'>" +
                                     "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 0; background: white;'><input class='chkPer' type='checkbox' id='chkPer[]' name='chkPer[]' value='" + list[i][22] + "," + list[i][23] + "'/></td> " +
                                     "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 35px; background: white;'>" + list[i][0].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td> " +
-                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][3].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                    "<td class='text-center p-1' style='font-size: 0.85rem; position: sticky; left: 114px; background: white;'>" + list[i][8].replace(/(\d{4})(\d{2})/g, '$1-$2') + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
                                     "<td class='text-start p-1' style='font-size: 0.85rem'>" + cust + "</td> " +
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][23]) + "</td> " +
-                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][8]) + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][7]) + "</td> " +
+                                    "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(list[i][3]) + "</td> " +
                                     "<td class='text-end p-1' style='font-size: 0.85rem'>" + addComma(balance) + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][9] + "</td> " +
-                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][0] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][14] + "</td> " +
+                                    "<td class='text-start p-1' style='font-size: 0.85rem'>" + list[i][15] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][4] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][5] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][6] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][16] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][24] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][18] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][10] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][12] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][19] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][20] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][22] + "</td> " +
-                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][23] + "</td> " +
                                     "</tr> ");
 
-                                //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호
-
-                                total += parseInt(list[i][8])
+                                //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호, 회계코드, 거래처코드, 거래처계좌번호, 거래처은행코드
                             }
                         }
-                        document.getElementById('inputPrice').value = addComma(total)
                     }
                 })
             }
@@ -943,7 +940,7 @@
                     if(transGbn == '1'){
 
                         //미시행
-                        if(permitGbn == ""){
+                        if(permitGbn == "0"){
 
                             $("#subTb").append(
                             "<tr id='subTr" + count + "' class='subTr_tr'>" +
@@ -953,6 +950,8 @@
                             "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
                             "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
                             "<td hidden class='text-center p-1 text-danger' name='finAmts'  id='finAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + balance + "</td> " +
+                            "<td hidden class='text-center p-1 text-danger' name='lastAmts'  id='lastAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + finAmts + "</td> " +
+                            "<td hidden class='text-center p-1 text-danger' name='orgAmts'  id='orgAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
                             "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
                             "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
                             "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
@@ -970,28 +969,30 @@
                         }
                         //시행
                         if(permitGbn == "1") {
-                            $("#subTb").append(
-                                "<tr id='subTr" + count + "' class='subTr_tr'>" +
-                                "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
-                                "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
-                                "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
-                                "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
-                                "<td hidden class='text-center p-1 text-danger' name='finAmts'  id='finAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + balance + "</td> " +
-                                "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
-                                "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
-                                "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
-                                "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actBank + "</td> " +
-                                "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actNum + "</td> " +
-                                "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
-                                "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
-                                "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
-                                "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
-                                "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
-                                "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
-                                "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + seq + "</td> " +
-                                "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + pmSeqn + "</td> " +
-                                "</tr> ");
+                            alert('시행된 건은 수정이 불가능합니다. 시행을 취소하시고 다시 시행 해주시기 바랍니다.')
+                            return false;
+                            //$("#subTb").append(
+                            //    "<tr id='subTr" + count + "' class='subTr_tr'>" +
+                            //    "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                            //    "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
+                            //    "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
+                            //    "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
+                            //    "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
+                            //    "<td hidden class='text-center p-1 text-danger' name='finAmts'  id='finAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + balance + "</td> " +
+                            //    "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
+                            //    "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
+                            //    "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
+                            //    "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actBank + "</td> " +
+                            //    "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actNum + "</td> " +
+                            //    "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
+                            //    "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
+                            //    "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
+                            //    "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                            //    "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
+                            //    "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
+                            //    "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + seq + "</td> " +
+                            //    "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + pmSeqn + "</td> " +
+                            //    "</tr> ");
 
 
                         }
@@ -1137,6 +1138,8 @@
                 var acSeqn = $('#acSeqn_' + i).text();
                 var acIogb = $('#acIogb_' + i).text();
                 var finAmts = $('#finAmts_' + i).text();
+                var lastAmts = $('#lastAmts_' + i).text();
+                var orgAmts = $('#orgAmts_' + i).text();
                 var acAmts = $('#txtAmts_' + i).val();
                 var acGubn = $('#acGubn_' + i).text();
                 var mCode = $('#mainCode_' + i).text();
@@ -1145,24 +1148,7 @@
                 var seq = $('#seq_' + i).text();
                 var pmSeqn = $('#pmSeqn_' + i).text();
 
-                let chk = {"actNum": actNum}
 
-                $.ajax({
-                    type: "post",
-                    data: chk,
-                    url: '{% url "balanceChk" %}',
-                    headers: {
-                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        var act = "";
-                        if (data.balance < acAmts) {
-                            alert('선택한 통장의 잔고가 부족합니다.')
-                            return false;
-                        }
-                    }
-                });
 
                 let data = {
                     'perDate': perDate,
@@ -1170,6 +1156,8 @@
                     'acEmp': acEmp,
                     'acSeqn': acSeqn,
                     'acIogb': acIogb,
+                    'orgAmts': orgAmts,
+                    'lastAmts': lastAmts,
                     'finAmts': finAmts,
                     'acAmts': acAmts,
                     'acGubn': acGubn,
@@ -1238,19 +1226,29 @@
                 for (var i = 1; i < parseInt(subCount) + 1; i++) {
 
                     var acDate = $('#acDate_' + i).text();
+                    var seq = $('#seq_' + i).text();
+                    var pmSeqn = $('#pmSeqn_' + i).text();
                     var ioDate = $('#ioDate_' + i).text();
                     var acSeqn = $('#acSeqn_' + i).text();
                     var acIogb = $('#acIogb_' + i).text();
                     var acGubn = $('#acGubn_' + i).text();
                     var mCode = $('#mainCode_' + i).text();
+                    var lastAmts = $('#lastAmts_' + i).text();
+                    var orgAmts = $('#orgAmts_' + i).text();
+                    var acAmts = $('#txtAmts_' + i).val();
 
                     let data = {
-                        'acDate': acDate,
                         'ioDate': ioDate,
+                        'seq': seq,
+                        'pmSeqn': pmSeqn,
+                        'acDate': acDate,
                         'acSeqn': acSeqn,
                         'acIogb': acIogb,
                         'acGubn': acGubn,
-                        'mCode': mCode
+                        'mCode': mCode,
+                        'lastAmts': lastAmts,
+                        'orgAmts': orgAmts,
+                        'acAmts': acAmts,
                     };
 
                     pmtArr.push(data);
@@ -1413,3 +1411,44 @@
 {#                        "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +#}
 {#                        "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +#}
 {#                        "</tr> ");#}
+
+
+<!--<script>
+                    //let permited = {"perDate": perDate, "ioDate": ioDate, "acIogb": acIogb, "acSeqn": acSeqn, "mCode": mCode, "acGubn": acGubn, "acAmts": acAmts}
+//
+                //$.ajax({
+                //    type: "post",
+                //    data: permited,
+                //    url: '{% url "permitedChk" %}',
+                //    headers: {
+                //        'X-CSRFTOKEN': '{{ csrf_token }}'
+                //    },
+                //    dataType: 'json',
+                //    success: function (data) {
+                //        if (data.permit === 'Y') {
+                //            alert('선택한 통장의 잔고가 부족합니다.')
+                //            return false;
+                //        }
+                //    }
+                //});
+
+
+                let chk = {"actNum": actNum}
+
+                $.ajax({
+                    type: "post",
+                    data: chk,
+                    url: '{% url "balanceChk" %}',
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var act = "";
+                        if (data.balance < acAmts) {
+                            alert('선택한 통장의 잔고가 부족합니다.')
+                            return false;
+                        }
+                    }
+                });
+</script>-->

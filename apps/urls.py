@@ -130,6 +130,7 @@ urlpatterns = [
     path('permit_reg/', permitViews.permitViews, name='permit_reg'),
     path('permit_reg_search/', permitViews.permitViews_search, name='permit_reg_search'),
     path('permited_list/', permitViews.permited_search, name='permited_list'),
+    path('permitedChk/', permitViews.permitedChk, name='permitedChk'),
     path('balanceChk/', permitViews.balanceChk, name='balanceChk'),
     path('cboCardNum/', permitViews.cboCardNum, name='cboCardNum'),
     path('permit_reg_save/', permitViews.permitViews_save, name='permit_reg_save'),
