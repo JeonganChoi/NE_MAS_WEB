@@ -192,7 +192,13 @@
                             </div>
                             <div class="col-lg-4 col-4 text-end">
                                 <button type="button" class="btn btn-sm text-white font-weight-bolder" style="background-color: seagreen; font-size: 0.8rem" id="btnPermit" name="btnPermit">
-                                    <i class="fas fa-file-signature me-2 fs-6"></i>등록
+                                    <i class="fa fa-file-signature me-2 fs-6"></i>등록
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm text-white font-weight-bolder" style="font-size: 0.8rem" id="btnDlt" name="btnDlt">
+                                    <i class="fa fa-delete-left me-2 fs-6"></i>등록 취소
+                                </button>
+                                <button type="button" class="btn btn-light ps-2 pe-2 pt-2 pb-2 text-dark font-weight-bolder" style="font-size: 0.8rem" id="btnClear" name="btnClear">
+                                    <i class="fa fa-xmark fs-6"></i>
                                 </button>
                             </div>
                         </div>
@@ -567,6 +573,7 @@
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][25] + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'></td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][17] + "</td> " +
                                     "</tr> ");
 
                                 //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호, 회계코드, 거래처코드, 거래처계좌번호, 거래처은행코드
@@ -625,6 +632,7 @@
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][21] + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][1] + "</td> " +
                                     "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][2] + "</td> " +
+                                    "<td hidden class='text-start p-1' style='font-size: 0.85rem'>" + list[i][28] + "</td> " +
                                     "</tr> ");
 
                                 //hidden: 날짜, 순번, 입출금, 코드, 결재구분, 은행코드, 계좌번호, 회계코드, 거래처코드, 거래처계좌번호, 거래처은행코드
@@ -826,8 +834,7 @@
             var tr = $(this).parent().parent();
             var iDate = tr.children().eq(1).text()
             var ioDate = iDate.replace(/\-/g, '')
-            //var aDate = tr.children().eq(1).text()
-            //var acDate = aDate.replace(/\-/g, '')
+            var aDate = tr.children().eq(10).text()
             var acCust = tr.children().eq(4).text()
             var acTitle = tr.children().eq(3).text()
             var acMcode = tr.children().eq(13).text()
@@ -838,16 +845,20 @@
             var acSeqn = tr.children().eq(11).text()
             var acIogb = tr.children().eq(12).text()
             var acGubn = tr.children().eq(14).text()
-            var seq = tr.children().eq(17).text()
-            var pmSeqn = tr.children().eq(18).text()
+            var seq = tr.children().eq(21).text()
+            var pmSeqn = tr.children().eq(22).text()
+            var exDate = tr.children().eq(23).text()
 
             var acAmts = tr.children().eq(5).text().replace(/\,/g, '')
             var finAmts = tr.children().eq(6).text().replace(/\,/g, '')
             var balance = tr.children().eq(7).text().replace(/\,/g, '')
-
-            var aa = parseInt(acAmts) - parseInt(finAmts)
-            if(parseInt(aa) > 0){ balance = aa }
-
+            //기결금액이 있으면
+            if (finAmts > 0) {
+                balance = parseInt(acAmts) - parseInt(finAmts)
+            }
+            if (acAmts == finAmts) {
+                balance = acAmts
+            }
             var count = $(this).closest('tr').prevAll().length;
             var offTotal = 0;
 
@@ -965,35 +976,39 @@
                             "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
                             "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
                             "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'></td> " +
+                            "<td hidden class='text-start p-1' name='exDate'  id='exDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + exDate + "</td> " +
                             "</tr> ");
                         }
                         //시행
                         if(permitGbn == "1") {
                             alert('시행된 건은 수정이 불가능합니다. 시행을 취소하시고 다시 시행 해주시기 바랍니다.')
-                            return false;
-                            //$("#subTb").append(
-                            //    "<tr id='subTr" + count + "' class='subTr_tr'>" +
-                            //    "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                            //    "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
-                            //    "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
-                            //    "<select style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
-                            //    "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
-                            //    "<td hidden class='text-center p-1 text-danger' name='finAmts'  id='finAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + balance + "</td> " +
-                            //    "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
-                            //    "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
-                            //    "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
-                            //    "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actBank + "</td> " +
-                            //    "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actNum + "</td> " +
-                            //    "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
-                            //    "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate + "</td>" +
-                            //    "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
-                            //    "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
-                            //    "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
-                            //    "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
-                            //    "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + seq + "</td> " +
-                            //    "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + pmSeqn + "</td> " +
-                            //    "</tr> ");
-
+                            $("#subTb").append(
+                                "<tr id='subTr" + count + "' class='subTr_tr'>" +
+                                "<td class='text-center p-1' name='perDate'  id='perDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + ioDate.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
+                                "<td class='text-start p-1' id='acTitle_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acTitle + "</td> " +
+                                "<td class='text-start p-1' name='mCode'  id='mCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" +
+                                "<select disabled style='height: 2rem; font-size: 0.8rem' class='form-control border border-light rounded-1 text-center p-1' id='cboMcode_" + count + "' name='cboMcode'></select></td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='mainCode'  id='mainCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acMcode + "</td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='finAmts'  id='finAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + balance + "</td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='lastAmts'  id='lastAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + finAmts + "</td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='orgAmts'  id='orgAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acAmts + "</td> " +
+                                "<td class='text-end p-1' id='acAmts_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'><input disabled style='height: 2rem; font-size: 0.8rem' id='txtAmts_" + (sub_tr_cnt) + "' name='txtAmts' type='text' class='form-control border border-light rounded-1 text-center p-1' value='" + addComma(balance) + "'/></td> " +
+                                "<td hidden class='text-start p-1' name='acEmp'  id='acEmp_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acEmp + "</td> " +
+                                "<td class='text-start p-1' id='acNme_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acNme + "</td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='acBnkCode'  id='acBnkCode_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actBank + "</td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='acNumber'  id='acNumber_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + actNum + "</td> " +
+                                "<td hidden class='text-center p-1 text-danger' name='acTrans'  id='acTrans_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + transGbn + "</td> " +
+                                "<td hidden class='text-center p-1' name='ioDate'  id='ioDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + aDate + "</td>" +
+                                "<td hidden class='text-start p-1' name='acSeqn'   id='acSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acSeqn + "</td> " +
+                                "<td hidden class='text-start p-1' name='acIogb'  id='acIogb_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acIogb + "</td> " +
+                                "<td hidden class='text-start p-1' name='acGubn'  id='acGubn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acGubn + "</td> " +
+                                "<td hidden class='text-start p-1' name='acCust'  id='acCust_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + acCust + "</td> " +
+                                "<td hidden class='text-start p-1' name='seq'  id='seq_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + seq + "</td> " +
+                                "<td hidden class='text-start p-1' name='pmSeqn'  id='pmSeqn_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + pmSeqn + "</td> " +
+                                "<td hidden class='text-start p-1' name='exDate'  id='exDate_" + (sub_tr_cnt) + "' style='font-size: 0.8rem'>" + exDate + "</td> " +
+                                "</tr> ");
+                            $("select[name=actNumber]").attr("disabled",true);
+                            $("select[name=actBank]").attr("disabled",true);
 
                         }
                     }
@@ -1073,7 +1088,14 @@
            $('tr.subTr_tr').find('td[name=perDate]').text(_val);
         });
 
+        {# 조회 버튼 #}
+        $(document).on('click', "#btnClear", function () {
 
+            $("select[name=actNumber]").attr("disabled",false);
+            $("select[name=actBank]").attr("disabled",false);
+            $("#subTb").html("");
+
+        });
 
         {#$(document).on('change', '#inputOffSet', function() {#}
         {#   if($(this).is(':checked')) {#}
@@ -1147,8 +1169,12 @@
                 var acCust = $('#acCust_' + i).text();
                 var seq = $('#seq_' + i).text();
                 var pmSeqn = $('#pmSeqn_' + i).text();
+                var exDate = $('#exDate_' + i).text();
 
-
+                if(pmSeqn != ''){
+                    alert("전표일자: " + ioDate + "건은 이미 시행된 건입니다.")
+                    return false;
+                }
 
                 let data = {
                     'perDate': perDate,
@@ -1166,6 +1192,7 @@
                     'acCust': acCust,
                     'seq': seq,
                     'pmSeqn': pmSeqn,
+                    'exDate': exDate,
                 };
                 pmtArr.push(data);
             }
@@ -1223,32 +1250,42 @@
             if(subCount < 2){
 
                 var pmtArr = [];
-                for (var i = 1; i < parseInt(subCount) + 1; i++) {
+                for (var i = 0; i < 1; i++) {
 
-                    var acDate = $('#acDate_' + i).text();
-                    var seq = $('#seq_' + i).text();
-                    var pmSeqn = $('#pmSeqn_' + i).text();
+                    var perDate = $('#perDate_' + i).text();
                     var ioDate = $('#ioDate_' + i).text();
+                    var acEmp = $('#acEmp_' + i).text();
                     var acSeqn = $('#acSeqn_' + i).text();
                     var acIogb = $('#acIogb_' + i).text();
-                    var acGubn = $('#acGubn_' + i).text();
-                    var mCode = $('#mainCode_' + i).text();
+                    var finAmts = $('#finAmts_' + i).text();
                     var lastAmts = $('#lastAmts_' + i).text();
                     var orgAmts = $('#orgAmts_' + i).text();
                     var acAmts = $('#txtAmts_' + i).val();
+                    var acGubn = $('#acGubn_' + i).text();
+                    var mCode = $('#mainCode_' + i).text();
+                    var transGbn = $('#acTrans_' + i).text();
+                    var acCust = $('#acCust_' + i).text();
+                    var seq = $('#seq_' + i).text();
+                    var pmSeqn = $('#pmSeqn_' + i).text();
+                    var exDate = $('#exDate_' + i).text();
 
                     let data = {
+                        'perDate': perDate,
                         'ioDate': ioDate,
-                        'seq': seq,
-                        'pmSeqn': pmSeqn,
-                        'acDate': acDate,
+                        'acEmp': acEmp,
                         'acSeqn': acSeqn,
                         'acIogb': acIogb,
-                        'acGubn': acGubn,
-                        'mCode': mCode,
+                        'finAmts': finAmts,
                         'lastAmts': lastAmts,
                         'orgAmts': orgAmts,
                         'acAmts': acAmts,
+                        'acGubn': acGubn,
+                        'mCode': mCode,
+                        'transGbn': transGbn,
+                        'acCust': acCust,
+                        'seq': seq,
+                        'pmSeqn': pmSeqn,
+                        'exDate': exDate,
                     };
 
                     pmtArr.push(data);
@@ -1280,108 +1317,6 @@
                     alert('취소되었습니다.')
                     return false;
                 }
-            }
-        });
-
-        //수정 버튼
-        $(document).on('click', "#btnUpt", function () {
-            {# 가로로 펼쳐진 td 갯수만큼 받아서 돌리기 #}
-            const subCount = $('#subTb tr').length;
-            var offSet = document.getElementById('cboTransGbn').value;
-            //var offSet = $('input[name=inputOffSet]:checked').val();
-            var actNum = document.getElementById('actNumber').value;
-            var actBank = document.getElementById('actBank').value;
-            var perDate = document.getElementById('permitDate').value;
-
-            if (actNum == '' || actNum == null) {
-                alert('계좌번호를 선택 해주세요.')
-                return false
-            }
-
-            var pmtArr = [];
-            for (var i = 1; i < subCount; i++) {
-
-                var perDate = $('#perDate_' + i).text();
-                var ioDate = $('#ioDate_' + i).text();
-                var acEmp = $('#acEmp_' + i).text();
-                var acSeqn = $('#acSeqn_' + i).text();
-                var acIogb = $('#acIogb_' + i).text();
-                var finAmts = $('#finAmts_' + i).text();
-                var acAmts = $('#txtAmts_' + i).val();
-                //var acNum = $('#acNumber_' + i).text();
-                var acGubn = $('#acGubn_' + i).text();
-                var mCode = $('#mainCode_' + i).text();
-                var transGbn = $('#acTrans_' + i).text();
-                var acCust = $('#acCust_' + i).text();
-                //var acBnkCode = $('#acBnkCode_' + i).text();
-
-                {#if (acNum == '' || acNum == null) {#}
-                {#    acNum = document.getElementById('actNumber').value;#}
-                {#}#}
-
-                let chk = {"actNum": actNum}
-
-                $.ajax({
-                    type: "post",
-                    data: chk,
-                    url: '{% url "balanceChk" %}',
-                    headers: {
-                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        var act = "";
-                        if (data.balance < acAmts) {
-                            alert('선택한 통장의 잔고가 부족합니다.')
-                            return false;
-                        }
-                    }
-                });
-
-                let data = {
-                    'perDate': perDate,
-                    'ioDate': ioDate,
-                    'acEmp': acEmp,
-                    'acSeqn': acSeqn,
-                    'acIogb': acIogb,
-                    'finAmts': finAmts,
-                    'acAmts': acAmts,
-                    'acGubn': acGubn,
-                    'mCode': mCode,
-                    'transGbn': transGbn,
-                    'acCust': acCust,
-                };
-                pmtArr.push(data);
-            }
-
-            var saveresult = confirm("수정하시겠습니까?")
-
-            if(saveresult == true){
-                $.ajax({
-                    type: "post",
-                    data: {
-                        'pmtArrList': JSON.stringify(pmtArr),
-                        'offSet': offSet,
-                        'actNum': actNum,
-                        'perDate': perDate,
-                        'actBank': actBank,
-                    },
-                    dataType: "json",
-                    url: '{% url "permit_reg_update" %}',
-                    headers: {
-                        'X-CSRFTOKEN': '{{ csrf_token }}'
-                    },
-                    success: function (data) {
-                        if (data.sucYn === 'Y') {
-                            alert('수정 되었습니다.')
-                            location.href = "{% url 'permit_reg' %}";
-                        }
-                    }
-                });
-            }
-            if(saveresult == false){
-                alert('취소되었습니다.')
-                return false;
             }
         });
 
