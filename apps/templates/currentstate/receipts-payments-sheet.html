@@ -10,44 +10,47 @@
 {% block content %}
 
     <div class="px-5 py-4 container-fluid">
-        <div class="row mt-n1">
-            <div class="col-lg-1 col-1"></div>
-            <div class="col-lg-10 col-10">
+        <div class="row mt-n1 align-content-center justify-content-center">
+            <div class="col-lg-11 col-11">
                 <div class="card bg-gradient-primary">
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0 text-white font-weight-bold"><i class="fa fa-credit-card fs-4 me-3"></i>입/출금 원장</h5>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-1 col-1"></div>
         </div>
-        <div class="row mt-2">
-            <div class="col-lg-1 col-1"></div>
-            <div class="col-lg-10 col-10">
+        <div class="row mt-2 align-content-center justify-content-center">
+            <div class="col-lg-11 col-11">
                 <div class="card">
                     <div class="card-header border border-light border-top-0 border-end-0 border-start-0 pb-0 px-4 py-3">
                         <div class="row p-0">
                             <div class="col-lg-4 col-4 text-start">
-                              <div class="input-group shadow-none">
-                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 3rem" for="inputStrDate"><i class="fas fa-search me-2"></i>일자</label>
+                              <div class="d-flex">
+                                  <label class="" style="font-size: 0.85rem; min-width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>일 자</label>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputStrDate" id="inputStrDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
-                                  <span class="me-2">-</span>
+                                  <span class="p-1" style="width: 1rem">-</span>
                                   <input class="form-control border border-light rounded-1 text-center me-2" type="date" name="inputEndDate" id="inputEndDate" style="max-width: 10rem;height: 2rem; font-size: 0.8rem">
                               </div>
                             </div>
                             <div class="col-lg-3 col-3 text-start">
-                              <div class="input-group shadow-none">
-                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>거래처</label>
+                              <div class="d-flex">
+                                  <label class="" style="font-size: 0.85rem; min-width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>거래처</label>
                                   <select class="form-control border border-light rounded-1 text-center p-0" name="inputCust" id="inputCust" style="font-size: 0.8rem; height: 2rem; max-width: 12rem"></select>
                               </div>
                             </div>
-                            <div class="col-lg-3 col-3 text-start">
-                              <div class="input-group shadow-none">
-                                  <label class="mt-1 me-4" style="font-size: 0.85rem; width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>통장명</label>
+                            <div class="col-lg-2 col-2 text-start">
+                              <div class="d-flex">
+                                  <label class="" style="font-size: 0.85rem; min-width: 4rem" for="inputStrDate"><i class="fas fa-search me-2"></i>은행명</label>
+                                  <select class="form-control border border-light rounded-1 text-center p-0" name="inputBank" id="inputBank" style="font-size: 0.8rem; height: 2rem; max-width: 15rem"></select>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 col-2 text-start">
+                              <div class="d-flex">
+                                  <label class="" style="font-size: 0.85rem; min-width: 5rem" for="inputStrDate"><i class="fas fa-search me-2"></i>계좌번호</label>
                                   <select class="form-control border border-light rounded-1 text-center p-0" name="inputAct" id="inputAct" style="font-size: 0.8rem; height: 2rem; max-width: 15rem"></select>
                               </div>
                             </div>
-                            <div class="col-lg-2 col-2 text-end">
+                            <div class="col-lg-1 col-1 text-end">
                               <button type="button" class="btn btn-sm btn-info" id="btnSearch" name="btnSearch"><i class="fa fa-search fs-6 me-2"></i>조회</button>
                             </div>
                         </div>
@@ -108,85 +111,24 @@
 
             var cust = "";
             var act = "";
+            var bank = "";
             var bal = 0;
             var custTxt = "<option value=''>:: 선택 ::</option>";
             var actTxt = "<option value=''>:: 선택 ::</option>";
+            var bankTxt = "<option value=''>:: 선택 ::</option>";
 
             $("#inputCust").html("");
+            $("#inputBank").html("");
             $("#inputAct").html("");
-
-            var sDate = document.getElementById('inputStrDate').value;
-            var eDate = document.getElementById('inputEndDate').value;
-
-            var strDate = sDate.replace(/\-/g, '')
-            var endDate = eDate.replace(/\-/g, '')
-
-            let data = {'cust': cust, 'act': act, 'strDate': strDate, 'endDate': endDate}
 
             $.ajax({
                 type: "post",
-                url: '{% url "receipts_payments_search" %}',
-                data: data,
+                url: '{% url "cboCust_list" %}',
                 headers: {
                     'X-CSRFTOKEN': '{{ csrf_token }}'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var list = data.mainList;
-                    var list2 = data.balList;
-                    $("#sheetTb").html("");
-
-                    for (var i = 0; i < list2.length; i++) {
-                        bal = list2[i][3]
-                        $("#sheetTb").append(
-                            "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                            "<td class='text-center p-1' style='font-size: 0.8rem'>이월 잔액</td>" +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
-                            "<td hidden class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                            "<td hidden class='text-center p-1' style='font-size: 0.8rem'></td> " +
-                            "<td class='text-start p-1' style='font-size: 0.8rem'></td> " +
-                            "</tr> ");
-                    };
-
-                    for (var i = 0; i < list.length; i++) {
-                        if(list[i][0] == '2'){
-                            {# 입금 #}
-                            bal += parseInt(list[i][2])
-                            $("#sheetTb").append(
-                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
-                                "</tr> ");
-                        }
-                        if(list[i][0] == '1'){
-                            {# 출금 #}
-                            bal -= parseInt(list[i][3])
-                            $("#sheetTb").append(
-                                "<tr id='#sheetTr' class='sheetTr_tr'>" +
-                                "<td class='text-center p-1' style='font-size: 0.8rem'>" + list[i][1].replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3') + "</td>" +
-                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][2]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(list[i][3]) + "</td> " +
-                                "<td class='text-end p-1' style='font-size: 0.8rem'>" + addComma(bal) + "</td> " +
-                                "<td hidden class='text-start p-1' style='font-size: 0.8rem'>" + list[i][4] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][5] + "</td> " +
-                                "<td hidden class='text-center p-1' style='font-size: 0.8rem'>" + list[i][6] + "</td> " +
-                                "<td class='text-start p-1' style='font-size: 0.8rem'>" + list[i][7] + "</td> " +
-                                "</tr> ");
-                        }
-
-                    }
 
                     var combolist = data.cboCust;
                     for (var i = 0; i < combolist.length; i++) {
@@ -196,22 +138,65 @@
                             custTxt = custTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][1] + "</option>";
                         }
                     }
+                    $("#inputCust").append(custTxt);
+                }
+            });
 
-                    var combolist2 = data.cboAct;
+            $.ajax({
+                type: "post",
+                url: '{% url "cboBank_list" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var combolist2 = data.cboBank;
                     for (var i = 0; i < combolist2.length; i++) {
-                        if (combolist2[i][0] == act) {
-                            actTxt = actTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][0] + "</option>";
+                        if (combolist2[i][0] == bank) {
+                            bankTxt = bankTxt + "<option value='" + combolist2[i][0] + "' selected>" + combolist2[i][1] + "</option>";
                         } else {
-                            actTxt = actTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][0] + "</option>";
+                            bankTxt = bankTxt + "<option value='" + combolist2[i][0] + "'>" + combolist2[i][1] + "</option>";
                         }
                     }
 
-                    $("#inputCust").append(custTxt);
-                    $("#inputAct").append(actTxt);
-
+                    $("#inputBank").append(bankTxt);
                 }
             })
 
+        });
+
+        $('#inputBank').change(function () {
+
+            var act = "";
+            var actTxt = "<option value=''>:: 전체 ::</option>";
+
+            $("#inputAct").html("");
+
+            var cboBank = document.getElementById('inputBank').value;
+
+            let data = {'cboBank': cboBank}
+
+            $.ajax({
+                type: "post",
+                data: data,
+                url: '{% url "cboAct" %}',
+                headers: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var combolist = data.cboAct;
+                    for (var i = 0; i < combolist.length; i++) {
+                        if (combolist[i][0] == act) {
+                            actTxt = actTxt + "<option value='" + combolist[i][0] + "' selected>" + combolist[i][0] + "</option>";
+                        } else {
+                            actTxt = actTxt + "<option value='" + combolist[i][0] + "'>" + combolist[i][0] + "</option>";
+                        }
+                    }
+                    $("#inputAct").append(actTxt);
+                }
+            })
         });
 
         {# 조회 버튼 누를시 #}

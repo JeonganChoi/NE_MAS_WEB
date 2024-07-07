@@ -107,7 +107,7 @@ def cboCustList(request):
     iCust = request.session.get('USER_ICUST')
 
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "'")
+        cursor.execute(" SELECT CUST_NBR, CUST_NME FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' ORDER BY CUST_NBR ")
         cboCust = cursor.fetchall()
 
     return JsonResponse({"cboCust": cboCust})
@@ -117,7 +117,7 @@ def cboActNumList(request):
     user = request.session.get('userId')
     iCust = request.session.get('USER_ICUST')
     with connection.cursor() as cursor:
-        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "'")
+        cursor.execute(" SELECT ACNUMBER FROM ACNUMBER WHERE ICUST = '" + str(iCust) + "' ORDER BY ACNUMBER ")
         cboAct = cursor.fetchall()
 
     return JsonResponse({"cboAct": cboAct})

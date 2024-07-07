@@ -81,6 +81,33 @@ def chkEmp_Sign(request):
             return JsonResponse({'chkEmp': chkEmp})
 
 
+
+def chkCustYn(request):
+    txtCustName = request.POST.get('txtCustName')
+    iCust = request.session.get("USER_ICUST")
+
+    if txtCustName != '':
+        with connection.cursor() as cursor:
+            cursor.execute(" SELECT COUNT(CUST_NBR) AS COUNTED FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_NME LIKE '%" + str(txtCustName) + "%';")
+            result = cursor.fetchall()
+            count = result[0][0]
+        # 여러개의 거래처가 조회되었을때.
+        if count > 1:
+            custYn = 'N'
+            return JsonResponse({'custYn': custYn})
+
+        # 여러개의 1개만 조회되었을때.
+        elif count == 1:
+            with connection.cursor() as cursor:
+                cursor.execute(" SELECT CUST_NBR AS COUNTED FROM MIS1TB003 WHERE ICUST = '" + str(iCust) + "' AND CUST_NME LIKE '%" + str(txtCustName) + "%'; ")
+                result2 = cursor.fetchall()
+                custYn = result2[0][0]
+            return JsonResponse({'custYn': custYn})
+
+        else:
+            custYn = 'N'
+            return JsonResponse({'custYn': custYn})
+
 # def receivePayByGbn(request):
 #     strDate = request.POST.get('sDate')
 #     endDate = request.POST.get('eDate')

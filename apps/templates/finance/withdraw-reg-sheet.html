@@ -3574,8 +3574,28 @@
                     return false;
                 }
                 if(cboWitCust == ''){
-                    alert('거래처를 선택해주세요.')
+
+                    alert('거래처를 조회 후 선택 클릭해주세요.')
                     return false;
+
+                    //if(txtCustName != ''){
+                    //    let data = {"txtCustName": txtCustName}
+                    //    $.ajax({
+                    //        type: "post",
+                    //        data: data,
+                    {#//        url: '{% url "chkCustYn" %}',#}
+                    //        headers: {
+                    {#//            'X-CSRFTOKEN': '{{ csrf_token }}'#}
+                    //        },
+                    //        dataType: 'json',
+                    //        success: function (data) {
+                    //            var custYn = data.custYn;
+                    //            alert(custYn)
+                    //            if(custYn != 'N'){ cboWitCust = custYn }
+                    //            if(custYn == 'N'){ alert('조회되지 않는 거래처입니다. 거래처명 또는 번호를 확인해주시기 바랍니다.'); return false; }
+//
+                    //    }
+                    //});
                 }
                 if(txtWitPrice == ''){
                     alert('금액을 입력해주세요.')
@@ -3634,40 +3654,40 @@
                 }
             }
             {# 이체 #}
-            {#if(cboWitMethod == '4'){#}
-            {#    if(txtWitRegDate == ''){#}
-            {#        alert('사용 일자를 입력해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(cboAdminCode == ''){#}
-            {#        alert('관리 계정을 입력해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(txtTitle == ''){#}
-            {#        alert('제목을 입력해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(txtWhere == ''){#}
-            {#        alert('사용처를 입력해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(txtWitPrice == ''){#}
-            {#        alert('금액을 입력해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(txtApplyDate == ''){#}
-            {#        alert('적용 년월을 선택해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(txtWitRemark == ''){#}
-            {#        alert('세부 내용을 입력해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#    if(txtCashDate == ''){#}
-            {#        alert('지급 요청일을 선택해주세요.')#}
-            {#        return false;#}
-            {#    }#}
-            {#}#}
+            //if(cboWitMethod == '4'){
+            //    if(txtWitRegDate == ''){
+            //        alert('사용 일자를 입력해주세요.')
+            //        return false;
+            //    }
+            //    if(cboAdminCode == ''){
+            //        alert('관리 계정을 입력해주세요.')
+            //        return false;
+            //    }
+            //    if(txtTitle == ''){
+            //        alert('제목을 입력해주세요.')
+            //        return false;
+            //    }
+            //    if(txtWhere == ''){
+            //        alert('사용처를 입력해주세요.')
+            //        return false;
+            //    }
+            //    if(txtWitPrice == ''){
+            //        alert('금액을 입력해주세요.')
+            //        return false;
+            //    }
+            //    if(txtApplyDate == ''){
+            //        alert('적용 년월을 선택해주세요.')
+            //        return false;
+            //    }
+            //    if(txtWitRemark == ''){
+            //        alert('세부 내용을 입력해주세요.')
+            //        return false;
+            //    }
+            //    if(txtCashDate == ''){
+            //        alert('지급 요청일을 선택해주세요.')
+            //        return false;
+            //    }
+            //}
 
             if(cboWitGbn != '3'){
                 var empArr = [];

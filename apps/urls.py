@@ -168,6 +168,7 @@ urlpatterns = [
     path('cboList/', paymentViews.cboList, name='cboList'),
     path('cboCardType/', paymentViews.cboCardType_search, name='cboCardType'),
     path('chkEmpSign/', paymentViews.chkEmp_Sign, name='chkEmpSign'),
+    path('chkCustYn/', paymentViews.chkCustYn, name='chkCustYn'),
 
     # 감가상각비명세서
     path('depreciation_reg/', depreciationViews.depreciationViews, name='depreciation_reg'),
